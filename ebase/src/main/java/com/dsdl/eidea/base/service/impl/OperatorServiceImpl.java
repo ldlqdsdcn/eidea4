@@ -1,13 +1,13 @@
 package com.dsdl.eidea.base.service.impl;
 
-import com.dsdl.eidea.base.dao.OperatorDao;
+import com.dsdl.core.spring.annotation.DataAccess;
 import com.dsdl.eidea.base.entity.bo.OperatorBo;
 import com.dsdl.eidea.base.entity.po.OperatorPo;
 import com.dsdl.eidea.base.service.OperatorService;
+import com.dsdl.eidea.core.dao.CommonDao;
 import com.googlecode.genericdao.search.Search;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,8 +17,8 @@ import java.util.List;
  */
 @Service
 public class OperatorServiceImpl implements OperatorService {
-@Autowired
-private OperatorDao operatorDao;
+@DataAccess(entity = OperatorPo.class)
+private CommonDao<OperatorPo,Integer> operatorDao;
 private ModelMapper modelMapper = new ModelMapper();
     @Override
     public List<OperatorBo> findOperator(Search search) {

@@ -1,21 +1,25 @@
 package com.dsdl.eidea.base.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
+import com.dsdl.core.spring.annotation.DataAccess;
 import com.dsdl.eidea.base.dao.*;
-import com.dsdl.eidea.base.entity.bo.*;
+import com.dsdl.eidea.base.entity.bo.ModuleRoleBo;
+import com.dsdl.eidea.base.entity.bo.PrivilegeBo;
+import com.dsdl.eidea.base.entity.bo.RoleBo;
+import com.dsdl.eidea.base.entity.bo.RoleOrgaccessBo;
 import com.dsdl.eidea.base.entity.po.*;
+import com.dsdl.eidea.base.service.RoleService;
+import com.dsdl.eidea.core.dao.CommonDao;
+import com.googlecode.genericdao.search.ISearch;
+import com.googlecode.genericdao.search.Search;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.dsdl.eidea.base.service.RoleService;
-import com.googlecode.genericdao.search.ISearch;
-import com.googlecode.genericdao.search.Search;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class RoleServiceImpl implements RoleService {
@@ -25,8 +29,8 @@ public class RoleServiceImpl implements RoleService {
     private OrgDao orgDao;
     @Autowired
     private ModuleDao moduleDao;
-    @Autowired
-    private OperatorDao operatorDao;
+    @DataAccess(entity = OperatorPo.class)
+    private CommonDao<OperatorPo,Integer> operatorDao;
     @Autowired
     private PrivilegesDao privilegesDao;
     @Autowired

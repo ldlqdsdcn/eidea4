@@ -1,15 +1,17 @@
 package com.dsdl.eidea.base.service.impl;
 
+import com.dsdl.core.spring.annotation.DataAccess;
 import com.dsdl.eidea.base.dao.RoleDao;
 import com.dsdl.eidea.base.dao.UserDao;
-import com.dsdl.eidea.base.dao.UserRoleDao;
-import com.dsdl.eidea.base.dao.UserSessionDao;
 import com.dsdl.eidea.base.def.OperatorDef;
-import com.dsdl.eidea.base.entity.bo.*;
+import com.dsdl.eidea.base.entity.bo.UserBo;
+import com.dsdl.eidea.base.entity.bo.UserContent;
+import com.dsdl.eidea.base.entity.bo.UserRoleBo;
+import com.dsdl.eidea.base.entity.bo.UserSessionBo;
 import com.dsdl.eidea.base.entity.po.*;
 import com.dsdl.eidea.base.service.UserService;
 import com.dsdl.eidea.base.util.JwtUtil;
-import com.dsdl.eidea.util.MD5;
+import com.dsdl.eidea.core.dao.CommonDao;
 import com.googlecode.genericdao.search.Search;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -17,7 +19,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Bobo on 2016/12/17 14:02.
@@ -28,10 +33,10 @@ public class UserServiceImpl implements UserService {
     private UserDao userDao;
     @Autowired
     private RoleDao roleDao;
-    @Autowired
-    private UserRoleDao userRoleDao;
-    @Autowired
-    private UserSessionDao userSessionDao;
+    @DataAccess(entity = UserRolePo.class)
+    private CommonDao userRoleDao;
+    @DataAccess(entity = UserSessionPo.class)
+    private CommonDao<UserSessionPo,Integer> userSessionDao;
 
     private ModelMapper modelMapper = new ModelMapper();
 

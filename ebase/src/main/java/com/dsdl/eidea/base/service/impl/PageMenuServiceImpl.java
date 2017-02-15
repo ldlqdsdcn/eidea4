@@ -3,10 +3,8 @@ package com.dsdl.eidea.base.service.impl;
 import com.dsdl.eidea.base.dao.PageMenuDao;
 import com.dsdl.eidea.base.dao.UserDao;
 import com.dsdl.eidea.base.def.ActivateDef;
-import com.dsdl.eidea.base.def.LeftMenuEnum;
 import com.dsdl.eidea.base.def.MenuTypeDef;
 import com.dsdl.eidea.base.def.OperatorDef;
-import com.dsdl.eidea.base.entity.bo.ModuleRoleBo;
 import com.dsdl.eidea.base.entity.bo.PageMenuBo;
 import com.dsdl.eidea.base.entity.bo.PageMenuTrlBo;
 import com.dsdl.eidea.base.entity.po.*;
@@ -17,7 +15,6 @@ import com.dsdl.eidea.util.StringUtil;
 import com.googlecode.genericdao.search.Search;
 import org.apache.log4j.Logger;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.PropertyMap;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -126,7 +123,7 @@ public class PageMenuServiceImpl implements PageMenuService {
     @Override
     public List<PageMenuBo> getListMenuType() {
         Search search = new Search();
-        search.addFilterIn("menuType", LeftMenuEnum.MESSAGE_MENUTYPE_ONE.getCode());
+        search.addFilterIn("menuType", MenuTypeDef.FOLDER.getKey());
         List<PageMenuPo> pageMenuPoList = pageMenuDao.search(search);
         List<PageMenuBo> PageMenuBoList = modelMapper.map(pageMenuPoList, new TypeToken<List<PageMenuBo>>() {
         }.getType());

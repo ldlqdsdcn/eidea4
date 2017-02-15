@@ -27,11 +27,11 @@ public class BaseDaoHibernate<T, ID extends Serializable> extends GenericDAOImpl
     }
 
     public BaseDaoHibernate() {
-
+        this(true);
     }
-
-    public BaseDaoHibernate(Class<T> poClass) {
-        this.persistentClass = poClass;
+    public BaseDaoHibernate(boolean init)
+    {
+        super(init);
     }
 
     /**

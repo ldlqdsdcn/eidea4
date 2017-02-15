@@ -1,7 +1,7 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 <%@ include file="/inc/taglib.jsp"%>
-<%@ page import="java.util.Properties" %>
 <%@ page import="java.text.DecimalFormat" %>
+<%@ page import="java.util.Properties" %>
 <html>
 <head>
 

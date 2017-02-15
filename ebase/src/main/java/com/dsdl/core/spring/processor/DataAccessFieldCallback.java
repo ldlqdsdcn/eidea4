@@ -1,16 +1,16 @@
 package com.dsdl.core.spring.processor;
 
 import com.dsdl.core.spring.annotation.DataAccess;
+import com.dsdl.eidea.core.dao.CommonDao;
+import com.dsdl.eidea.core.dao.aop.PersistentClassInjection;
+import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.util.ReflectionUtils;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
+import java.lang.reflect.*;
 
 /**
  * Created by 刘大磊 on 2017/2/15 17:12.
@@ -43,7 +43,6 @@ public class DataAccessFieldCallback implements ReflectionUtils.FieldCallback {
         }
         ReflectionUtils.makeAccessible(field);
         Type fieldGenericType = field.getGenericType();
-        // In this example, get actual "GenericDAO' type.
         Class<?> generic = field.getType();
         Class<?> classValue = field.getDeclaredAnnotation(DataAccess.class).entity();
         if (genericTypeIsValid(classValue, fieldGenericType)) {
@@ -69,28 +68,8 @@ public class DataAccessFieldCallback implements ReflectionUtils.FieldCallback {
 
     public Object getBeanInstance(
             String beanName, Class<?> genericClass, Class<?> paramClass) {
-        Object daoInstance = null;
-        if (!configurableBeanFactory.containsBean(beanName)) {
-            logger.info("Creating new DataAccess bean named '{}'.", beanName);
-
-            Object toRegister = null;
-            try {
-                Constructor<?> ctr = genericClass.getConstructor(Class.class);
-                toRegister = ctr.newInstance(paramClass);
-            } catch (Exception e) {
-                logger.error(ERROR_CREATE_INSTANCE, genericClass.getTypeName(), e);
-                throw new RuntimeException(e);
-            }
-
-            daoInstance = configurableBeanFactory.initializeBean(toRegister, beanName);
-            configurableBeanFactory.autowireBeanProperties(daoInstance, AUTOWIRE_MODE, true);
-            configurableBeanFactory.registerSingleton(beanName, daoInstance);
-            logger.info("Bean named '{}' created successfully.", beanName);
-        } else {
-            daoInstance = configurableBeanFactory.getBean(beanName);
-            logger.info(
-                    "Bean named '{}' already exists used as current bean reference.", beanName);
-        }
-        return daoInstance;
+        PersistentClassInjection persistentClassInjection =configurableBeanFactory.getBean(PersistentClassInjection.class);
+        persistentClassInjection.setPersistentClass(paramClass);
+        return persistentClassInjection;
     }
 }

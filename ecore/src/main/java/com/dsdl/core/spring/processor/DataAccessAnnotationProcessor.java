@@ -35,7 +35,6 @@ public class DataAccessAnnotationProcessor implements BeanPostProcessor {
 
     protected void scanDataAccessAnnotation(Object bean, String beanName) {
         this.configureFieldInjection(bean);
-        System.out.println("beanName="+beanName);
     }
 
 

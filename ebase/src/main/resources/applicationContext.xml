@@ -62,5 +62,4 @@
     <import resource="classpath:spring/spring-mybatis.xml"/>
     <!--hibernate 设置-->
     <import resource="classpath:spring/spring-hibernate.xml"/>
-   <import resource="classpath:activiti-cfg.xml"/>
 </beans>

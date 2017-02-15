@@ -61,26 +61,6 @@
         <version>0.4.1</version>
     </dependency>
 
-    <!-- activiti依赖 -->
-
-
-    <!-- https://mvnrepository.com/artifact/org.activiti/activiti-engine -->
-    <dependency>
-        <groupId>org.activiti</groupId>
-        <artifactId>activiti-engine</artifactId>
-        <version>5.19.0</version>
-    </dependency>
-
-    <!-- activiti 与 Spring 集成 -->
-
-    <dependency>
-        <groupId>org.activiti</groupId>
-        <artifactId>activiti-spring</artifactId>
-        <version>5.19.0</version>
-    </dependency>
-
-
-    <!--mybatis paging end-->
     <dependency>
         <groupId>com.dsdl</groupId>
         <artifactId>eutil</artifactId>

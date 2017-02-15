@@ -1,0 +1,28 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <!--注：MyBatis不支持事务-->
+    <!--
+<bean id="sqlMapClient"
+    class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+    <property name="configLocation">
+        <value>classpath:SqlMapConfig.xml</value>
+    </property>
+    <property name="dataSource">
+        <ref bean="dataSource" />
+    </property>
+</bean>
+ -->
+    <!-- Session工厂 -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSourceCore"/>
+        <!-- mybatis配置文件 -->
+        <property name="configLocation" value="classpath:mybatis-config.xml"/>
+        <property name="mapperLocations" value="classpath*:com/dsdl/**/*Mapper.xml"/>
+    </bean>
+
+    <!-- 配置SqlSessionTemplate -->
+    <bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate" scope="prototype">
+        <constructor-arg index="0" ref="sqlSessionFactory"/>
+    </bean>
+</beans>

@@ -1,0 +1,73 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+    <!-- cacheManager, 指定ehcache.xml的位置 -->
+    <bean id="cacheManagerEhcache" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+        <property name="configLocation">
+            <value>classpath:ehcache.xml</value>
+        </property>
+        <!-- 由于hibernate也使用了Ehcache, 保证双方都使用同一个缓存管理器 -->
+        <property name="shared" value="true"/>
+    </bean>
+    <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
+        <property name="cacheManager" ref="cacheManagerEhcache"/>
+        <property name="transactionAware" value="true"/>
+    </bean>
+    <!--  配置hibernate SessionFactory-->
+    <bean id="sessionFactory"
+          class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSourceCore" />
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">${jdbc.cargo.connection.dialect}</prop>
+                <!--<prop key="hibernate.hbm2ddl.auto">update</prop>-->
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hiberante.format_sql">true</prop>
+                <prop key="hibernate.autoReconnect">true</prop>
+                <!-- Enable Hibernate's automatic session context management      -->
+                <prop key="current_session_context_class">thread</prop>
+                <!-- Disable the second-level cache -->
+                <!--<property name="cache.provider_class">org.hibernate.cache.internal.NoCacheProvider</property>
+                 -->
+                <!--&lt;!&ndash; 配置二级缓存&ndash;&gt;-->
+               <prop key="hibernate.cache.use_second_level_cache">${hibernate.cache}</prop>
+                <!--&lt;!&ndash; 开启查询缓存&ndash;&gt;-->
+               <prop key="hibernate.cache.use_query_cache">${hibernate.query.cache}</prop>
+                <prop key="hibernate.cache.provider_class">org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory</prop>
+                <prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</prop>
+                <!--useful for debugging-->
+                <prop key="hibernate.generate_statistics">${hibernate.statistics}</prop>
+            </props>
+        </property>
+        <property name="packagesToScan">
+            <list>
+                <value>*.**.entity.po</value>
+            </list>
+        </property>
+    </bean>
+<!--    <bean id="hibernateTemplate" class="org.springframework.orm.hibernate5.HibernateTemplate">
+        <property name="sessionFactory" ref="sessionFactory"></property>
+    </bean>-->
+    <!-- 配置事务管理器 -->
+    <bean name="hibernateTransactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"></property>
+    </bean>
+    <aop:config>
+        <aop:advisor advice-ref="txAdvice" pointcut="execution(* *..service.impl.*ServiceImpl.*(..))"/>
+    </aop:config>
+
+    <tx:advice id="txAdvice" transaction-manager="hibernateTransactionManager">
+        <tx:attributes>
+            <tx:method name="save*"  propagation="REQUIRED"  />
+            <tx:method name="remove*"    propagation="REQUIRED" />
+            <tx:method name="executeUpdate*"  propagation="REQUIRED" />
+            <tx:method name="delete*"   propagation="REQUIRED" />
+            <tx:method name="get*" propagation="SUPPORTS" read-only="true"/>
+            <tx:method name="find*" propagation="SUPPORTS" read-only="true"/>
+        </tx:attributes>
+    </tx:advice>
+    </beans>

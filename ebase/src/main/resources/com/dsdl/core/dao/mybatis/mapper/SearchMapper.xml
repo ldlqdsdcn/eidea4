@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.delmar.core.mybatis.sql.SearchMapper" >
+    <resultMap id="commonListResult" type="com.dsdl.eidea.core.entity.bo.CommonSearchResult">
+        <result column="c_key" property="key" jdbcType="VARCHAR" />
+        <result column="c_label" property="label" jdbcType="VARCHAR" />
+    </resultMap>
+    <select id="selectCommonList" parameterType="com.dsdl.eidea.core.entity.bo.CommonSearchParam" resultMap="commonListResult">
+        select ${keyValue} as c_key, ${labelValue} as c_label from ${tableName}
+        <where>
+            <if test="conditions!=null"> and ${conditions} </if>
+        </where>
+    </select>
+</mapper>

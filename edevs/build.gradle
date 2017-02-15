@@ -1,0 +1,9 @@
+
+description = ''
+dependencies {
+  compile project(':ebase')
+    compile group: 'org.freemarker', name: 'freemarker', version:'2.3.22'
+    compile group: 'org.apache.poi', name: 'poi', version:'3.8'
+    compile group: 'org.apache.poi', name: 'poi-ooxml', version:'3.8'
+  compile project(':eutil')
+}

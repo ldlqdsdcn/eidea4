@@ -1,0 +1,66 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:task="http://www.springframework.org/schema/task" xmlns:cache="http://www.springframework.org/schema/cache"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		 http://www.springframework.org/schema/context  
+               http://www.springframework.org/schema/context/spring-context-4.0.xsd
+               http://www.springframework.org/schema/task  
+               http://www.springframework.org/schema/task/spring-task-4.0.xsd http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
+    <!-- aop配置 日志 -->
+    <aop:aspectj-autoproxy/>
+    <!-- 采用注释的方式配置bean -->
+    <context:annotation-config/>
+    <task:annotation-driven/>
+    <!-- 配置要扫描的包 -->
+    <context:component-scan base-package="com.dsdl.core.spring.processor"/>
+    <context:component-scan base-package="com.dsdl.eidea.**.dao"/>
+    <context:component-scan base-package="com.dsdl.eidea.core.init"/>
+    <context:component-scan base-package="com.dsdl.eidea.**.service"/>
+    <context:component-scan base-package="com.dsdl.eidea.core.web.converter"/>
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:database.properties</value>
+                <value>classpath:mail.properties</value>
+                <value>classpath:redis.properties</value>
+            </list>
+        </property>
+    </bean>
+    <!-- 启用缓存注解功能，这个是必须的，否则注解不会生效，另外，该注解一定要声明在spring主配置文件中才会生效 -->
+    <cache:annotation-driven cache-manager="cacheManager" />
+
+    <!--<bean id="transactionManager"-->
+    <!--class="org.springframework.jdbc.datasource.DataSourceTransactionManager">-->
+    <!--<property name="dataSource" ref="dataSourceCore" />-->
+    <!--</bean>-->
+    <!--<tx:annotation-driven/>-->
+    <!-- 注解方式配置事物 -->
+    <!--<tx:annotation-driven transaction-manager="hibernateTransactionManager" />-->
+    <!--
+        <aop:config>
+            <aop:pointcut id="serviceSaveMethodLog" expression="execution(* com.powere2e.service.*Service*.save*(..))"/>
+            <aop:pointcut id="serviceUpdateMethodLog" expression="execution(* com.powere2e.service.*Service*.update*(..))"/>
+            <aop:pointcut id="serviceRemoveMethodLog" expression="execution(* com.powere2e.service.*Service*.remove*(..))"/>
+            <aop:advisor pointcut-ref="serviceSaveMethodLog" advice-ref="systemLog"/>
+            <aop:advisor pointcut-ref="serviceRemoveMethodLog" advice-ref="systemLog"/>
+            <aop:advisor pointcut-ref="serviceUpdateMethodLog" advice-ref="systemLog"/>
+            <bean id="systemLog" class="com.powere2e.log.LogFactory"></bean>
+        </aop:config> -->
+    <!-- 系统日志 -->
+    <!--datasource-->
+    <import resource="classpath:spring/spring-database.xml"/>
+    <!--redis-->
+    <import resource="classpath:spring/spring-redis.xml"/>
+    <!--java mail-->
+    <import resource="classpath:spring/spring-mail.xml"/>
+    <!--mybatis相关设置-->
+    <import resource="classpath:spring/spring-mybatis.xml"/>
+    <!--hibernate 设置-->
+    <import resource="classpath:spring/spring-hibernate.xml"/>
+   <import resource="classpath:activiti-cfg.xml"/>
+</beans>

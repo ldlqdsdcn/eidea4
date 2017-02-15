@@ -1,0 +1,6 @@
+
+description = ''
+dependencies {
+  compile project(':ebase')
+  compile project(':eutil')
+}

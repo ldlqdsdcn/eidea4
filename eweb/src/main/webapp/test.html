@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript">
+        function  openNativeExe() {
+            a=new   ActiveXObject("WScript.shell");
+           // a.run("e:\\qq.bat");
+            //a.run("start E:/'Program Files (x86)'/Tencent/QQ/Bin/QQScLauncher.exe");
+            //a.run("file:///E:/Program%20Files%20/Tencent/qq/bin/qq.exe");
+            //a.run("E%3A%5CProgram+Files+%28x86%29%5CTencent%5CQQ%5CBin/QQScLauncher.exe");
+            //a.run("start \"E:\\Program Files (x86)\\Tencent\\QQ\\Bin\\QQScLauncher.exe\"");
+            //a.run("D:\java\eclipse\java-neon2\eclipse\eclipse.exe");
+            //a.run("E:/Program Files (x86)/Tencent/QQ/Bin/QQScLauncher.exe");
+            a.run('"E:/Program Files (x86)/Tencent/QQ/Bin/QQScLauncher.exe"');
+        }
+
+
+    </script>
+</head>
+<body>
+    <button id="openNativeExe" onclick="openNativeExe()">call native</button>
+</body>
+</html>

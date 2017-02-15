@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>eidea</artifactId>
+        <groupId>com.dsdl</groupId>
+        <version>1.0</version>
+    </parent>
+    <packaging>jar</packaging>
+    <modelVersion>4.0.0</modelVersion>
+    <description>
+        该模块主要是一些第三方类库的插件，还有公共的方法代码
+    </description>
+    <artifactId>ecore</artifactId>
+    <dependencies>
+        <!--mybatis paging begin-->
+        <dependency>
+            <groupId>com.dsdl</groupId>
+            <artifactId>eutil</artifactId>
+            <version>1.0</version>
+        </dependency>
+    </dependencies>
+
+</project>

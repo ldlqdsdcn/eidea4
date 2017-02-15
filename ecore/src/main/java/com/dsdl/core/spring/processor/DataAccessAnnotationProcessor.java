@@ -44,5 +44,6 @@ public class DataAccessAnnotationProcessor implements BeanPostProcessor {
         ReflectionUtils.FieldCallback fieldCallback =
                 new DataAccessFieldCallback(configurableBeanFactory, bean);
         ReflectionUtils.doWithFields(managedBeanClass, fieldCallback);
+
     }
 }

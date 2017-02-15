@@ -1,7 +1,5 @@
 package com.dsdl.eidea.core.dao;
 
-import com.googlecode.genericdao.dao.hibernate.GenericDAO;
-
 import java.io.Serializable;
 
 /**

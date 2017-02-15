@@ -43,7 +43,6 @@ public class DataAccessFieldCallback implements ReflectionUtils.FieldCallback {
         }
         ReflectionUtils.makeAccessible(field);
         Type fieldGenericType = field.getGenericType();
-        // In this example, get actual "GenericDAO' type.
         Class<?> generic = field.getType();
         Class<?> classValue = field.getDeclaredAnnotation(DataAccess.class).entity();
         if (genericTypeIsValid(classValue, fieldGenericType)) {

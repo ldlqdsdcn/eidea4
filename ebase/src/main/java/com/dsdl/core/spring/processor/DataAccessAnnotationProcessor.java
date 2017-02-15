@@ -23,7 +23,7 @@ public class DataAccessAnnotationProcessor implements BeanPostProcessor {
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName)
             throws BeansException {
-        this.scanDataAccessAnnotation(bean, beanName);
+        this.scanDataAccessAnnotation(bean);
         return bean;
     }
 
@@ -33,7 +33,7 @@ public class DataAccessAnnotationProcessor implements BeanPostProcessor {
         return bean;
     }
 
-    protected void scanDataAccessAnnotation(Object bean, String beanName) {
+    protected void scanDataAccessAnnotation(Object bean) {
         this.configureFieldInjection(bean);
     }
 

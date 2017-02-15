@@ -36,8 +36,16 @@ import java.util.List;
 @SuppressWarnings("unchecked")
 public class GenericDAOImpl<T, ID extends Serializable> extends
         HibernateBaseDAO implements GenericDAO<T, ID> {
+	public GenericDAOImpl(boolean init)
+	{
+		if(init)
+		{
+			persistentClass = (Class<T>) DAOUtil.getTypeArguments(GenericDAOImpl.class, this.getClass()).get(0);
+		}
 
-	protected Class<T> persistentClass = (Class<T>) DAOUtil.getTypeArguments(GenericDAOImpl.class, this.getClass()).get(0);
+	}
+
+	protected Class<T> persistentClass;
 
 	public int count(ISearch search) {
 		if (search == null)
@@ -129,7 +137,5 @@ public class GenericDAOImpl<T, ID extends Serializable> extends
 		return _getFilterFromExample(example, options);
 	}
 
-	public void setPersistentClass(Class<T> persistentClass) {
-		this.persistentClass = persistentClass;
-	}
+
 }

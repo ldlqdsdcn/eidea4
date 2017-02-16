@@ -1,7 +1,6 @@
 package com.dsdl.eidea.base.service.impl;
 
 import com.dsdl.core.spring.annotation.DataAccess;
-import com.dsdl.eidea.base.dao.*;
 import com.dsdl.eidea.base.entity.bo.ModuleRoleBo;
 import com.dsdl.eidea.base.entity.bo.PrivilegeBo;
 import com.dsdl.eidea.base.entity.bo.RoleBo;
@@ -14,7 +13,6 @@ import com.googlecode.genericdao.search.Search;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.modelmapper.TypeToken;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

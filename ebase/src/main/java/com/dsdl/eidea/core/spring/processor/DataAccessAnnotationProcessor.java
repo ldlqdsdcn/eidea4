@@ -1,4 +1,4 @@
-package com.dsdl.core.spring.processor;
+package com.dsdl.eidea.core.spring.processor;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;

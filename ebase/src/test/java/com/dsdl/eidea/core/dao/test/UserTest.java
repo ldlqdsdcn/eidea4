@@ -1,14 +1,12 @@
 package com.dsdl.eidea.core.dao.test;
 
-import com.dsdl.core.spring.annotation.DataAccess;
+import com.dsdl.eidea.core.spring.annotation.DataAccess;
 import com.dsdl.eidea.base.entity.po.UserPo;
-import com.dsdl.eidea.core.dao.BaseDao;
 import com.dsdl.eidea.core.dao.hibernate.BaseDaoHibernate;
 import com.dsdl.eidea.core.entity.po.LabelPo;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.asm.Label;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;

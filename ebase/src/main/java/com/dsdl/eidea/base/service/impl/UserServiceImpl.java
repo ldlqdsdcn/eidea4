@@ -1,6 +1,6 @@
 package com.dsdl.eidea.base.service.impl;
 
-import com.dsdl.core.spring.annotation.DataAccess;
+import com.dsdl.eidea.core.spring.annotation.DataAccess;
 import com.dsdl.eidea.base.def.OperatorDef;
 import com.dsdl.eidea.base.entity.bo.UserBo;
 import com.dsdl.eidea.base.entity.bo.UserContent;

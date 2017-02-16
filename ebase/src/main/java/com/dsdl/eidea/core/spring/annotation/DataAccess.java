@@ -1,4 +1,6 @@
-package com.dsdl.core.spring.annotation;
+package com.dsdl.eidea.core.spring.annotation;
+
+import com.dsdl.eidea.core.dao.hibernate.CommonDaoHibernate;
 
 import java.lang.annotation.*;
 
@@ -12,4 +14,9 @@ import java.lang.annotation.*;
 @Documented
 public @interface DataAccess {
     Class<?> entity();
+    /**
+     * dao实现类
+     * @return
+     */
+    Class<?> instanceDaoClass() default CommonDaoHibernate.class;
 }

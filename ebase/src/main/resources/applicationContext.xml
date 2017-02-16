@@ -17,7 +17,7 @@
     <context:annotation-config/>
     <task:annotation-driven/>
     <!-- 配置要扫描的包 -->
-    <context:component-scan base-package="com.dsdl.core.spring.processor"/>
+    <context:component-scan base-package="com.dsdl.eidea.core.spring.processor"/>
     <context:component-scan base-package="com.dsdl.eidea.**.dao"/>
     <context:component-scan base-package="com.dsdl.eidea.core.init"/>
     <context:component-scan base-package="com.dsdl.eidea.**.service"/>

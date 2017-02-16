@@ -1,16 +1,18 @@
-package com.dsdl.core.spring.processor;
+package com.dsdl.eidea.core.spring.processor;
 
-import com.dsdl.core.spring.annotation.DataAccess;
 import com.dsdl.eidea.core.dao.CommonDao;
-import com.dsdl.eidea.core.dao.aop.PersistentClassInjection;
-import org.apache.commons.beanutils.BeanUtils;
+import com.dsdl.eidea.core.dao.hibernate.CommonDaoHibernate;
+import com.dsdl.eidea.core.spring.annotation.DataAccess;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.util.ReflectionUtils;
 
-import java.lang.reflect.*;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 
 /**
  * Created by 刘大磊 on 2017/2/15 17:12.
@@ -44,10 +46,13 @@ public class DataAccessFieldCallback implements ReflectionUtils.FieldCallback {
         ReflectionUtils.makeAccessible(field);
         Type fieldGenericType = field.getGenericType();
         Class<?> generic = field.getType();
-        Class<?> classValue = field.getDeclaredAnnotation(DataAccess.class).entity();
+        DataAccess dataAccess=field.getDeclaredAnnotation(DataAccess.class);
+        Class<?> classValue = dataAccess.entity();
+        Class<?> instanceDaoClass=dataAccess.instanceDaoClass();
         if (genericTypeIsValid(classValue, fieldGenericType,field.getName())) {
             String beanName = classValue.getSimpleName() + generic.getSimpleName();
-            Object beanInstance = getBeanInstance(beanName, generic, classValue);
+            logger.debug("init beanName="+beanName);
+            Object beanInstance = getBeanInstance(beanName, generic, classValue,field.getName(),instanceDaoClass);
             field.set(bean, beanInstance);
             } else {
             throw new IllegalArgumentException(ERROR_ENTITY_VALUE_NOT_SAME);
@@ -65,11 +70,41 @@ public class DataAccessFieldCallback implements ReflectionUtils.FieldCallback {
             throw new RuntimeException("@DataAccess 指定的属性没有设置泛型类 类："+bean.getClass().getName()+"属性:"+fieldName);
         }
     }
-
     public Object getBeanInstance(
-            String beanName, Class<?> genericClass, Class<?> paramClass) {
-        PersistentClassInjection persistentClassInjection =configurableBeanFactory.getBean(PersistentClassInjection.class);
-        persistentClassInjection.setPersistentClass(paramClass);
-        return persistentClassInjection;
+            String beanName, Class<?> genericClass, Class<?> paramClass,String fieldName,Class<?> instanceDaoClass) {
+        if(!genericClass.equals(CommonDao.class))
+        {
+            throw new RuntimeException("@DataAccess注入的字段，必须为："+CommonDao.class.getName()+"类型,类："+bean.getClass().getName()+"属性:"+fieldName);
+        }
+        Object daoInstance = null;
+        if (!configurableBeanFactory.containsBean(beanName)) {
+            logger.info("Creating new DataAccess bean named '{}'.", beanName);
+
+            Object toRegister = null;
+            if(instanceDaoClass==null)
+            {
+                toRegister=new CommonDaoHibernate(paramClass);
+            }
+            else
+            {
+                try {
+                    Constructor<?> ctr = instanceDaoClass.getConstructor(Class.class);
+                    toRegister = ctr.newInstance(paramClass);
+                } catch (Exception e) {
+                    logger.error(ERROR_CREATE_INSTANCE, genericClass.getTypeName(), e);
+                    throw new RuntimeException(e);
+                }
+            }
+
+            daoInstance = configurableBeanFactory.initializeBean(toRegister, beanName);
+            configurableBeanFactory.autowireBeanProperties(daoInstance, AUTOWIRE_MODE, true);
+            configurableBeanFactory.registerSingleton(beanName, daoInstance);
+            logger.info("Bean named '{}' created successfully.", beanName);
+        } else {
+            daoInstance = configurableBeanFactory.getBean(beanName);
+            logger.info(
+                    "Bean named '{}' already exists used as current bean reference.", beanName);
+        }
+        return daoInstance;
     }
 }

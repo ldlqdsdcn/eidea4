@@ -1,6 +1,6 @@
 package com.dsdl.eidea.core.dao.test;
 
-import com.dsdl.core.spring.annotation.DataAccess;
+import com.dsdl.eidea.core.spring.annotation.DataAccess;
 import com.dsdl.eidea.base.entity.po.UserPo;
 import com.dsdl.eidea.core.dao.CommonDao;
 import com.googlecode.genericdao.search.Search;

@@ -12,13 +12,17 @@ import java.io.Serializable;
 /**
  * Created by 刘大磊 on 2017/2/15.
  */
-@Repository
-@Scope(BeanDefinition.SCOPE_PROTOTYPE)
 @Slf4j
 public class CommonDaoHibernate<T, ID extends Serializable> extends BaseDaoHibernate<T, ID> implements CommonDao<T, ID>,PersistentClassInjection<T> {
     private static int createCount=0;
     public CommonDaoHibernate() {
         super(false);
+        createCount++;
+        log.debug("--------------------->createCount="+createCount);
+    }
+    public CommonDaoHibernate(Class<T> persistentClass) {
+        super(false);
+        this.persistentClass = persistentClass;
         createCount++;
         log.debug("--------------------->createCount="+createCount);
     }

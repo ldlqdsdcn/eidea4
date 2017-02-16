@@ -1,7 +1,7 @@
 package com.dsdl.eidea.base.service.impl;
 
 
-import com.dsdl.core.spring.annotation.DataAccess;
+import com.dsdl.eidea.core.spring.annotation.DataAccess;
 import com.dsdl.eidea.base.entity.bo.ModuleBo;
 import com.dsdl.eidea.base.entity.bo.ModuleDirectoryBo;
 import com.dsdl.eidea.base.entity.bo.ModuleMenuBo;

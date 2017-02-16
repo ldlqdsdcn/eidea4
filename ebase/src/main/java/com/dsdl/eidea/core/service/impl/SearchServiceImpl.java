@@ -1,6 +1,6 @@
 package com.dsdl.eidea.core.service.impl;
 
-import com.dsdl.core.spring.annotation.DataAccess;
+import com.dsdl.eidea.core.spring.annotation.DataAccess;
 import com.dsdl.eidea.core.dao.CommonDao;
 import com.dsdl.eidea.core.dao.SearchColumnDao;
 import com.dsdl.eidea.core.dao.SearchDao;

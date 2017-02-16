@@ -1,6 +1,6 @@
 package com.dsdl.eidea.base.service.impl;
 
-import com.dsdl.core.spring.annotation.DataAccess;
+import com.dsdl.eidea.core.spring.annotation.DataAccess;
 import com.dsdl.eidea.base.entity.bo.ChangelogBo;
 import com.dsdl.eidea.base.entity.po.ChangelogPo;
 import com.dsdl.eidea.base.entity.po.UserPo;

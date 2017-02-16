@@ -5,6 +5,8 @@ import java.util.Date;
 
 import javax.persistence.*;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.dsdl.eidea.base.entity.po.UserPo;
@@ -14,9 +16,11 @@ import lombok.Data;
 /**
  * CoreUserSession entity. @author MyEclipse Persistence Tools
  */
-@Data
+
 @Entity
 @Table(name = "sys_user_session", catalog = "e_idea")
+@Getter
+@Setter
 public class UserSessionPo implements java.io.Serializable {
 
 	// Fields

@@ -1,14 +1,20 @@
 package com.dsdl.eidea.core.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
+import com.dsdl.core.spring.annotation.DataAccess;
 import com.dsdl.eidea.base.def.ActivateDef;
-import com.dsdl.eidea.core.dao.LanguageDao;
+import com.dsdl.eidea.base.entity.po.RolePo;
+import com.dsdl.eidea.core.dao.CommonDao;
+import com.dsdl.eidea.core.entity.bo.LabelBo;
+import com.dsdl.eidea.core.entity.bo.LabelTrlBo;
+import com.dsdl.eidea.core.entity.bo.LanguageBo;
+import com.dsdl.eidea.core.entity.po.LabelPo;
 import com.dsdl.eidea.core.entity.po.LabelTrlPo;
 import com.dsdl.eidea.core.entity.po.LanguagePo;
 import com.dsdl.eidea.core.i18n.DbResourceBundle;
+import com.dsdl.eidea.core.service.LabelService;
+import com.dsdl.eidea.core.service.LanguageService;
+import com.googlecode.genericdao.search.ISearch;
+import com.googlecode.genericdao.search.Search;
 import org.apache.log4j.Logger;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
@@ -16,27 +22,20 @@ import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.dsdl.eidea.base.entity.po.RolePo;
-import com.dsdl.eidea.core.dao.LabelDao;
-import com.dsdl.eidea.core.entity.bo.LabelBo;
-import com.dsdl.eidea.core.entity.bo.LabelTrlBo;
-import com.dsdl.eidea.core.entity.bo.LanguageBo;
-import com.dsdl.eidea.core.entity.po.LabelPo;
-import com.dsdl.eidea.core.service.LabelService;
-import com.dsdl.eidea.core.service.LanguageService;
-import com.googlecode.genericdao.search.ISearch;
-import com.googlecode.genericdao.search.Search;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class LabelServiceImpl implements LabelService {
     private static final Logger logger = Logger.getLogger(LabelServiceImpl.class);
-    @Autowired
-    private LabelDao labelDao;
+    @DataAccess(entity = LabelPo.class)
+    private CommonDao<LabelPo, String> labelDao;
     private final ModelMapper modelMapper = new ModelMapper();
     @Autowired
     private LanguageService languageService;
-    @Autowired
-    private LanguageDao languageDao;
+    @DataAccess(entity = LanguagePo.class)
+    private CommonDao<LanguagePo, String> languageDao;
 
     public LabelServiceImpl() {
         modelMapper.addMappings(new PropertyMap<LabelTrlPo, LabelTrlBo>() {

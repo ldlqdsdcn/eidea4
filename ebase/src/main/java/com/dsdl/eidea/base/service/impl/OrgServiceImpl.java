@@ -1,15 +1,15 @@
 package com.dsdl.eidea.base.service.impl;
 
-import com.dsdl.eidea.base.dao.ClientDao;
-import com.dsdl.eidea.base.dao.OrgDao;
+import com.dsdl.core.spring.annotation.DataAccess;
 import com.dsdl.eidea.base.entity.bo.ClientBo;
 import com.dsdl.eidea.base.entity.bo.OrgBo;
 import com.dsdl.eidea.base.entity.po.ClientPo;
 import com.dsdl.eidea.base.entity.po.OrgPo;
 import com.dsdl.eidea.base.service.OrgService;
+import com.dsdl.eidea.core.dao.CommonDao;
 import com.googlecode.genericdao.search.Search;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,12 +19,13 @@ import java.util.stream.Collectors;
  * Created by 刘大磊 on 2016/12/12 17:38.
  */
 @Service
+@Slf4j
 public class OrgServiceImpl implements OrgService {
     private ModelMapper modelMapper = new ModelMapper();
-    @Autowired
-    private OrgDao orgDao;
-    @Autowired
-    private ClientDao clientDao;
+    @DataAccess(entity = OrgPo.class)
+    private CommonDao<OrgPo,Integer> orgDao;
+    @DataAccess(entity = ClientPo.class)
+    private CommonDao<ClientPo,Integer> clientDao;
 
     public List<OrgBo> findOrgList(Search search) {
         List<OrgPo> orgPoList = orgDao.search(search);
@@ -45,6 +46,7 @@ public class OrgServiceImpl implements OrgService {
     @Override
     public OrgBo getOrgBo(Integer id) {
         OrgPo orgPo = orgDao.find(id);
+        log.warn("orgPo.getClass="+orgPo.getClass().getName());
         ClientBo clientBo = modelMapper.map(orgPo.getSysClient(), ClientBo.class);
         OrgBo orgBo = modelMapper.map(orgPo, OrgBo.class);
         orgBo.setClient(clientBo);

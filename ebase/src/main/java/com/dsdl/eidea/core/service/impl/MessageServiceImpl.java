@@ -1,10 +1,14 @@
 package com.dsdl.eidea.core.service.impl;
 
+import com.dsdl.core.spring.annotation.DataAccess;
 import com.dsdl.eidea.base.def.ActivateDef;
-import com.dsdl.eidea.core.dao.LabelDao;
-import com.dsdl.eidea.core.dao.LanguageDao;
+import com.dsdl.eidea.core.dao.CommonDao;
 import com.dsdl.eidea.core.dao.MessageDao;
-import com.dsdl.eidea.core.entity.bo.*;
+import com.dsdl.eidea.core.entity.bo.LanguageBo;
+import com.dsdl.eidea.core.entity.bo.MessageBo;
+import com.dsdl.eidea.core.entity.bo.MessageTrlBo;
+import com.dsdl.eidea.core.entity.bo.MsgBo;
+import com.dsdl.eidea.core.entity.po.LabelPo;
 import com.dsdl.eidea.core.entity.po.LanguagePo;
 import com.dsdl.eidea.core.entity.po.MessagePo;
 import com.dsdl.eidea.core.entity.po.MessageTrlPo;
@@ -13,9 +17,12 @@ import com.dsdl.eidea.core.i18n.DbResourceBundle;
 import com.dsdl.eidea.core.service.LanguageService;
 import com.dsdl.eidea.core.service.MessageService;
 import com.googlecode.genericdao.search.Search;
+import org.apache.log4j.Logger;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.modelmapper.TypeToken;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,19 +30,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 @Service
 public class MessageServiceImpl implements MessageService {
     private static final Logger logger = Logger.getLogger(MessageServiceImpl.class);
-    @Autowired
-    private LabelDao labelDao;
+    @DataAccess(entity = LabelPo.class)
+    private CommonDao<LabelPo,String> labelDao;
     @Autowired
     private MessageDao messageDao;
-    @Autowired
-    private LanguageDao languageDao;
+    @DataAccess(entity = LanguagePo.class)
+    private CommonDao<LanguagePo,String> languageDao;
     @Autowired
     private LanguageService languageService;
 

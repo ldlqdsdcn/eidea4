@@ -45,16 +45,16 @@ public class DataAccessFieldCallback implements ReflectionUtils.FieldCallback {
         Type fieldGenericType = field.getGenericType();
         Class<?> generic = field.getType();
         Class<?> classValue = field.getDeclaredAnnotation(DataAccess.class).entity();
-        if (genericTypeIsValid(classValue, fieldGenericType)) {
+        if (genericTypeIsValid(classValue, fieldGenericType,field.getName())) {
             String beanName = classValue.getSimpleName() + generic.getSimpleName();
             Object beanInstance = getBeanInstance(beanName, generic, classValue);
             field.set(bean, beanInstance);
-        } else {
+            } else {
             throw new IllegalArgumentException(ERROR_ENTITY_VALUE_NOT_SAME);
         }
     }
 
-    public boolean genericTypeIsValid(Class<?> clazz, Type field) {
+    public boolean genericTypeIsValid(Class<?> clazz, Type field,String fieldName) {
         if (field instanceof ParameterizedType) {
             ParameterizedType parameterizedType = (ParameterizedType) field;
             Type type = parameterizedType.getActualTypeArguments()[0];
@@ -62,7 +62,7 @@ public class DataAccessFieldCallback implements ReflectionUtils.FieldCallback {
             return type.equals(clazz);
         } else {
             logger.warn(WARN_NON_GENERIC_VALUE);
-            return true;
+            throw new RuntimeException("@DataAccess 指定的属性没有设置泛型类 类："+bean.getClass().getName()+"属性:"+fieldName);
         }
     }
 

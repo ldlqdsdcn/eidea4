@@ -15,12 +15,16 @@ import java.util.List;
  */
 public interface SearchService {
     List<SearchBo> findList(ISearch search);
+
     SearchBo getSearchBo(Integer id);
+
     SearchBo saveSearchBo(SearchBo searchBo);
+
     void deleteSearches(Integer[] ids);
 
     /**
      * 根据唯一标识符获取uri
+     *
      * @param uri
      * @return
      */
@@ -28,6 +32,7 @@ public interface SearchService {
 
     /**
      * 获取查询列表
+     *
      * @param columnId
      * @return
      */
@@ -35,5 +40,5 @@ public interface SearchService {
 
     int[] getRelOpersForOperStr(String operStr);
 
-    Search getSearchParam( List<SearchColumnDto> searchColumnDtoList);
+    Search getSearchParam(List<SearchColumnDto> searchColumnDtoList);
 }

@@ -23,20 +23,20 @@ import java.util.stream.Collectors;
 
 @Service
 public class RoleServiceImpl implements RoleService {
-    @Autowired
-    private RoleDao roleDao;
-    @Autowired
-    private OrgDao orgDao;
-    @Autowired
-    private ModuleDao moduleDao;
+    @DataAccess(entity = RolePo.class)
+    private CommonDao<RolePo,Integer>  roleDao;
+    @DataAccess(entity = OrgPo.class)
+    private CommonDao<OrgPo,Integer> orgDao;
+    @DataAccess(entity = ModulePo.class)
+    private CommonDao<ModulePo,Integer> moduleDao;
     @DataAccess(entity = OperatorPo.class)
     private CommonDao<OperatorPo,Integer> operatorDao;
-    @Autowired
-    private PrivilegesDao privilegesDao;
-    @Autowired
-    private ModuleRoleDao moduleRoleDao;
-    @Autowired
-    private RoleOrgaccessDao roleOrgaccessDao;
+    @DataAccess(entity = PrivilegesPo.class)
+    private CommonDao<PrivilegesPo,Integer> privilegesDao;
+    @DataAccess(entity = ModuleRolePo.class)
+    private CommonDao<ModuleRolePo,Integer> moduleRoleDao;
+    @DataAccess(entity = RoleOrgaccessPo.class)
+    private CommonDao<RoleOrgaccessPo,Integer> roleOrgaccessDao;
 
     private final ModelMapper modelMapper = new ModelMapper();
 

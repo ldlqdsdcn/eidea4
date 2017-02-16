@@ -1,7 +1,6 @@
 package com.dsdl.eidea.base.service.impl;
 
-import com.dsdl.eidea.base.dao.PageMenuDao;
-import com.dsdl.eidea.base.dao.UserDao;
+import com.dsdl.core.spring.annotation.DataAccess;
 import com.dsdl.eidea.base.def.ActivateDef;
 import com.dsdl.eidea.base.def.MenuTypeDef;
 import com.dsdl.eidea.base.def.OperatorDef;
@@ -9,6 +8,7 @@ import com.dsdl.eidea.base.entity.bo.PageMenuBo;
 import com.dsdl.eidea.base.entity.bo.PageMenuTrlBo;
 import com.dsdl.eidea.base.entity.po.*;
 import com.dsdl.eidea.base.service.PageMenuService;
+import com.dsdl.eidea.core.dao.CommonDao;
 import com.dsdl.eidea.core.entity.bo.LanguageBo;
 import com.dsdl.eidea.core.service.LanguageService;
 import com.dsdl.eidea.util.StringUtil;
@@ -29,10 +29,10 @@ import java.util.stream.Collectors;
 @Service
 public class PageMenuServiceImpl implements PageMenuService {
     private static final Logger logger = Logger.getLogger(PageMenuServiceImpl.class);
-    @Autowired
-    private PageMenuDao pageMenuDao;
-    @Autowired
-    private UserDao userDao;
+    @DataAccess(entity = PageMenuPo.class)
+    private CommonDao<PageMenuPo,Integer> pageMenuDao;
+    @DataAccess(entity = UserPo.class)
+    private CommonDao<UserPo,Integer> userDao;
     @Autowired
     private LanguageService languageService;
     private ModelMapper modelMapper = new ModelMapper();

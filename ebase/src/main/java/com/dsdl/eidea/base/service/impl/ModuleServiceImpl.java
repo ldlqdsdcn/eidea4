@@ -1,17 +1,16 @@
 package com.dsdl.eidea.base.service.impl;
 
 
-import com.dsdl.eidea.base.dao.*;
+import com.dsdl.core.spring.annotation.DataAccess;
 import com.dsdl.eidea.base.entity.bo.ModuleBo;
 import com.dsdl.eidea.base.entity.bo.ModuleDirectoryBo;
 import com.dsdl.eidea.base.entity.bo.ModuleMenuBo;
 import com.dsdl.eidea.base.entity.po.*;
 import com.dsdl.eidea.base.service.ModuleService;
-import com.dsdl.eidea.core.dao.BaseDao;
+import com.dsdl.eidea.core.dao.CommonDao;
 import com.googlecode.genericdao.search.Search;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -22,16 +21,16 @@ import java.util.List;
  */
 @Service
 public class ModuleServiceImpl implements ModuleService {
-    @Autowired
-    private ModuleDao moduleDao;
-    @Autowired
-    private PageMenuDao pageMenuDao;
-    @Autowired
-    private DirectoryDao directoryDao;
-    @Autowired
-    private ModuleMenuDao moduleMenuDao;
-    @Autowired
-    private ModuleDirectoryDao moduleDirectoryDao;
+    @DataAccess(entity = ModulePo.class)
+    private CommonDao<ModulePo,Integer> moduleDao;
+    @DataAccess(entity = PageMenuPo.class)
+    private CommonDao<PageMenuPo,Integer> pageMenuDao;
+    @DataAccess(entity = DirectoryPo.class)
+    private CommonDao<DirectoryPo,Integer> directoryDao;
+    @DataAccess(entity = ModuleMenuPo.class)
+    private CommonDao<ModuleMenuPo,Integer> moduleMenuDao;
+    @DataAccess(entity = ModuleDirectoryPo.class )
+    private CommonDao<ModuleDirectoryPo,Integer> moduleDirectoryDao;
 
     private ModelMapper modelMapper = new ModelMapper();
 

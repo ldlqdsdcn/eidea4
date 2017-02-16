@@ -1,13 +1,13 @@
 package com.dsdl.eidea.base.service.impl;
 
-import com.dsdl.eidea.base.dao.DirectoryDao;
+import com.dsdl.core.spring.annotation.DataAccess;
 import com.dsdl.eidea.base.entity.bo.DirectoryBo;
 import com.dsdl.eidea.base.entity.po.DirectoryPo;
 import com.dsdl.eidea.base.service.DirectoryService;
+import com.dsdl.eidea.core.dao.CommonDao;
 import com.googlecode.genericdao.search.Search;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,8 +18,8 @@ import java.util.List;
 @Service
 public class DirectoryServiceImpl implements DirectoryService {
 
-    @Autowired
-    private DirectoryDao directoryDao;
+    @DataAccess(entity = DirectoryPo.class)
+    private CommonDao<DirectoryPo,Integer> directoryDao;
     private ModelMapper modelMapper = new ModelMapper();
     @Override
     public List<DirectoryBo> findDirectory(Search search) {

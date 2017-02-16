@@ -10,12 +10,16 @@ import java.util.List;
  */
 public interface LanguageService {
     List<LanguageBo> findLanguage(Search search);
+
     LanguageBo getLanguageBo(String code);
+
     boolean save(LanguageBo languageBo);
+
     void deletes(String[] codes);
 
     /**
      * 获取语言有效的语言列表
+     *
      * @param notInCodes 不包含参数中的语言
      * @return
      */
@@ -23,12 +27,14 @@ public interface LanguageService {
 
     /**
      * 获取有效的语言列表
+     *
      * @return
      */
     List<LanguageBo> findLanguageListForActivated();
 
     /**
      * 判断语言是否存在
+     *
      * @param code
      * @return
      */
@@ -36,6 +42,7 @@ public interface LanguageService {
 
     /**
      * getLanguageForActivated:登录页面语种
+     *
      * @return
      */
     List<LanguageBo> getLanguageForActivated();

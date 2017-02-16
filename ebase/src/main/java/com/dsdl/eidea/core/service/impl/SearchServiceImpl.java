@@ -1,11 +1,11 @@
 package com.dsdl.eidea.core.service.impl;
 
-import com.dsdl.eidea.core.dao.LabelDao;
+import com.dsdl.core.spring.annotation.DataAccess;
+import com.dsdl.eidea.core.dao.CommonDao;
 import com.dsdl.eidea.core.dao.SearchColumnDao;
 import com.dsdl.eidea.core.dao.SearchDao;
 import com.dsdl.eidea.core.def.RelOperDef;
 import com.dsdl.eidea.core.def.SearchDataTypeDef;
-import com.dsdl.eidea.core.def.SearchPageFieldInputType;
 import com.dsdl.eidea.core.def.SearchPageType;
 import com.dsdl.eidea.core.entity.bo.CommonSearchParam;
 import com.dsdl.eidea.core.entity.bo.CommonSearchResult;
@@ -15,12 +15,13 @@ import com.dsdl.eidea.core.entity.dto.SearchColumnDto;
 import com.dsdl.eidea.core.entity.po.LabelPo;
 import com.dsdl.eidea.core.entity.po.SearchColumnPo;
 import com.dsdl.eidea.core.entity.po.SearchPo;
-import com.dsdl.eidea.core.service.LabelService;
 import com.dsdl.eidea.core.service.SearchService;
 import com.dsdl.eidea.util.StringUtil;
 import com.googlecode.genericdao.search.ISearch;
 import com.googlecode.genericdao.search.Search;
-import org.modelmapper.*;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,8 +37,8 @@ public class SearchServiceImpl implements SearchService {
     private static final String MYSQL_DATETIME_PATTEN = "date_format(%s,'%Y-%m-%d %H:%s:%i')";
     @Autowired
     private SearchDao searchDao;
-    @Autowired
-    private LabelDao labelDao;
+    @DataAccess(entity = LabelPo.class)
+    private CommonDao<LabelPo,String> labelDao;
     @Autowired
     private SearchColumnDao searchColumnDao;
     @Override

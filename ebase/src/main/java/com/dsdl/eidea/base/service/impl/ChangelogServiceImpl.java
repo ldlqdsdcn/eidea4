@@ -1,31 +1,31 @@
 package com.dsdl.eidea.base.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import com.dsdl.eidea.base.dao.UserDao;
+import com.dsdl.core.spring.annotation.DataAccess;
+import com.dsdl.eidea.base.entity.bo.ChangelogBo;
+import com.dsdl.eidea.base.entity.po.ChangelogPo;
+import com.dsdl.eidea.base.entity.po.UserPo;
+import com.dsdl.eidea.base.service.ChangelogService;
+import com.dsdl.eidea.core.dao.CommonDao;
 import com.dsdl.eidea.core.dao.TableDao;
 import com.dsdl.eidea.core.entity.bo.TableColumnBo;
 import com.dsdl.eidea.core.entity.po.TableColumnPo;
 import com.dsdl.eidea.core.entity.po.TablePo;
+import com.googlecode.genericdao.search.ISearch;
 import com.googlecode.genericdao.search.Search;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.dsdl.eidea.base.dao.ChangelogDao;
-import com.dsdl.eidea.base.entity.bo.ChangelogBo;
-import com.dsdl.eidea.base.entity.po.ChangelogPo;
-import com.dsdl.eidea.base.service.ChangelogService;
-import com.googlecode.genericdao.search.ISearch;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 @Service
 public class ChangelogServiceImpl implements ChangelogService {
-	@Autowired
-	private ChangelogDao changelogDao;
-	@Autowired
-	private UserDao userDao;
+	@DataAccess(entity = ChangelogPo.class)
+	private CommonDao<ChangelogPo,Integer> changelogDao;
+	@DataAccess(entity = UserPo.class)
+	private CommonDao<UserPo,Integer> userDao;
 	@Autowired
 	private TableDao tableDao;
 	private final ModelMapper modelMapper = new ModelMapper();

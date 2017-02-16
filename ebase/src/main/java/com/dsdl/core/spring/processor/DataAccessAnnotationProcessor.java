@@ -1,5 +1,6 @@
 package com.dsdl.core.spring.processor;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
@@ -11,6 +12,7 @@ import org.springframework.util.ReflectionUtils;
  * Created by 刘大磊 on 2017/2/15 17:11.
  */
 @Component
+@Slf4j
 public class DataAccessAnnotationProcessor implements BeanPostProcessor {
     private ConfigurableListableBeanFactory configurableBeanFactory;
 
@@ -40,6 +42,7 @@ public class DataAccessAnnotationProcessor implements BeanPostProcessor {
 
     private void configureFieldInjection(Object bean) {
         Class<?> managedBeanClass = bean.getClass();
+
         ReflectionUtils.FieldCallback fieldCallback =
                 new DataAccessFieldCallback(configurableBeanFactory, bean);
         ReflectionUtils.doWithFields(managedBeanClass, fieldCallback);

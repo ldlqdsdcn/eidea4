@@ -1,14 +1,14 @@
 package com.dsdl.eidea.base.service.impl;
 
-import com.dsdl.eidea.base.dao.ClientDao;
+import com.dsdl.core.spring.annotation.DataAccess;
 import com.dsdl.eidea.base.entity.bo.ClientBo;
 import com.dsdl.eidea.base.entity.po.ClientPo;
 import com.dsdl.eidea.base.service.ClientService;
+import com.dsdl.eidea.core.dao.CommonDao;
 import com.googlecode.genericdao.search.ISearch;
 import com.googlecode.genericdao.search.Search;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,8 +18,8 @@ import java.util.List;
  */
 @Service
 public class ClientServiceImpl implements ClientService {
-    @Autowired
-    private ClientDao clientDao;
+    @DataAccess(entity = ClientPo.class)
+    private CommonDao<ClientPo, Integer> clientDao;
     private final ModelMapper modelMapper = new ModelMapper();
 
     @Override

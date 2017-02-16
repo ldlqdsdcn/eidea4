@@ -1,6 +1,7 @@
 package com.dsdl.eidea.core.service.impl;
 
-import com.dsdl.eidea.core.dao.LanguageDao;
+import com.dsdl.core.spring.annotation.DataAccess;
+import com.dsdl.eidea.core.dao.CommonDao;
 import com.dsdl.eidea.core.entity.bo.LanguageBo;
 import com.dsdl.eidea.core.entity.bo.LanguageTrlBo;
 import com.dsdl.eidea.core.entity.po.LanguagePo;
@@ -11,10 +12,10 @@ import org.apache.log4j.Logger;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.modelmapper.TypeToken;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -23,8 +24,8 @@ import java.util.stream.Collectors;
 @Service
 public class LanguageServiceImpl implements LanguageService {
     private static final Logger logger = Logger.getLogger(LanguageServiceImpl.class);
-    @Autowired
-    private LanguageDao languageDao;
+    @DataAccess(entity = LanguagePo.class)
+    private CommonDao<LanguagePo,String> languageDao;
     private ModelMapper modelMapper = new ModelMapper();
     private PropertyMap<LanguagePo, LanguageBo> languageBoPropertyMap = new PropertyMap<LanguagePo, LanguageBo>() {
         @Override

@@ -11,15 +11,20 @@ import java.util.List;
  */
 public interface TableService {
     TableMetaDataBo getTableDescription(String tableName);
+
     List<TableBo> findList(ISearch search);
+
     TableBo getTableBo(Integer id);
+
     TableBo saveTableBo(TableBo tableBo);
+
     void deleteTables(Integer[] ids);
 
     void saveTableInfoByWizard(TableMetaDataBo tableInfo);
 
     /**
      * 获取输出日志的tableBo类
+     *
      * @return
      */
     List<TableBo> getTableBoListForOutLog();

@@ -17,8 +17,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "sys_user", catalog = "e_idea")
-@Getter
-@Setter
+@Data
 public class UserPo implements java.io.Serializable {
 
 	// Fields

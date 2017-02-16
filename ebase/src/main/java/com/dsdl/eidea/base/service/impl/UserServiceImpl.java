@@ -1,8 +1,6 @@
 package com.dsdl.eidea.base.service.impl;
 
 import com.dsdl.core.spring.annotation.DataAccess;
-import com.dsdl.eidea.base.dao.RoleDao;
-import com.dsdl.eidea.base.dao.UserDao;
 import com.dsdl.eidea.base.def.OperatorDef;
 import com.dsdl.eidea.base.entity.bo.UserBo;
 import com.dsdl.eidea.base.entity.bo.UserContent;
@@ -15,7 +13,6 @@ import com.dsdl.eidea.core.dao.CommonDao;
 import com.googlecode.genericdao.search.Search;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -29,14 +26,14 @@ import java.util.Map;
  */
 @Service
 public class UserServiceImpl implements UserService {
-    @Autowired
-    private UserDao userDao;
-    @Autowired
-    private RoleDao roleDao;
+    @DataAccess(entity = UserPo.class)
+    private CommonDao<UserPo, Integer> userDao;
+    @DataAccess(entity = RolePo.class)
+    private CommonDao<RolePo,Integer> roleDao;
     @DataAccess(entity = UserRolePo.class)
-    private CommonDao userRoleDao;
+    private CommonDao<UserRolePo, Integer> userRoleDao;
     @DataAccess(entity = UserSessionPo.class)
-    private CommonDao<UserSessionPo,Integer> userSessionDao;
+    private CommonDao<UserSessionPo, Integer> userSessionDao;
 
     private ModelMapper modelMapper = new ModelMapper();
 

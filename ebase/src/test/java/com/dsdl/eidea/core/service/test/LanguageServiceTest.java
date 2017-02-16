@@ -28,7 +28,7 @@ public class LanguageServiceTest {
     @Test
     public void testFindLanguage() {
         Search search=new Search();
-        search.addFilterEqual("code","ZH_cn");
+        search.addFilterEqual("code","zh_CN");
         List<LanguageBo> languageBoList = languageService.findLanguage(search);
         languageBoList.forEach(e -> {
             System.out.println(e.getCode() + "----------" + e.getName());

@@ -2,6 +2,7 @@ package com.dsdl.eidea.core.dao.test;
 
 import com.dsdl.eidea.core.dao.MessageDao;
 import com.dsdl.eidea.core.entity.union.MsgUnion;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.RowBounds;
 import org.junit.Assert;
 import org.junit.Test;
@@ -20,6 +21,7 @@ import java.util.List;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:applicationContext.xml")
+@Slf4j
 public class MessageDaoTest {
     @Autowired
     private SqlSessionTemplate sqlSessionTemplate;
@@ -34,8 +36,8 @@ public class MessageDaoTest {
         System.out.println(msgUnionList.size());
         Assert.assertEquals(msgUnionList.size(),20);
         List list= sqlSessionTemplate.selectList("com.delmar.core.mybatis.sql.MessageAndLabelUnionMapper.selectLabelTrl","zh_CN");
-        System.out.println(list.size());
-        System.out.println(list.getClass().getName());
-        System.out.println("end-----------");
+        log.debug("list.size()="+list.size());
+        log.debug(list.getClass().getName());
+        log.debug("end-----------");
     }
 }

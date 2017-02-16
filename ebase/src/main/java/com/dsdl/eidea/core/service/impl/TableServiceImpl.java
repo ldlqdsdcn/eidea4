@@ -1,10 +1,10 @@
 package com.dsdl.eidea.core.service.impl;
 
-import com.dsdl.eidea.core.dao.TableColumnDao;
-import com.dsdl.eidea.core.entity.bo.*;
+import com.dsdl.core.spring.annotation.DataAccess;
+import com.dsdl.eidea.core.dao.CommonDao;
 import com.dsdl.eidea.core.dao.TableDao;
 import com.dsdl.eidea.core.def.JdbcType;
-import com.dsdl.eidea.core.entity.po.LanguagePo;
+import com.dsdl.eidea.core.entity.bo.*;
 import com.dsdl.eidea.core.entity.po.TableColumnPo;
 import com.dsdl.eidea.core.entity.po.TablePo;
 import com.dsdl.eidea.core.service.TableService;
@@ -33,8 +33,8 @@ public class TableServiceImpl implements TableService {
     private static final Logger log = Logger.getLogger(TableServiceImpl.class);
     @Autowired
     private TableDao tableDao;
-    @Autowired
-    private TableColumnDao tableColumnDao;
+    @DataAccess(entity = TableColumnPo.class)
+    private CommonDao<TableColumnPo,Integer> tableColumnDao;
     ModelMapper modelMapper;
 
     public TableServiceImpl() {

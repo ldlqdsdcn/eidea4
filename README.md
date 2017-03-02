@@ -2,7 +2,7 @@
 
 基于 spring mvc+spring +Hibernate.
 
-改框架适用于ERP CRM SCM 等系统开发。
+该框架适用于ERP CRM SCM 等系统开发。
 也可以通过RMI,支持分布式网站系统，电商平台，手机app服务器
 Dao数据操作仅仅增删改查，没有特殊需求，不需要写Dao接口和Dao实现类，用下面这种引入方式：
     @DataAccess(entity = RolePo.class)

@@ -1,8 +1,5 @@
 package com.dsdl.eidea.base.def;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * Created by 刘大磊 on 2016/12/27 9:14.
  */

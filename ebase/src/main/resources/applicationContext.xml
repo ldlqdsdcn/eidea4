@@ -27,35 +27,15 @@
             <list>
                 <value>classpath:database.properties</value>
                 <value>classpath:mail.properties</value>
-                <value>classpath:redis.properties</value>
             </list>
         </property>
     </bean>
     <!-- 启用缓存注解功能，这个是必须的，否则注解不会生效，另外，该注解一定要声明在spring主配置文件中才会生效 -->
     <cache:annotation-driven cache-manager="cacheManager" />
 
-    <!--<bean id="transactionManager"-->
-    <!--class="org.springframework.jdbc.datasource.DataSourceTransactionManager">-->
-    <!--<property name="dataSource" ref="dataSourceCore" />-->
-    <!--</bean>-->
-    <!--<tx:annotation-driven/>-->
-    <!-- 注解方式配置事物 -->
-    <!--<tx:annotation-driven transaction-manager="hibernateTransactionManager" />-->
-    <!--
-        <aop:config>
-            <aop:pointcut id="serviceSaveMethodLog" expression="execution(* com.powere2e.service.*Service*.save*(..))"/>
-            <aop:pointcut id="serviceUpdateMethodLog" expression="execution(* com.powere2e.service.*Service*.update*(..))"/>
-            <aop:pointcut id="serviceRemoveMethodLog" expression="execution(* com.powere2e.service.*Service*.remove*(..))"/>
-            <aop:advisor pointcut-ref="serviceSaveMethodLog" advice-ref="systemLog"/>
-            <aop:advisor pointcut-ref="serviceRemoveMethodLog" advice-ref="systemLog"/>
-            <aop:advisor pointcut-ref="serviceUpdateMethodLog" advice-ref="systemLog"/>
-            <bean id="systemLog" class="com.powere2e.log.LogFactory"></bean>
-        </aop:config> -->
     <!-- 系统日志 -->
     <!--datasource-->
     <import resource="classpath:spring/spring-database.xml"/>
-    <!--redis-->
-    <import resource="classpath:spring/spring-redis.xml"/>
     <!--java mail-->
     <import resource="classpath:spring/spring-mail.xml"/>
     <!--mybatis相关设置-->

@@ -1,8 +1,13 @@
 package com.dsdl.eidea.core.dao;
 
 import com.googlecode.genericdao.dao.hibernate.GenericDAO;
+import com.googlecode.genericdao.search.ISearch;
+import com.googlecode.genericdao.search.SearchResult;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.DetachedCriteria;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by 刘大磊 on 2016/12/22 12:42.
@@ -35,4 +40,6 @@ public interface BaseDao<T, ID extends Serializable> extends GenericDAO<T, ID> {
      * @param ids
      */
     void removeByIdsForLog(ID... ids);
+
+
 }

@@ -9,6 +9,7 @@ import com.dsdl.eidea.base.service.OrgService;
 import com.dsdl.eidea.core.dao.CommonDao;
 import com.googlecode.genericdao.search.Search;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.Hibernate;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -67,6 +68,17 @@ public class OrgServiceImpl implements OrgService {
     public void deletes(Integer[] ids) {
 
         orgDao.removeByIds(ids);
+    }
+
+    @Override
+    public OrgPo getOrg(Integer orgId) {
+
+        OrgPo orgPo=orgDao.find(orgId);
+//        orgPo.getSysClient();
+//        orgPo.getSysClient().getSysOrgs();
+        Hibernate.initialize(orgPo.getSysClient());
+        Hibernate.initialize(orgPo.getSysClient().getSysOrgs());
+        return orgPo;
     }
 
     private List<OrgBo> convert(List<OrgPo> orgPoList) {

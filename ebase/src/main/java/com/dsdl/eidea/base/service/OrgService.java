@@ -2,6 +2,7 @@ package com.dsdl.eidea.base.service;
 
 import com.dsdl.eidea.base.entity.bo.ClientBo;
 import com.dsdl.eidea.base.entity.bo.OrgBo;
+import com.dsdl.eidea.base.entity.po.OrgPo;
 import com.googlecode.genericdao.search.Search;
 
 import java.util.List;
@@ -23,4 +24,6 @@ public interface OrgService {
     void save(OrgBo orgBo);
 
     void deletes(Integer[] ids);
+
+    OrgPo getOrg(Integer orgId);
 }

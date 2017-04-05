@@ -26,9 +26,8 @@
     <script type='text/javascript' src="<c:url value="/js/angular/ui-bootstrap-tpls-2.2.0.min.js"/>"></script>
     <script type='text/javascript' src="<c:url value="/js/consts.js"/>"></script>
     <script type='text/javascript' src="<c:url value="/js/eidea.util.js"/>"></script>
-    <link href="<c:url value="/vendors/iCheck/skins/flat/green.css"/>" rel="stylesheet">
+
     <script type='text/javascript' src="<c:url value="/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"/>"></script>
-    <script type='text/javascript' src="<c:url value="/vendors/iCheck/icheck.min.js"/>"></script>
     <link href="<c:url value="/css/font-awesome.min.css"/>" rel="stylesheet">
     <link href="<c:url value="/css/animate.min.css"/>" rel="stylesheet">
     <script type='text/javascript' src="<c:url value="/js/md5.min.js"/>"></script>

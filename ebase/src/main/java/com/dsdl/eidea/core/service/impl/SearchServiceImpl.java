@@ -1,6 +1,5 @@
 package com.dsdl.eidea.core.service.impl;
 
-import com.dsdl.eidea.core.spring.annotation.DataAccess;
 import com.dsdl.eidea.core.dao.CommonDao;
 import com.dsdl.eidea.core.dao.SearchColumnDao;
 import com.dsdl.eidea.core.dao.SearchDao;
@@ -16,6 +15,8 @@ import com.dsdl.eidea.core.entity.po.LabelPo;
 import com.dsdl.eidea.core.entity.po.SearchColumnPo;
 import com.dsdl.eidea.core.entity.po.SearchPo;
 import com.dsdl.eidea.core.service.SearchService;
+import com.dsdl.eidea.core.spring.annotation.DataAccess;
+import com.dsdl.eidea.util.DateTimeHelper;
 import com.dsdl.eidea.util.StringUtil;
 import com.googlecode.genericdao.search.ISearch;
 import com.googlecode.genericdao.search.Search;
@@ -26,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -33,14 +35,13 @@ import java.util.List;
  */
 @Service
 public class SearchServiceImpl implements SearchService {
-    private static final String MYSQL_DATE_PATTEN = "date_format(%s,'%Y-%m-%d')";
-    private static final String MYSQL_DATETIME_PATTEN = "date_format(%s,'%Y-%m-%d %H:%s:%i')";
     @Autowired
     private SearchDao searchDao;
     @DataAccess(entity = LabelPo.class)
-    private CommonDao<LabelPo,String> labelDao;
+    private CommonDao<LabelPo, String> labelDao;
     @Autowired
     private SearchColumnDao searchColumnDao;
+
     @Override
     public List<SearchBo> findList(ISearch search) {
         List<SearchPo> searchPoList = searchDao.search(search);
@@ -160,30 +161,44 @@ public class SearchServiceImpl implements SearchService {
     }
 
     @Override
-    public Search getSearchParam( List<SearchColumnDto> searchColumnDtoList) {
+    public Search getSearchParam(List<SearchColumnDto> searchColumnDtoList) {
         Search search = new Search();
 
         for (SearchColumnDto searchColumnDto : searchColumnDtoList) {
             String columnName = searchColumnDto.getColumnName();
-            String value = searchColumnDto.getValue();
+            Object value = searchColumnDto.getValue();
             if (searchColumnDto.getDataType() == SearchDataTypeDef.DATE.getKey()) {
-                columnName = String.format(MYSQL_DATE_PATTEN, columnName);
-                value = String.format(MYSQL_DATE_PATTEN, value);
+                value = DateTimeHelper.parseDate(searchColumnDto.getValue());
             } else if (searchColumnDto.getDataType() == SearchDataTypeDef.DATETIME.getKey()) {
-                columnName = String.format(MYSQL_DATETIME_PATTEN, columnName);
-                value = String.format(MYSQL_DATETIME_PATTEN, value);
+                value = DateTimeHelper.parseDateTime(searchColumnDto.getValue());
             }
 
             if (RelOperDef.EQUAL.getDesc().equals(searchColumnDto.getOpearType())) {
-                search.addFilterEqual(columnName, value);
+                if (searchColumnDto.getDataType() == SearchDataTypeDef.DATE.getKey()) {
+                    Date date = (Date) value;
+                    search.addFilterGreaterOrEqual(columnName, DateTimeHelper.getDayBeginTime(date));
+                    search.addFilterLessOrEqual(columnName, DateTimeHelper.getDayEndTime(date));
+                } else {
+                    search.addFilterEqual(columnName, value);
+                }
             } else if (RelOperDef.GREATER_EQ_THAN.getDesc().equals(searchColumnDto.getOpearType())) {
                 search.addFilterGreaterOrEqual(columnName, value);
             } else if (RelOperDef.GREATER_EQ_THAN.getDesc().equals(searchColumnDto.getOpearType())) {
                 search.addFilterGreaterOrEqual(columnName, value);
             } else if (RelOperDef.LESS_EQ_THAN.equals(searchColumnDto.getOpearType())) {
-                search.addFilterLessOrEqual(columnName, value);
+                if (searchColumnDto.getDataType() == SearchDataTypeDef.DATE.getKey()) {
+                    search.addFilterLessOrEqual(columnName, DateTimeHelper.getDayEndTime((Date) value));
+                } else if (searchColumnDto.getDataType() == SearchDataTypeDef.DATETIME.getKey()) {
+                    Date date = (Date) value;
+                    date.setTime(date.getTime() + 1000);
+                    search.addFilterLessOrEqual(columnName, date);
+                } else {
+                    search.addFilterLessOrEqual(columnName, value);
+                }
+
             } else if (RelOperDef.LESS_THAN.getDesc().equals(searchColumnDto.getOpearType())) {
                 search.addFilterLessThan(columnName, value);
+
             } else if (RelOperDef.LIKE.getDesc().equals(searchColumnDto.getOpearType())) {
                 search.addFilterLike(columnName, "%" + value + "%");
             }

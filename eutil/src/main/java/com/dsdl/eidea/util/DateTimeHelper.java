@@ -155,4 +155,35 @@ public class DateTimeHelper {
         }
         return dateFormat.format(date);
     }
+    /**
+     * 获取一天的开始时间
+     * @param date
+     * @return
+     */
+    public static Date getDayBeginTime(Date date)
+    {
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(date);
+        calendar.set(Calendar.HOUR_OF_DAY,0);
+        calendar.set(Calendar.MINUTE,0);
+        calendar.set(Calendar.SECOND,0);
+        calendar.set(Calendar.MILLISECOND,0);
+        return calendar.getTime();
+    }
+
+    /**
+     * 获取一天的结束时间
+     * @param date
+     * @return
+     */
+    public static Date getDayEndTime(Date date)
+    {
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(date);
+        calendar.set(Calendar.HOUR_OF_DAY,23);
+        calendar.set(Calendar.MINUTE,59);
+        calendar.set(Calendar.SECOND,59);
+        calendar.set(Calendar.MILLISECOND,999);
+        return calendar.getTime();
+    }
 }

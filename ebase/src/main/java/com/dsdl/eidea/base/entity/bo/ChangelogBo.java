@@ -1,14 +1,9 @@
 package com.dsdl.eidea.base.entity.bo;
 
-import java.util.Date;
-
-import org.hibernate.validator.constraints.NotBlank;
-
-import com.dsdl.eidea.base.entity.po.UserPo;
-import com.dsdl.eidea.core.entity.po.TablePo;
 import com.fasterxml.jackson.annotation.JsonFormat;
-
 import lombok.Data;
+
+import java.util.Date;
 
 @Data
 public class ChangelogBo {
@@ -19,7 +14,7 @@ public class ChangelogBo {
 	private String name;
 	private String operateType;
 	private String context;
-	@JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	private Date inDate;
 	private String pk;
 	private String buPk;

@@ -54,6 +54,10 @@ public class Filter implements Serializable {
 	 * with the property. Examples: <code>"Fred", new Date(), 45</code>
 	 */
 	protected Object value;
+	/*
+	* 添加对between操作符的支持
+	 */
+	protected Object valueForBetweenEnd;
 
 	/**
 	 * The type of comparison to do between the property and the value. The
@@ -73,7 +77,12 @@ public class Filter implements Serializable {
 		this.value = value;
 		this.operator = operator;
 	}
-
+	public Filter(String property, Object value,Object valueForBetweenEnd, int operator) {
+		this.property = property;
+		this.value = value;
+		this.valueForBetweenEnd=valueForBetweenEnd;
+		this.operator = operator;
+	}
 	public Filter(String property, Object value) {
 		this.property = property;
 		this.value = value;
@@ -94,6 +103,7 @@ public class Filter implements Serializable {
 	public static final int OP_NOT_NULL = 11;
 	public static final int OP_EMPTY = 12;
 	public static final int OP_NOT_EMPTY = 13;
+	public static final int OP_BETWEEN=14;
 	public static final int OP_AND = 100;
 	public static final int OP_OR = 101;
 	public static final int OP_NOT = 102;
@@ -228,6 +238,18 @@ public class Filter implements Serializable {
 	 */
 	public static Filter isNotEmpty(String property) {
 		return new Filter(property, true, OP_NOT_EMPTY);
+	}
+
+	/**
+	 * 添加对between操作符的支持
+	 * @param property
+	 * @param beginValue
+	 * @param endValue
+	 * @return
+	 */
+	public static Filter between(String property,Object beginValue,Object endValue)
+	{
+		return new Filter(property,beginValue,endValue,OP_BETWEEN);
 	}
 
 	/**

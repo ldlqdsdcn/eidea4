@@ -167,7 +167,6 @@ public class UserServiceImpl implements UserService {
                         distPrivilegeList.add(privilegesPo);
                     }
                 }
-
                 return true;
             }
         }

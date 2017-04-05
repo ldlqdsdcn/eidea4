@@ -2,15 +2,11 @@ package com.dsdl.eidea.core.dao.hibernate;
 
 import com.dsdl.eidea.core.dao.BaseDao;
 import com.dsdl.eidea.core.dao.ChangeForLogDao;
-import com.googlecode.genericdao.dao.hibernate.GenericDAO;
 import com.googlecode.genericdao.dao.hibernate.GenericDAOImpl;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Repository;
 
 import java.io.Serializable;
 

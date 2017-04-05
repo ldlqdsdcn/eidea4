@@ -22,8 +22,8 @@
     <!-- 但是如果要加入拦截器的话，最好手动配置2个bean -->
     <mvc:annotation-driven>
         <mvc:message-converters>
-            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
-                <property name="objectMapper" value="#{jsonConverter.mapper}"/>
+           <bean class="org.springframework.http.converter.json.GsonHttpMessageConverter">
+                <property name="defaultCharset" value="utf-8"/>
                 <property name="supportedMediaTypes">
                     <list>
                         <value>text/json;charset=UTF-8</value>

@@ -1,7 +1,11 @@
 package com.dsdl.eidea.core.com.dsdl.eidea.base.service.test;
 
 import com.dsdl.eidea.base.def.OperatorDef;
+import com.dsdl.eidea.base.entity.bo.UserBo;
+import com.dsdl.eidea.base.entity.bo.UserSessionBo;
 import com.dsdl.eidea.base.service.UserService;
+import com.dsdl.eidea.base.service.UserSessionService;
+import com.google.gson.Gson;
 import com.googlecode.genericdao.search.Search;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,7 +25,8 @@ import java.util.Set;
 public class UserServiceTest {
     @Autowired
     UserService userService;
-
+    @Autowired
+    UserSessionService userSessionService;
     @Test
     public void testGetUserPrivileges() {
         Map<String, List<OperatorDef>> map = userService.getUserPrivileges(1);
@@ -41,6 +46,12 @@ public class UserServiceTest {
     @Test
     public void testGetUsers()
     {
-        userService.getUserList(new Search());
+
+        List<UserBo> userBoList= userService.getUserList(new Search());
+
+        Gson gson=new Gson();
+        System.out.println(gson.toJson(userBoList.get(0)));
+        List<UserSessionBo> userSessionBoList=userSessionService.getUserSessionList(new Search());
+        System.out.println(gson.toJson(userSessionBoList.get(0)));
     }
 }

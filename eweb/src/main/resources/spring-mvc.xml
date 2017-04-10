@@ -47,6 +47,16 @@
         <property name="maxUploadSize" value="104857600"></property>
     </bean>
     <mvc:interceptors>
-        <bean class="com.dsdl.eidea.base.web.handler.SecurityHandler" />
+        <bean class="com.dsdl.eidea.base.web.handler.SecurityHandler">
+            <property name="anonymousUserUrls">
+                <list>
+                    <value>/login</value>
+                    <value>/js/</value>
+                    <value>/img/</value>
+                    <value>/css/</value>
+                    <value>/fonts</value>
+                </list>
+            </property>
+        </bean>
     </mvc:interceptors>
 </beans>

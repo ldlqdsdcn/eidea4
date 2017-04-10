@@ -31,11 +31,11 @@ public class SecurityHandler extends HandlerInterceptorAdapter {
     /**
      * 不需要登录系统就可以访问的界面
      */
-    private static String[] noLoginAuthorizationUrls = new String[]{"/login", "/js/", "/img/", "/css/", "/fonts", "/error/", "/logout", "/languages", "/common/changeLanguage"};
+    private  String[] anonymousUserUrls = new String[]{"/login", "/js/", "/img/", "/css/", "/fonts", "/error/", "/logout", "/languages", "/common/changeLanguage"};
     /**
      * 登录以后，任何人都可以访问的界面
      */
-    private static String[] noAuthorizationUrls = new String[]{"/login", "/js/", "/img/", "/css/", "/fonts", "/common/", "/error/", "/logout", "/languages", "/common/changeLanguage"};
+    private  String[] noAuthorizationUrls = new String[]{"/login", "/js/", "/img/", "/css/", "/fonts", "/common/", "/error/", "/logout", "/languages", "/common/changeLanguage"};
     private static Gson GSON = new Gson();
 
     private boolean isJsonResponse(HttpServletRequest request) {
@@ -99,7 +99,7 @@ public class SecurityHandler extends HandlerInterceptorAdapter {
     }
 
     private boolean containNoLoginAuthorizationUrls(String servletPath) {
-        for (String url : noLoginAuthorizationUrls) {
+        for (String url : anonymousUserUrls) {
             if (servletPath.startsWith(url)) {
                 return true;
             }
@@ -191,5 +191,13 @@ public class SecurityHandler extends HandlerInterceptorAdapter {
                 log.error(e);
             }
         }
+    }
+
+    public void setAnonymousUserUrls(String[] anonymousUserUrls) {
+        this.anonymousUserUrls = anonymousUserUrls;
+    }
+
+    public void setNoAuthorizationUrls(String[] noAuthorizationUrls) {
+        this.noAuthorizationUrls = noAuthorizationUrls;
     }
 }

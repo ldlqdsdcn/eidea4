@@ -13,6 +13,7 @@ import com.dsdl.eidea.core.web.result.def.ErrorCodes;
 import com.dsdl.eidea.core.web.util.SearchHelper;
 import com.dsdl.eidea.core.web.vo.PagingSettingResult;
 import com.googlecode.genericdao.search.Search;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
@@ -35,7 +36,7 @@ public class ClientController extends BaseController {
     @Autowired
     private ClientService clientService;
     @RequestMapping(value = "/showList", method = RequestMethod.GET)
-    @PrivilegesControl(operator = OperatorDef.VIEW, returnType = ReturnType.JSP)
+    @RequiresPermissions("base:view")
     public ModelAndView showList() {
         ModelAndView modelAndView = new ModelAndView("/base/client/client");
         modelAndView.addObject(WebConst.PAGING_SETTINGS, PagingSettingResult.getDefault());
@@ -46,14 +47,14 @@ public class ClientController extends BaseController {
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
-    @PrivilegesControl(operator = OperatorDef.VIEW)
+    @RequiresPermissions("base:view")
     public ApiResult<List<ClientBo>> list(HttpSession session) {
         Search search = SearchHelper.getSearchParam(URI, session);
         List<ClientBo> clientBoList = clientService.getClientList(search);
         return ApiResult.success(clientBoList);
     }
 
-    @PrivilegesControl(operator = OperatorDef.VIEW)
+    @RequiresPermissions("base:view")
     @RequestMapping(value = "/get", method = RequestMethod.GET)
     @ResponseBody
     public ApiResult<ClientBo> get(Integer id) {
@@ -66,7 +67,7 @@ public class ClientController extends BaseController {
         return ApiResult.success(clientBo);
     }
 
-    @PrivilegesControl(operator = OperatorDef.ADD)
+    @RequiresPermissions("base:add")
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     @ResponseBody
     public ApiResult<ClientBo> create() {
@@ -79,7 +80,7 @@ public class ClientController extends BaseController {
      * @param clientBo
      * @return
      */
-    @PrivilegesControl(operator = {OperatorDef.ADD})
+    @RequiresPermissions("base:add")
     @RequestMapping(value = "/saveForCreated", method = RequestMethod.POST)
     @ResponseBody
     public ApiResult<ClientBo> saveForCreate(@Validated @RequestBody ClientBo clientBo) {
@@ -90,7 +91,7 @@ public class ClientController extends BaseController {
         return get(clientBo.getId());
     }
 
-    @PrivilegesControl(operator = {OperatorDef.UPDATE})
+    @RequiresPermissions("base:update")
     @RequestMapping(value = "/saveForUpdated", method = RequestMethod.POST)
     @ResponseBody
     public ApiResult<ClientBo> saveForUpdate(@Validated @RequestBody ClientBo clientBo) {
@@ -102,7 +103,7 @@ public class ClientController extends BaseController {
         return get(clientBo.getId());
     }
 
-    @PrivilegesControl(operator = {OperatorDef.DELETE})
+    @RequiresPermissions("base:delete")
     @RequestMapping(value = "/deletes", method = RequestMethod.POST)
     @ResponseBody
     public ApiResult<List<ClientBo>> deletes(@RequestBody Integer[] ids, HttpSession session) {

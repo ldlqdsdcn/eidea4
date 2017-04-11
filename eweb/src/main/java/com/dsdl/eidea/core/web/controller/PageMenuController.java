@@ -15,6 +15,7 @@ import com.dsdl.eidea.core.web.result.def.ErrorCodes;
 import com.dsdl.eidea.core.web.util.SearchHelper;
 import com.dsdl.eidea.core.web.vo.PagingSettingResult;
 import com.googlecode.genericdao.search.Search;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -40,6 +41,7 @@ public class PageMenuController {
     private LanguageService languageService;
     @RequestMapping(value = "/showList", method = RequestMethod.GET)
     @PrivilegesControl(operator = OperatorDef.VIEW, returnType = ReturnType.JSP)
+    @RequiresPermissions(value = "base:view")
     public ModelAndView showList() {
         ModelAndView modelAndView = new ModelAndView("/base/pagemenu/pagemenu");
         modelAndView.addObject("pagingSettingResult", PagingSettingResult.getDefault());
@@ -49,6 +51,7 @@ public class PageMenuController {
 
     @RequestMapping(value = "/list", method = RequestMethod.POST)
     @ResponseBody
+    @RequiresPermissions(value = "base:view")
     public ApiResult<List<PageMenuBo>> list(HttpSession session) {
         Search search = SearchHelper.getSearchParam(URI, session);
         List<PageMenuBo> pageMenuBoList = pageMenuService.findPageMenu(search);
@@ -58,6 +61,7 @@ public class PageMenuController {
     @RequestMapping(value = "/saveForCreated", method = RequestMethod.POST)
     @ResponseBody
     @PrivilegesControl(operator = OperatorDef.ADD)
+    @RequiresPermissions(value = "base:add")
     public ApiResult<PageMenuBo> saveForCreated(@RequestBody PageMenuBo pageMenuBo,HttpSession session) {
         if (pageMenuBo.isCreated()) {
             if (pageMenuService.findExistUrl(pageMenuBo.getId())) {
@@ -72,6 +76,7 @@ public class PageMenuController {
     @RequestMapping(value = "/saveForUpdated", method = RequestMethod.POST)
     @ResponseBody
     @PrivilegesControl(operator = OperatorDef.UPDATE)
+    @RequiresPermissions(value = "base:update")
     public ApiResult<PageMenuBo> saveForUpdated(@RequestBody PageMenuBo pageMenuBo,HttpSession session) {
     	if(pageMenuBo.getId()==null){
     		UserResource resource=(UserResource)session.getAttribute(WebConst.SESSION_RESOURCE);
@@ -84,6 +89,7 @@ public class PageMenuController {
 
     @RequestMapping(value = "/get", method = RequestMethod.GET)
     @ResponseBody
+    @RequiresPermissions(value = "base:view")
     public ApiResult<PageMenuBo> get(Integer id,HttpSession session) {
         PageMenuBo pageMenuBo = null;
         if (id == null) {
@@ -101,6 +107,7 @@ public class PageMenuController {
     @RequestMapping(value = "/deletes", method = RequestMethod.POST)
     @ResponseBody
     @PrivilegesControl(operator = OperatorDef.DELETE)
+    @RequiresPermissions(value = "base:delete")
     public ApiResult<List<PageMenuBo>> deletes(@RequestBody Integer[] ids, HttpSession session) {
         if (ids == null) {
         	UserResource resource=(UserResource)session.getAttribute(WebConst.SESSION_RESOURCE);
@@ -118,6 +125,7 @@ public class PageMenuController {
      */
     @RequestMapping(value = "/getModuleMenuList", method = RequestMethod.POST)
     @ResponseBody
+    @RequiresPermissions(value = "base:view")
     public ApiResult<List<PageMenuBo>> getModuleMenuList() {
         List<PageMenuBo> pageMenuBoList = pageMenuService.getModuleMenuList();
         return ApiResult.success(pageMenuBoList);
@@ -131,6 +139,7 @@ public class PageMenuController {
      */
     @RequestMapping(value = "/getListMenuType", method = RequestMethod.POST)
     @ResponseBody
+    @RequiresPermissions(value = "base:view")
     public ApiResult<List<PageMenuBo>> getListMenuType() {
         List<PageMenuBo> pageMenuBoList = pageMenuService.getListMenuType();
         return ApiResult.success(pageMenuBoList);
@@ -145,6 +154,7 @@ public class PageMenuController {
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     @ResponseBody
     @PrivilegesControl(operator = OperatorDef.ADD)
+    @RequiresPermissions(value = "base:add")
     public ApiResult<PageMenuBo> create() {
     	 PageMenuBo pageMenuBo=new PageMenuBo();
          List<LanguageBo> languageBoList = languageService.findLanguageListForActivated();

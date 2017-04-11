@@ -18,7 +18,7 @@ import lombok.Data;
  */
 
 @Entity
-@Table(name = "sys_user_session", catalog = "e_idea")
+@Table(name = "sys_user_session", catalog = "e_idea_public")
 @Getter
 @Setter
 public class UserSessionPo implements java.io.Serializable {

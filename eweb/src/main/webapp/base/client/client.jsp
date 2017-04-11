@@ -21,7 +21,7 @@
 </body>
 <script type="text/javascript">
     var app = angular.module('myApp', ['ngRoute', 'ui.bootstrap', 'jcs-autoValidate'])
-            .config(['$routeProvider', function ($routeProvider) {
+            .config(['$routeProvider', function ($routeProvider,$httpProvider) {
                 $routeProvider
                         .when('/list', {templateUrl: '<c:url value="/base/client/list.tpl.jsp"/>'})
                         .when('/edit', {templateUrl: '<c:url value="/base/client/edit.tpl.jsp"/>'})

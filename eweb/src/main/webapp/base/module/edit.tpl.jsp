@@ -90,6 +90,7 @@
                                            ng-model="directoryDelFlag"></th>
                                 <th><eidea:label key="dymenuForm.label.name"/></th>
                                 <th><eidea:label key="dymenu.label.chainedaddress"/></th>
+                                <th><eidea:label key="directory.access.repository"/></th>
                                 <th><eidea:label key="base.remarks"/></th>
                             </tr>
                             </thead>
@@ -104,6 +105,9 @@
                                 </td>
                                 <td>
                                     {{directory.directory}}
+                                </td>
+                                <td>
+                                    {{directory.repository}}
                                 </td>
                                 <td>
                                     {{directory.remark}}

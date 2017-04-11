@@ -11,6 +11,7 @@ import com.dsdl.eidea.core.web.result.ApiResult;
 import com.dsdl.eidea.core.web.result.def.ErrorCodes;
 import com.dsdl.eidea.core.web.vo.PagingSettingResult;
 import com.googlecode.genericdao.search.Search;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,9 +20,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.List;
-
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 
 /**
@@ -37,8 +37,10 @@ public class ModuleController {
 
     /**
      * getModuleToJsp:页面跳转
+     *
      * @return
      */
+    @RequiresPermissions(value = "base:view")
     @RequestMapping(value = "/getModuleToJsp", method = RequestMethod.GET)
     @PrivilegesControl(operator = OperatorDef.VIEW, returnType = ReturnType.JSP)
     public ModelAndView getModuleToJsp() {
@@ -53,6 +55,7 @@ public class ModuleController {
      * @param
      * @return
      */
+    @RequiresPermissions(value = "base:view")
     @RequestMapping(value = "/getModuleList", method = RequestMethod.POST)
     @ResponseBody
     public ApiResult<List<ModuleBo>> getModuleList() {
@@ -66,14 +69,15 @@ public class ModuleController {
      * @param ids
      * @return
      */
+    @RequiresPermissions(value = "base:view")
     @RequestMapping(value = "/deleteModuleList", method = RequestMethod.POST)
     @ResponseBody
     @PrivilegesControl(operator = OperatorDef.DELETE)
-    public ApiResult<List<ModuleBo>> deleteModuleList(@RequestBody Integer[] ids,HttpSession session) {
-    	if(ids.length==0){
-    		UserResource resource=(UserResource)session.getAttribute(WebConst.SESSION_RESOURCE);
-            return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(),resource.getMessage("pagemenu.primarykey.information"));
-    	}
+    public ApiResult<List<ModuleBo>> deleteModuleList(@RequestBody Integer[] ids, HttpSession session) {
+        if (ids.length == 0) {
+            UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
+            return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("pagemenu.primarykey.information"));
+        }
         moduleService.deleteModuleList(ids);
         return getModuleList();
     }
@@ -84,28 +88,30 @@ public class ModuleController {
      * @param moduleBo
      * @return
      */
+    @RequiresPermissions(value = "base:add")
     @RequestMapping(value = "/saveModuleForCreated", method = RequestMethod.POST)
     @ResponseBody
     @PrivilegesControl(operator = OperatorDef.ADD)
-    public ApiResult<ModuleBo> saveModuleForCreated(@RequestBody ModuleBo moduleBo,HttpSession session) {
+    public ApiResult<ModuleBo> saveModuleForCreated(@RequestBody ModuleBo moduleBo, HttpSession session) {
         if (moduleBo.isCreated()) {
             if (moduleService.findExistId(moduleBo.getId())) {
-            	UserResource resource=(UserResource)session.getAttribute(WebConst.SESSION_RESOURCE);
-                return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(),resource.getMessage("pagemenu.connection.point"));
+                UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
+                return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("pagemenu.connection.point"));
             }
         }
         moduleService.saveModule(moduleBo);
         return getModule(moduleBo.getId(), session);
     }
 
+    @RequiresPermissions(value = "base:update")
     @RequestMapping(value = "/saveModuleForUpdated", method = RequestMethod.POST)
     @ResponseBody
     @PrivilegesControl(operator = OperatorDef.UPDATE)
-    public ApiResult<ModuleBo> saveModuleForUpdated(@RequestBody ModuleBo moduleBo,HttpSession session) {
-    	if(moduleBo.getId()==null){
-    		UserResource resource=(UserResource)session.getAttribute(WebConst.SESSION_RESOURCE);
-    		 return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("pagemenu.primarykey.check.isnull"));
-    	}
+    public ApiResult<ModuleBo> saveModuleForUpdated(@RequestBody ModuleBo moduleBo, HttpSession session) {
+        if (moduleBo.getId() == null) {
+            UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
+            return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("pagemenu.primarykey.check.isnull"));
+        }
         moduleService.saveModule(moduleBo);
         return getModule(moduleBo.getId(), session);
     }
@@ -117,12 +123,13 @@ public class ModuleController {
      * @param id
      * @return
      */
+    @RequiresPermissions(value = "base:view")
     @RequestMapping(value = "/getModule", method = RequestMethod.POST)
     @ResponseBody
-    public ApiResult<ModuleBo> getModule(Integer id,HttpSession session) {
+    public ApiResult<ModuleBo> getModule(Integer id, HttpSession session) {
         ModuleBo moduleBo = null;
         if (id == null) {
-        	UserResource resource=(UserResource)session.getAttribute(WebConst.SESSION_RESOURCE);
+            UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
             return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("pagemenu.primarykey.information"));
         } else {
             moduleBo = moduleService.getModule(id);
@@ -135,6 +142,7 @@ public class ModuleController {
      *
      * @return
      */
+    @RequiresPermissions(value = "base:add")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseBody
     @PrivilegesControl(operator = OperatorDef.ADD)

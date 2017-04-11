@@ -10,6 +10,7 @@ import com.dsdl.eidea.core.web.result.ApiResult;
 import com.dsdl.eidea.core.web.util.SearchHelper;
 import com.dsdl.eidea.core.web.vo.PagingSettingResult;
 import com.googlecode.genericdao.search.Search;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -29,16 +30,18 @@ public class UserOnlineController {
 
     @RequestMapping(value = "/showList", method = RequestMethod.GET)
     @PrivilegesControl(operator = OperatorDef.VIEW, returnType = ReturnType.JSP)
+    @RequiresPermissions(value = "base:view")
     public ModelAndView showList() {
         ModelAndView modelAndView = new ModelAndView("/base/online/online");
-        modelAndView.addObject(WebConst.PAGE_URI, URI);
         modelAndView.addObject("pagingSettingResult", PagingSettingResult.getDefault());
+        modelAndView.addObject(WebConst.PAGE_URI, URI);
         return modelAndView;
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
     @PrivilegesControl(operator = OperatorDef.VIEW)
+    @RequiresPermissions(value = "base:view")
     public ApiResult<Set<UserSessionBo>> list() {
         Set<UserSessionBo> userSessionBoSet = UserOnlineContent.getOnlineUsers();
         return ApiResult.success(userSessionBoSet);

@@ -14,6 +14,7 @@ import com.dsdl.eidea.core.web.result.def.ErrorCodes;
 import com.dsdl.eidea.core.web.util.SearchHelper;
 import com.dsdl.eidea.core.web.vo.PagingSettingResult;
 import com.googlecode.genericdao.search.Search;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
@@ -42,6 +43,7 @@ public class OrgController {
 
     @RequestMapping(value = "/showList", method = RequestMethod.GET)
     @PrivilegesControl(operator = OperatorDef.VIEW, returnType = ReturnType.JSP)
+    @RequiresPermissions(value = "base:view")
     public ModelAndView showList() {
         ModelAndView modelAndView = new ModelAndView("/base/org/org");
         modelAndView.addObject("pagingSettingResult", PagingSettingResult.getDefault());
@@ -52,6 +54,7 @@ public class OrgController {
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
     @PrivilegesControl(operator = OperatorDef.VIEW)
+    @RequiresPermissions(value = "base:view")
     public ApiResult<List<OrgBo>> list(HttpSession session) {
         Search search = SearchHelper.getSearchParam(URI, session);
         List<OrgBo> orgBoList = orgService.findOrgList(search);
@@ -61,6 +64,7 @@ public class OrgController {
     @RequestMapping(value = "/get", method = RequestMethod.GET)
     @ResponseBody
     @PrivilegesControl(operator = OperatorDef.VIEW)
+    @RequiresPermissions(value = "base:view")
     public ApiResult<OrgBo> get(Integer id) {
         UserResource resource=(UserResource)session.getAttribute(WebConst.SESSION_RESOURCE);
         OrgBo orgBo = null;
@@ -75,6 +79,7 @@ public class OrgController {
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     @ResponseBody
     @PrivilegesControl(operator = OperatorDef.ADD)
+    @RequiresPermissions(value = "base:add")
     public ApiResult<OrgBo> create() {
         OrgBo orgBo = new OrgBo();
         orgBo.setIsactive("N");
@@ -88,6 +93,7 @@ public class OrgController {
     @PrivilegesControl(operator = OperatorDef.ADD)
     @RequestMapping(value = "/saveForCreated", method = RequestMethod.POST)
     @ResponseBody
+    @RequiresPermissions(value = "base:add")
     public ApiResult<OrgBo> saveForAdded(@Validated @RequestBody OrgBo orgBo) {
         UserResource resource=(UserResource)session.getAttribute(WebConst.SESSION_RESOURCE);
         if (orgService.findExistOrg(orgBo.getNo())) {
@@ -99,6 +105,7 @@ public class OrgController {
     @PrivilegesControl(operator = OperatorDef.UPDATE)
     @RequestMapping(value = "/saveForUpdated", method = RequestMethod.POST)
     @ResponseBody
+    @RequiresPermissions(value = "base:update")
     public ApiResult<OrgBo> saveForUpdated(@Validated @RequestBody OrgBo orgBo) {
         UserResource resource=(UserResource)session.getAttribute(WebConst.SESSION_RESOURCE);
         if(orgBo.getId() == null){
@@ -111,6 +118,7 @@ public class OrgController {
     @RequestMapping(value = "/deletes", method = RequestMethod.POST)
     @ResponseBody
     @PrivilegesControl(operator = OperatorDef.DELETE)
+    @RequiresPermissions(value = "base:delete")
     public ApiResult<List<OrgBo>> deletes(@RequestBody Integer[] ids, HttpSession session) {
         UserResource resource=(UserResource)session.getAttribute(WebConst.SESSION_RESOURCE);
         if (ids == null || ids.length == 0) {
@@ -123,6 +131,7 @@ public class OrgController {
     @RequestMapping(value = "/clients", method = RequestMethod.GET)
     @ResponseBody
     @PrivilegesControl(operator = OperatorDef.VIEW)
+    @RequiresPermissions(value = "base:view")
     public ApiResult<List<ClientBo>> clientList() {
         List<ClientBo> clientBoList = clientService.getClientListForActivated();
 

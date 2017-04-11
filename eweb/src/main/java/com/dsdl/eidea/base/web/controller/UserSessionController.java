@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 import com.dsdl.eidea.core.web.def.WebConst;
 import com.dsdl.eidea.core.web.util.SearchHelper;
 import com.googlecode.genericdao.search.Sort;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +30,7 @@ public class UserSessionController {
     private UserSessionService userSessionService;
 
     @RequestMapping(value = "/showList", method = RequestMethod.GET)
+    @RequiresPermissions(value = "base:view")
     public ModelAndView showList() {
         ModelAndView modelAndView = new ModelAndView("/base/userSession/userSession");
         modelAndView.addObject("pagingSettingResult", PagingSettingResult.getDefault());
@@ -38,6 +40,7 @@ public class UserSessionController {
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
+    @RequiresPermissions(value = "base:view")
     public ApiResult<List<UserSessionBo>> list(HttpSession session) {
         Search search = SearchHelper.getSearchParam(URI, session);
         search.addSort(Sort.desc("loginDate"));

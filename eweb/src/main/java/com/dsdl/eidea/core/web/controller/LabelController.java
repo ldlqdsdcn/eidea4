@@ -15,6 +15,9 @@ import com.dsdl.eidea.core.web.result.def.ErrorCodes;
 import com.dsdl.eidea.core.web.util.SearchHelper;
 import com.dsdl.eidea.core.web.vo.PagingSettingResult;
 import com.googlecode.genericdao.search.Search;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,6 +33,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/core/label")
 public class LabelController {
+    private Logger logger = LoggerFactory.getLogger(LabelController.class);
     private static final String URI = "core_label";
     @Autowired
     private LabelService labelService;
@@ -37,7 +41,7 @@ public class LabelController {
     private LanguageService languageService;
 
     @RequestMapping(value = "/showList", method = RequestMethod.GET)
-    @PrivilegesControl(operator = OperatorDef.VIEW, returnType = ReturnType.JSP)
+    @RequiresPermissions("core:view")
     public ModelAndView showList() {
         ModelAndView modelAndView = new ModelAndView("/core/label/label");
         modelAndView.addObject("pagingSettingResult", PagingSettingResult.getDefault());
@@ -47,6 +51,8 @@ public class LabelController {
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
+    @PrivilegesControl(operator = OperatorDef.VIEW)
+    @RequiresPermissions(value = "core:view")
     public ApiResult<List<LabelBo>> list(HttpSession session) {
         Search search = SearchHelper.getSearchParam(URI, session);
         List<LabelBo> labelBoList = labelService.getLabelList(search);
@@ -56,6 +62,7 @@ public class LabelController {
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     @ResponseBody
     @PrivilegesControl(operator = OperatorDef.ADD)
+    @RequiresPermissions(value = "core:add")
     public ApiResult<LabelBo> create() {
         LabelBo languageBo = new LabelBo();
         languageBo.setCreated(true);
@@ -75,6 +82,7 @@ public class LabelController {
     @RequestMapping(value = "/saveForCreated", method = RequestMethod.POST)
     @ResponseBody
     @PrivilegesControl(operator = OperatorDef.ADD)
+    @RequiresPermissions(value = "core:add")
     public ApiResult<LabelBo> saveForCreated(@RequestBody LabelBo labelBo,HttpSession session) {
         UserResource resource=(UserResource)session.getAttribute(WebConst.SESSION_RESOURCE);
         if (labelBo.getKey() == null) {
@@ -89,6 +97,7 @@ public class LabelController {
     @RequestMapping(value = "/saveForUpdated", method = RequestMethod.POST)
     @ResponseBody
     @PrivilegesControl(operator = OperatorDef.UPDATE)
+    @RequiresPermissions(value = "core:update")
     public ApiResult<LabelBo> saveForUpdated(@RequestBody LabelBo labelBo,HttpSession session) {
         labelService.save(labelBo);
         return get(labelBo.getKey(),session);
@@ -97,6 +106,7 @@ public class LabelController {
     @RequestMapping(value = "/deletes", method = RequestMethod.POST)
     @ResponseBody
     @PrivilegesControl(operator = OperatorDef.DELETE)
+    @RequiresPermissions(value = "core:delete")
     public ApiResult<List<LabelBo>> deletes(@RequestBody String[] codes, HttpSession session) {
         UserResource resource=(UserResource)session.getAttribute(WebConst.SESSION_RESOURCE);
         if (codes == null || codes.length == 0) {
@@ -108,6 +118,8 @@ public class LabelController {
 
     @RequestMapping(value = "/get", method = RequestMethod.GET)
     @ResponseBody
+    @PrivilegesControl(operator = OperatorDef.VIEW)
+    @RequiresPermissions(value = "core:view")
     public ApiResult<LabelBo> get(String key,HttpSession session) {
         UserResource resource=(UserResource)session.getAttribute(WebConst.SESSION_RESOURCE);
         LabelBo labelBo = null;

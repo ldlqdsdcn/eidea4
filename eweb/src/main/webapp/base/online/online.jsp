@@ -28,19 +28,7 @@
                         .when('/list', {templateUrl: '<c:url value="/base/online/list.tpl.jsp"/>'})
                         .otherwise({redirectTo: '/list'});
             }]);
-    app.service('PrivilegeService', function () {
-        this.hasPrivilege = function (opeartor) {
-
-            var privileges =${pagePrivileges};
-            for (var i = 0; i < privileges.length; i++) {
-                if (opeartor == privileges[i]) {
-                    return true;
-                }
-            }
-            return false;
-        }
-    });
-    app.controller('listCtrl', function ($scope, $http, PrivilegeService) {
+    app.controller('listCtrl', function ($scope, $http) {
         $scope.allList = [];
         $scope.modelList = [];
         $scope.canDel=PrivilegeService.hasPrivilege('delete');

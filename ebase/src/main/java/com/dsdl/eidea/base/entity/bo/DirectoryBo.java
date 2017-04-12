@@ -1,19 +1,17 @@
 package com.dsdl.eidea.base.entity.bo;
 
-import com.dsdl.eidea.base.entity.po.ModuleDirectoryPo;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 /**
  * Created by admin on 2016/12/19.
  */
 @Data
+@Getter
+@Setter
 public class DirectoryBo {
 
     private Integer id;
@@ -27,5 +25,7 @@ public class DirectoryBo {
     private String remark;
     @Length(min = 1,max = 1,message = "isactive.length")
     private String isactive;
+
+    private String repository;;
     private boolean created=false;
 }

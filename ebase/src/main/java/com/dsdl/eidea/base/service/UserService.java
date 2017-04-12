@@ -51,6 +51,12 @@ public interface UserService {
     boolean getExistUserName(UserBo userBo);
 
     /**
+     * 获取shiro权限
+     * @param userId
+     * @return
+     */
+    List<PermissionBo> getUserPermissionList(Integer userId);
+    /**
      * 获取登录权限
      * @param userId
      * @return
@@ -79,4 +85,11 @@ public interface UserService {
      * @return
      */
     UserContent getUserContent(String token);
+
+    /**
+     * 根据用户名获取 用户
+     * @param username
+     * @return
+     */
+    UserBo getUserByUsername(String username);
 }

@@ -9,7 +9,7 @@ import javax.persistence.*;
  * SysModuleMenu entity. @author MyEclipse Persistence Tools
  */
 @Entity
-@Table(name = "sys_module_menu", catalog = "e_idea")
+@Table(name = "sys_module_menu", catalog = "e_idea_public")
 @Getter
 @Setter
 public class ModuleMenuPo implements java.io.Serializable {

@@ -9,7 +9,7 @@ import javax.persistence.*;
  * CoreTableColumn entity. @author MyEclipse Persistence Tools
  */
 @Entity
-@Table(name = "core_table_column", catalog = "e_idea")
+@Table(name = "core_table_column", catalog = "e_idea_public")
 @Getter
 @Setter
 public class TableColumnPo implements java.io.Serializable {

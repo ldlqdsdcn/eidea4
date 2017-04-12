@@ -10,8 +10,6 @@ import com.dsdl.eidea.core.web.def.WebConst;
 import com.dsdl.eidea.util.StringUtil;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import javax.swing.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -35,22 +33,16 @@ public class SecurityHelper {
         UserContent userContent = (UserContent) request.getSession().getAttribute(WebConst.SESSION_USERCONTENT);
         VerifiedResult verifiedResult = new VerifiedResult();
         if (userContent == null) {
-            String token=request.getHeader(WebConst.HEADER_TOKEN);
-            if(StringUtil.isNotEmpty(token))
-            {
-                if(JwtUtil.validateToken(token))
-                {
-                    userContent= SpringContextHolder.getBean(UserService.class).getUserContent(token);
-                }
-                else
-                {
+            String token = request.getHeader(WebConst.HEADER_TOKEN);
+            if (StringUtil.isNotEmpty(token)) {
+                if (JwtUtil.validateToken(token)) {
+                    userContent = SpringContextHolder.getBean(UserService.class).getUserContent(token);
+                } else {
                     verifiedResult.setCanAccessed(false);
                     verifiedResult.setMessage("你需要登录");
                     return verifiedResult;
                 }
-            }
-            else
-            {
+            } else {
                 verifiedResult.setCanAccessed(false);
                 verifiedResult.setMessage("你需要登录");
                 return verifiedResult;
@@ -122,6 +114,7 @@ public class SecurityHelper {
 
         return userContent.getOrgIdList();
     }
+
 
     private boolean containsOperator(List<OperatorDef> privilegesOperatorList, OperatorDef[] hasOperatorArray) {
         for (OperatorDef operatorDef : privilegesOperatorList) {

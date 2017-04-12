@@ -1,11 +1,8 @@
 package com.dsdl.eidea.base.service.impl;
 
+import com.dsdl.eidea.base.entity.bo.*;
 import com.dsdl.eidea.core.spring.annotation.DataAccess;
 import com.dsdl.eidea.base.def.OperatorDef;
-import com.dsdl.eidea.base.entity.bo.UserBo;
-import com.dsdl.eidea.base.entity.bo.UserContent;
-import com.dsdl.eidea.base.entity.bo.UserRoleBo;
-import com.dsdl.eidea.base.entity.bo.UserSessionBo;
 import com.dsdl.eidea.base.entity.po.*;
 import com.dsdl.eidea.base.service.UserService;
 import com.dsdl.eidea.base.util.JwtUtil;
@@ -16,10 +13,7 @@ import org.modelmapper.TypeToken;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Bobo on 2016/12/17 14:02.
@@ -172,7 +166,25 @@ public class UserServiceImpl implements UserService {
         }
         return false;
     }
-
+    @Cacheable(value = "userContentCache", key = "#userId")
+    public List<PermissionBo> getUserPermissionList(Integer userId)
+    {
+        List<PermissionBo> permissionBoList=new ArrayList<>();
+        Map<String,List<OperatorDef>> privilegesMap=getUserPrivileges(userId);
+        Set<String> keySet=privilegesMap.keySet();
+        for(String key:keySet)
+        {
+            List<OperatorDef> operatorDefList=privilegesMap.get(key);
+            for(OperatorDef operatorDef:operatorDefList)
+            {
+                PermissionBo permissionBo=new PermissionBo();
+                permissionBo.setRepository(key);
+                permissionBo.setOperator(operatorDef.getKey());
+                permissionBoList.add(permissionBo);
+            }
+        }
+        return permissionBoList;
+    }
     @Override
     public Map<String, List<OperatorDef>> getUserPrivileges(Integer userId) {
 
@@ -199,12 +211,12 @@ public class UserServiceImpl implements UserService {
                     for (PrivilegesPo privilegesPo : privilegesPoList) {
                         operatorDefs.add(OperatorDef.getOperatorDefByKey(privilegesPo.getSysOperator().getNo()));
                     }
-                    if (!privilegesMap.containsKey(moduleDirectoryPo.getSysDirectory().getDirectory())) {
-                        privilegesMap.put(moduleDirectoryPo.getSysDirectory().getDirectory(), operatorDefs);
+                    if (!privilegesMap.containsKey(moduleDirectoryPo.getSysDirectory().getRepository())) {
+                        privilegesMap.put(moduleDirectoryPo.getSysDirectory().getRepository(), operatorDefs);
                     } else {
-                        List<OperatorDef> distOperatorList = privilegesMap.get(moduleDirectoryPo.getSysDirectory().getDirectory());
+                        List<OperatorDef> distOperatorList = privilegesMap.get(moduleDirectoryPo.getSysDirectory().getRepository());
                         mergeOperator(distOperatorList, operatorDefs);
-                        privilegesMap.put(moduleDirectoryPo.getSysDirectory().getDirectory(), distOperatorList);
+                        privilegesMap.put(moduleDirectoryPo.getSysDirectory().getRepository(), distOperatorList);
                     }
 
                 }
@@ -265,5 +277,25 @@ public class UserServiceImpl implements UserService {
         List<Integer> orgIdList = getCanAccessOrgList(userSessionBo.getUserId());
         UserContent userContent = new UserContent(privilegesMap, userSessionBo, token, orgIdList);
         return userContent;
+    }
+
+    @Override
+    public UserBo getUserByUsername(String username) {
+        Search search = new Search();
+        search.addFilterEqual("username", username);
+        UserPo userPo=userDao.searchUnique(search);
+        UserBo userBo = modelMapper.map(userPo, UserBo.class);
+        if (userPo != null) {
+            List<UserRoleBo> userRoleBoList = modelMapper.map(userPo.getSysUserRoles(), new TypeToken<List<UserRoleBo>>() {
+            }.getType());
+            if (userRoleBoList != null && userRoleBoList.size() > 0) {
+                Integer[] ids = new Integer[userRoleBoList.size()];
+                for (int i = 0; i < userRoleBoList.size(); i++) {
+                    ids[i] = userRoleBoList.get(i).getSysRoleId();
+                }
+                userBo.setRoleIds(ids);
+            }
+        }
+        return userBo;
     }
 }

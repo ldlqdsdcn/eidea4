@@ -55,7 +55,14 @@
                     <value>/img/</value>
                     <value>/css/</value>
                     <value>/fonts</value>
+                    <value>/error/</value>
+                    <value>/logout</value>
+                    <value>/languages</value>
+                    <value>/common/changeLanguage</value>
                 </list>
+            </property>
+            <property name="noAuthorizationUrls">
+                <list><value>/common/</value></list>
             </property>
         </bean>
     </mvc:interceptors>

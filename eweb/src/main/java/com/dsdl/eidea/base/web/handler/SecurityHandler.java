@@ -10,7 +10,7 @@ import com.dsdl.eidea.core.web.def.WebConst;
 import com.dsdl.eidea.core.web.result.ApiResult;
 import com.dsdl.eidea.core.web.result.def.ErrorCodes;
 import com.google.gson.Gson;
-import org.apache.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -24,18 +24,18 @@ import java.lang.reflect.Method;
 /**
  * Created by 刘大磊 on 2016/12/26 16:25.
  */
+@Slf4j
 public class SecurityHandler extends HandlerInterceptorAdapter {
     private static final String JSON_KEY_WORDS = "application/json;charset=UTF-8";
     private static final SecurityHelper SECURITY_HELPER = SecurityHelper.getSecurityHelper();
-    private static Logger log = Logger.getLogger(SecurityHandler.class);
     /**
      * 不需要登录系统就可以访问的界面
      */
-    private  String[] anonymousUserUrls = new String[]{"/login", "/js/", "/img/", "/css/", "/fonts", "/error/", "/logout", "/languages", "/common/changeLanguage"};
+    private  String[] anonymousUserUrls;
     /**
      * 登录以后，任何人都可以访问的界面
      */
-    private  String[] noAuthorizationUrls = new String[]{"/login", "/js/", "/img/", "/css/", "/fonts", "/common/", "/error/", "/logout", "/languages", "/common/changeLanguage"};
+    private  String[] noAuthorizationUrls;
     private static Gson GSON = new Gson();
 
     private boolean isJsonResponse(HttpServletRequest request) {
@@ -113,7 +113,7 @@ public class SecurityHandler extends HandlerInterceptorAdapter {
                 return true;
             }
         }
-        return false;
+       return containNoLoginAuthorizationUrls(servletPath);
     }
 
     /**
@@ -185,10 +185,9 @@ public class SecurityHandler extends HandlerInterceptorAdapter {
             }
         } else {
             try {
-
                 response.sendRedirect(request.getContextPath() + "/error/noprivileges.jsp");
             } catch (IOException e) {
-                log.error(e);
+               log.error("跳转 /error/noprivileges.jsp 发生错误",e);
             }
         }
     }

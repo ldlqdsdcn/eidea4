@@ -1,10 +1,8 @@
 package com.dsdl.eidea.base.web.controller;
 
-import com.dsdl.eidea.base.def.OperatorDef;
 import com.dsdl.eidea.base.entity.bo.UserBo;
 import com.dsdl.eidea.base.service.UserService;
-import com.dsdl.eidea.base.web.annotation.PrivilegesControl;
-import com.dsdl.eidea.base.web.def.ReturnType;
+import com.dsdl.eidea.base.web.util.SecurityHelper;
 import com.dsdl.eidea.base.web.vo.UserResource;
 import com.dsdl.eidea.core.web.def.WebConst;
 import com.dsdl.eidea.core.web.result.ApiResult;
@@ -33,6 +31,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/base/user")
 public class UserController {
+    private SecurityHelper securityHelper = SecurityHelper.getSecurityHelper();
     private static final String URI = "sys_user";
     @Autowired
     private UserService userService;
@@ -43,7 +42,6 @@ public class UserController {
      * @return
      */
     @RequestMapping(value = "/getUserToJsp", method = RequestMethod.GET)
-    @PrivilegesControl(operator = OperatorDef.VIEW, returnType = ReturnType.JSP)
     @RequiresPermissions(value = "user:view")
     public ModelAndView getUserToJsp() {
         ModelAndView modelAndView = new ModelAndView("/base/user/user");
@@ -60,12 +58,13 @@ public class UserController {
     @RequestMapping(value = "/getUserList", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions(value = "user:view")
-    @PrivilegesControl(operator = OperatorDef.VIEW)
     public ApiResult<List<UserBo>> getUserList(HttpServletRequest request) {
         Search search = SearchHelper.getSearchParam(URI, request.getSession());
+//        search.addFilterIn("orgId",securityHelper.getAccessOrgList(request));
         List<UserBo> userList = userService.getUserList(search);
         return ApiResult.success(userList);
     }
+
 
     /**
      * deleteUserList:用户批量删除
@@ -75,7 +74,6 @@ public class UserController {
      */
     @RequestMapping(value = "/deleteUserList", method = RequestMethod.POST)
     @ResponseBody
-    @PrivilegesControl(operator = OperatorDef.DELETE)
     @RequiresPermissions(value = "user:delete")
     public ApiResult<List<UserBo>> deleteUserList(@RequestBody Integer[] ids, HttpServletRequest request) {
         userService.deleteUserList(ids);
@@ -90,7 +88,6 @@ public class UserController {
      */
     @RequestMapping(value = "/saveUserForCreated", method = RequestMethod.POST)
     @ResponseBody
-    @PrivilegesControl(operator = OperatorDef.ADD)
     @RequiresPermissions(value = "user:add")
     public ApiResult<UserBo> saveUserForCreated(@Validated @RequestBody UserBo userBo, HttpSession session) {
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
@@ -103,7 +100,6 @@ public class UserController {
 
     @RequestMapping(value = "/saveUserForUpdated", method = RequestMethod.POST)
     @ResponseBody
-    @PrivilegesControl(operator = OperatorDef.UPDATE)
     @RequiresPermissions(value = "user:update")
     public ApiResult<UserBo> saveUserForUpdated(@Validated @RequestBody UserBo userBo, HttpSession session) {
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
@@ -141,7 +137,6 @@ public class UserController {
      */
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseBody
-    @PrivilegesControl(operator = OperatorDef.ADD)
     @RequiresPermissions(value = "user:add")
     public ApiResult<UserBo> create() {
         return ApiResult.success(new UserBo());

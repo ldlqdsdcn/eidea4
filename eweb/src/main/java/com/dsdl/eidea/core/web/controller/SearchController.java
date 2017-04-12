@@ -1,8 +1,5 @@
 package com.dsdl.eidea.core.web.controller;
 
-import com.dsdl.eidea.base.def.OperatorDef;
-import com.dsdl.eidea.base.web.annotation.PrivilegesControl;
-import com.dsdl.eidea.base.web.def.ReturnType;
 import com.dsdl.eidea.base.web.vo.UserResource;
 import com.dsdl.eidea.core.def.RelOperDef;
 import com.dsdl.eidea.core.def.SearchDataTypeDef;
@@ -17,7 +14,6 @@ import com.dsdl.eidea.core.web.result.ApiResult;
 import com.dsdl.eidea.core.web.result.def.ErrorCodes;
 import com.dsdl.eidea.core.web.util.SearchHelper;
 import com.dsdl.eidea.core.web.vo.PagingSettingResult;
-import com.dsdl.eidea.util.StringUtil;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.googlecode.genericdao.search.Search;
@@ -45,7 +41,6 @@ public class SearchController {
     @Autowired
     private SearchService searchService;
 
-    @PrivilegesControl(operator = OperatorDef.VIEW, returnType = ReturnType.JSP)
     @RequestMapping(value = "/showList", method = RequestMethod.GET)
     @RequiresPermissions(value = "search:view")
     public ModelAndView showList() {
@@ -82,7 +77,6 @@ public class SearchController {
         return ApiResult.success(searchBo);
     }
 
-    @PrivilegesControl(operator = {OperatorDef.ADD, OperatorDef.UPDATE})
     @RequestMapping(value = "/addOneColumn", method = RequestMethod.GET)
     @ResponseBody
     @RequiresPermissions(value = "search:add")
@@ -119,7 +113,6 @@ public class SearchController {
      */
     @RequestMapping(value = "/saveForCreated", method = RequestMethod.POST)
     @ResponseBody
-    @PrivilegesControl(operator = OperatorDef.ADD)
     @RequiresPermissions(value = "search:add")
     public ApiResult<SearchBo> saveForCreated(@RequestBody @Validated SearchBo searchBo) {
         searchBo = searchService.saveSearchBo(searchBo);
@@ -128,12 +121,11 @@ public class SearchController {
 
     @RequestMapping(value = "/saveForUpdated", method = RequestMethod.POST)
     @ResponseBody
-    @PrivilegesControl(operator = OperatorDef.UPDATE)
     @RequiresPermissions(value = "search:update")
-    public ApiResult<SearchBo> saveForUpdated(@RequestBody @Validated SearchBo searchBo,HttpSession session) {
-        UserResource resource=(UserResource)session.getAttribute(WebConst.SESSION_RESOURCE);
-        if(searchBo.getId()==null){
-            return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(),resource.getMessage("common.primary_key.isempty"));
+    public ApiResult<SearchBo> saveForUpdated(@RequestBody @Validated SearchBo searchBo, HttpSession session) {
+        UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
+        if (searchBo.getId() == null) {
+            return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("common.primary_key.isempty"));
         }
         searchBo = searchService.saveSearchBo(searchBo);
         return get(searchBo.getId());
@@ -141,10 +133,9 @@ public class SearchController {
 
     @RequestMapping(value = "/deletes", method = RequestMethod.POST)
     @ResponseBody
-    @PrivilegesControl(operator = OperatorDef.DELETE)
     @RequiresPermissions(value = "search:delete")
     public ApiResult<List<SearchBo>> deletes(@RequestBody Integer[] ids, HttpSession session) {
-        UserResource resource=(UserResource)session.getAttribute(WebConst.SESSION_RESOURCE);
+        UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
         if (ids == null || ids.length == 0) {
             return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("pagemenu.choose.information"));
         }

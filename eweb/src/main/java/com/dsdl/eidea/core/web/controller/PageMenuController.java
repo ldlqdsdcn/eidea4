@@ -1,11 +1,8 @@
 package com.dsdl.eidea.core.web.controller;
 
-import com.dsdl.eidea.base.def.OperatorDef;
 import com.dsdl.eidea.base.entity.bo.PageMenuBo;
 import com.dsdl.eidea.base.entity.bo.PageMenuTrlBo;
 import com.dsdl.eidea.base.service.PageMenuService;
-import com.dsdl.eidea.base.web.annotation.PrivilegesControl;
-import com.dsdl.eidea.base.web.def.ReturnType;
 import com.dsdl.eidea.base.web.vo.UserResource;
 import com.dsdl.eidea.core.entity.bo.LanguageBo;
 import com.dsdl.eidea.core.service.LanguageService;
@@ -28,6 +25,8 @@ import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
+//import com.dsdl.eidea.base.web.annotation.PrivilegesControl;
+
 /**
  * Created by admin on 2016/12/13.
  */
@@ -39,8 +38,8 @@ public class PageMenuController {
     private PageMenuService pageMenuService;
     @Autowired
     private LanguageService languageService;
+
     @RequestMapping(value = "/showList", method = RequestMethod.GET)
-    @PrivilegesControl(operator = OperatorDef.VIEW, returnType = ReturnType.JSP)
     @RequiresPermissions(value = "pagemenu:view")
     public ModelAndView showList() {
         ModelAndView modelAndView = new ModelAndView("/base/pagemenu/pagemenu");
@@ -60,12 +59,11 @@ public class PageMenuController {
 
     @RequestMapping(value = "/saveForCreated", method = RequestMethod.POST)
     @ResponseBody
-    @PrivilegesControl(operator = OperatorDef.ADD)
     @RequiresPermissions(value = "pagemenu:add")
-    public ApiResult<PageMenuBo> saveForCreated(@RequestBody PageMenuBo pageMenuBo,HttpSession session) {
+    public ApiResult<PageMenuBo> saveForCreated(@RequestBody PageMenuBo pageMenuBo, HttpSession session) {
         if (pageMenuBo.isCreated()) {
             if (pageMenuService.findExistUrl(pageMenuBo.getId())) {
-            	UserResource resource=(UserResource)session.getAttribute(WebConst.SESSION_RESOURCE);
+                UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
                 return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("pagemenu.connection.point"));
             }
         }
@@ -75,29 +73,28 @@ public class PageMenuController {
 
     @RequestMapping(value = "/saveForUpdated", method = RequestMethod.POST)
     @ResponseBody
-    @PrivilegesControl(operator = OperatorDef.UPDATE)
     @RequiresPermissions(value = "pagemenu:update")
-    public ApiResult<PageMenuBo> saveForUpdated(@RequestBody PageMenuBo pageMenuBo,HttpSession session) {
-    	if(pageMenuBo.getId()==null){
-    		UserResource resource=(UserResource)session.getAttribute(WebConst.SESSION_RESOURCE);
-    		 return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("pagemenu.primarykey.check.isnull"));
-    	}else{
-        pageMenuService.save(pageMenuBo);
-        return get(pageMenuBo.getId(), null);
-    	}
+    public ApiResult<PageMenuBo> saveForUpdated(@RequestBody PageMenuBo pageMenuBo, HttpSession session) {
+        if (pageMenuBo.getId() == null) {
+            UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
+            return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("pagemenu.primarykey.check.isnull"));
+        } else {
+            pageMenuService.save(pageMenuBo);
+            return get(pageMenuBo.getId(), null);
+        }
     }
 
     @RequestMapping(value = "/get", method = RequestMethod.GET)
     @ResponseBody
     @RequiresPermissions(value = "pagemenu:view")
-    public ApiResult<PageMenuBo> get(Integer id,HttpSession session) {
+    public ApiResult<PageMenuBo> get(Integer id, HttpSession session) {
         PageMenuBo pageMenuBo = null;
         if (id == null) {
-        	UserResource resource=(UserResource)session.getAttribute(WebConst.SESSION_RESOURCE);
-            return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(),resource.getMessage("pagemenu.primarykey.information"));
+            UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
+            return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("pagemenu.primarykey.information"));
         } else {
             pageMenuBo = pageMenuService.getPageMenuBo(id);
-            
+
         }
         return ApiResult.success(pageMenuBo);
 
@@ -106,12 +103,11 @@ public class PageMenuController {
 
     @RequestMapping(value = "/deletes", method = RequestMethod.POST)
     @ResponseBody
-    @PrivilegesControl(operator = OperatorDef.DELETE)
     @RequiresPermissions(value = "pagemenu:delete")
     public ApiResult<List<PageMenuBo>> deletes(@RequestBody Integer[] ids, HttpSession session) {
         if (ids == null) {
-        	UserResource resource=(UserResource)session.getAttribute(WebConst.SESSION_RESOURCE);
-            return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(),resource.getMessage("pagemenu.choose.information"));
+            UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
+            return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("pagemenu.choose.information"));
         }
         pageMenuService.deleteMenuById(ids);
         return list(session);
@@ -153,18 +149,17 @@ public class PageMenuController {
      */
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     @ResponseBody
-    @PrivilegesControl(operator = OperatorDef.ADD)
     @RequiresPermissions(value = "pagemenu:add")
     public ApiResult<PageMenuBo> create() {
-    	 PageMenuBo pageMenuBo=new PageMenuBo();
-         List<LanguageBo> languageBoList = languageService.findLanguageListForActivated();
-         List<PageMenuTrlBo> pagemenuList=new ArrayList<PageMenuTrlBo>();
-         	for(LanguageBo lan:languageBoList){
-         		PageMenuTrlBo pagemenu=new PageMenuTrlBo();
-         		pagemenu.setLanguageCode(lan.getCode());
-         		pagemenuList.add(pagemenu);
-         	}
-         	pageMenuBo.setPageMenuTrlBo(pagemenuList);
-            return ApiResult.success(pageMenuBo);
+        PageMenuBo pageMenuBo = new PageMenuBo();
+        List<LanguageBo> languageBoList = languageService.findLanguageListForActivated();
+        List<PageMenuTrlBo> pagemenuList = new ArrayList<PageMenuTrlBo>();
+        for (LanguageBo lan : languageBoList) {
+            PageMenuTrlBo pagemenu = new PageMenuTrlBo();
+            pagemenu.setLanguageCode(lan.getCode());
+            pagemenuList.add(pagemenu);
+        }
+        pageMenuBo.setPageMenuTrlBo(pagemenuList);
+        return ApiResult.success(pageMenuBo);
     }
 }

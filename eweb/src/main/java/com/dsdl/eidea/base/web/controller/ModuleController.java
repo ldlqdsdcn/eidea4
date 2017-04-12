@@ -1,10 +1,7 @@
 package com.dsdl.eidea.base.web.controller;
 
-import com.dsdl.eidea.base.def.OperatorDef;
 import com.dsdl.eidea.base.entity.bo.ModuleBo;
 import com.dsdl.eidea.base.service.ModuleService;
-import com.dsdl.eidea.base.web.annotation.PrivilegesControl;
-import com.dsdl.eidea.base.web.def.ReturnType;
 import com.dsdl.eidea.base.web.vo.UserResource;
 import com.dsdl.eidea.core.web.def.WebConst;
 import com.dsdl.eidea.core.web.result.ApiResult;
@@ -42,7 +39,6 @@ public class ModuleController {
      */
     @RequiresPermissions(value = "module:view")
     @RequestMapping(value = "/getModuleToJsp", method = RequestMethod.GET)
-    @PrivilegesControl(operator = OperatorDef.VIEW, returnType = ReturnType.JSP)
     public ModelAndView getModuleToJsp() {
         ModelAndView modelAndView = new ModelAndView("/base/module/module");
         modelAndView.addObject("pagingSettingResult", PagingSettingResult.getDefault());
@@ -72,7 +68,6 @@ public class ModuleController {
     @RequiresPermissions(value = "module:view")
     @RequestMapping(value = "/deleteModuleList", method = RequestMethod.POST)
     @ResponseBody
-    @PrivilegesControl(operator = OperatorDef.DELETE)
     public ApiResult<List<ModuleBo>> deleteModuleList(@RequestBody Integer[] ids, HttpSession session) {
         if (ids.length == 0) {
             UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
@@ -91,7 +86,6 @@ public class ModuleController {
     @RequiresPermissions(value = "module:add")
     @RequestMapping(value = "/saveModuleForCreated", method = RequestMethod.POST)
     @ResponseBody
-    @PrivilegesControl(operator = OperatorDef.ADD)
     public ApiResult<ModuleBo> saveModuleForCreated(@RequestBody ModuleBo moduleBo, HttpSession session) {
         if (moduleBo.isCreated()) {
             if (moduleService.findExistId(moduleBo.getId())) {
@@ -106,7 +100,6 @@ public class ModuleController {
     @RequiresPermissions(value = "module:update")
     @RequestMapping(value = "/saveModuleForUpdated", method = RequestMethod.POST)
     @ResponseBody
-    @PrivilegesControl(operator = OperatorDef.UPDATE)
     public ApiResult<ModuleBo> saveModuleForUpdated(@RequestBody ModuleBo moduleBo, HttpSession session) {
         if (moduleBo.getId() == null) {
             UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
@@ -142,10 +135,9 @@ public class ModuleController {
      *
      * @return
      */
-    @RequiresPermissions(value = "module:add")
+    @RequiresPermissions(value = "base:add")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseBody
-    @PrivilegesControl(operator = OperatorDef.ADD)
     public ApiResult<ModuleBo> create() {
         return ApiResult.success(new ModuleBo());
     }

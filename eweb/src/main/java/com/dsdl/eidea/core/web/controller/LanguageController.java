@@ -1,8 +1,5 @@
 package com.dsdl.eidea.core.web.controller;
 
-import com.dsdl.eidea.base.def.OperatorDef;
-import com.dsdl.eidea.base.web.annotation.PrivilegesControl;
-import com.dsdl.eidea.base.web.def.ReturnType;
 import com.dsdl.eidea.base.web.vo.UserResource;
 import com.dsdl.eidea.core.entity.bo.LanguageBo;
 import com.dsdl.eidea.core.entity.bo.LanguageTrlBo;
@@ -62,7 +59,7 @@ public class LanguageController {
     @RequiresPermissions(value = "language:view")
     public ApiResult<LanguageBo> get(String code) {
         LanguageBo languageBo = null;
-        UserResource resource=(UserResource)session.getAttribute(WebConst.SESSION_RESOURCE);
+        UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
         if (StringUtil.isEmpty(code)) {
             return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("client.msg.primary_key_is_empty"));
         } else {
@@ -73,7 +70,6 @@ public class LanguageController {
 
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     @ResponseBody
-    @PrivilegesControl(operator = OperatorDef.ADD)
     @RequiresPermissions(value = "language:add")
     public ApiResult<LanguageBo> create() {
         LanguageBo languageBo = new LanguageBo();
@@ -96,11 +92,10 @@ public class LanguageController {
      */
     @RequestMapping(value = "/saveForUpdated", method = RequestMethod.POST)
     @ResponseBody
-    @PrivilegesControl(operator = OperatorDef.UPDATE)
     @RequiresPermissions(value = "language:update")
     public ApiResult<LanguageBo> saveForUpdated(@RequestBody LanguageBo languageBo) {
-        UserResource resource=(UserResource)session.getAttribute(WebConst.SESSION_RESOURCE);
-        if(languageBo.getCode() == null || languageBo.getCode().isEmpty()){
+        UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
+        if (languageBo.getCode() == null || languageBo.getCode().isEmpty()) {
             return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("common.primary_key.isempty"));
         }
         languageService.save(languageBo);
@@ -109,10 +104,9 @@ public class LanguageController {
 
     @RequestMapping(value = "/saveForCreated", method = RequestMethod.POST)
     @ResponseBody
-    @PrivilegesControl(operator = OperatorDef.ADD)
     @RequiresPermissions(value = "language:add")
     public ApiResult<LanguageBo> saveForCreated(@RequestBody LanguageBo languageBo) {
-        UserResource resource=(UserResource)session.getAttribute(WebConst.SESSION_RESOURCE);
+        UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
         if (languageService.findExistLanguage(languageBo.getCode())) {
             return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("language.msg.code_exists"));
         }
@@ -122,10 +116,9 @@ public class LanguageController {
 
     @RequestMapping(value = "/deletes", method = RequestMethod.POST)
     @ResponseBody
-    @PrivilegesControl(operator = OperatorDef.DELETE)
     @RequiresPermissions(value = "language:delete")
     public ApiResult<List<LanguageBo>> deletes(@RequestBody String[] codes, HttpSession session) {
-        UserResource resource=(UserResource)session.getAttribute(WebConst.SESSION_RESOURCE);
+        UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
         if (codes == null || codes.length == 0) {
             return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("client.msg.select_delete"));
         }

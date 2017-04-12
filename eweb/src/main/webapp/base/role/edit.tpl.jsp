@@ -72,7 +72,7 @@
 
                                 </td>
                                 <td ng-repeat="privilegeBo in moduleRoleBo.privilegeBoList track by $index">
-                                    <input type="checkbox" ng-model="privilegeBo.checked" ng-true-value = "true" ng-false-value="false">
+                                    <input type="checkbox" ng-model="privilegeBo.checked" >
                                     {{privilegeBo.operatorName}}
                                 </td>
 
@@ -96,7 +96,7 @@
                             <tr ng-repeat="roleOrg in  roleBo.roleOrgAccessBoList track by $index"
                                 ng-class-even="success">
                                 <td class="form-group">
-                                    <input type="checkbox" ng-model="roleOrg.checked" ng-true-value="true" ng-false-value="false" >
+                                    <input type="checkbox" ng-model="roleOrg.checked" >
                                 </td>
                                 <td>
                                     {{roleOrg.orgName}}

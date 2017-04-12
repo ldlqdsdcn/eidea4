@@ -1,14 +1,9 @@
 package com.dsdl.eidea.core.web.controller;
 
-import com.dsdl.eidea.base.def.OperatorDef;
-import com.dsdl.eidea.base.web.annotation.PrivilegesControl;
-import com.dsdl.eidea.base.web.def.ReturnType;
 import com.dsdl.eidea.base.web.vo.UserResource;
 import com.dsdl.eidea.core.def.JavaDataType;
-import com.dsdl.eidea.core.def.JdbcType;
 import com.dsdl.eidea.core.entity.bo.TableBo;
 import com.dsdl.eidea.core.entity.bo.TableMetaDataBo;
-import com.dsdl.eidea.core.entity.po.TablePo;
 import com.dsdl.eidea.core.service.TableService;
 import com.dsdl.eidea.core.web.def.WebConst;
 import com.dsdl.eidea.core.web.result.ApiResult;
@@ -28,7 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
-import java.util.*;
+import java.util.List;
 
 /**
  * Created by 刘大磊 on 2016/12/6 16:24.
@@ -43,7 +38,6 @@ public class TableController {
     private HttpSession session;
 
     @RequestMapping(value = "/showList", method = RequestMethod.GET)
-    @PrivilegesControl(operator = OperatorDef.VIEW, returnType = ReturnType.JSP)
     @RequiresPermissions(value = "table:view")
     public ModelAndView showList() {
         ModelAndView modelAndView = new ModelAndView("/core/table/table");
@@ -51,6 +45,7 @@ public class TableController {
         modelAndView.addObject(WebConst.PAGE_URI, URI);
         return modelAndView;
     }
+
     @RequiresPermissions("table:view")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
@@ -82,11 +77,10 @@ public class TableController {
      */
     @RequestMapping(value = "/saveForUpdated", method = RequestMethod.POST)
     @ResponseBody
-    @PrivilegesControl(operator = OperatorDef.UPDATE)
     @RequiresPermissions(value = "table:update")
     public ApiResult<TableBo> saveForUpdated(@RequestBody TableBo tableBo) {
-        UserResource resource=(UserResource)session.getAttribute(WebConst.SESSION_RESOURCE);
-        if(tableBo.getId() == null){
+        UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
+        if (tableBo.getId() == null) {
             return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("common.primary_key.isempty"));
         }
         tableBo = tableService.saveTableBo(tableBo);
@@ -95,7 +89,6 @@ public class TableController {
 
     @RequestMapping(value = "/saveForCreated", method = RequestMethod.POST)
     @ResponseBody
-    @PrivilegesControl(operator = OperatorDef.ADD)
     @RequiresPermissions(value = "table:add")
     public ApiResult<TableBo> saveForCreated(@RequestBody TableBo tableBo) {
         tableBo = tableService.saveTableBo(tableBo);
@@ -104,10 +97,9 @@ public class TableController {
 
     @RequestMapping(value = "/deletes", method = RequestMethod.POST)
     @ResponseBody
-    @PrivilegesControl(operator = OperatorDef.DELETE)
     @RequiresPermissions(value = "table:delete")
     public ApiResult<List<TableBo>> deletes(@RequestBody Integer[] ids, HttpSession session) {
-        UserResource resource=(UserResource)session.getAttribute(WebConst.SESSION_RESOURCE);
+        UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
         if (ids == null || ids.length == 0) {
             return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("client.msg.select_delete"));
         }
@@ -141,7 +133,6 @@ public class TableController {
 
     @RequestMapping(value = "/saveTableInfo", method = RequestMethod.POST)
     @ResponseBody
-    @PrivilegesControl(operator = OperatorDef.ADD)
     @RequiresPermissions(value = "table:add")
     public ApiResult<TableMetaDataBo> saveTableInfo(@RequestBody TableMetaDataBo tableInfo) {
         try {

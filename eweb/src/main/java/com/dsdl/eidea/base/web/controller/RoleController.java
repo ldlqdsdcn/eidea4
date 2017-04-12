@@ -1,10 +1,7 @@
 package com.dsdl.eidea.base.web.controller;
 
-import com.dsdl.eidea.base.def.OperatorDef;
 import com.dsdl.eidea.base.entity.bo.RoleBo;
 import com.dsdl.eidea.base.service.RoleService;
-import com.dsdl.eidea.base.web.annotation.PrivilegesControl;
-import com.dsdl.eidea.base.web.def.ReturnType;
 import com.dsdl.eidea.base.web.vo.UserResource;
 import com.dsdl.eidea.core.web.def.WebConst;
 import com.dsdl.eidea.core.web.result.ApiResult;
@@ -32,7 +29,6 @@ public class RoleController {
     private RoleService roleService;
 
     @RequestMapping(value = "/showList", method = RequestMethod.GET)
-    @PrivilegesControl(operator = OperatorDef.VIEW, returnType = ReturnType.JSP)
     @RequiresPermissions(value = "role:view")
     public ModelAndView showList() {
         ModelAndView modelAndView = new ModelAndView("/base/role/role");
@@ -50,7 +46,6 @@ public class RoleController {
         return ApiResult.success(roleBoList);
     }
 
-    @PrivilegesControl(operator = OperatorDef.ADD)
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     @ResponseBody
     @RequiresPermissions(value = "role:add")
@@ -61,7 +56,6 @@ public class RoleController {
 
     @RequestMapping(value = "/saveForCreated", method = RequestMethod.POST)
     @ResponseBody
-    @PrivilegesControl(operator = OperatorDef.ADD)
     @RequiresPermissions(value = "role:add")
     public ApiResult<RoleBo> saveForCreated(@RequestBody RoleBo roleBo, HttpSession session) {
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
@@ -74,7 +68,6 @@ public class RoleController {
 
     @RequestMapping(value = "/saveForUpdated", method = RequestMethod.POST)
     @ResponseBody
-    @PrivilegesControl(operator = OperatorDef.UPDATE)
     @RequiresPermissions(value = "role:update")
     public ApiResult<RoleBo> saveForUpdated(@RequestBody RoleBo roleBo, HttpSession session) {
         roleService.save(roleBo);
@@ -95,7 +88,6 @@ public class RoleController {
         return ApiResult.success(roleBo);
     }
 
-    @PrivilegesControl(operator = OperatorDef.DELETE)
     @RequestMapping(value = "/deletes", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions(value = "role:delete")

@@ -1,11 +1,8 @@
 package com.dsdl.eidea.base.web.controller;
 
 import com.dsdl.eidea.base.def.ActivateDef;
-import com.dsdl.eidea.base.def.OperatorDef;
 import com.dsdl.eidea.base.entity.bo.ClientBo;
 import com.dsdl.eidea.base.service.ClientService;
-import com.dsdl.eidea.base.web.annotation.PrivilegesControl;
-import com.dsdl.eidea.base.web.def.ReturnType;
 import com.dsdl.eidea.core.web.controller.BaseController;
 import com.dsdl.eidea.core.web.def.WebConst;
 import com.dsdl.eidea.core.web.result.ApiResult;
@@ -35,6 +32,7 @@ public class ClientController extends BaseController {
     private static final String URI = "sys_client";
     @Autowired
     private ClientService clientService;
+
     @RequestMapping(value = "/showList", method = RequestMethod.GET)
     @RequiresPermissions("client:view")
     public ModelAndView showList() {
@@ -60,7 +58,7 @@ public class ClientController extends BaseController {
     public ApiResult<ClientBo> get(Integer id) {
         ClientBo clientBo = null;
         if (id == null) {
-            return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(),getMessage("common.errror.get_object",getLabel("client.title")));
+            return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), getMessage("common.errror.get_object", getLabel("client.title")));
         } else {
             clientBo = clientService.getClientBo(id);
         }
@@ -84,7 +82,7 @@ public class ClientController extends BaseController {
     @RequestMapping(value = "/saveForCreated", method = RequestMethod.POST)
     @ResponseBody
     public ApiResult<ClientBo> saveForCreate(@Validated @RequestBody ClientBo clientBo) {
-       if (clientService.findExistClient(clientBo.getNo())) {
+        if (clientService.findExistClient(clientBo.getNo())) {
             return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), getMessage("client.msg.client_code_exists"));
         }
         clientService.save(clientBo);
@@ -96,7 +94,7 @@ public class ClientController extends BaseController {
     @ResponseBody
     public ApiResult<ClientBo> saveForUpdate(@Validated @RequestBody ClientBo clientBo) {
 
-        if(clientBo.getId() == null){
+        if (clientBo.getId() == null) {
             return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), getMessage("common.primary_key.isempty"));
         }
         clientService.save(clientBo);

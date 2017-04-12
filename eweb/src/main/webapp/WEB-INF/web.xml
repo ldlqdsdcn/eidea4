@@ -82,5 +82,7 @@
     <welcome-file-list>
         <welcome-file>/home</welcome-file>
     </welcome-file-list>
-
+    <session-config>
+        <session-timeout>30</session-timeout>
+    </session-config>
 </web-app>

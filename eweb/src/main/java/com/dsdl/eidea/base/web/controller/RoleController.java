@@ -33,7 +33,7 @@ public class RoleController {
 
     @RequestMapping(value = "/showList", method = RequestMethod.GET)
     @PrivilegesControl(operator = OperatorDef.VIEW, returnType = ReturnType.JSP)
-    @RequiresPermissions(value = "core:view")
+    @RequiresPermissions(value = "role:view")
     public ModelAndView showList() {
         ModelAndView modelAndView = new ModelAndView("/base/role/role");
         modelAndView.addObject("pagingSettingResult", PagingSettingResult.getDefault());
@@ -43,7 +43,7 @@ public class RoleController {
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
-    @RequiresPermissions(value = "core:view")
+    @RequiresPermissions(value = "role:view")
     public ApiResult<List<RoleBo>> list(HttpSession session) {
         Search search = SearchHelper.getSearchParam(URI, session);
         List<RoleBo> roleBoList = roleService.getRoleList(search);
@@ -53,7 +53,7 @@ public class RoleController {
     @PrivilegesControl(operator = OperatorDef.ADD)
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     @ResponseBody
-    @RequiresPermissions(value = "core:add")
+    @RequiresPermissions(value = "role:add")
     public ApiResult<RoleBo> create() {
         RoleBo roleBo = roleService.getInitRoleBo(null);
         return ApiResult.success(roleBo);
@@ -62,7 +62,7 @@ public class RoleController {
     @RequestMapping(value = "/saveForCreated", method = RequestMethod.POST)
     @ResponseBody
     @PrivilegesControl(operator = OperatorDef.ADD)
-    @RequiresPermissions(value = "core:add")
+    @RequiresPermissions(value = "role:add")
     public ApiResult<RoleBo> saveForCreated(@RequestBody RoleBo roleBo, HttpSession session) {
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
         if (roleService.findExistClient(roleBo.getName())) {
@@ -75,7 +75,7 @@ public class RoleController {
     @RequestMapping(value = "/saveForUpdated", method = RequestMethod.POST)
     @ResponseBody
     @PrivilegesControl(operator = OperatorDef.UPDATE)
-    @RequiresPermissions(value = "core:update")
+    @RequiresPermissions(value = "role:update")
     public ApiResult<RoleBo> saveForUpdated(@RequestBody RoleBo roleBo, HttpSession session) {
         roleService.save(roleBo);
         return get(roleBo.getId(), session);
@@ -83,7 +83,7 @@ public class RoleController {
 
     @RequestMapping(value = "/get", method = RequestMethod.GET)
     @ResponseBody
-    @RequiresPermissions(value = "core:view")
+    @RequiresPermissions(value = "role:view")
     public ApiResult<RoleBo> get(Integer id, HttpSession session) {
         RoleBo roleBo = null;
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
@@ -98,7 +98,7 @@ public class RoleController {
     @PrivilegesControl(operator = OperatorDef.DELETE)
     @RequestMapping(value = "/deletes", method = RequestMethod.POST)
     @ResponseBody
-    @RequiresPermissions(value = "core:delete")
+    @RequiresPermissions(value = "role:delete")
     public ApiResult<List<RoleBo>> deletes(@RequestBody Integer[] ids, HttpSession session) {
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
         if (ids == null || ids.length == 0) {

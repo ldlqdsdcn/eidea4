@@ -9,7 +9,7 @@ import javax.persistence.*;
  * CoreMessageTrl entity. @author MyEclipse Persistence Tools
  */
 @Entity
-@Table(name = "core_message_trl", catalog = "e_idea")
+@Table(name = "core_message_trl", catalog = "e_idea_public")
 @Getter
 @Setter
 public class MessageTrlPo implements java.io.Serializable {

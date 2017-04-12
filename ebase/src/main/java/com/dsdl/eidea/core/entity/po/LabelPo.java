@@ -19,7 +19,7 @@ import javax.persistence.Table;
  * CoreLabel entity. @author MyEclipse Persistence Tools
  */
 @Entity
-@Table(name = "core_label", catalog = "e_idea")
+@Table(name = "core_label", catalog = "e_idea_public")
 @Setter
 @Getter
 public class LabelPo implements java.io.Serializable {

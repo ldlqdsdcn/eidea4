@@ -40,7 +40,7 @@ public class ModuleController {
      *
      * @return
      */
-    @RequiresPermissions(value = "base:view")
+    @RequiresPermissions(value = "module:view")
     @RequestMapping(value = "/getModuleToJsp", method = RequestMethod.GET)
     @PrivilegesControl(operator = OperatorDef.VIEW, returnType = ReturnType.JSP)
     public ModelAndView getModuleToJsp() {
@@ -55,7 +55,7 @@ public class ModuleController {
      * @param
      * @return
      */
-    @RequiresPermissions(value = "base:view")
+    @RequiresPermissions(value = "module:view")
     @RequestMapping(value = "/getModuleList", method = RequestMethod.POST)
     @ResponseBody
     public ApiResult<List<ModuleBo>> getModuleList() {
@@ -69,7 +69,7 @@ public class ModuleController {
      * @param ids
      * @return
      */
-    @RequiresPermissions(value = "base:view")
+    @RequiresPermissions(value = "module:view")
     @RequestMapping(value = "/deleteModuleList", method = RequestMethod.POST)
     @ResponseBody
     @PrivilegesControl(operator = OperatorDef.DELETE)
@@ -88,7 +88,7 @@ public class ModuleController {
      * @param moduleBo
      * @return
      */
-    @RequiresPermissions(value = "base:add")
+    @RequiresPermissions(value = "module:add")
     @RequestMapping(value = "/saveModuleForCreated", method = RequestMethod.POST)
     @ResponseBody
     @PrivilegesControl(operator = OperatorDef.ADD)
@@ -103,7 +103,7 @@ public class ModuleController {
         return getModule(moduleBo.getId(), session);
     }
 
-    @RequiresPermissions(value = "base:update")
+    @RequiresPermissions(value = "module:update")
     @RequestMapping(value = "/saveModuleForUpdated", method = RequestMethod.POST)
     @ResponseBody
     @PrivilegesControl(operator = OperatorDef.UPDATE)
@@ -123,7 +123,7 @@ public class ModuleController {
      * @param id
      * @return
      */
-    @RequiresPermissions(value = "base:view")
+    @RequiresPermissions(value = "module:view")
     @RequestMapping(value = "/getModule", method = RequestMethod.POST)
     @ResponseBody
     public ApiResult<ModuleBo> getModule(Integer id, HttpSession session) {
@@ -142,7 +142,7 @@ public class ModuleController {
      *
      * @return
      */
-    @RequiresPermissions(value = "base:add")
+    @RequiresPermissions(value = "module:add")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseBody
     @PrivilegesControl(operator = OperatorDef.ADD)

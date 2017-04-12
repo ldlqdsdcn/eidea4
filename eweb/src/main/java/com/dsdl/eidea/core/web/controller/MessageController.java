@@ -44,7 +44,7 @@ public class MessageController {
 
     @RequestMapping(value = "/showList", method = RequestMethod.GET)
     @PrivilegesControl(operator = OperatorDef.VIEW, returnType = ReturnType.JSP)
-    @RequiresPermissions(value = "core:view")
+    @RequiresPermissions(value = "message:view")
     public ModelAndView showList() {
         ModelAndView modelAndView = new ModelAndView("/core/message/message");
         modelAndView.addObject("pagingSettingResult", PagingSettingResult.getDefault());
@@ -54,7 +54,7 @@ public class MessageController {
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
-    @RequiresPermissions(value = "core:view")
+    @RequiresPermissions(value = "message:view")
     public ApiResult<List<MessageBo>> list(HttpSession session) {
         Search search = SearchHelper.getSearchParam(URI, session);
         List<MessageBo> messageBoList = messageService.findMessage(search);
@@ -64,7 +64,7 @@ public class MessageController {
     @RequestMapping(value = "/deletes", method = RequestMethod.POST)
     @ResponseBody
     @PrivilegesControl(operator = OperatorDef.DELETE)
-    @RequiresPermissions(value = "core:delete")
+    @RequiresPermissions(value = "message:delete")
     public ApiResult<List<MessageBo>> deletes(@RequestBody String[] keys, HttpSession session) {
         UserResource resource=(UserResource)session.getAttribute(WebConst.SESSION_RESOURCE);
         if (keys == null || keys.length == 0) {
@@ -76,7 +76,7 @@ public class MessageController {
 
     @RequestMapping(value = "/get", method = RequestMethod.GET)
     @ResponseBody
-    @RequiresPermissions(value = "core:view")
+    @RequiresPermissions(value = "message:view")
     public ApiResult<MessageBo> get(String key,HttpSession session) {
         UserResource resource=(UserResource)session.getAttribute(WebConst.SESSION_RESOURCE);
         MessageBo messageBo = null;
@@ -91,7 +91,7 @@ public class MessageController {
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     @ResponseBody
     @PrivilegesControl(operator = OperatorDef.ADD)
-    @RequiresPermissions(value = "core:add")
+    @RequiresPermissions(value = "message:add")
     public ApiResult<MessageBo> create() {
         MessageBo messageBo = new MessageBo();
         messageBo.setCreated(true);
@@ -110,7 +110,7 @@ public class MessageController {
     @RequestMapping(value = "/saveForCreated", method = RequestMethod.POST)
     @ResponseBody
     @PrivilegesControl(operator = OperatorDef.ADD)
-    @RequiresPermissions(value = "core:add")
+    @RequiresPermissions(value = "message:add")
     public ApiResult<MessageBo> saveForCreated(@RequestBody MessageBo messageBo,HttpSession session) {
         UserResource resource=(UserResource)session.getAttribute(WebConst.SESSION_RESOURCE);
         if (messageBo.isCreated()) {
@@ -126,7 +126,7 @@ public class MessageController {
     @RequestMapping(value = "/saveForUpdated", method = RequestMethod.POST)
     @ResponseBody
     @PrivilegesControl(operator = OperatorDef.UPDATE)
-    @RequiresPermissions(value = "core:update")
+    @RequiresPermissions(value = "message:update")
     public ApiResult<MessageBo> saveForUpdated(@RequestBody MessageBo messageBo,HttpSession session) {
         messageService.save(messageBo);
         return get(messageBo.getKey(),session);

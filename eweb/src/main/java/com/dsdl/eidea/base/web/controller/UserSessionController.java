@@ -30,7 +30,7 @@ public class UserSessionController {
     private UserSessionService userSessionService;
 
     @RequestMapping(value = "/showList", method = RequestMethod.GET)
-    @RequiresPermissions(value = "base:view")
+    @RequiresPermissions(value = "userSession:view")
     public ModelAndView showList() {
         ModelAndView modelAndView = new ModelAndView("/base/userSession/userSession");
         modelAndView.addObject("pagingSettingResult", PagingSettingResult.getDefault());
@@ -40,7 +40,7 @@ public class UserSessionController {
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
-    @RequiresPermissions(value = "base:view")
+    @RequiresPermissions(value = "userSession:view")
     public ApiResult<List<UserSessionBo>> list(HttpSession session) {
         Search search = SearchHelper.getSearchParam(URI, session);
         search.addSort(Sort.desc("loginDate"));

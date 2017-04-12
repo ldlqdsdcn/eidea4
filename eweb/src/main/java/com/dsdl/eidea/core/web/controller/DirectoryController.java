@@ -35,7 +35,7 @@ public class DirectoryController {
     private DirectoryService directoryService;
 
     @RequestMapping(value = "/showList", method = RequestMethod.GET)
-    @RequiresPermissions(value = "base:view")
+    @RequiresPermissions(value = "directory:view")
     @PrivilegesControl(operator = OperatorDef.VIEW, returnType = ReturnType.JSP)
     public ModelAndView showList() {
         ModelAndView modelAndView = new ModelAndView("/base/directory/directory");
@@ -46,7 +46,7 @@ public class DirectoryController {
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
-    @RequiresPermissions(value = "base:view")
+    @RequiresPermissions(value = "directory:view")
     public ApiResult<List<DirectoryBo>> list(HttpSession session) {
         Search search = SearchHelper.getSearchParam(URI, session);
         List<DirectoryBo> directoryBoList = directoryService.findDirectory(search);
@@ -56,7 +56,7 @@ public class DirectoryController {
     @RequestMapping(value = "/deletes", method = RequestMethod.POST)
     @ResponseBody
     @PrivilegesControl(operator = OperatorDef.DELETE)
-    @RequiresPermissions(value = "base:delete")
+    @RequiresPermissions(value = "directory:delete")
     public ApiResult<List<DirectoryBo>> deletes(@RequestBody Integer[] ids, HttpSession session) {
         UserResource resource=(UserResource)session.getAttribute(WebConst.SESSION_RESOURCE);
         if (ids == null) {
@@ -69,7 +69,7 @@ public class DirectoryController {
     @RequestMapping(value = "/saveForCreated", method = RequestMethod.POST)
     @ResponseBody
     @PrivilegesControl(operator = OperatorDef.ADD)
-    @RequiresPermissions(value = "base:add")
+    @RequiresPermissions(value = "directory:add")
     public ApiResult<DirectoryBo> saveForCreated(@RequestBody DirectoryBo directoryBo,HttpSession session) {
         UserResource resource=(UserResource)session.getAttribute(WebConst.SESSION_RESOURCE);
         if (directoryBo.isCreated()) {
@@ -88,7 +88,7 @@ public class DirectoryController {
     @RequestMapping(value = "/saveForUpdated", method = RequestMethod.POST)
     @ResponseBody
     @PrivilegesControl(operator = OperatorDef.UPDATE)
-    @RequiresPermissions(value = "base:update")
+    @RequiresPermissions(value = "directory:update")
     public ApiResult<DirectoryBo> saveForUpdated(@RequestBody DirectoryBo directoryBo,HttpSession session) {
         UserResource resource=(UserResource)session.getAttribute(WebConst.SESSION_RESOURCE);
         if(directoryBo.getId()==null){
@@ -104,7 +104,7 @@ public class DirectoryController {
 
     @RequestMapping(value = "/get", method = RequestMethod.GET)
     @ResponseBody
-    @RequiresPermissions(value = "base:view")
+    @RequiresPermissions(value = "directory:view")
     public ApiResult<DirectoryBo> get(Integer id,HttpSession session) {
         UserResource resource=(UserResource)session.getAttribute(WebConst.SESSION_RESOURCE);
         DirectoryBo directoryBo = null;
@@ -120,6 +120,7 @@ public class DirectoryController {
     @RequestMapping(value = "create", method = RequestMethod.GET)
     @ResponseBody
     @PrivilegesControl(operator = OperatorDef.ADD)
+    @RequiresPermissions(value = "directory:add")
     public ApiResult<DirectoryBo> create() {
         DirectoryBo directoryBo = new DirectoryBo();
         directoryBo.setCreated(true);

@@ -44,7 +44,7 @@ public class UserController {
      */
     @RequestMapping(value = "/getUserToJsp", method = RequestMethod.GET)
     @PrivilegesControl(operator = OperatorDef.VIEW, returnType = ReturnType.JSP)
-    @RequiresPermissions(value = "common:view")
+    @RequiresPermissions(value = "user:view")
     public ModelAndView getUserToJsp() {
         ModelAndView modelAndView = new ModelAndView("/base/user/user");
         modelAndView.addObject(WebConst.PAGE_URI, URI);
@@ -59,7 +59,7 @@ public class UserController {
      */
     @RequestMapping(value = "/getUserList", method = RequestMethod.POST)
     @ResponseBody
-    @RequiresPermissions(value = "common:view")
+    @RequiresPermissions(value = "user:view")
     @PrivilegesControl(operator = OperatorDef.VIEW)
     public ApiResult<List<UserBo>> getUserList(HttpServletRequest request) {
         Search search = SearchHelper.getSearchParam(URI, request.getSession());
@@ -76,7 +76,7 @@ public class UserController {
     @RequestMapping(value = "/deleteUserList", method = RequestMethod.POST)
     @ResponseBody
     @PrivilegesControl(operator = OperatorDef.DELETE)
-    @RequiresPermissions(value = "common:delete")
+    @RequiresPermissions(value = "user:delete")
     public ApiResult<List<UserBo>> deleteUserList(@RequestBody Integer[] ids, HttpServletRequest request) {
         userService.deleteUserList(ids);
         return getUserList(request);
@@ -91,7 +91,7 @@ public class UserController {
     @RequestMapping(value = "/saveUserForCreated", method = RequestMethod.POST)
     @ResponseBody
     @PrivilegesControl(operator = OperatorDef.ADD)
-    @RequiresPermissions(value = "common:add")
+    @RequiresPermissions(value = "user:add")
     public ApiResult<UserBo> saveUserForCreated(@Validated @RequestBody UserBo userBo, HttpSession session) {
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
         if (userService.findExistByUsername(userBo.getUsername())) {
@@ -122,7 +122,7 @@ public class UserController {
      */
     @RequestMapping(value = "/getUser", method = RequestMethod.POST)
     @ResponseBody
-    @RequiresPermissions(value = "common:view")
+    @RequiresPermissions(value = "user:view")
     public ApiResult<UserBo> getUser(Integer id, HttpSession session) {
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
         UserBo userBo = null;
@@ -142,7 +142,7 @@ public class UserController {
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseBody
     @PrivilegesControl(operator = OperatorDef.ADD)
-    @RequiresPermissions(value = "common:add")
+    @RequiresPermissions(value = "user:add")
     public ApiResult<UserBo> create() {
         return ApiResult.success(new UserBo());
     }
@@ -155,7 +155,7 @@ public class UserController {
      */
     @RequestMapping(value = "/getExistUserName", method = RequestMethod.POST)
     @ResponseBody
-    @RequiresPermissions(value = "common:view")
+    @RequiresPermissions(value = "user:view")
     public ApiResult<Boolean> getExistUserName(@RequestBody UserBo userBo, HttpSession session) {
         boolean flag = true;
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);

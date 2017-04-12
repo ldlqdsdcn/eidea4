@@ -30,7 +30,7 @@ public class UserOnlineController {
 
     @RequestMapping(value = "/showList", method = RequestMethod.GET)
     @PrivilegesControl(operator = OperatorDef.VIEW, returnType = ReturnType.JSP)
-    @RequiresPermissions(value = "base:view")
+    @RequiresPermissions(value = "online:view")
     public ModelAndView showList() {
         ModelAndView modelAndView = new ModelAndView("/base/online/online");
         modelAndView.addObject("pagingSettingResult", PagingSettingResult.getDefault());
@@ -41,7 +41,7 @@ public class UserOnlineController {
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
     @PrivilegesControl(operator = OperatorDef.VIEW)
-    @RequiresPermissions(value = "base:view")
+    @RequiresPermissions(value = "online:view")
     public ApiResult<Set<UserSessionBo>> list() {
         Set<UserSessionBo> userSessionBoSet = UserOnlineContent.getOnlineUsers();
         return ApiResult.success(userSessionBoSet);

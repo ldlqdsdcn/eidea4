@@ -25,8 +25,8 @@
         $scope.allList = [];
         $scope.modelList = [];
         $scope.delFlag = false;
-        $scope.canDel = PrivilegeService.hasPrivilege('delete');
-        $scope.canAdd = PrivilegeService.hasPrivilege('add');
+        $scope.canDel = PrivilegeService.hasPrivilege('message:delete');
+        $scope.canAdd = PrivilegeService.hasPrivilege('message:add');
         $http.get("<c:url value="/core/message/list"/>")
                 .success(function (response) {
                     if (response.success) {
@@ -119,7 +119,7 @@
     app.controller('editCtrl', function ($scope, $http, $routeParams) {
         $scope.message= '';
         $scope.messageBo = {};
-        $scope.canAdd = PrivilegeService.hasPrivilege('add');
+        $scope.canAdd = PrivilegeService.hasPrivilege('message:add');
         $scope.canSave = false;
         var url = "<c:url value="/core/message/create"/>";
         if ($routeParams.key != null) {
@@ -129,7 +129,7 @@
                 .success(function (response) {
                     if (response.success) {
                         $scope.messageBo = response.data;
-                        $scope.canSave = (PrivilegeService.hasPrivilege('add') && $scope.messageBo.created) || PrivilegeService.hasPrivilege('update');
+                        $scope.canSave = (PrivilegeService.hasPrivilege('message:add') && $scope.messageBo.created) || PrivilegeService.hasPrivilege('message:update');
                     }
                     else {
                         bootbox.alert(response.message);

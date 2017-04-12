@@ -170,7 +170,7 @@
                     .success(function (response) {
                         if (response.success) {
                             $scope.clientBo = response.data;
-                            $scope.canSave=(PrivilegeService.hasPrivilege('add')&&$scope.clientBo.id==null)||PrivilegeService.hasPrivilege('update');
+                            $scope.canSave=(PrivilegeService.hasPrivilege('client:add')&&$scope.clientBo.id==null)||PrivilegeService.hasPrivilege('client:update');
                         }
                         else {
                             bootbox.alert(response.message);

@@ -12,7 +12,9 @@ public class WebConst {
     public static final String SESSION_ACTUALUSER="actualUser";
     public static final String SESSION_LEFTMENU="menuString";
     public static final String PAGE_PRIVILEGES="pagePrivileges";
+    public static final String PRIVILEGES="privileges";
     public static final String SESSION_RESOURCE="userResource";
+    public static final String ORG_IDS="orgIdList";
     /**
      * token header 权限验证
      */

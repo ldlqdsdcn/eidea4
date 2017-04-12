@@ -2,7 +2,6 @@ package com.dsdl.eidea.base.web.controller;
 
 import com.dsdl.eidea.base.entity.bo.UserBo;
 import com.dsdl.eidea.base.service.UserService;
-import com.dsdl.eidea.base.web.util.SecurityHelper;
 import com.dsdl.eidea.base.web.vo.UserResource;
 import com.dsdl.eidea.core.web.def.WebConst;
 import com.dsdl.eidea.core.web.result.ApiResult;
@@ -31,7 +30,6 @@ import java.util.List;
 @Controller
 @RequestMapping("/base/user")
 public class UserController {
-    private SecurityHelper securityHelper = SecurityHelper.getSecurityHelper();
     private static final String URI = "sys_user";
     @Autowired
     private UserService userService;

@@ -21,7 +21,7 @@
 </body>
 <script type="text/javascript">
     var app = angular.module('myApp', ['ngRoute', 'ui.bootstrap', 'jcs-autoValidate'])
-            .config(['$routeProvider', function ($routeProvider,$httpProvider) {
+            .config(['$routeProvider', function ($routeProvider) {
                 $routeProvider
                         .when('/list', {templateUrl: '<c:url value="/base/client/list.tpl.jsp"/>'})
                         .when('/edit', {templateUrl: '<c:url value="/base/client/edit.tpl.jsp"/>'})
@@ -31,8 +31,8 @@
         $scope.allList = [];
         $scope.modelList = [];
         $scope.delFlag = false;
-        $scope.canDel=PrivilegeService.hasPrivilege('delete');
-        $scope.canAdd=PrivilegeService.hasPrivilege('add');
+        $scope.canDel=PrivilegeService.hasPrivilege('client:delete');
+        $scope.canAdd=PrivilegeService.hasPrivilege('client:add');
         $http.get("<c:url value="/base/client/list"/>")
                 .success(function (response) {
                     if (response.success) {
@@ -122,7 +122,7 @@
     app.controller('editCtrl', function ($scope, $http, $routeParams) {
         $scope.message = '';
         $scope.clientBo = {};
-        $scope.canAdd=PrivilegeService.hasPrivilege('add');
+        $scope.canAdd=PrivilegeService.hasPrivilege('client:add');
         var url = "<c:url value="/base/client/create"/>";
         if ($routeParams.id != null) {
             url = "<c:url value="/base/client/get"/>" + "?id=" + $routeParams.id;
@@ -131,7 +131,7 @@
                 .success(function (response) {
                     if (response.success) {
                         $scope.clientBo = response.data;
-                        $scope.canSave=(PrivilegeService.hasPrivilege('add')&&$scope.clientBo.id==null)||PrivilegeService.hasPrivilege('update');
+                        $scope.canSave=(PrivilegeService.hasPrivilege('client:add')&&$scope.clientBo.id==null)||PrivilegeService.hasPrivilege('client:update');
                     }
                     else {
                         bootbox.alert(response.message);

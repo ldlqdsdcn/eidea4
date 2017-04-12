@@ -1,10 +1,12 @@
 package com.dsdl.eidea.common.web.controller;
 
 import com.dsdl.eidea.base.def.OperatorDef;
+import com.dsdl.eidea.base.entity.bo.PermissionBo;
 import com.dsdl.eidea.base.entity.bo.UserBo;
 import com.dsdl.eidea.base.entity.bo.UserSessionBo;
 import com.dsdl.eidea.base.service.PageMenuService;
 import com.dsdl.eidea.base.service.UserService;
+import com.dsdl.eidea.base.service.UserSessionService;
 import com.dsdl.eidea.base.web.content.UserOnlineContent;
 import com.dsdl.eidea.base.entity.bo.UserContent;
 import com.dsdl.eidea.base.web.vo.UserResource;
@@ -18,6 +20,8 @@ import com.dsdl.eidea.core.web.result.def.ErrorCodes;
 import com.dsdl.eidea.core.web.result.def.ResultCode;
 import com.dsdl.eidea.util.LocaleHelper;
 import com.dsdl.eidea.util.StringUtil;
+import com.google.gson.Gson;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
@@ -37,13 +41,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.net.InetAddress;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
+@Slf4j
 @RestController
 public class UserLoginController {
+    private Gson gson=new Gson();
     private static final Logger logger = Logger.getLogger(UserLoginController.class);
     @Autowired
     private UserService userService;
@@ -57,6 +60,8 @@ public class UserLoginController {
     private HttpServletRequest request;
     @Autowired
     private LanguageService languageService;
+    @Autowired
+    private UserSessionService userSessionService;
 
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
@@ -114,7 +119,13 @@ public class UserLoginController {
     private void userInit(UserBo loginUser, boolean beSub, HttpServletRequest request) {
         HttpSession session = request.getSession();
         /*Get user privileges*/
-
+        List<PermissionBo> permissionBoList = userService.getUserPermissionList(loginUser.getId());
+        Set<String> permissionList = new HashSet<>();
+        permissionBoList.forEach(e -> {
+            permissionList.add(e.getPermission());
+        });
+        session.setAttribute(WebConst.PAGE_PRIVILEGES,gson.toJson(permissionList));
+        session.setAttribute(WebConst.PRIVILEGES,permissionList);
         if (beSub == false)
             session.setAttribute(WebConst.SESSION_LOGINUSER, loginUser);
         session.setAttribute(WebConst.SESSION_ACTUALUSER, loginUser);
@@ -139,8 +150,9 @@ public class UserLoginController {
         userSessionBo.setUserId(loginUser.getId());
         userSessionBo.setToken(token);
         UserOnlineContent.addUser(session.getId(), userSessionBo);
-        userSessionBo = userService.saveUserSessionBo(userSessionBo);
+        userService.saveUserSessionBo(userSessionBo);
         List<Integer> orgIdList = userService.getCanAccessOrgList(loginUser.getId());
+        session.setAttribute(WebConst.ORG_IDS,orgIdList);
         String contextPath = request.getServletContext().getContextPath();
         String leftMenuStr = pageMenuService.getLeftMenuListByUserId(loginUser.getId(), contextPath);
         session.setAttribute(WebConst.SESSION_LEFTMENU, leftMenuStr);
@@ -168,8 +180,14 @@ public class UserLoginController {
         session.removeAttribute(WebConst.SESSION_USERCONTENT);
         session.removeAttribute(WebConst.SESSION_RESOURCE);
         session.removeAttribute(WebConst.SESSION_LEFTMENU);
+        Subject subject = SecurityUtils.getSubject();
+        if (subject.isAuthenticated()) {
+            subject.logout(); // session 会销毁，在SessionListener监听session销毁，清理权限缓存
+            if (log.isDebugEnabled()) {
+                log.debug("用户" + subject.getPrincipal() + "退出登录");
+            }
+        }
         ModelAndView modelAndView = new ModelAndView("redirect:/login.jsp");
-
         return modelAndView;
     }
 

@@ -8,7 +8,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class PermissionBo {
+public class PermissionBo implements java.io.Serializable{
     private String repository;
     private String operator;
 

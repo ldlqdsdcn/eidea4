@@ -5,14 +5,13 @@
 var PrivilegeService = {
     privileges: $("script[data-privileges]").attr('data-privileges'),
     hasPrivilege: function (opeartor) {
-        return true;
-        // var privileges = JSON.parse(PrivilegeService.privileges);
-        // for (var i = 0; i < privileges.length; i++) {
-        //     if (opeartor == privileges[i]) {
-        //         return true;
-        //     }
-        // }
-        // return false;
+        var privileges = JSON.parse(PrivilegeService.privileges);
+        for (var i = 0; i < privileges.length; i++) {
+            if (opeartor == privileges[i]) {
+                return true;
+            }
+        }
+        return false;
     }
 };
 

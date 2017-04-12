@@ -11,6 +11,9 @@
         <module>eweb</module>
         <module>ecore</module>
         <module>eutil</module>
+        <module>ereport</module>
+        <module>eapi</module>
+        <module>ecomm</module>
     </modules>
     <groupId>com.dsdl</groupId>
     <artifactId>eidea</artifactId>

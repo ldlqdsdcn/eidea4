@@ -166,6 +166,7 @@ public class UserServiceImpl implements UserService {
         }
         return false;
     }
+    @Cacheable(value = "userContentCache", key = "#userId")
     public List<PermissionBo> getUserPermissionList(Integer userId)
     {
         List<PermissionBo> permissionBoList=new ArrayList<>();

@@ -20,7 +20,7 @@
 	    <property name="filterChainDefinitions">  
 	        <value>  
 	             /js/**=anon
-				/font/**=anon
+				/fonts/**=anon
 				/css/**=anon
 				 /login.jsp=anon
 				/login=anon
@@ -30,7 +30,7 @@
 				/common/frameLogin.jsp=anon
 	            /error/*.jsp=anon
 	            /**=authc
-	        </value>  
+	        </value>
 	    </property>
 	</bean>  
 	<!-- 保证实现了Shiro内部lifecycle函数的bean执行 -->

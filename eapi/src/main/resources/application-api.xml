@@ -1,8 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans
-        xmlns="http://www.springframework.org/schema/beans"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
-    <import resource="classpath:applicationContext.xml"/>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+		 http://www.springframework.org/schema/context
+               http://www.springframework.org/schema/context/spring-context-4.0.xsd
+               http://www.springframework.org/schema/task
+               http://www.springframework.org/schema/task/spring-task-4.0.xsd ">
+    <!-- aop配置 日志 -->
+    <aop:aspectj-autoproxy/>
+    <!-- 采用注释的方式配置bean -->
+    <context:annotation-config/>
+    <task:annotation-driven/>
+    <!-- 配置要扫描的包 -->
+    <context:component-scan base-package="com.dsdl.**.service"/>
     <import resource="classpath:spring-shiro.xml"/>
 </beans>

@@ -5,6 +5,9 @@ include ':emanager'
 include ':eweb'
 include ':ecore'
 include ':eutil'
+include ':ereport'
+include ':eapi'
+include ':ecomm'
 
 project(':ebase').projectDir = "$rootDir/ebase" as File
 project(':edevs').projectDir = "$rootDir/edevs" as File
@@ -12,3 +15,6 @@ project(':emanager').projectDir = "$rootDir/emanager" as File
 project(':eweb').projectDir = "$rootDir/eweb" as File
 project(':ecore').projectDir = "$rootDir/ecore" as File
 project(':eutil').projectDir = "$rootDir/eutil" as File
+project(':ereport').projectDir = "$rootDir/ereport" as File
+project(':eapi').projectDir = "$rootDir/eapi" as File
+project(':ecomm').projectDir = "$rootDir/ecomm" as File

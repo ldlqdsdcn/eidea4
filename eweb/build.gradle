@@ -9,4 +9,7 @@ dependencies {
     compile group: 'javax.servlet', name: 'jstl', version:'1.2'
   compile project(':eutil')
     compile group: 'org.jetbrains', name: 'annotations', version:'15.0'
+    compile group: 'org.apache.shiro', name: 'shiro-core', version:'1.2.4'
+    compile group: 'org.apache.shiro', name: 'shiro-web', version:'1.2.4'
+    compile group: 'org.apache.shiro', name: 'shiro-spring', version:'1.2.4'
 }

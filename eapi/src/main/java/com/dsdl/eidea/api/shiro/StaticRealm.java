@@ -22,7 +22,7 @@ public class StaticRealm extends AuthorizingRealm {
         checkNotNull(password, "No account found for user [" + username + "]");
 
         return
-                new SimpleAuthenticationInfo(username, password.toCharArray(), getName());
+                new SimpleAuthenticationInfo(username, password, getName());
     }
 
     private void checkNotNull(Object reference, String message) {

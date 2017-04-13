@@ -13,8 +13,10 @@ public class Safe {
     static Map<String, String> passwords = new HashMap<>();
     static HashMultimap<String, String> roles = HashMultimap.create();
     static{
-        passwords.put("pierre", encrypt("green"));
-        passwords.put("paul", encrypt("blue"));
+        //encrypt("green");
+        //encrypt("blue")
+        passwords.put("pierre", "green");
+        passwords.put("paul","blue" );
         roles.put("paul", "vip");
     }
     private static String encrypt(String password) {

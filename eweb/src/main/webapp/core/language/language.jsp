@@ -32,8 +32,8 @@
         $scope.allList = [];
         $scope.modelList = [];
         $scope.delFlag = false;
-        $scope.canDel=PrivilegeService.hasPrivilege('delete');
-        $scope.canAdd=PrivilegeService.hasPrivilege('add');
+        $scope.canDel=PrivilegeService.hasPrivilege('language:delete');
+        $scope.canAdd=PrivilegeService.hasPrivilege('language:add');
         $http.get("<c:url value="/core/language/list"/>")
                 .success(function (response) {
                     if (response.success) {
@@ -123,7 +123,7 @@
     app.controller('editCtrl', function ($scope, $http, $routeParams) {
         $scope.message = '';
         $scope.languageBo = {};
-        $scope.canAdd=PrivilegeService.hasPrivilege('add');
+        $scope.canAdd=PrivilegeService.hasPrivilege('language:add');
         $scope.canSave=false;
         var url = "<c:url value="/core/language/create"/>";
         if ($routeParams.code != null) {
@@ -133,7 +133,7 @@
                 .success(function (response) {
                     if (response.success) {
                         $scope.languageBo = response.data;
-                        $scope.canSave=(PrivilegeService.hasPrivilege('add')&&$scope.languageBo.created)||PrivilegeService.hasPrivilege('update');
+                        $scope.canSave=(PrivilegeService.hasPrivilege('language:add')&&$scope.languageBo.created)||PrivilegeService.hasPrivilege('language:update');
                     }
                     else {
                         bootbox.alert(response.message);

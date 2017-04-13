@@ -33,8 +33,8 @@
         $scope.allList = [];
         $scope.currentList = [];
         $scope.delFlag = false;
-        $scope.canDel=PrivilegeService.hasPrivilege('delete');
-        $scope.canAdd=PrivilegeService.hasPrivilege('add');
+        $scope.canDel=PrivilegeService.hasPrivilege('table:delete');
+        $scope.canAdd=PrivilegeService.hasPrivilege('table:add');
         $http.get("<c:url value="/core/table/list"/>")
                 .success(function (response) {
                     if (response.success) {
@@ -124,7 +124,7 @@
     app.controller('editCtrl', function ($scope, $http, $routeParams) {
         $scope.columnDataTypes = [];
         $scope.tableBo = {};
-        $scope.canAdd=PrivilegeService.hasPrivilege('add');
+        $scope.canAdd=PrivilegeService.hasPrivilege('table:add');
         $scope.canSave=false;
         $http.get("<c:url value="/core/table/getJavaTypeList"/> ")
                 .success(function (response) {
@@ -144,7 +144,7 @@
                 .success(function (response) {
                     if (response.success) {
                         $scope.tableBo = response.data;
-                        $scope.canSave=(PrivilegeService.hasPrivilege('add')&&$scope.tableBo.id==null)||PrivilegeService.hasPrivilege('update');
+                        $scope.canSave=(PrivilegeService.hasPrivilege('table:add')&&$scope.tableBo.id==null)||PrivilegeService.hasPrivilege('table:update');
                     }
                     else {
                         bootbox.alert(response.message);
@@ -177,7 +177,7 @@
     app.controller('wizardCtrl', function ($scope, $http, $routeParams) {
         $scope.tableInfo = {};
         $scope.columnDataTypes = [];
-        $scope.canAdd=PrivilegeService.hasPrivilege('add');
+        $scope.canAdd=PrivilegeService.hasPrivilege('table:add');
         $http.get("<c:url value="/core/table/getJavaTypeList"/> ")
                 .success(function (response) {
                     if (response.success) {

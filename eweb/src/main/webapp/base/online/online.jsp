@@ -28,25 +28,11 @@
                         .when('/list', {templateUrl: '<c:url value="/base/online/list.tpl.jsp"/>'})
                         .otherwise({redirectTo: '/list'});
             }]);
-    app.service('PrivilegeService', function () {
-        return true;
-        <%--this.hasPrivilege = function (opeartor) {--%>
-
-            <%--var privileges =${pagePrivileges};--%>
-            <%--for (var i = 0; i < privileges.length; i++) {--%>
-
-                <%--if (opeartor == privileges[i]) {--%>
-                    <%--return true;--%>
-                <%--}--%>
-            <%--}--%>
-            <%--return false;--%>
-        <%--}--%>
-    });
     app.controller('listCtrl', function ($scope, $http) {
         $scope.allList = [];
         $scope.modelList = [];
-        $scope.canDel=PrivilegeService.hasPrivilege('delete');
-        $scope.canAdd=PrivilegeService.hasPrivilege('add');
+        $scope.canDel=PrivilegeService.hasPrivilege('online:delete');
+        $scope.canAdd=PrivilegeService.hasPrivilege('online:add');
         $http.get("<c:url value="/base/userOnline/list"/>")
                 .success(function (response) {
                     if (response.success) {

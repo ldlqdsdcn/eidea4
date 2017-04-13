@@ -9,7 +9,6 @@
 
     <context:component-scan base-package="com.dsdl.eidea.api.config"/>
     <context:annotation-config />
-    <bean id="springSwaggerConfig" class="com.mangofactory.swagger.configuration.SpringSwaggerConfig" />
     <!-- 开启Shiro注解 -->
     <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" depends-on="lifecycleBeanPostProcessor"/>
     <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
@@ -40,6 +39,8 @@
             </bean>
         </mvc:message-converters>
     </mvc:annotation-driven>
+    <mvc:resources mapping="swagger-ui.html" location="classpath:/META-INF/resources/"/>
+    <mvc:resources mapping="webjars/**" location="classpath:/META-INF/resources/webjars/"/>
     <bean
             class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
         <property name="exceptionMappings">
@@ -63,5 +64,4 @@
         <property name="suffix" value=".jsp"></property>
         <property name="order" value="0"/>
     </bean>
-    <context:property-placeholder location="classpath:swagger.properties" />
 </beans>

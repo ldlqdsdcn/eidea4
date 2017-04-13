@@ -19,8 +19,8 @@
 	    <!-- Shiro连接约束配置,即过滤链的定义 -->  
 	    <property name="filterChainDefinitions">  
 	        <value>  
-	            /swagger/**=anon
-				/**=authcBasic
+	            /**=anon
+				#/**=authcBasic
 	        </value>
 	    </property>
 	</bean>  

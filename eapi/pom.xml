@@ -11,6 +11,10 @@
     <packaging>war</packaging>
     <artifactId>eapi</artifactId>
     <description>第三方应用api</description>
+    <properties>
+        <springfox-version>2.5.0</springfox-version>
+        <swagger-core-version>1.5.10</swagger-core-version>
+    </properties>
     <dependencies>
         <dependency>
             <groupId>com.dsdl</groupId>
@@ -19,19 +23,19 @@
         </dependency>
         <!-- swagger-springmvc -->
         <dependency>
-            <groupId>com.mangofactory</groupId>
-            <artifactId>swagger-springmvc</artifactId>
-            <version>1.0.2</version>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>${springfox-version}</version>
         </dependency>
+<!--        <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-core</artifactId>
+            <version>${swagger-core-version}</version>
+        </dependency>-->
         <dependency>
-            <groupId>com.mangofactory</groupId>
-            <artifactId>swagger-models</artifactId>
-            <version>1.0.2</version>
-        </dependency>
-        <dependency>
-            <groupId>com.wordnik</groupId>
-            <artifactId>swagger-annotations</artifactId>
-            <version>1.3.11</version>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>2.5.0</version>
         </dependency>
         <!--cxf bgn-->
         <!-- https://mvnrepository.com/artifact/org.apache.cxf/cxf-rt-frontend-jaxws -->
@@ -54,27 +58,7 @@
         </dependency>
         <!--cxf end-->
         <!-- swagger-springmvc dependencies -->
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-annotations</artifactId>
-            <version>2.4.4</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>2.4.4</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
-            <version>2.4.4</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml</groupId>
-            <artifactId>classmate</artifactId>
-            <version>1.1.0</version>
-        </dependency>
-        <!--安全验证-->
+              <!--安全验证-->
         <dependency>
             <groupId>org.apache.shiro</groupId>
             <artifactId>shiro-core</artifactId>

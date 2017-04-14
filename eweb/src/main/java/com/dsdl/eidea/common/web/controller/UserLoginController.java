@@ -13,7 +13,7 @@ import com.dsdl.eidea.core.i18n.DbResourceBundle;
 import com.dsdl.eidea.core.service.LanguageService;
 import com.dsdl.eidea.core.service.MessageService;
 import com.dsdl.eidea.core.web.def.WebConst;
-import com.dsdl.eidea.core.web.result.ApiResult;
+import com.dsdl.eidea.core.web.result.JsonResult;
 import com.dsdl.eidea.core.web.result.def.ResultCode;
 import com.dsdl.eidea.util.LocaleHelper;
 import com.dsdl.eidea.util.StringUtil;
@@ -53,33 +53,33 @@ public class UserLoginController {
 
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ApiResult<String> login(@RequestBody UserBo loginBo) {
+    public JsonResult<String> login(@RequestBody UserBo loginBo) {
         if (loginBo == null) {
-            return ApiResult.fail(ResultCode.FAILURE.getCode(), "用户名或密码不允许为空！");
+            return JsonResult.fail(ResultCode.FAILURE.getCode(), "用户名或密码不允许为空！");
         } else {
             if (StringUtil.isEmpty(loginBo.getUsername())) {
-                return ApiResult.fail(ResultCode.FAILURE.getCode(), "用户名不允许为空！");
+                return JsonResult.fail(ResultCode.FAILURE.getCode(), "用户名不允许为空！");
             }
             if (StringUtil.isEmpty(loginBo.getPassword())) {
-                return ApiResult.fail(ResultCode.FAILURE.getCode(), "密码不允许为空！");
+                return JsonResult.fail(ResultCode.FAILURE.getCode(), "密码不允许为空！");
             }
         }
         String md5password = loginBo.getPassword();
         UserBo userBologin = userService.getUserLogin(loginBo.getUsername(), md5password);
         if (userBologin == null) {
-            return ApiResult.fail(ResultCode.FAILURE.getCode(), "用户名或密码错误！");
+            return JsonResult.fail(ResultCode.FAILURE.getCode(), "用户名或密码错误！");
         } else {
             if (md5password.equals(userBologin.getPassword())) {
                 if (userBologin.getIsactive().equals("N")) {
-                    return ApiResult.fail(ResultCode.FAILURE.getCode(), "该用户已经被禁用！");
+                    return JsonResult.fail(ResultCode.FAILURE.getCode(), "该用户已经被禁用！");
                 }
                 userInitCommon(userBologin);
                 userBologin.setCode(loginBo.getCode());
                 userInit(userBologin, false, request);
                 String token = "";
-                return ApiResult.success(token);
+                return JsonResult.success(token);
             } else {
-                return ApiResult.fail(ResultCode.FAILURE.getCode(), "密码输入错误！");
+                return JsonResult.fail(ResultCode.FAILURE.getCode(), "密码输入错误！");
             }
         }
     }
@@ -172,8 +172,8 @@ public class UserLoginController {
      * @return
      */
     @RequestMapping(value = "/languages", method = RequestMethod.GET)
-    public ApiResult<List<LanguageBo>> getLanguage() {
+    public JsonResult<List<LanguageBo>> getLanguage() {
         List<LanguageBo> languageList = languageService.getLanguageForActivated();
-        return ApiResult.success(languageList);
+        return JsonResult.success(languageList);
     }
 }

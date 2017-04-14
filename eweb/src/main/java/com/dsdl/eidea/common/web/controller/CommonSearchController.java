@@ -11,7 +11,7 @@ import com.dsdl.eidea.core.entity.bo.SearchBo;
 import com.dsdl.eidea.core.entity.bo.SearchColumnBo;
 import com.dsdl.eidea.core.service.SearchService;
 import com.dsdl.eidea.core.web.def.WebConst;
-import com.dsdl.eidea.core.web.result.ApiResult;
+import com.dsdl.eidea.core.web.result.JsonResult;
 import com.dsdl.eidea.core.web.result.def.ErrorCodes;
 import com.dsdl.eidea.util.StringUtil;
 import com.google.gson.Gson;
@@ -123,14 +123,14 @@ public class CommonSearchController {
 
     @RequestMapping(value = "/common/doSearch", method = RequestMethod.POST)
     @ResponseBody
-    public ApiResult<Void> saveSearchConditions(@RequestBody SearchConditionParam searchConditionParam,  HttpSession session) {
+    public JsonResult<Void> saveSearchConditions(@RequestBody SearchConditionParam searchConditionParam, HttpSession session) {
         session.setAttribute(searchConditionParam.getUri() + WebConst.SESSION_SEARCH_PARAM, searchConditionParam.getSearchColumnVoList());
-        return ApiResult.success(null);
+        return JsonResult.success(null);
     }
 
     @RequestMapping(value = "/common/doSearch2", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public ApiResult<Void> saveSearchConditions2(@RequestBody SearchConditionParam searchConditionParam, HttpSession session) {
+    public JsonResult<Void> saveSearchConditions2(@RequestBody SearchConditionParam searchConditionParam, HttpSession session) {
         List<SearchColumnVo> searchColumnVoList=searchConditionParam.getSearchColumnVoList();
         String uri=searchConditionParam.getUri();
         try {
@@ -140,10 +140,10 @@ public class CommonSearchController {
                     voList.add(searchColumnVo);
             }
             session.setAttribute(uri + WebConst.SESSION_SEARCH_PARAM, voList);
-            return ApiResult.success(null);
+            return JsonResult.success(null);
         } catch (Exception e) {
             e.printStackTrace();
-            return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), e.getMessage());
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), e.getMessage());
         }
     }
 }

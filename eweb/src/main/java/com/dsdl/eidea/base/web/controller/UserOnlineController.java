@@ -6,17 +6,14 @@ import com.dsdl.eidea.base.web.annotation.PrivilegesControl;
 import com.dsdl.eidea.base.web.content.UserOnlineContent;
 import com.dsdl.eidea.base.web.def.ReturnType;
 import com.dsdl.eidea.core.web.def.WebConst;
-import com.dsdl.eidea.core.web.result.ApiResult;
-import com.dsdl.eidea.core.web.util.SearchHelper;
+import com.dsdl.eidea.core.web.result.JsonResult;
 import com.dsdl.eidea.core.web.vo.PagingSettingResult;
-import com.googlecode.genericdao.search.Search;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpSession;
 import java.util.Set;
 
 /**
@@ -39,9 +36,9 @@ public class UserOnlineController {
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
     @PrivilegesControl(operator = OperatorDef.VIEW)
-    public ApiResult<Set<UserSessionBo>> list() {
+    public JsonResult<Set<UserSessionBo>> list() {
         Set<UserSessionBo> userSessionBoSet = UserOnlineContent.getOnlineUsers();
-        return ApiResult.success(userSessionBoSet);
+        return JsonResult.success(userSessionBoSet);
     }
 
 }

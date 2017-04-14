@@ -30,7 +30,7 @@
                         {{module.username}}
                     </td>
                     <td>
-                        {{module.loginDate}}
+                        {{module.loginDate|date:'yyyy-MM-dd'}}
                     </td>
                     <td>
                         {{module.remoteAddr}}

@@ -13,7 +13,7 @@ import java.util.UUID;
  */
 @Getter
 @ToString
-public class ApiResult<T> implements Serializable {
+public class JsonResult<T> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -24,12 +24,12 @@ public class ApiResult<T> implements Serializable {
     private int errorCode;
     private T data;
 
-    private ApiResult() {
+    private JsonResult() {
         this.requestId = UUID.randomUUID().toString().replaceAll("\\-", "");
     }
 
-    public static <T> ApiResult<T> success(T data) {
-        ApiResult<T> apiResult = new ApiResult<>();
+    public static <T> JsonResult<T> success(T data) {
+        JsonResult<T> apiResult = new JsonResult<>();
         apiResult.success = true;
         apiResult.code = ResultCode.SUCCESS.getCode();
         apiResult.message = ResultCode.SUCCESS.getMessage();
@@ -37,8 +37,8 @@ public class ApiResult<T> implements Serializable {
         return apiResult;
     }
 
-    public static <T> ApiResult<T> fail(int errorCode, String message) {
-        ApiResult<T> apiResult = new ApiResult<>();
+    public static <T> JsonResult<T> fail(int errorCode, String message) {
+        JsonResult<T> apiResult = new JsonResult<>();
         apiResult.success = false;
         apiResult.code = ResultCode.FAILURE.getCode();
         apiResult.message = message;
@@ -46,8 +46,8 @@ public class ApiResult<T> implements Serializable {
         return apiResult;
     }
 
-    public static <T> ApiResult<T> fail(int errorCode, T errorMessage) {
-        ApiResult<T> apiResult = new ApiResult<>();
+    public static <T> JsonResult<T> fail(int errorCode, T errorMessage) {
+        JsonResult<T> apiResult = new JsonResult<>();
         apiResult.success = false;
         apiResult.code = ResultCode.FAILURE.getCode();
         apiResult.message = ResultCode.FAILURE.getMessage();

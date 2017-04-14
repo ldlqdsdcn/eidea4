@@ -7,7 +7,7 @@ import com.dsdl.eidea.base.web.def.ReturnType;
 import com.dsdl.eidea.base.web.util.SecurityHelper;
 import com.dsdl.eidea.base.web.vo.VerifiedResult;
 import com.dsdl.eidea.core.web.def.WebConst;
-import com.dsdl.eidea.core.web.result.ApiResult;
+import com.dsdl.eidea.core.web.result.JsonResult;
 import com.dsdl.eidea.core.web.result.def.ErrorCodes;
 import com.google.gson.Gson;
 import org.apache.log4j.Logger;
@@ -71,7 +71,7 @@ public class SecurityHandler extends HandlerInterceptorAdapter {
                 PrintWriter out = null;
                 try {
                     out = response.getWriter();
-                    ApiResult apiResult = ApiResult.fail(ErrorCodes.NO_LOGIN.getCode(), ErrorCodes.NO_LOGIN.getMessage());
+                    JsonResult apiResult = JsonResult.fail(ErrorCodes.NO_LOGIN.getCode(), ErrorCodes.NO_LOGIN.getMessage());
                     String result = GSON.toJson(apiResult);
                     out.append(result);
                     log.debug("返回是\n");
@@ -171,7 +171,7 @@ public class SecurityHandler extends HandlerInterceptorAdapter {
             PrintWriter out = null;
             try {
                 out = response.getWriter();
-                ApiResult apiResult = ApiResult.fail(ErrorCodes.NO_PRIVILEGES.getCode(), ErrorCodes.NO_PRIVILEGES.getMessage());
+                JsonResult apiResult = JsonResult.fail(ErrorCodes.NO_PRIVILEGES.getCode(), ErrorCodes.NO_PRIVILEGES.getMessage());
                 String result = GSON.toJson(apiResult);
                 out.append(result);
                 log.debug("返回是\n");

@@ -16,8 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.dsdl.eidea.base.entity.bo.UserSessionBo;
 import com.dsdl.eidea.base.service.UserSessionService;
-import com.dsdl.eidea.core.entity.bo.LabelBo;
-import com.dsdl.eidea.core.web.result.ApiResult;
+import com.dsdl.eidea.core.web.result.JsonResult;
 import com.dsdl.eidea.core.web.vo.PagingSettingResult;
 import com.googlecode.genericdao.search.Search;
 
@@ -38,10 +37,10 @@ public class UserSessionController {
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
-    public ApiResult<List<UserSessionBo>> list(HttpSession session) {
+    public JsonResult<List<UserSessionBo>> list(HttpSession session) {
         Search search = SearchHelper.getSearchParam(URI, session);
         search.addSort(Sort.desc("loginDate"));
         List<UserSessionBo> userSessionList = userSessionService.getUserSessionList(search);
-        return ApiResult.success(userSessionList);
+        return JsonResult.success(userSessionList);
     }
 }

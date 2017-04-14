@@ -1,12 +1,12 @@
 package com.dsdl.eidea.base.web.controller;
 
-import com.dsdl.eidea.base.def.OperatorDef;
+import com.dsdl.eidea.web.security.def.OperatorDef;
 import com.dsdl.eidea.base.entity.bo.ClientBo;
 import com.dsdl.eidea.base.entity.bo.OrgBo;
 import com.dsdl.eidea.base.service.ClientService;
 import com.dsdl.eidea.base.service.OrgService;
 import com.dsdl.eidea.base.web.annotation.PrivilegesControl;
-import com.dsdl.eidea.base.web.def.ReturnType;
+import com.dsdl.eidea.web.security.def.ReturnType;
 import com.dsdl.eidea.base.web.vo.UserResource;
 import com.dsdl.eidea.core.web.def.WebConst;
 import com.dsdl.eidea.core.web.result.ApiResult;

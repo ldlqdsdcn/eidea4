@@ -10,6 +10,18 @@
     <modelVersion>4.0.0</modelVersion>
     <description>eidea web 安全验证框架</description>
     <artifactId>e-web-security</artifactId>
-
+    <dependencies>
+        <!--java web token-->
+        <dependency>
+            <groupId>org.bitbucket.b_c</groupId>
+            <artifactId>jose4j</artifactId>
+            <version>0.4.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.dsdl</groupId>
+            <artifactId>eutil</artifactId>
+            <version>1.0</version>
+        </dependency>
+    </dependencies>
 
 </project>

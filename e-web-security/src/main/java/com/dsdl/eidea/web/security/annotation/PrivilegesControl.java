@@ -1,7 +1,7 @@
-package com.dsdl.eidea.base.web.annotation;
+package com.dsdl.eidea.web.security.annotation;
 
-import com.dsdl.eidea.base.def.OperatorDef;
-import com.dsdl.eidea.base.web.def.ReturnType;
+import com.dsdl.eidea.web.security.def.OperatorDef;
+import com.dsdl.eidea.web.security.def.ReturnType;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 

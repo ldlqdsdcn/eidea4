@@ -1,6 +1,6 @@
 package com.dsdl.eidea.common.web.controller;
 
-import com.dsdl.eidea.base.def.OperatorDef;
+import com.dsdl.eidea.web.security.def.OperatorDef;
 import com.dsdl.eidea.base.entity.bo.UserBo;
 import com.dsdl.eidea.base.entity.bo.UserSessionBo;
 import com.dsdl.eidea.base.service.PageMenuService;

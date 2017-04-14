@@ -1,14 +1,12 @@
 package com.dsdl.eidea.base.service.impl;
 
 import com.dsdl.eidea.core.spring.annotation.DataAccess;
-import com.dsdl.eidea.base.def.OperatorDef;
 import com.dsdl.eidea.base.entity.bo.UserBo;
 import com.dsdl.eidea.base.entity.bo.UserContent;
 import com.dsdl.eidea.base.entity.bo.UserRoleBo;
 import com.dsdl.eidea.base.entity.bo.UserSessionBo;
 import com.dsdl.eidea.base.entity.po.*;
 import com.dsdl.eidea.base.service.UserService;
-import com.dsdl.eidea.base.util.JwtUtil;
 import com.dsdl.eidea.core.dao.CommonDao;
 import com.googlecode.genericdao.search.Search;
 import org.modelmapper.ModelMapper;
@@ -174,7 +172,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Map<String, List<OperatorDef>> getUserPrivileges(Integer userId) {
+    public Map<String, List<String>> getUserPrivileges(Integer userId) {
 
         UserPo userPo = userDao.find(userId);
         List<UserRolePo> userRolePoList = userPo.getSysUserRoles();
@@ -189,20 +187,20 @@ public class UserServiceImpl implements UserService {
             }
 
         }
-        Map<String, List<OperatorDef>> privilegesMap = new HashMap<>();
+        Map<String, List<String>> privilegesMap = new HashMap<>();
         for (ModuleRolePo moduleRolePo : distModuleRolePo) {
             List<ModuleDirectoryPo> moduleDirectoryPoList = moduleRolePo.getSysModule().getSysModuleDirectories();
             for (ModuleDirectoryPo moduleDirectoryPo : moduleDirectoryPoList) {
                 if (moduleDirectoryPo.getSysModule().getIsactive().equals("Y")) {
                     List<PrivilegesPo> privilegesPoList = moduleRolePo.getSysPrivilegeses();
-                    List<OperatorDef> operatorDefs = new ArrayList<>();
+                    List<String> operatorDefs = new ArrayList<>();
                     for (PrivilegesPo privilegesPo : privilegesPoList) {
-                        operatorDefs.add(OperatorDef.getOperatorDefByKey(privilegesPo.getSysOperator().getNo()));
+                        operatorDefs.add(privilegesPo.getSysOperator().getNo());
                     }
                     if (!privilegesMap.containsKey(moduleDirectoryPo.getSysDirectory().getDirectory())) {
                         privilegesMap.put(moduleDirectoryPo.getSysDirectory().getDirectory(), operatorDefs);
                     } else {
-                        List<OperatorDef> distOperatorList = privilegesMap.get(moduleDirectoryPo.getSysDirectory().getDirectory());
+                        List<String> distOperatorList = privilegesMap.get(moduleDirectoryPo.getSysDirectory().getDirectory());
                         mergeOperator(distOperatorList, operatorDefs);
                         privilegesMap.put(moduleDirectoryPo.getSysDirectory().getDirectory(), distOperatorList);
                     }
@@ -215,11 +213,11 @@ public class UserServiceImpl implements UserService {
         return privilegesMap;
     }
 
-    private void mergeOperator(List<OperatorDef> distOperatorList, List<OperatorDef> operatorDefs) {
-        for (OperatorDef operatorDef : operatorDefs) {
+    private void mergeOperator(List<String> distOperatorList, List<String> operatorDefs) {
+        for (String operatorDef : operatorDefs) {
             boolean has = false;
-            for (OperatorDef o2 : distOperatorList) {
-                if (o2 == operatorDef) {
+            for (String o2 : distOperatorList) {
+                if (o2 .equals(operatorDef) ) {
                     has = true;
                     break;
                 }
@@ -230,12 +228,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @Override
-    public String generateToken(UserBo userBo) {
-        return JwtUtil.getTokenString(userBo);
-    }
-
-    public UserSessionBo saveUserSessionBo(UserSessionBo userSessionBo) {
+   public UserSessionBo saveUserSessionBo(UserSessionBo userSessionBo) {
         UserSessionPo userSessionPo = modelMapper.map(userSessionBo, UserSessionPo.class);
         userSessionPo.setUserPo(userDao.find(userSessionBo.getUserId()));
         userSessionDao.save(userSessionPo);
@@ -261,7 +254,7 @@ public class UserServiceImpl implements UserService {
         search.addFilterEqual("token", token);
         UserSessionPo userSessionPo = userSessionDao.searchUnique(search);
         UserSessionBo userSessionBo = modelMapper.map(userSessionPo, UserSessionBo.class);
-        Map<String, List<OperatorDef>> privilegesMap = getUserPrivileges(userSessionBo.getUserId());
+        Map<String, List<String>> privilegesMap = getUserPrivileges(userSessionBo.getUserId());
         List<Integer> orgIdList = getCanAccessOrgList(userSessionBo.getUserId());
         UserContent userContent = new UserContent(privilegesMap, userSessionBo, token, orgIdList);
         return userContent;

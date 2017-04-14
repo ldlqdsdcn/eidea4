@@ -1,17 +1,18 @@
-package com.dsdl.eidea.base.web.util;
+package com.dsdl.eidea.web.security.util;
 
-import com.dsdl.eidea.base.def.OperatorDef;
+import com.dsdl.eidea.web.security.def.OperatorDef;
 import com.dsdl.eidea.base.entity.bo.UserContent;
 import com.dsdl.eidea.base.service.SpringContextHolder;
 import com.dsdl.eidea.base.service.UserService;
-import com.dsdl.eidea.base.util.JwtUtil;
-import com.dsdl.eidea.base.web.vo.VerifiedResult;
+import com.dsdl.eidea.web.security.def.SecurityWebConst;
+import com.dsdl.eidea.web.security.jwt.JwtUtil;
+import com.dsdl.eidea.web.security.model.UserPrivilegesContent;
+import com.dsdl.eidea.web.security.model.VerifiedResult;
 import com.dsdl.eidea.core.web.def.WebConst;
 import com.dsdl.eidea.util.StringUtil;
+import org.springframework.cache.ehcache.EhCacheCacheManager;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import javax.swing.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -22,7 +23,10 @@ import java.util.Set;
  */
 public class SecurityHelper {
     private static final SecurityHelper securityHelper = new SecurityHelper();
-
+    /**
+     *
+     */
+    private EhCacheCacheManager ehCacheCacheManager;
     private SecurityHelper() {
 
     }
@@ -32,15 +36,16 @@ public class SecurityHelper {
     }
 
     public VerifiedResult verifiedResult(HttpServletRequest request, OperatorDef[] operatorDefs) {
-        UserContent userContent = (UserContent) request.getSession().getAttribute(WebConst.SESSION_USERCONTENT);
+        UserPrivilegesContent userContent = (UserPrivilegesContent) request.getSession().getAttribute(SecurityWebConst.SESSION_USERCONTENT);
         VerifiedResult verifiedResult = new VerifiedResult();
         if (userContent == null) {
-            String token=request.getHeader(WebConst.HEADER_TOKEN);
+            String token=request.getHeader(SecurityWebConst.HEADER_TOKEN);
             if(StringUtil.isNotEmpty(token))
             {
                 if(JwtUtil.validateToken(token))
                 {
-                    userContent= SpringContextHolder.getBean(UserService.class).getUserContent(token);
+
+                    userContent= (UserPrivilegesContent) ehCacheCacheManager.getCache("userTokenContent").get(token);
                 }
                 else
                 {
@@ -57,7 +62,7 @@ public class SecurityHelper {
             }
 
         }
-        Map<String, List<OperatorDef>> privilegesMap = userContent.getPrivileges();
+        Map<String, List<String>> privilegesMap = userContent.getPrivileges();
 
         Set<String> privilegeKeySet = privilegesMap.keySet();
         userContent.getPrivileges();
@@ -66,15 +71,15 @@ public class SecurityHelper {
             if (requestURL.startsWith(key)) {
                 StringBuilder sb = new StringBuilder("[");
 
-                List<OperatorDef> operatorDefList = privilegesMap.get(key);
+                List<String> operatorDefList = privilegesMap.get(key);
                 for (int i = 0; i < operatorDefList.size(); i++) {
                     if (i > 0) {
                         sb.append(",");
                     }
-                    sb.append("\"").append(operatorDefList.get(i).getKey()).append("\"");
+                    sb.append("\"").append(operatorDefList.get(i)).append("\"");
                 }
                 sb.append("]");
-                request.setAttribute(WebConst.PAGE_PRIVILEGES, sb.toString());
+                request.setAttribute(SecurityWebConst.PAGE_PRIVILEGES, sb.toString());
                 if (!containsOperator(operatorDefList, operatorDefs)) {
                     verifiedResult.setCanAccessed(false);
                     verifiedResult.setMessage("你没有相关的操作权限");
@@ -112,21 +117,19 @@ public class SecurityHelper {
     }
 
     public List<Integer> getAccessOrgList(HttpServletRequest request) {
-        UserContent userContent = (UserContent) request.getSession().getAttribute(WebConst.SESSION_USERCONTENT);
+        UserPrivilegesContent userContent = (UserPrivilegesContent) request.getSession().getAttribute(SecurityWebConst.SESSION_USERCONTENT);
         if (userContent == null) {
-            String token = request.getHeader(WebConst.HEADER_TOKEN);
-            UserService userService = SpringContextHolder.getBean(UserService.class);
-            userContent = userService.getUserContent(token);
+            String token = request.getHeader(SecurityWebConst.HEADER_TOKEN);
+
+             userContent = (UserPrivilegesContent) request.getSession().getAttribute(SecurityWebConst.SESSION_USERCONTENT);
         }
-
-
         return userContent.getOrgIdList();
     }
 
-    private boolean containsOperator(List<OperatorDef> privilegesOperatorList, OperatorDef[] hasOperatorArray) {
-        for (OperatorDef operatorDef : privilegesOperatorList) {
-            for (OperatorDef hasOper : hasOperatorArray) {
-                if (operatorDef == hasOper) {
+    private boolean containsOperator(List<String> privilegesOperatorList, String[] hasOperatorArray) {
+        for (String operatorDef : privilegesOperatorList) {
+            for (String hasOper : hasOperatorArray) {
+                if (operatorDef.equals(hasOper) ) {
                     return true;
                 }
             }

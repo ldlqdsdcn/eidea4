@@ -1,14 +1,12 @@
 package com.dsdl.eidea.core.web.controller;
 
-import com.dsdl.eidea.base.def.OperatorDef;
+import com.dsdl.eidea.web.security.def.OperatorDef;
 import com.dsdl.eidea.base.web.annotation.PrivilegesControl;
-import com.dsdl.eidea.base.web.def.ReturnType;
+import com.dsdl.eidea.web.security.def.ReturnType;
 import com.dsdl.eidea.base.web.vo.UserResource;
 import com.dsdl.eidea.core.def.JavaDataType;
-import com.dsdl.eidea.core.def.JdbcType;
 import com.dsdl.eidea.core.entity.bo.TableBo;
 import com.dsdl.eidea.core.entity.bo.TableMetaDataBo;
-import com.dsdl.eidea.core.entity.po.TablePo;
 import com.dsdl.eidea.core.service.TableService;
 import com.dsdl.eidea.core.web.def.WebConst;
 import com.dsdl.eidea.core.web.result.ApiResult;

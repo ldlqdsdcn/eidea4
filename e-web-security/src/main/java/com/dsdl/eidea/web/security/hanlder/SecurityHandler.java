@@ -1,14 +1,13 @@
-package com.dsdl.eidea.base.web.handler;
+package com.dsdl.eidea.web.security.hanlder;
 
-import com.dsdl.eidea.base.def.OperatorDef;
-import com.dsdl.eidea.base.util.JwtUtil;
-import com.dsdl.eidea.base.web.annotation.PrivilegesControl;
-import com.dsdl.eidea.base.web.def.ReturnType;
+import com.dsdl.eidea.web.security.def.OperatorDef;
+
 import com.dsdl.eidea.base.web.util.SecurityHelper;
 import com.dsdl.eidea.base.web.vo.VerifiedResult;
 import com.dsdl.eidea.core.web.def.WebConst;
 import com.dsdl.eidea.core.web.result.ApiResult;
 import com.dsdl.eidea.core.web.result.def.ErrorCodes;
+import com.dsdl.eidea.web.security.jwt.JwtUtil;
 import com.google.gson.Gson;
 import org.apache.log4j.Logger;
 import org.springframework.web.method.HandlerMethod;

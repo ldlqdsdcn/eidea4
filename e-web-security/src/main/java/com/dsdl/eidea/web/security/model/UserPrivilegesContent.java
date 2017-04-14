@@ -1,4 +1,4 @@
-package com.dsdl.eidea.base.entity.bo;
+package com.dsdl.eidea.web.security.model;
 
 import lombok.Getter;
 
@@ -7,10 +7,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by 刘大磊 on 2016/12/26 16:45.
+ * Created by 刘大磊 on 2017/4/14 12:55.
  */
 @Getter
-public class UserContent implements java.io.Serializable{
+public class UserPrivilegesContent {
     private Map<String, List<String>> privileges = new HashMap<>();
     private List<Integer> orgIdList;
 
@@ -18,11 +18,9 @@ public class UserContent implements java.io.Serializable{
      * token 串
      */
     private String token;
-    public UserContent(Map<String, List<String>> privileges, String token,List<Integer> orgIdList) {
+    public UserPrivilegesContent(Map<String, List<String>> privileges, String token,List<Integer> orgIdList) {
         this.privileges = privileges;
-            this.token = token;
+        this.token = token;
         this.orgIdList=orgIdList;
     }
-
-
 }

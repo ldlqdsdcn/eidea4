@@ -4,9 +4,9 @@ import java.util.*;
 
 import javax.servlet.http.HttpSession;
 
-import com.dsdl.eidea.base.def.OperatorDef;
+import com.dsdl.eidea.web.security.def.OperatorDef;
 import com.dsdl.eidea.base.web.annotation.PrivilegesControl;
-import com.dsdl.eidea.base.web.def.ReturnType;
+import com.dsdl.eidea.web.security.def.ReturnType;
 import com.dsdl.eidea.base.web.vo.ChangelogVo;
 import com.dsdl.eidea.core.entity.bo.TableColumnBo;
 import com.google.gson.Gson;

@@ -12,7 +12,7 @@ import java.util.Date;
  */
 @Getter
 @Setter
-@ApiModel(value="实体信息", description="实体信息对象")
+@ApiModel(description="实体信息对象")
 public class Client {
     @ApiModelProperty(value = "主键")
     private Integer id;

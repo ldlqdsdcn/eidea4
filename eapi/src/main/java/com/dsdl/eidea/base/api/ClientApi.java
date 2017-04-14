@@ -1,9 +1,7 @@
 package com.dsdl.eidea.base.api;
 
 import com.dsdl.eidea.api.model.Client;
-import com.dsdl.eidea.core.web.result.ApiResult;
 import com.dsdl.eidea.core.web.result.ClientApiResult;
-import com.google.common.reflect.TypeToken;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.MediaType;
@@ -17,13 +15,12 @@ import java.util.Date;
  * Created by 刘大磊 on 2017/4/13 10:07.
  */
 @RestController
-@Api(value = "Client", position = 0,description = "实体信息",consumes="application/json")
+@Api(value = "Client", position = 0, description = "实体信息", consumes = "application/json")
 public class ClientApi {
-    @ApiOperation(value = "根据实体ID获取实体", httpMethod = "GET", response = Client.class, notes = "根据实体的id信息获取实体的详情",produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "根据实体ID获取实体", httpMethod = "GET", response = Client.class, notes = "根据实体的id信息获取实体的详情", produces = MediaType.APPLICATION_JSON_VALUE)
     @RequestMapping("/client/{id}")
-    public Client getClient(@PathVariable("id") Integer id)
-    {
-        Client client=new Client();
+    public Client getClient(@PathVariable("id") Integer id) {
+        Client client = new Client();
         client.setAddress("青岛市南");
         client.setCity("青岛");
         client.setCountry("中国");
@@ -31,18 +28,12 @@ public class ClientApi {
         client.setUpdatedDate(new Date());
         return client;
     }
-    @ApiOperation(value = "保存实体信息", httpMethod = "GET", response =ClientApiResult.class, notes = "根据实体的id信息获取实体的详情",produces = MediaType.APPLICATION_JSON_VALUE,responseContainer = "{\n" +
-            "  \"code\": 0,\n" +
-            "  \"data\": {},\n" +
-            "  \"errorCode\": 0,\n" +
-            "  \"message\": \"string\",\n" +
-            "  \"requestId\": \"string\",\n" +
-            "  \"success\": true\n" +
-            "}")
-    @RequestMapping("/client/save")
-    public ClientApiResult saveClient(Client client)
-    {
 
-        return ClientApiResult.success(new Client());
+    @ApiOperation(value = "保存实体信息", httpMethod = "GET", response = ClientApiResult.class, notes = "根据实体的id信息获取实体的详情", produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping("/client/save")
+
+    public ClientApiResult saveClient(Client client) {
+
+        return new ClientApiResult();
     }
 }

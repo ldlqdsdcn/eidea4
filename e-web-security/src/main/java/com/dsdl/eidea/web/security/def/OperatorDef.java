@@ -1,4 +1,4 @@
-package com.dsdl.eidea.base.def;
+package com.dsdl.eidea.web.security.def;
 
 import java.util.HashMap;
 import java.util.Map;

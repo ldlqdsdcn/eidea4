@@ -1,4 +1,4 @@
-package com.dsdl.eidea.base.web.vo;
+package com.dsdl.eidea.web.security.model;
 
 import lombok.Getter;
 import lombok.Setter;

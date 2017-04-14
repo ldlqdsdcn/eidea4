@@ -7,7 +7,6 @@ import com.dsdl.eidea.util.ReadPropertiesUtil;
 import com.dsdl.report.entity.param.ReportParam;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import net.sf.jasperreports.data.DataSourceProvider;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -40,7 +39,6 @@ import java.util.*;
 @RequestMapping("/jasper")
 public class JasperController {
     private static final Logger logger = Logger.getLogger(JasperController.class);
-    @Autowired
     private DataSource dataSource;
     @Autowired
     private AuthenticationManger authenticationManger;

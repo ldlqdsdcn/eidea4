@@ -1,8 +1,0 @@
-
-description = ''
-dependencies {
-  compile project(':eutil')
-    compile group: 'org.mybatis', name: 'mybatis', version:'3.2.8'
-    compile group: 'org.hibernate', name: 'hibernate-core', version:'5.2.3.Final'
-    compile group: 'org.hibernate', name: 'hibernate-ehcache', version:'5.2.3.Final'
-}

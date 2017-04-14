@@ -33,8 +33,8 @@
         $scope.allList = [];
         $scope.pageMenuBoList = [];
         $scope.delFlag = false;
-        $scope.canDel=PrivilegeService.hasPrivilege('pagemenu:delete');
-        $scope.canAdd=PrivilegeService.hasPrivilege('pagemenu:add');
+        $scope.canDel=PrivilegeService.hasPrivilege('delete');
+        $scope.canAdd=PrivilegeService.hasPrivilege('add');
         $http.post("<c:url value="/base/pagemenu/list"/> ").success(function (data) {
           if(data.success){
               $scope.updateList(data.data);
@@ -115,7 +115,7 @@
     app.controller('editCtrl', function ($scope, $http,$routeParams) {
         $scope.message = '';
         $scope.pageMenuBo = {};
-        $scope.canAdd=PrivilegeService.hasPrivilege('pagemenu:add');
+        $scope.canAdd=PrivilegeService.hasPrivilege('add');
         $scope.canSave=false;
         $scope.menuTypeList={"<eidea:label key="dymenu.label.menufolde"/>":1,"<eidea:label key="dymenuForm.label.type.hyperlink"/>":2};
         var url = "<c:url value="/base/pagemenu/create"/>";
@@ -126,7 +126,7 @@
             if (response.success) {
                 $scope.pageMenuBo = response.data;
                 $scope.getMenuTypeList($routeParams.id);
-                $scope.canSave=(PrivilegeService.hasPrivilege('pagemenu:add')&&$scope.pageMenuBo.id==null)||PrivilegeService.hasPrivilege('pagemenu:update');
+                $scope.canSave=(PrivilegeService.hasPrivilege('add')&&$scope.pageMenuBo.id==null)||PrivilegeService.hasPrivilege('update');
             }else {
                 bootbox.alert(response.message);
             }

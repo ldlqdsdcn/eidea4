@@ -1,12 +1,10 @@
 package com.dsdl.eidea.common.web.controller;
 
 import com.dsdl.eidea.base.def.OperatorDef;
-import com.dsdl.eidea.base.entity.bo.PermissionBo;
 import com.dsdl.eidea.base.entity.bo.UserBo;
 import com.dsdl.eidea.base.entity.bo.UserSessionBo;
 import com.dsdl.eidea.base.service.PageMenuService;
 import com.dsdl.eidea.base.service.UserService;
-import com.dsdl.eidea.base.service.UserSessionService;
 import com.dsdl.eidea.base.web.content.UserOnlineContent;
 import com.dsdl.eidea.base.entity.bo.UserContent;
 import com.dsdl.eidea.base.web.vo.UserResource;
@@ -16,19 +14,10 @@ import com.dsdl.eidea.core.service.LanguageService;
 import com.dsdl.eidea.core.service.MessageService;
 import com.dsdl.eidea.core.web.def.WebConst;
 import com.dsdl.eidea.core.web.result.ApiResult;
-import com.dsdl.eidea.core.web.result.def.ErrorCodes;
 import com.dsdl.eidea.core.web.result.def.ResultCode;
 import com.dsdl.eidea.util.LocaleHelper;
 import com.dsdl.eidea.util.StringUtil;
-import com.google.gson.Gson;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.log4j.Logger;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.IncorrectCredentialsException;
-import org.apache.shiro.authc.LockedAccountException;
-import org.apache.shiro.authc.UnknownAccountException;
-import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,12 +30,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.net.InetAddress;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
-@Slf4j
 @RestController
 public class UserLoginController {
-    private Gson gson=new Gson();
     private static final Logger logger = Logger.getLogger(UserLoginController.class);
     @Autowired
     private UserService userService;
@@ -60,8 +50,6 @@ public class UserLoginController {
     private HttpServletRequest request;
     @Autowired
     private LanguageService languageService;
-    @Autowired
-    private UserSessionService userSessionService;
 
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
@@ -76,32 +64,29 @@ public class UserLoginController {
                 return ApiResult.fail(ResultCode.FAILURE.getCode(), "密码不允许为空！");
             }
         }
-
-        Subject subject = SecurityUtils.getSubject();
-        UsernamePasswordToken token = new UsernamePasswordToken(loginBo.getUsername(), loginBo.getPassword());
-
-        try {
-            subject.login(token);
-            userInitCommon(loginBo.getUsername());
-            UserBo userBo=userService.getUserByUsername(loginBo.getUsername());
-            userBo.setCode(loginBo.getCode());
-            userInit(userBo, false, request);
-            return ApiResult.success("登录成功");
-        } catch (IncorrectCredentialsException | UnknownAccountException e) {
-            return ApiResult.fail(ErrorCodes.NO_LOGIN.getCode(), "用户名或密码错误，请重新输入");
-        } catch (LockedAccountException e) {
-            return ApiResult.fail(ErrorCodes.NO_LOGIN.getCode(), "该用户已经被禁用");
+        String md5password = loginBo.getPassword();
+        UserBo userBologin = userService.getUserLogin(loginBo.getUsername(), md5password);
+        if (userBologin == null) {
+            return ApiResult.fail(ResultCode.FAILURE.getCode(), "用户名或密码错误！");
+        } else {
+            if (md5password.equals(userBologin.getPassword())) {
+                if (userBologin.getIsactive().equals("N")) {
+                    return ApiResult.fail(ResultCode.FAILURE.getCode(), "该用户已经被禁用！");
+                }
+                userInitCommon(userBologin);
+                userBologin.setCode(loginBo.getCode());
+                userInit(userBologin, false, request);
+                String token = "";
+                return ApiResult.success(token);
+            } else {
+                return ApiResult.fail(ResultCode.FAILURE.getCode(), "密码输入错误！");
+            }
         }
-
-
-
-
-
     }
 
-    private void userInitCommon(String username) {
+    private void userInitCommon(UserBo loginBo) {
 
-        Cookie cookie = new Cookie("userName", username);
+        Cookie cookie = new Cookie("userName", loginBo.getUsername());
         cookie.setMaxAge(60 * 60 * 24 * 7);
         response.addCookie(cookie);
         HttpSession session = request.getSession();
@@ -119,13 +104,7 @@ public class UserLoginController {
     private void userInit(UserBo loginUser, boolean beSub, HttpServletRequest request) {
         HttpSession session = request.getSession();
         /*Get user privileges*/
-        List<PermissionBo> permissionBoList = userService.getUserPermissionList(loginUser.getId());
-        Set<String> permissionList = new HashSet<>();
-        permissionBoList.forEach(e -> {
-            permissionList.add(e.getPermission());
-        });
-        session.setAttribute(WebConst.PAGE_PRIVILEGES,gson.toJson(permissionList));
-        session.setAttribute(WebConst.PRIVILEGES,permissionList);
+
         if (beSub == false)
             session.setAttribute(WebConst.SESSION_LOGINUSER, loginUser);
         session.setAttribute(WebConst.SESSION_ACTUALUSER, loginUser);
@@ -140,6 +119,7 @@ public class UserLoginController {
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
+        Map<String, List<OperatorDef>> privilegesMap = userService.getUserPrivileges(loginUser.getId());
         String token = userService.generateToken(loginUser);
         UserSessionBo userSessionBo = new UserSessionBo();
         userSessionBo.setLoginDate(new Date());
@@ -150,9 +130,10 @@ public class UserLoginController {
         userSessionBo.setUserId(loginUser.getId());
         userSessionBo.setToken(token);
         UserOnlineContent.addUser(session.getId(), userSessionBo);
-        userService.saveUserSessionBo(userSessionBo);
+        userSessionBo = userService.saveUserSessionBo(userSessionBo);
         List<Integer> orgIdList = userService.getCanAccessOrgList(loginUser.getId());
-        session.setAttribute(WebConst.ORG_IDS,orgIdList);
+        UserContent userContent = new UserContent(privilegesMap, userSessionBo, token, orgIdList);
+        session.setAttribute(WebConst.SESSION_USERCONTENT, userContent);
         String contextPath = request.getServletContext().getContextPath();
         String leftMenuStr = pageMenuService.getLeftMenuListByUserId(loginUser.getId(), contextPath);
         session.setAttribute(WebConst.SESSION_LEFTMENU, leftMenuStr);
@@ -180,14 +161,8 @@ public class UserLoginController {
         session.removeAttribute(WebConst.SESSION_USERCONTENT);
         session.removeAttribute(WebConst.SESSION_RESOURCE);
         session.removeAttribute(WebConst.SESSION_LEFTMENU);
-        Subject subject = SecurityUtils.getSubject();
-        if (subject.isAuthenticated()) {
-            subject.logout(); // session 会销毁，在SessionListener监听session销毁，清理权限缓存
-            if (log.isDebugEnabled()) {
-                log.debug("用户" + subject.getPrincipal() + "退出登录");
-            }
-        }
         ModelAndView modelAndView = new ModelAndView("redirect:/login.jsp");
+
         return modelAndView;
     }
 

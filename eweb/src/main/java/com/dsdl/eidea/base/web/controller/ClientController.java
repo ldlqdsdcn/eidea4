@@ -1,8 +1,11 @@
 package com.dsdl.eidea.base.web.controller;
 
 import com.dsdl.eidea.base.def.ActivateDef;
+import com.dsdl.eidea.base.def.OperatorDef;
 import com.dsdl.eidea.base.entity.bo.ClientBo;
 import com.dsdl.eidea.base.service.ClientService;
+import com.dsdl.eidea.base.web.annotation.PrivilegesControl;
+import com.dsdl.eidea.base.web.def.ReturnType;
 import com.dsdl.eidea.core.web.controller.BaseController;
 import com.dsdl.eidea.core.web.def.WebConst;
 import com.dsdl.eidea.core.web.result.ApiResult;
@@ -10,7 +13,6 @@ import com.dsdl.eidea.core.web.result.def.ErrorCodes;
 import com.dsdl.eidea.core.web.util.SearchHelper;
 import com.dsdl.eidea.core.web.vo.PagingSettingResult;
 import com.googlecode.genericdao.search.Search;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
@@ -32,9 +34,8 @@ public class ClientController extends BaseController {
     private static final String URI = "sys_client";
     @Autowired
     private ClientService clientService;
-
     @RequestMapping(value = "/showList", method = RequestMethod.GET)
-    @RequiresPermissions("client:view")
+    @PrivilegesControl(operator = OperatorDef.VIEW, returnType = ReturnType.JSP)
     public ModelAndView showList() {
         ModelAndView modelAndView = new ModelAndView("/base/client/client");
         modelAndView.addObject(WebConst.PAGING_SETTINGS, PagingSettingResult.getDefault());
@@ -45,27 +46,27 @@ public class ClientController extends BaseController {
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
-    @RequiresPermissions("client:view")
+    @PrivilegesControl(operator = OperatorDef.VIEW)
     public ApiResult<List<ClientBo>> list(HttpSession session) {
         Search search = SearchHelper.getSearchParam(URI, session);
         List<ClientBo> clientBoList = clientService.getClientList(search);
         return ApiResult.success(clientBoList);
     }
 
-    @RequiresPermissions("client:view")
+    @PrivilegesControl(operator = OperatorDef.VIEW)
     @RequestMapping(value = "/get", method = RequestMethod.GET)
     @ResponseBody
     public ApiResult<ClientBo> get(Integer id) {
         ClientBo clientBo = null;
         if (id == null) {
-            return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), getMessage("common.errror.get_object", getLabel("client.title")));
+            return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(),getMessage("common.errror.get_object",getLabel("client.title")));
         } else {
             clientBo = clientService.getClientBo(id);
         }
         return ApiResult.success(clientBo);
     }
 
-    @RequiresPermissions("client:add")
+    @PrivilegesControl(operator = OperatorDef.ADD)
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     @ResponseBody
     public ApiResult<ClientBo> create() {
@@ -78,30 +79,30 @@ public class ClientController extends BaseController {
      * @param clientBo
      * @return
      */
-    @RequiresPermissions("client:add")
+    @PrivilegesControl(operator = {OperatorDef.ADD})
     @RequestMapping(value = "/saveForCreated", method = RequestMethod.POST)
     @ResponseBody
     public ApiResult<ClientBo> saveForCreate(@Validated @RequestBody ClientBo clientBo) {
-        if (clientService.findExistClient(clientBo.getNo())) {
+       if (clientService.findExistClient(clientBo.getNo())) {
             return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), getMessage("client.msg.client_code_exists"));
         }
         clientService.save(clientBo);
         return get(clientBo.getId());
     }
 
-    @RequiresPermissions("client:update")
+    @PrivilegesControl(operator = {OperatorDef.UPDATE})
     @RequestMapping(value = "/saveForUpdated", method = RequestMethod.POST)
     @ResponseBody
     public ApiResult<ClientBo> saveForUpdate(@Validated @RequestBody ClientBo clientBo) {
 
-        if (clientBo.getId() == null) {
+        if(clientBo.getId() == null){
             return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), getMessage("common.primary_key.isempty"));
         }
         clientService.save(clientBo);
         return get(clientBo.getId());
     }
 
-    @RequiresPermissions("client:delete")
+    @PrivilegesControl(operator = {OperatorDef.DELETE})
     @RequestMapping(value = "/deletes", method = RequestMethod.POST)
     @ResponseBody
     public ApiResult<List<ClientBo>> deletes(@RequestBody Integer[] ids, HttpSession session) {

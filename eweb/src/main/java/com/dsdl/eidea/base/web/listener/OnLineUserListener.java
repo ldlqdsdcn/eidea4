@@ -3,8 +3,6 @@ package com.dsdl.eidea.base.web.listener;
         import com.dsdl.eidea.base.service.SpringContextHolder;
         import com.dsdl.eidea.base.service.UserSessionService;
         import com.dsdl.eidea.base.web.content.UserOnlineContent;
-        import org.apache.shiro.SecurityUtils;
-        import org.apache.shiro.subject.Subject;
 
         import javax.servlet.http.HttpSession;
         import javax.servlet.http.HttpSessionEvent;
@@ -29,6 +27,5 @@ public class OnLineUserListener implements HttpSessionListener {
         HttpSession session = httpSessionEvent.getSession();
         UserOnlineContent.removeUserBySessionId(session.getId());
         userSessionService.saveLoginOutDate(session.getId());
-
     }
 }

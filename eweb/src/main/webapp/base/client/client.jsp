@@ -31,8 +31,8 @@
         $scope.allList = [];
         $scope.modelList = [];
         $scope.delFlag = false;
-        $scope.canDel=PrivilegeService.hasPrivilege('client:delete');
-        $scope.canAdd=PrivilegeService.hasPrivilege('client:add');
+        $scope.canDel=PrivilegeService.hasPrivilege('delete');
+        $scope.canAdd=PrivilegeService.hasPrivilege('add');
         $http.get("<c:url value="/base/client/list"/>")
                 .success(function (response) {
                     if (response.success) {
@@ -122,7 +122,7 @@
     app.controller('editCtrl', function ($scope, $http, $routeParams) {
         $scope.message = '';
         $scope.clientBo = {};
-        $scope.canAdd=PrivilegeService.hasPrivilege('client:add');
+        $scope.canAdd=PrivilegeService.hasPrivilege('add');
         var url = "<c:url value="/base/client/create"/>";
         if ($routeParams.id != null) {
             url = "<c:url value="/base/client/get"/>" + "?id=" + $routeParams.id;
@@ -131,7 +131,7 @@
                 .success(function (response) {
                     if (response.success) {
                         $scope.clientBo = response.data;
-                        $scope.canSave=(PrivilegeService.hasPrivilege('client:add')&&$scope.clientBo.id==null)||PrivilegeService.hasPrivilege('client:update');
+                        $scope.canSave=(PrivilegeService.hasPrivilege('add')&&$scope.clientBo.id==null)||PrivilegeService.hasPrivilege('update');
                     }
                     else {
                         bootbox.alert(response.message);
@@ -170,7 +170,7 @@
                     .success(function (response) {
                         if (response.success) {
                             $scope.clientBo = response.data;
-                            $scope.canSave=(PrivilegeService.hasPrivilege('client:add')&&$scope.clientBo.id==null)||PrivilegeService.hasPrivilege('client:update');
+                            $scope.canSave=(PrivilegeService.hasPrivilege('add')&&$scope.clientBo.id==null)||PrivilegeService.hasPrivilege('update');
                         }
                         else {
                             bootbox.alert(response.message);

@@ -1,6 +1,4 @@
 <%@ page import="com.google.gson.Gson" %>
-<%@ page import="com.dsdl.eidea.core.web.result.ApiResult" %>
-<%@ page import="com.dsdl.eidea.core.web.result.def.ErrorCodes" %>
 <% String headerKey = "x-requested-with";
     String headerContent = "XMLHttpRequest";
     String angularKey = "accept";
@@ -23,6 +21,7 @@
     } else {
         response.setContentType("application/json; charset=utf-8");
         response.setCharacterEncoding("utf-8");
+        response.setStatus(401);
         Gson gson = new Gson();
-        out.print(gson.toJson(ApiResult.fail(ErrorCodes.NO_PRIVILEGES.getCode(), "你没有操作权限")));
+        out.print("你没有操作权限");
     }%>

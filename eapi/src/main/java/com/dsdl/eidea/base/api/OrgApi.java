@@ -2,7 +2,6 @@ package com.dsdl.eidea.base.api;
 
 import com.dsdl.eidea.api.model.Client;
 import com.dsdl.eidea.api.model.Org;
-import com.dsdl.eidea.core.web.result.ApiResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -37,10 +36,10 @@ public class OrgApi {
         org.setClient(client);
         return org;
     }
-    @ApiOperation(value = "保存组织信息", httpMethod = "POST", response = ApiResult.class, notes = "保存组织信息",produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "保存组织信息", httpMethod = "POST", response = String.class, notes = "保存组织信息",produces = MediaType.APPLICATION_JSON_VALUE)
     @RequestMapping("/org/save")
-    public ApiResult<String> saveOrg(@ApiParam(value = "要更新的组织", required = true)Org org)
+    public String saveOrg(@ApiParam(value = "要更新的组织", required = true)Org org)
     {
-        return ApiResult.success("更新组织信息成功");
+        return "更新组织信息成功";
     }
 }

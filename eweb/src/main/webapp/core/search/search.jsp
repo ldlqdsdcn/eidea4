@@ -33,8 +33,8 @@
         $scope.currentList = [];
         $scope.delFlag = false;
         $scope.isLoading = true;
-        $scope.canDel=PrivilegeService.hasPrivilege('search:delete');
-        $scope.canAdd=PrivilegeService.hasPrivilege('search:add');
+        $scope.canDel=PrivilegeService.hasPrivilege('delete');
+        $scope.canAdd=PrivilegeService.hasPrivilege('add');
         $http.get("<c:url value="/core/search/list"/>")
                 .success(function (response) {
                     if (response.success) {
@@ -128,7 +128,7 @@
         $scope.searchDataType = [];
         $scope.searchBo = {};
         $scope.delF = false;
-        $scope.canAdd=PrivilegeService.hasPrivilege('search:add');
+        $scope.canAdd=PrivilegeService.hasPrivilege('add');
         $scope.canSave=false;
         $http.get("<c:url value="/core/search/getSelectList"/> ")
                 .success(function (response) {
@@ -152,7 +152,7 @@
                 .success(function (response) {
                     if (response.success) {
                         $scope.searchBo = response.data;
-                        $scope.canSave=(PrivilegeService.hasPrivilege('search:add')&&$scope.searchBo.id==null)||PrivilegeService.hasPrivilege('search:update');
+                        $scope.canSave=(PrivilegeService.hasPrivilege('add')&&$scope.searchBo.id==null)||PrivilegeService.hasPrivilege('update');
                     }
                     else {
                         bootbox.alert(response.message);

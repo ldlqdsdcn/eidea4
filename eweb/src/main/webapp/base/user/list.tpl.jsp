@@ -26,10 +26,10 @@
                     <th>id</th>
                     <th><eidea:label key="loginlog.label.loginname"/></th>
                     <th><eidea:label key="user.username"/></th>
-                    <th ><eidea:label key="operator.column.init"/></th>
+                    <th><eidea:label key="operator.column.init"/></th>
                     <th><eidea:label key="linkman.column.email"/></th>
                     <th><eidea:label key="customer.column.telephone"/></th>
-                    <th ><eidea:label key="base.whetherEffective"/></th>
+                    <th><eidea:label key="base.whetherEffective"/></th>
                     <th><eidea:label key="common.button.edit"/><%--编辑--%></th>
                 </tr>
                 </thead>

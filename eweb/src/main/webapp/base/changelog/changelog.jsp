@@ -19,12 +19,12 @@
 
 <script type="text/javascript">
     var app = angular.module('myApp', ['ngRoute', 'ui.bootstrap', 'jcs-autoValidate'])
-        .config(['$routeProvider', function ($routeProvider) {
-            $routeProvider
-                .when('/list', {templateUrl: '<c:url value="/base/changelog/list.tpl.jsp"/>'})
-                .when('/edit', {templateUrl: '<c:url value="/base/changelog/edit.tpl.jsp"/>'})
-                .otherwise({redirectTo: '/list'});
-        }]);
+            .config(['$routeProvider', function ($routeProvider) {
+                $routeProvider
+                        .when('/list', {templateUrl: '<c:url value="/base/changelog/list.tpl.jsp"/>'})
+                        .when('/edit', {templateUrl: '<c:url value="/base/changelog/edit.tpl.jsp"/>'})
+                        .otherwise({redirectTo: '/list'});
+            }]);
     app.controller('listCtrl', function ($scope, $http) {
         $scope.allList = [];
         $scope.modelList = [];

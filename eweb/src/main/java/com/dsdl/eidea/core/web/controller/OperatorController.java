@@ -6,7 +6,6 @@ import com.dsdl.eidea.core.web.result.ApiResult;
 import com.dsdl.eidea.core.web.result.def.ErrorCodes;
 import com.dsdl.eidea.core.web.vo.PagingSettingResult;
 import com.googlecode.genericdao.search.Search;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,7 +27,6 @@ public class OperatorController {
     private OperatorService operatorService;
 
     @RequestMapping(value = "/showList", method = RequestMethod.GET)
-    @RequiresPermissions(value = "operator:view")
     public ModelAndView showList() {
         ModelAndView modelAndView = new ModelAndView("/base/operator/operator");
         modelAndView.addObject("pagingSettingResult", PagingSettingResult.getDefault());
@@ -36,14 +34,12 @@ public class OperatorController {
     }
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
-    @RequiresPermissions(value = "operator:view")
     public ApiResult<List<OperatorBo>> list(HttpSession session) {
         List<OperatorBo> operatorBoList = operatorService.findOperator(new Search());
         return ApiResult.success(operatorBoList);
     }
     @RequestMapping(value = "/deletes", method = RequestMethod.POST)
     @ResponseBody
-    @RequiresPermissions(value = "operator:delete")
     public ApiResult<List<OperatorBo>> deletes(@RequestBody Integer[] ids, HttpSession session) {
         if (ids == null ) {
             return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), "请选择再删除");
@@ -53,7 +49,6 @@ public class OperatorController {
     }
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     @ResponseBody
-    @RequiresPermissions(value = "operator:update")
     public ApiResult<OperatorBo> save(@RequestBody OperatorBo operatorBo) {
         List<OperatorBo> operatorBoList = operatorService.findOperator(new Search());
         for (OperatorBo bb:operatorBoList) {
@@ -67,7 +62,6 @@ public class OperatorController {
     }
     @RequestMapping(value = "/get", method = RequestMethod.GET)
     @ResponseBody
-    @RequiresPermissions(value = "operator:view")
     public ApiResult<OperatorBo> get(Integer id) {
         OperatorBo operatorBo = null;
         if (id==null) {
@@ -80,7 +74,6 @@ public class OperatorController {
 
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     @ResponseBody
-    @RequiresPermissions(value = "operator:add")
     public ApiResult<OperatorBo> create()
     {
         OperatorBo operatorBo=new OperatorBo();

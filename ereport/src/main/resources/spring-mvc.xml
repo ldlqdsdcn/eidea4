@@ -16,35 +16,15 @@
         <context:include-filter type="annotation"
                                 expression="org.springframework.web.bind.annotation.ControllerAdvice" />
     </context:component-scan>
-
     <!-- 使用这句注解，就是为了 一次性注入 AnnotationMethodHandlerAdapter 和 DefaultAnnotationHandlerMapping
         两个bean -->
     <!-- 但是如果要加入拦截器的话，最好手动配置2个bean -->
-    <mvc:annotation-driven>
-        <mvc:message-converters>
-            <bean class="org.springframework.http.converter.json.GsonHttpMessageConverter">
-                <property name="defaultCharset" value="utf-8"/>
-                <property name="supportedMediaTypes">
-                    <list>
-                        <value>text/json;charset=UTF-8</value>
-                    </list>
-                </property>
-            </bean>
-        </mvc:message-converters>
-    </mvc:annotation-driven>
-
+    <mvc:annotation-driven />
     <mvc:default-servlet-handler />
-    <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"/>
-    <bean class="org.springframework.validation.beanvalidation.MethodValidationPostProcessor"/>
-    <bean id="viewResolverCommon" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"></property>
-        <property name="prefix" value="/"></property>
-        <property name="suffix" value=".jsp"></property>
-        <property name="order" value="0"/>
-    </bean>
     <bean id="multipartResolver"
           class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
         <property name="maxUploadSize" value="104857600"></property>
     </bean>
+
 
 </beans>

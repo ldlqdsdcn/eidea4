@@ -39,6 +39,7 @@ import java.util.*;
 @RequestMapping("/jasper")
 public class JasperController {
     private static final Logger logger = Logger.getLogger(JasperController.class);
+    @Autowired
     private DataSource dataSource;
     @Autowired
     private AuthenticationManger authenticationManger;

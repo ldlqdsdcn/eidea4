@@ -4,7 +4,11 @@ import com.dsdl.eidea.api.model.Client;
 import com.dsdl.eidea.core.web.result.ClientApiResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,11 +33,15 @@ public class ClientApi {
         return client;
     }
 
-    @ApiOperation(value = "保存实体信息", httpMethod = "GET", response = ClientApiResult.class, notes = "根据实体的id信息获取实体的详情", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "保存实体信息", httpMethod = "GET", response = Client.class, notes = "根据实体的id信息获取实体的详情", produces = MediaType.APPLICATION_JSON_VALUE)
     @RequestMapping("/client/save")
-
-    public ClientApiResult saveClient(Client client) {
-
-        return new ClientApiResult();
+    @ApiResponses(value = {@ApiResponse(code = 400, message = "保存实体信息失败")})
+    public ResponseEntity<Client> saveClient(Client client) {
+        if(client==null||client.getName()==null)
+        {
+            ResponseEntity responseEntity=new ResponseEntity("实体信息不能为空",null,HttpStatus.BAD_REQUEST);
+            return responseEntity;
+        }
+        return new ResponseEntity<Client>(new Client(),null,HttpStatus.OK);
     }
 }

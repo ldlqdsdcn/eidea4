@@ -1,7 +1,6 @@
 package com.dsdl.eidea.base.api;
 
 import com.dsdl.eidea.api.model.Client;
-import com.dsdl.eidea.core.web.result.ClientApiResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;

@@ -1,8 +1,7 @@
 package com.dsdl.eidea.base.service;
 
-import com.dsdl.eidea.base.entity.bo.UserBo;
-import com.dsdl.eidea.base.entity.bo.UserContent;
-import com.dsdl.eidea.base.entity.bo.UserSessionBo;
+import com.dsdl.eidea.base.def.OperatorDef;
+import com.dsdl.eidea.base.entity.bo.*;
 import com.googlecode.genericdao.search.Search;
 
 import java.util.List;
@@ -56,8 +55,14 @@ public interface UserService {
      * @param userId
      * @return
      */
-    Map<String, List<String>> getUserPrivileges(Integer userId);
+    Map<String, List<OperatorDef>> getUserPrivileges(Integer userId);
 
+    /**
+     * 生成token
+     * @param userBo
+     * @return
+     */
+    String generateToken(UserBo userBo);
 
     UserSessionBo saveUserSessionBo(UserSessionBo userSessionBo);
 

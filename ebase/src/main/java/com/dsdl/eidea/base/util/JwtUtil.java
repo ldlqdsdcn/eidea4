@@ -1,5 +1,6 @@
-package com.dsdl.eidea.web.security.jwt;
+package com.dsdl.eidea.base.util;
 
+import com.dsdl.eidea.base.entity.bo.UserBo;
 import org.jose4j.jwk.RsaJsonWebKey;
 import org.jose4j.jwk.RsaJwkGenerator;
 import org.jose4j.jws.AlgorithmIdentifiers;
@@ -10,8 +11,6 @@ import org.jose4j.jwt.consumer.JwtConsumer;
 import org.jose4j.jwt.consumer.JwtConsumerBuilder;
 import org.jose4j.lang.JoseException;
 
-import java.util.Map;
-
 /**
  * Created by 刘大磊 on 2016/12/26 16:59.
  */
@@ -19,9 +18,9 @@ public class JwtUtil {
     private static RsaJsonWebKey rsaJsonWebKey;
     private static final String ISSUER="eidea";
     private static final String AUDIENCE="dsdl";
-    public static final String KEY_USER_ID="userId";
-    public static final String KEY_USERNAME="username";
-    public static final String KEY_NAME="name";
+    private static final String KEY_USER_ID="userId";
+    private static final String KEY_USERNAME="username";
+    private static final String KEY_NAME="name";
     static
     {
         try {
@@ -34,7 +33,7 @@ public class JwtUtil {
     }
 
 
-    public static String getTokenString(Map<String,Object> userMap)
+    public static String getTokenString(UserBo user)
     {
         String token=null;
 
@@ -50,9 +49,9 @@ public class JwtUtil {
         claims.setNotBeforeMinutesInThePast(2); // time before which the token is not yet valid (2 minutes ago)
 
         claims.setSubject("Security"); // the subject/principal is whom the token is about
-        claims.setClaim(KEY_USER_ID,userMap.get(KEY_USER_ID));
-        claims.setClaim(KEY_USERNAME,userMap.get(KEY_USERNAME));
-        claims.setClaim(KEY_NAME,userMap.get(KEY_NAME));
+        claims.setClaim(KEY_USER_ID,user.getId());
+        claims.setClaim(KEY_USERNAME,user.getUsername());
+        claims.setClaim(KEY_NAME,user.getName());
         //List<String> groups = Arrays.asList("group-one", "other-group", "group-three");
         //claims.setStringListClaim("groups", groups); // multi-valued claims work too and will end up as a JSON array
         // A JWT is a JWS and/or a JWE with JSON claims as the payload.

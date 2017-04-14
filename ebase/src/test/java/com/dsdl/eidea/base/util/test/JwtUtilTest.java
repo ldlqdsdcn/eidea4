@@ -1,7 +1,7 @@
 package com.dsdl.eidea.base.util.test;
 
 import com.dsdl.eidea.base.entity.bo.UserBo;
-import com.dsdl.eidea.util.JwtUtil;
+import com.dsdl.eidea.base.util.JwtUtil;
 import org.junit.Test;
 
 import java.net.URLDecoder;

@@ -21,11 +21,6 @@
             <artifactId>emanager</artifactId>
             <version>1.0</version>
         </dependency>
-        <dependency>
-            <groupId>com.dsdl</groupId>
-            <artifactId>e-web-security</artifactId>
-            <version>1.0</version>
-        </dependency>
         <!--添加对dubbo的支持 end-->
         <dependency>
             <groupId>commons-fileupload</groupId>

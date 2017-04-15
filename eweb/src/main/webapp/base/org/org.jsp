@@ -33,8 +33,8 @@
         $scope.allList = [];
         $scope.modelList = [];
         $scope.delFlag = false;
-        $scope.canDel=PrivilegeService.hasPrivilege('delete');
-        $scope.canAdd=PrivilegeService.hasPrivilege('add');
+        $scope.canDel=PrivilegeService.hasPrivilege('org:delete');
+        $scope.canAdd=PrivilegeService.hasPrivilege('org:add');
         $http.get("<c:url value="/base/org/list"/>")
                 .success(function (response) {
                     if (response.success) {
@@ -128,7 +128,7 @@
         $scope.clientList = [];
         $scope.errorCode=-1;
         $scope.errorMessages=[];
-        $scope.canAdd=PrivilegeService.hasPrivilege('add');
+        $scope.canAdd=PrivilegeService.hasPrivilege('org:add');
         $scope.canSave=false;
         $http.get("<c:url value="/base/org/clients"/>")
                 .success(function (response) {

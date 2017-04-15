@@ -32,8 +32,8 @@
         $scope.allList = [];
         $scope.modelList = [];
         $scope.delFlag = false;
-        $scope.canDel=PrivilegeService.hasPrivilege('delete');
-        $scope.canAdd=PrivilegeService.hasPrivilege('add');
+        $scope.canDel=PrivilegeService.hasPrivilege('user:delete');
+        $scope.canAdd=PrivilegeService.hasPrivilege('user:add');
         //用户列表
         $http.post("<c:url value="/base/user/getUserList"/>").success(function (data) {
             if (data.success) {
@@ -115,7 +115,7 @@
         $scope.bigTotalItems = 0;
     });
     app.controller('editCtrl', function ($scope, $http, $routeParams) {
-        $scope.canAdd=PrivilegeService.hasPrivilege('add');
+        $scope.canAdd=PrivilegeService.hasPrivilege('user:add');
         $scope.canSave=false;
         //用户编辑
         var url = "<c:url value="/base/user/create"/>";
@@ -130,7 +130,7 @@
                 $scope.getRole();
                 $scope.getClient($routeParams.id);
                 $scope.getOrg($routeParams.id);
-                $scope.canSave=(PrivilegeService.hasPrivilege('add')&&$scope.userBo.id==null)||PrivilegeService.hasPrivilege('update');
+                $scope.canSave=(PrivilegeService.hasPrivilege('user:add')&&$scope.userBo.id==null)||PrivilegeService.hasPrivilege('user:update');
             } else {
                 bootbox.alert(data.message);
             }

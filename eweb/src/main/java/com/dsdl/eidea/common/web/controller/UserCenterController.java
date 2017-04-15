@@ -6,7 +6,8 @@ import com.dsdl.eidea.base.entity.bo.UserContent;
 import com.dsdl.eidea.base.service.UserService;
 import com.dsdl.eidea.common.web.vo.UserProfileVo;
 import com.dsdl.eidea.core.web.def.WebConst;
-import com.dsdl.eidea.core.web.result.JsonResult;
+import com.dsdl.eidea.core.web.result.ApiResult;
+import com.dsdl.eidea.util.MD5;
 import com.dsdl.eidea.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -35,18 +36,18 @@ public class UserCenterController {
      */
     @RequestMapping(value = "/changePassword", method = RequestMethod.POST)
     @ResponseBody
-    public JsonResult<String> changePassword(HttpServletRequest request, @Validated @RequestBody ChangePasswordBo userBo) {
+    public ApiResult<String> changePassword(HttpServletRequest request, @Validated @RequestBody ChangePasswordBo userBo) {
         UserBo user = (UserBo) request.getSession().getAttribute("loginUser");
         if (user == null) {
-            return JsonResult.fail(0, "登录超时");
+            return ApiResult.fail(0, "登录超时");
         }
         if (userBo.getOldPassword().equals(user.getPassword())) {
-            return JsonResult.fail(0, "旧密码输入错误");
+            return ApiResult.fail(0, "旧密码输入错误");
         }
         UserBo userParam = userService.getUser(user.getId());
         userParam.setPassword(userBo.getPassword());
         userService.saveUser(userParam);
-        return JsonResult.success("修改密码成功");
+        return ApiResult.success("修改密码成功");
     }
 
     /**
@@ -57,7 +58,7 @@ public class UserCenterController {
      */
     @RequestMapping(value = "/getProfile", method = RequestMethod.GET)
     @ResponseBody
-    public JsonResult<UserProfileVo> getProfile(HttpServletRequest request) {
+    public ApiResult<UserProfileVo> getProfile(HttpServletRequest request) {
         UserProfileVo userProfileVo = new UserProfileVo();
         String token = request.getHeader(WebConst.HEADER_TOKEN);
         UserContent userContent = null;
@@ -71,7 +72,7 @@ public class UserCenterController {
         }
         userProfileVo.setUserContent(userContent);
         userProfileVo.setUser(userBo);
-        return JsonResult.success(userProfileVo);
+        return ApiResult.success(userProfileVo);
     }
 
     /**
@@ -83,7 +84,7 @@ public class UserCenterController {
      */
     @RequestMapping(value = "/updateProfile", method = RequestMethod.POST)
     @ResponseBody
-    public JsonResult<UserProfileVo> updateProfile(UserBo userBo, HttpServletRequest request) {
+    public ApiResult<UserProfileVo> updateProfile(UserBo userBo, HttpServletRequest request) {
         return getProfile(request);
     }
 

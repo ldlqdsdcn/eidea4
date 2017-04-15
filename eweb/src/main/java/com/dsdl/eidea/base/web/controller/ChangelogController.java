@@ -1,15 +1,14 @@
 package com.dsdl.eidea.base.web.controller;
 
-import java.util.*;
-
-import javax.servlet.http.HttpSession;
-
-import com.dsdl.eidea.base.def.OperatorDef;
-import com.dsdl.eidea.base.web.annotation.PrivilegesControl;
-import com.dsdl.eidea.base.web.def.ReturnType;
+import com.dsdl.eidea.base.entity.bo.ChangelogBo;
+import com.dsdl.eidea.base.service.ChangelogService;
 import com.dsdl.eidea.base.web.vo.ChangelogVo;
 import com.dsdl.eidea.core.entity.bo.TableColumnBo;
+import com.dsdl.eidea.core.web.result.ApiResult;
+import com.dsdl.eidea.core.web.vo.PagingSettingResult;
 import com.google.gson.Gson;
+import com.googlecode.genericdao.search.Search;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,11 +16,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.dsdl.eidea.base.entity.bo.ChangelogBo;
-import com.dsdl.eidea.base.service.ChangelogService;
-import com.dsdl.eidea.core.web.result.JsonResult;
-import com.dsdl.eidea.core.web.vo.PagingSettingResult;
-import com.googlecode.genericdao.search.Search;
+import javax.servlet.http.HttpSession;
+import java.util.*;
+
 
 @Controller
 @RequestMapping("/base/changelog")
@@ -29,26 +26,26 @@ public class ChangelogController {
     @Autowired
     private ChangelogService changelogService;
 
+    @RequiresPermissions(value = "changelog:view")
     @RequestMapping(value = "/showList", method = RequestMethod.GET)
-    @PrivilegesControl(operator = OperatorDef.VIEW, returnType = ReturnType.JSP)
     public ModelAndView showList() {
         ModelAndView modelAndView = new ModelAndView("/base/changelog/changelog");
         modelAndView.addObject("pagingSettingResult", PagingSettingResult.getDefault());
         return modelAndView;
     }
 
+    @RequiresPermissions(value = "changelog:view")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
-    @PrivilegesControl(operator = OperatorDef.VIEW)
-    public JsonResult<List<ChangelogBo>> list(HttpSession session) {
+    public ApiResult<List<ChangelogBo>> list(HttpSession session) {
         List<ChangelogBo> changelogBoList = changelogService.getChangelogList(new Search());
-        return JsonResult.success(changelogBoList);
+        return ApiResult.success(changelogBoList);
     }
 
+    @RequiresPermissions(value = "changelog:view")
     @RequestMapping(value = "/get", method = RequestMethod.GET)
     @ResponseBody
-    @PrivilegesControl(operator = OperatorDef.VIEW)
-    public JsonResult<ChangelogVo> get(Integer id) {
+    public ApiResult<ChangelogVo> get(Integer id) {
 
         ChangelogBo changelogBo = changelogService.getChangelogBo(id);
         List<TableColumnBo> tableColumnBoList = changelogService.getChangelogHeader(changelogBo.getName());
@@ -58,7 +55,7 @@ public class ChangelogController {
         changelogVo.setChangelogBo(changelogBo);
 
 
-        return JsonResult.success(changelogVo);
+        return ApiResult.success(changelogVo);
     }
 
     private ChangelogVo buildChangeLogVo(List<TableColumnBo> tableColumnBoList, List<ChangelogBo> changelogBoList) {
@@ -105,16 +102,16 @@ public class ChangelogController {
         return changelogVo;
     }
 
+    @RequiresPermissions(value = "changelog:view")
     @RequestMapping(value = "/showAllChanges", method = RequestMethod.GET)
     @ResponseBody
-    @PrivilegesControl(operator = OperatorDef.VIEW)
-    public JsonResult<ChangelogVo> showTableChanges(String tableName) {
+    public ApiResult<ChangelogVo> showTableChanges(String tableName) {
         Search search = new Search();
         search.addFilterEqual("tablePo.tableName", tableName);
         List<ChangelogBo> changelogBoList = changelogService.getChangelogList(search);
         List<TableColumnBo> tableColumnBoList = changelogService.getChangelogHeader(tableName);
         ChangelogVo changelogVo = buildChangeLogVo(tableColumnBoList, changelogBoList);
-        return JsonResult.success(changelogVo);
+        return ApiResult.success(changelogVo);
     }
 
     private Map<String, Object> jsonToMap(ChangelogBo cl) {

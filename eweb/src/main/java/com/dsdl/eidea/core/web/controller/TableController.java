@@ -1,21 +1,19 @@
 package com.dsdl.eidea.core.web.controller;
 
-import com.dsdl.eidea.base.def.OperatorDef;
-import com.dsdl.eidea.base.web.annotation.PrivilegesControl;
-import com.dsdl.eidea.base.web.def.ReturnType;
 import com.dsdl.eidea.base.web.vo.UserResource;
 import com.dsdl.eidea.core.def.JavaDataType;
 import com.dsdl.eidea.core.entity.bo.TableBo;
 import com.dsdl.eidea.core.entity.bo.TableMetaDataBo;
 import com.dsdl.eidea.core.service.TableService;
 import com.dsdl.eidea.core.web.def.WebConst;
-import com.dsdl.eidea.core.web.result.JsonResult;
+import com.dsdl.eidea.core.web.result.ApiResult;
 import com.dsdl.eidea.core.web.result.def.ErrorCodes;
 import com.dsdl.eidea.core.web.util.SearchHelper;
 import com.dsdl.eidea.core.web.vo.PagingSettingResult;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.googlecode.genericdao.search.Search;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,7 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
-import java.util.*;
+import java.util.List;
 
 /**
  * Created by 刘大磊 on 2016/12/6 16:24.
@@ -40,7 +38,7 @@ public class TableController {
     private HttpSession session;
 
     @RequestMapping(value = "/showList", method = RequestMethod.GET)
-    @PrivilegesControl(operator = OperatorDef.VIEW, returnType = ReturnType.JSP)
+    @RequiresPermissions(value = "table:view")
     public ModelAndView showList() {
         ModelAndView modelAndView = new ModelAndView("/core/table/table");
         modelAndView.addObject("pagingSettingResult", PagingSettingResult.getDefault());
@@ -48,17 +46,19 @@ public class TableController {
         return modelAndView;
     }
 
+    @RequiresPermissions("table:view")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
-    public JsonResult<List<TableBo>> list(HttpSession session) {
+    public ApiResult<List<TableBo>> list(HttpSession session) {
         Search search = SearchHelper.getSearchParam(URI, session);
         List<TableBo> tablePoList = tableService.findList(search);
-        return JsonResult.success(tablePoList);
+        return ApiResult.success(tablePoList);
     }
 
     @RequestMapping(value = "/get", method = RequestMethod.GET)
     @ResponseBody
-    public JsonResult<TableBo> get(Integer id) {
+    @RequiresPermissions(value = "table:view")
+    public ApiResult<TableBo> get(Integer id) {
         TableBo tableBo = null;
         if (id == null) {
             tableBo = new TableBo();
@@ -68,7 +68,7 @@ public class TableController {
 
 
         }
-        return JsonResult.success(tableBo);
+        return ApiResult.success(tableBo);
     }
 
     /**
@@ -77,11 +77,11 @@ public class TableController {
      */
     @RequestMapping(value = "/saveForUpdated", method = RequestMethod.POST)
     @ResponseBody
-    @PrivilegesControl(operator = OperatorDef.UPDATE)
-    public JsonResult<TableBo> saveForUpdated(@RequestBody TableBo tableBo) {
-        UserResource resource=(UserResource)session.getAttribute(WebConst.SESSION_RESOURCE);
-        if(tableBo.getId() == null){
-            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("common.primary_key.isempty"));
+    @RequiresPermissions(value = "table:update")
+    public ApiResult<TableBo> saveForUpdated(@RequestBody TableBo tableBo) {
+        UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
+        if (tableBo.getId() == null) {
+            return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("common.primary_key.isempty"));
         }
         tableBo = tableService.saveTableBo(tableBo);
         return get(tableBo.getId());
@@ -89,19 +89,19 @@ public class TableController {
 
     @RequestMapping(value = "/saveForCreated", method = RequestMethod.POST)
     @ResponseBody
-    @PrivilegesControl(operator = OperatorDef.ADD)
-    public JsonResult<TableBo> saveForCreated(@RequestBody TableBo tableBo) {
+    @RequiresPermissions(value = "table:add")
+    public ApiResult<TableBo> saveForCreated(@RequestBody TableBo tableBo) {
         tableBo = tableService.saveTableBo(tableBo);
         return get(tableBo.getId());
     }
 
     @RequestMapping(value = "/deletes", method = RequestMethod.POST)
     @ResponseBody
-    @PrivilegesControl(operator = OperatorDef.DELETE)
-    public JsonResult<List<TableBo>> deletes(@RequestBody Integer[] ids, HttpSession session) {
-        UserResource resource=(UserResource)session.getAttribute(WebConst.SESSION_RESOURCE);
+    @RequiresPermissions(value = "table:delete")
+    public ApiResult<List<TableBo>> deletes(@RequestBody Integer[] ids, HttpSession session) {
+        UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
         if (ids == null || ids.length == 0) {
-            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("client.msg.select_delete"));
+            return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("client.msg.select_delete"));
         }
         tableService.deleteTables(ids);
         return list(session);
@@ -109,7 +109,8 @@ public class TableController {
 
     @RequestMapping(value = "/getJavaTypeList", method = RequestMethod.GET)
     @ResponseBody
-    public JsonResult<String> getJavaTypeList() {
+    @RequiresPermissions(value = "table:view")
+    public ApiResult<String> getJavaTypeList() {
         JavaDataType[] columnDataTypes = JavaDataType.values();
         JsonArray jsonArray = new JsonArray();
         for (JavaDataType columnDataType : columnDataTypes) {
@@ -119,26 +120,27 @@ public class TableController {
             jsonArray.add(jsonObject);
         }
 
-        return JsonResult.success(jsonArray.toString());
+        return ApiResult.success(jsonArray.toString());
     }
 
     @RequestMapping(value = "/getTableInfo", method = RequestMethod.GET)
     @ResponseBody
-    public JsonResult<TableMetaDataBo> getTableInfo(String tableName) {
+    @RequiresPermissions(value = "table:view")
+    public ApiResult<TableMetaDataBo> getTableInfo(String tableName) {
         TableMetaDataBo tableMetaDataBo = tableService.getTableDescription(tableName);
-        return JsonResult.success(tableMetaDataBo);
+        return ApiResult.success(tableMetaDataBo);
     }
 
     @RequestMapping(value = "/saveTableInfo", method = RequestMethod.POST)
     @ResponseBody
-    @PrivilegesControl(operator = OperatorDef.ADD)
-    public JsonResult<TableMetaDataBo> saveTableInfo(@RequestBody TableMetaDataBo tableInfo) {
+    @RequiresPermissions(value = "table:add")
+    public ApiResult<TableMetaDataBo> saveTableInfo(@RequestBody TableMetaDataBo tableInfo) {
         try {
             tableService.saveTableInfoByWizard(tableInfo);
         } catch (Exception validateException) {
             validateException.printStackTrace();
-            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), validateException.getMessage());
+            return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), validateException.getMessage());
         }
-        return JsonResult.success(tableInfo);
+        return ApiResult.success(tableInfo);
     }
 }

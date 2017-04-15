@@ -28,23 +28,12 @@
                         .when('/edit', {templateUrl: '<c:url value="/core/label/edit.tpl.jsp"/>'})
                         .otherwise({redirectTo: '/list'});
             }]);
-    app.service('PrivilegeService', function () {
-        this.hasPrivilege = function (opeartor) {
-            var privileges =${pagePrivileges};
-            for (var i = 0; i < privileges.length; i++) {
-                if (opeartor == privileges[i]) {
-                    return true;
-                }
-            }
-            return false;
-        }
-    });
     app.controller('listCtrl', function ($scope, $http) {
         $scope.allList = [];
         $scope.modelList = [];
         $scope.delFlag = false;
-        $scope.canDel = PrivilegeService.hasPrivilege('delete');
-        $scope.canAdd = PrivilegeService.hasPrivilege('add');
+        $scope.canDel = PrivilegeService.hasPrivilege('label:delete');
+        $scope.canAdd = PrivilegeService.hasPrivilege('label:add');
         $http.get("<c:url value="/core/label/list"/>")
                 .success(function (response) {
                     if (response.success) {
@@ -134,7 +123,7 @@
     app.controller('editCtrl', function ($scope, $http, $routeParams) {
         $scope.message = '';
         $scope.labelBo = {};
-        $scope.canAdd = PrivilegeService.hasPrivilege('add');
+        $scope.canAdd = PrivilegeService.hasPrivilege('label:add');
         $scope.canSave = false;
         var url = "<c:url value="/core/label/create"/>";
         if ($routeParams.key != null) {
@@ -144,7 +133,7 @@
                 .success(function (response) {
                     if (response.success) {
                         $scope.labelBo = response.data;
-                        $scope.canSave = (PrivilegeService.hasPrivilege('add') && $scope.labelBo.created) || PrivilegeService.hasPrivilege('update');
+                        $scope.canSave = (PrivilegeService.hasPrivilege('label:add') && $scope.labelBo.created) || PrivilegeService.hasPrivilege('label:update');
                     }
                     else {
                         bootbox.alert(response.message);

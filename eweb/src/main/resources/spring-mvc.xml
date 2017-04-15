@@ -7,6 +7,11 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
 
     <context:annotation-config></context:annotation-config>
+    <!-- 开启Shiro注解 -->
+    <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" depends-on="lifecycleBeanPostProcessor"/>
+    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+        <property name="securityManager" ref="securityManager"/>
+    </bean>
 
     <!-- 开启controller注解支持，spring mvc的配置文件应该仅扫描@controller注解的类 -->
     <context:component-scan base-package="com.**.controller"
@@ -20,10 +25,9 @@
     <!-- 使用这句注解，就是为了 一次性注入 AnnotationMethodHandlerAdapter 和 DefaultAnnotationHandlerMapping
         两个bean -->
     <!-- 但是如果要加入拦截器的话，最好手动配置2个bean -->
-    <mvc:annotation-driven></mvc:annotation-driven>
-    <!--<mvc:annotation-driven>
+    <mvc:annotation-driven>
         <mvc:message-converters>
-            <bean class="org.springframework.http.converter.json.GsonHttpMessageConverter">
+           <bean class="org.springframework.http.converter.json.GsonHttpMessageConverter">
                 <property name="defaultCharset" value="utf-8"/>
                 <property name="supportedMediaTypes">
                     <list>
@@ -32,7 +36,20 @@
                 </property>
             </bean>
         </mvc:message-converters>
-    </mvc:annotation-driven>-->
+    </mvc:annotation-driven>
+    <bean
+            class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <property name="exceptionMappings">
+            <props>
+                <prop key="org.apache.shiro.authz.UnauthorizedException">
+                    error/noprivileges
+                </prop>
+                <prop key="org.apache.shiro.authz.UnauthenticatedException">
+                    error/noprivileges
+                </prop>
+            </props>
+        </property>
+    </bean>
 
     <mvc:default-servlet-handler />
     <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"/>
@@ -47,7 +64,4 @@
           class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
         <property name="maxUploadSize" value="104857600"></property>
     </bean>
-    <mvc:interceptors>
-        <bean class="com.dsdl.eidea.base.web.handler.SecurityHandler" />
-    </mvc:interceptors>
 </beans>

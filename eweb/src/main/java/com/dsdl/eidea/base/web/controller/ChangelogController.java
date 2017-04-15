@@ -26,7 +26,7 @@ public class ChangelogController {
     @Autowired
     private ChangelogService changelogService;
 
-    @RequiresPermissions(value = "changelog:view")
+    @RequiresPermissions(value = "view")
     @RequestMapping(value = "/showList", method = RequestMethod.GET)
     public ModelAndView showList() {
         ModelAndView modelAndView = new ModelAndView("/base/changelog/changelog");
@@ -34,7 +34,7 @@ public class ChangelogController {
         return modelAndView;
     }
 
-    @RequiresPermissions(value = "changelog:view")
+    @RequiresPermissions(value = "view")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
     public ApiResult<List<ChangelogBo>> list(HttpSession session) {
@@ -42,7 +42,7 @@ public class ChangelogController {
         return ApiResult.success(changelogBoList);
     }
 
-    @RequiresPermissions(value = "changelog:view")
+    @RequiresPermissions(value = "view")
     @RequestMapping(value = "/get", method = RequestMethod.GET)
     @ResponseBody
     public ApiResult<ChangelogVo> get(Integer id) {
@@ -102,7 +102,7 @@ public class ChangelogController {
         return changelogVo;
     }
 
-    @RequiresPermissions(value = "changelog:view")
+    @RequiresPermissions(value = "view")
     @RequestMapping(value = "/showAllChanges", method = RequestMethod.GET)
     @ResponseBody
     public ApiResult<ChangelogVo> showTableChanges(String tableName) {

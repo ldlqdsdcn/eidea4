@@ -38,7 +38,7 @@ public class LabelController {
     private LanguageService languageService;
 
     @RequestMapping(value = "/showList", method = RequestMethod.GET)
-    @RequiresPermissions("label:view")
+    @RequiresPermissions("view")
     public ModelAndView showList() {
         ModelAndView modelAndView = new ModelAndView("/core/label/label");
         modelAndView.addObject("pagingSettingResult", PagingSettingResult.getDefault());
@@ -48,7 +48,7 @@ public class LabelController {
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
-    @RequiresPermissions(value = "label:view")
+    @RequiresPermissions(value = "view")
     public ApiResult<List<LabelBo>> list(HttpSession session) {
         Search search = SearchHelper.getSearchParam(URI, session);
         List<LabelBo> labelBoList = labelService.getLabelList(search);
@@ -57,7 +57,7 @@ public class LabelController {
 
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     @ResponseBody
-    @RequiresPermissions(value = "label:add")
+    @RequiresPermissions(value = "add")
     public ApiResult<LabelBo> create() {
         LabelBo languageBo = new LabelBo();
         languageBo.setCreated(true);
@@ -76,7 +76,7 @@ public class LabelController {
 
     @RequestMapping(value = "/saveForCreated", method = RequestMethod.POST)
     @ResponseBody
-    @RequiresPermissions(value = "label:add")
+    @RequiresPermissions(value = "add")
     public ApiResult<LabelBo> saveForCreated(@RequestBody LabelBo labelBo, HttpSession session) {
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
         if (labelBo.getKey() == null) {
@@ -90,7 +90,7 @@ public class LabelController {
 
     @RequestMapping(value = "/saveForUpdated", method = RequestMethod.POST)
     @ResponseBody
-    @RequiresPermissions(value = "label:update")
+    @RequiresPermissions(value = "update")
     public ApiResult<LabelBo> saveForUpdated(@RequestBody LabelBo labelBo, HttpSession session) {
         labelService.save(labelBo);
         return get(labelBo.getKey(), session);
@@ -110,7 +110,7 @@ public class LabelController {
 
     @RequestMapping(value = "/get", method = RequestMethod.GET)
     @ResponseBody
-    @RequiresPermissions(value = "label:view")
+    @RequiresPermissions(value = "view")
     public ApiResult<LabelBo> get(String key, HttpSession session) {
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
         LabelBo labelBo = null;

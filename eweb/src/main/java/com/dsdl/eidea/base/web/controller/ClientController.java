@@ -34,7 +34,7 @@ public class ClientController extends BaseController {
     private ClientService clientService;
 
     @RequestMapping(value = "/showList", method = RequestMethod.GET)
-    @RequiresPermissions("client:view")
+    @RequiresPermissions("view")
     public ModelAndView showList() {
         ModelAndView modelAndView = new ModelAndView("/base/client/client");
         modelAndView.addObject(WebConst.PAGING_SETTINGS, PagingSettingResult.getDefault());
@@ -45,14 +45,14 @@ public class ClientController extends BaseController {
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
-    @RequiresPermissions("client:view")
+    @RequiresPermissions("view")
     public ApiResult<List<ClientBo>> list(HttpSession session) {
         Search search = SearchHelper.getSearchParam(URI, session);
         List<ClientBo> clientBoList = clientService.getClientList(search);
         return ApiResult.success(clientBoList);
     }
 
-    @RequiresPermissions("client:view")
+    @RequiresPermissions("view")
     @RequestMapping(value = "/get", method = RequestMethod.GET)
     @ResponseBody
     public ApiResult<ClientBo> get(Integer id) {
@@ -65,7 +65,7 @@ public class ClientController extends BaseController {
         return ApiResult.success(clientBo);
     }
 
-    @RequiresPermissions("client:add")
+    @RequiresPermissions("add")
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     @ResponseBody
     public ApiResult<ClientBo> create() {
@@ -78,7 +78,7 @@ public class ClientController extends BaseController {
      * @param clientBo
      * @return
      */
-    @RequiresPermissions("client:add")
+    @RequiresPermissions("add")
     @RequestMapping(value = "/saveForCreated", method = RequestMethod.POST)
     @ResponseBody
     public ApiResult<ClientBo> saveForCreate(@Validated @RequestBody ClientBo clientBo) {
@@ -89,7 +89,7 @@ public class ClientController extends BaseController {
         return get(clientBo.getId());
     }
 
-    @RequiresPermissions("client:update")
+    @RequiresPermissions("update")
     @RequestMapping(value = "/saveForUpdated", method = RequestMethod.POST)
     @ResponseBody
     public ApiResult<ClientBo> saveForUpdate(@Validated @RequestBody ClientBo clientBo) {
@@ -101,7 +101,7 @@ public class ClientController extends BaseController {
         return get(clientBo.getId());
     }
 
-    @RequiresPermissions("client:delete")
+    @RequiresPermissions("delete")
     @RequestMapping(value = "/deletes", method = RequestMethod.POST)
     @ResponseBody
     public ApiResult<List<ClientBo>> deletes(@RequestBody Integer[] ids, HttpSession session) {

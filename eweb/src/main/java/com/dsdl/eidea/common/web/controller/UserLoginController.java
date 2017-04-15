@@ -82,8 +82,9 @@ public class UserLoginController {
 
         try {
             subject.login(token);
-            userInitCommon(loginBo.getUsername());
+
             UserBo userBo=userService.getUserByUsername(loginBo.getUsername());
+            userInitCommon(loginBo);
             userBo.setCode(loginBo.getCode());
             userInit(userBo, false, request);
             return ApiResult.success("登录成功");

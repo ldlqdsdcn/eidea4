@@ -39,7 +39,7 @@ public class OrgController {
     private HttpSession session;
 
     @RequestMapping(value = "/showList", method = RequestMethod.GET)
-    @RequiresPermissions(value = "org:view")
+    @RequiresPermissions(value = "view")
     public ModelAndView showList() {
         ModelAndView modelAndView = new ModelAndView("/base/org/org");
         modelAndView.addObject("pagingSettingResult", PagingSettingResult.getDefault());
@@ -49,7 +49,7 @@ public class OrgController {
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
-    @RequiresPermissions(value = "org:view")
+    @RequiresPermissions(value = "view")
     public ApiResult<List<OrgBo>> list(HttpSession session) {
         Search search = SearchHelper.getSearchParam(URI, session);
         List<OrgBo> orgBoList = orgService.findOrgList(search);
@@ -58,7 +58,7 @@ public class OrgController {
 
     @RequestMapping(value = "/get", method = RequestMethod.GET)
     @ResponseBody
-    @RequiresPermissions(value = "org:view")
+    @RequiresPermissions(value = "view")
     public ApiResult<OrgBo> get(Integer id) {
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
         OrgBo orgBo = null;
@@ -72,7 +72,7 @@ public class OrgController {
 
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     @ResponseBody
-    @RequiresPermissions(value = "org:add")
+    @RequiresPermissions(value = "add")
     public ApiResult<OrgBo> create() {
         OrgBo orgBo = new OrgBo();
         orgBo.setIsactive("N");
@@ -85,7 +85,7 @@ public class OrgController {
      */
     @RequestMapping(value = "/saveForCreated", method = RequestMethod.POST)
     @ResponseBody
-    @RequiresPermissions(value = "org:add")
+    @RequiresPermissions(value = "add")
     public ApiResult<OrgBo> saveForAdded(@Validated @RequestBody OrgBo orgBo) {
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
         if (orgService.findExistOrg(orgBo.getNo())) {
@@ -97,7 +97,7 @@ public class OrgController {
 
     @RequestMapping(value = "/saveForUpdated", method = RequestMethod.POST)
     @ResponseBody
-    @RequiresPermissions(value = "org:update")
+    @RequiresPermissions(value = "update")
     public ApiResult<OrgBo> saveForUpdated(@Validated @RequestBody OrgBo orgBo) {
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
         if (orgBo.getId() == null) {
@@ -109,7 +109,7 @@ public class OrgController {
 
     @RequestMapping(value = "/deletes", method = RequestMethod.POST)
     @ResponseBody
-    @RequiresPermissions(value = "org:delete")
+    @RequiresPermissions(value = "delete")
     public ApiResult<List<OrgBo>> deletes(@RequestBody Integer[] ids, HttpSession session) {
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
         if (ids == null || ids.length == 0) {
@@ -121,7 +121,7 @@ public class OrgController {
 
     @RequestMapping(value = "/clients", method = RequestMethod.GET)
     @ResponseBody
-    @RequiresPermissions(value = "org:view")
+    @RequiresPermissions(value = "view")
     public ApiResult<List<ClientBo>> clientList() {
         List<ClientBo> clientBoList = clientService.getClientListForActivated();
 

@@ -37,7 +37,7 @@ public class LanguageController {
     private HttpSession session;
 
     @RequestMapping(value = "/showList", method = RequestMethod.GET)
-    @RequiresPermissions("language:view")
+    @RequiresPermissions("view")
     public ModelAndView showList() {
         ModelAndView modelAndView = new ModelAndView("/core/language/language");
         modelAndView.addObject("pagingSettingResult", PagingSettingResult.getDefault());
@@ -47,7 +47,7 @@ public class LanguageController {
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
-    @RequiresPermissions(value = "language:view")
+    @RequiresPermissions(value = "view")
     public ApiResult<List<LanguageBo>> list(HttpSession session) {
         Search search = SearchHelper.getSearchParam(URI, session);
         List<LanguageBo> languageBoList = languageService.findLanguage(search);
@@ -56,7 +56,7 @@ public class LanguageController {
 
     @RequestMapping(value = "/get", method = RequestMethod.GET)
     @ResponseBody
-    @RequiresPermissions(value = "language:view")
+    @RequiresPermissions(value = "view")
     public ApiResult<LanguageBo> get(String code) {
         LanguageBo languageBo = null;
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
@@ -70,7 +70,7 @@ public class LanguageController {
 
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     @ResponseBody
-    @RequiresPermissions(value = "language:add")
+    @RequiresPermissions(value = "add")
     public ApiResult<LanguageBo> create() {
         LanguageBo languageBo = new LanguageBo();
         languageBo.setCreated(true);
@@ -92,7 +92,7 @@ public class LanguageController {
      */
     @RequestMapping(value = "/saveForUpdated", method = RequestMethod.POST)
     @ResponseBody
-    @RequiresPermissions(value = "language:update")
+    @RequiresPermissions(value = "update")
     public ApiResult<LanguageBo> saveForUpdated(@RequestBody LanguageBo languageBo) {
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
         if (languageBo.getCode() == null || languageBo.getCode().isEmpty()) {
@@ -104,7 +104,7 @@ public class LanguageController {
 
     @RequestMapping(value = "/saveForCreated", method = RequestMethod.POST)
     @ResponseBody
-    @RequiresPermissions(value = "language:add")
+    @RequiresPermissions(value = "add")
     public ApiResult<LanguageBo> saveForCreated(@RequestBody LanguageBo languageBo) {
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
         if (languageService.findExistLanguage(languageBo.getCode())) {
@@ -116,7 +116,7 @@ public class LanguageController {
 
     @RequestMapping(value = "/deletes", method = RequestMethod.POST)
     @ResponseBody
-    @RequiresPermissions(value = "language:delete")
+    @RequiresPermissions(value = "delete")
     public ApiResult<List<LanguageBo>> deletes(@RequestBody String[] codes, HttpSession session) {
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
         if (codes == null || codes.length == 0) {

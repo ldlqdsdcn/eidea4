@@ -24,13 +24,13 @@ public interface UserService {
     void deleteUserList(Integer[] ids);
 
     /**
-     * saveUser:用户保存
+     * save用户保存
      * @param userBo
      */
     void saveUser(UserBo userBo);
 
     /**
-     * getUser:查询用户
+     * get查询用户
      * @param id
      * @return
      */
@@ -79,4 +79,12 @@ public interface UserService {
      * @return
      */
     UserContent getUserContent(String token);
+
+
+    /**
+     * 根据用户名获取 用户
+     * @param username
+     * @return
+     */
+    UserBo getUserByUsername(String username);
 }

@@ -37,7 +37,7 @@ public class ModuleController {
      *
      * @return
      */
-    @RequiresPermissions(value = "module:view")
+    @RequiresPermissions(value = "view")
     @RequestMapping(value = "/getModuleToJsp", method = RequestMethod.GET)
     public ModelAndView getModuleToJsp() {
         ModelAndView modelAndView = new ModelAndView("/base/module/module");
@@ -51,7 +51,7 @@ public class ModuleController {
      * @param
      * @return
      */
-    @RequiresPermissions(value = "module:view")
+    @RequiresPermissions(value = "view")
     @RequestMapping(value = "/getModuleList", method = RequestMethod.POST)
     @ResponseBody
     public ApiResult<List<ModuleBo>> getModuleList() {
@@ -65,7 +65,7 @@ public class ModuleController {
      * @param ids
      * @return
      */
-    @RequiresPermissions(value = "module:view")
+    @RequiresPermissions(value = "view")
     @RequestMapping(value = "/deleteModuleList", method = RequestMethod.POST)
     @ResponseBody
     public ApiResult<List<ModuleBo>> deleteModuleList(@RequestBody Integer[] ids, HttpSession session) {
@@ -78,12 +78,12 @@ public class ModuleController {
     }
 
     /**
-     * saveModule:模块设置新增
+     * save模块设置新增
      *
      * @param moduleBo
      * @return
      */
-    @RequiresPermissions(value = "module:add")
+    @RequiresPermissions(value = "add")
     @RequestMapping(value = "/saveModuleForCreated", method = RequestMethod.POST)
     @ResponseBody
     public ApiResult<ModuleBo> saveModuleForCreated(@RequestBody ModuleBo moduleBo, HttpSession session) {
@@ -97,7 +97,7 @@ public class ModuleController {
         return getModule(moduleBo.getId(), session);
     }
 
-    @RequiresPermissions(value = "module:update")
+    @RequiresPermissions(value = "update")
     @RequestMapping(value = "/saveModuleForUpdated", method = RequestMethod.POST)
     @ResponseBody
     public ApiResult<ModuleBo> saveModuleForUpdated(@RequestBody ModuleBo moduleBo, HttpSession session) {
@@ -111,12 +111,12 @@ public class ModuleController {
 
 
     /**
-     * getModule:根据id查询module对象
+     * get根据id查询module对象
      *
      * @param id
      * @return
      */
-    @RequiresPermissions(value = "module:view")
+    @RequiresPermissions(value = "view")
     @RequestMapping(value = "/getModule", method = RequestMethod.POST)
     @ResponseBody
     public ApiResult<ModuleBo> getModule(Integer id, HttpSession session) {
@@ -135,7 +135,7 @@ public class ModuleController {
      *
      * @return
      */
-    @RequiresPermissions(value = "base:add")
+    @RequiresPermissions(value = "add")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseBody
     public ApiResult<ModuleBo> create() {

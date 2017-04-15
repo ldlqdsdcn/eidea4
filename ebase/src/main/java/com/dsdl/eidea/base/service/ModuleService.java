@@ -23,13 +23,13 @@ public interface ModuleService {
     void deleteModuleList(Integer[] ids);
 
     /**
-     * saveModule:保存
+     * save保存
      * @param moduleBo
      */
     void saveModule(ModuleBo moduleBo);
 
     /**
-     * getModule:根据id查询module对象
+     * get根据id查询module对象
      * @param id
      * @return
      */

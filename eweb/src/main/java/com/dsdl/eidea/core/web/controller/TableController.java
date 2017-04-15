@@ -38,7 +38,7 @@ public class TableController {
     private HttpSession session;
 
     @RequestMapping(value = "/showList", method = RequestMethod.GET)
-    @RequiresPermissions(value = "table:view")
+    @RequiresPermissions(value = "view")
     public ModelAndView showList() {
         ModelAndView modelAndView = new ModelAndView("/core/table/table");
         modelAndView.addObject("pagingSettingResult", PagingSettingResult.getDefault());
@@ -46,7 +46,7 @@ public class TableController {
         return modelAndView;
     }
 
-    @RequiresPermissions("table:view")
+    @RequiresPermissions("view")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
     public ApiResult<List<TableBo>> list(HttpSession session) {
@@ -57,7 +57,7 @@ public class TableController {
 
     @RequestMapping(value = "/get", method = RequestMethod.GET)
     @ResponseBody
-    @RequiresPermissions(value = "table:view")
+    @RequiresPermissions(value = "view")
     public ApiResult<TableBo> get(Integer id) {
         TableBo tableBo = null;
         if (id == null) {
@@ -77,7 +77,7 @@ public class TableController {
      */
     @RequestMapping(value = "/saveForUpdated", method = RequestMethod.POST)
     @ResponseBody
-    @RequiresPermissions(value = "table:update")
+    @RequiresPermissions(value = "update")
     public ApiResult<TableBo> saveForUpdated(@RequestBody TableBo tableBo) {
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
         if (tableBo.getId() == null) {
@@ -89,7 +89,7 @@ public class TableController {
 
     @RequestMapping(value = "/saveForCreated", method = RequestMethod.POST)
     @ResponseBody
-    @RequiresPermissions(value = "table:add")
+    @RequiresPermissions(value = "add")
     public ApiResult<TableBo> saveForCreated(@RequestBody TableBo tableBo) {
         tableBo = tableService.saveTableBo(tableBo);
         return get(tableBo.getId());
@@ -97,7 +97,7 @@ public class TableController {
 
     @RequestMapping(value = "/deletes", method = RequestMethod.POST)
     @ResponseBody
-    @RequiresPermissions(value = "table:delete")
+    @RequiresPermissions(value = "delete")
     public ApiResult<List<TableBo>> deletes(@RequestBody Integer[] ids, HttpSession session) {
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
         if (ids == null || ids.length == 0) {
@@ -109,7 +109,7 @@ public class TableController {
 
     @RequestMapping(value = "/getJavaTypeList", method = RequestMethod.GET)
     @ResponseBody
-    @RequiresPermissions(value = "table:view")
+    @RequiresPermissions(value = "view")
     public ApiResult<String> getJavaTypeList() {
         JavaDataType[] columnDataTypes = JavaDataType.values();
         JsonArray jsonArray = new JsonArray();
@@ -125,7 +125,7 @@ public class TableController {
 
     @RequestMapping(value = "/getTableInfo", method = RequestMethod.GET)
     @ResponseBody
-    @RequiresPermissions(value = "table:view")
+    @RequiresPermissions(value = "view")
     public ApiResult<TableMetaDataBo> getTableInfo(String tableName) {
         TableMetaDataBo tableMetaDataBo = tableService.getTableDescription(tableName);
         return ApiResult.success(tableMetaDataBo);
@@ -133,7 +133,7 @@ public class TableController {
 
     @RequestMapping(value = "/saveTableInfo", method = RequestMethod.POST)
     @ResponseBody
-    @RequiresPermissions(value = "table:add")
+    @RequiresPermissions(value = "add")
     public ApiResult<TableMetaDataBo> saveTableInfo(@RequestBody TableMetaDataBo tableInfo) {
         try {
             tableService.saveTableInfoByWizard(tableInfo);

@@ -23,7 +23,7 @@ public class UserOnlineController {
     private static final String URI = "sys_user";
 
     @RequestMapping(value = "/showList", method = RequestMethod.GET)
-    @RequiresPermissions(value = "online:view")
+    @RequiresPermissions(value = "view")
     public ModelAndView showList() {
         ModelAndView modelAndView = new ModelAndView("/base/online/online");
         modelAndView.addObject("pagingSettingResult", PagingSettingResult.getDefault());
@@ -33,7 +33,7 @@ public class UserOnlineController {
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
-    @RequiresPermissions(value = "online:view")
+    @RequiresPermissions(value = "view")
     public ApiResult<Set<UserSessionBo>> list() {
         Set<UserSessionBo> userSessionBoSet = UserOnlineContent.getOnlineUsers();
         return ApiResult.success(userSessionBoSet);

@@ -40,7 +40,7 @@ public class UserController {
      * @return
      */
     @RequestMapping(value = "/getUserToJsp", method = RequestMethod.GET)
-    @RequiresPermissions(value = "user:view")
+    @RequiresPermissions(value = "view")
     public ModelAndView getUserToJsp() {
         ModelAndView modelAndView = new ModelAndView("/base/user/user");
         modelAndView.addObject(WebConst.PAGE_URI, URI);
@@ -55,7 +55,7 @@ public class UserController {
      */
     @RequestMapping(value = "/getUserList", method = RequestMethod.POST)
     @ResponseBody
-    @RequiresPermissions(value = "user:view")
+    @RequiresPermissions(value = "view")
     public ApiResult<List<UserBo>> getUserList(HttpServletRequest request) {
         Search search = SearchHelper.getSearchParam(URI, request.getSession());
 //        search.addFilterIn("orgId",securityHelper.getAccessOrgList(request));
@@ -72,21 +72,21 @@ public class UserController {
      */
     @RequestMapping(value = "/deleteUserList", method = RequestMethod.POST)
     @ResponseBody
-    @RequiresPermissions(value = "user:delete")
+    @RequiresPermissions(value = "delete")
     public ApiResult<List<UserBo>> deleteUserList(@RequestBody Integer[] ids, HttpServletRequest request) {
         userService.deleteUserList(ids);
         return getUserList(request);
     }
 
     /**
-     * saveUser:用户保存
+     * save用户保存
      *
      * @param userBo
      * @return
      */
     @RequestMapping(value = "/saveUserForCreated", method = RequestMethod.POST)
     @ResponseBody
-    @RequiresPermissions(value = "user:add")
+    @RequiresPermissions(value = "add")
     public ApiResult<UserBo> saveUserForCreated(@Validated @RequestBody UserBo userBo, HttpSession session) {
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
         if (userService.findExistByUsername(userBo.getUsername())) {
@@ -98,7 +98,7 @@ public class UserController {
 
     @RequestMapping(value = "/saveUserForUpdated", method = RequestMethod.POST)
     @ResponseBody
-    @RequiresPermissions(value = "user:update")
+    @RequiresPermissions(value = "update")
     public ApiResult<UserBo> saveUserForUpdated(@Validated @RequestBody UserBo userBo, HttpSession session) {
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
         if (userBo.getId() == null) {
@@ -109,14 +109,14 @@ public class UserController {
     }
 
     /**
-     * getUser:用户查询
+     * get用户查询
      *
      * @param id
      * @return
      */
     @RequestMapping(value = "/getUser", method = RequestMethod.POST)
     @ResponseBody
-    @RequiresPermissions(value = "user:view")
+    @RequiresPermissions(value = "view")
     public ApiResult<UserBo> getUser(Integer id, HttpSession session) {
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
         UserBo userBo = null;
@@ -129,13 +129,13 @@ public class UserController {
     }
 
     /**
-     * getUser:用户查询
+     * get用户查询
      *
      * @return
      */
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseBody
-    @RequiresPermissions(value = "user:add")
+    @RequiresPermissions(value = "add")
     public ApiResult<UserBo> create() {
         return ApiResult.success(new UserBo());
     }
@@ -148,7 +148,7 @@ public class UserController {
      */
     @RequestMapping(value = "/getExistUserName", method = RequestMethod.POST)
     @ResponseBody
-    @RequiresPermissions(value = "user:view")
+    @RequiresPermissions(value = "view")
     public ApiResult<Boolean> getExistUserName(@RequestBody UserBo userBo, HttpSession session) {
         boolean flag = true;
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);

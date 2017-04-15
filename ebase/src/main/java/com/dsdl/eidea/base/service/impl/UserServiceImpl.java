@@ -266,4 +266,23 @@ public class UserServiceImpl implements UserService {
         UserContent userContent = new UserContent(privilegesMap, userSessionBo, token, orgIdList);
         return userContent;
     }
+    @Override
+    public UserBo getUserByUsername(String username) {
+        Search search = new Search();
+        search.addFilterEqual("username", username);
+        UserPo userPo=userDao.searchUnique(search);
+        UserBo userBo = modelMapper.map(userPo, UserBo.class);
+        if (userPo != null) {
+            List<UserRoleBo> userRoleBoList = modelMapper.map(userPo.getSysUserRoles(), new TypeToken<List<UserRoleBo>>() {
+            }.getType());
+            if (userRoleBoList != null && userRoleBoList.size() > 0) {
+                Integer[] ids = new Integer[userRoleBoList.size()];
+                for (int i = 0; i < userRoleBoList.size(); i++) {
+                    ids[i] = userRoleBoList.get(i).getSysRoleId();
+                }
+                userBo.setRoleIds(ids);
+            }
+        }
+        return userBo;
+    }
 }

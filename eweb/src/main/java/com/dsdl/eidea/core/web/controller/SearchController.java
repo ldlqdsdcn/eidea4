@@ -42,7 +42,7 @@ public class SearchController {
     private SearchService searchService;
 
     @RequestMapping(value = "/showList", method = RequestMethod.GET)
-    @RequiresPermissions(value = "search:view")
+    @RequiresPermissions(value = "view")
     public ModelAndView showList() {
         ModelAndView modelAndView = new ModelAndView("/core/search/search");
         modelAndView.addObject("pagingSettingResult", PagingSettingResult.getDefault());
@@ -52,7 +52,7 @@ public class SearchController {
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
-    @RequiresPermissions(value = "search:view")
+    @RequiresPermissions(value = "view")
     public ApiResult<List<SearchBo>> list(HttpSession session) {
         Search search = SearchHelper.getSearchParam(URI, session);
         List<SearchBo> searchBoList = searchService.findList(search);
@@ -61,7 +61,7 @@ public class SearchController {
 
     @RequestMapping(value = "/get", method = RequestMethod.GET)
     @ResponseBody
-    @RequiresPermissions(value = "search:view")
+    @RequiresPermissions(value = "view")
     public ApiResult<SearchBo> get(Integer id) {
         SearchBo searchBo = null;
         if (id == null) {
@@ -79,7 +79,7 @@ public class SearchController {
 
     @RequestMapping(value = "/addOneColumn", method = RequestMethod.GET)
     @ResponseBody
-    @RequiresPermissions(value = "search:add")
+    @RequiresPermissions(value = "add")
     public ApiResult<SearchColumnBo> addNewColumn() {
         SearchColumnBo searchColumnBo = new SearchColumnBo();
         mapperRelOperator(searchColumnBo);
@@ -113,7 +113,7 @@ public class SearchController {
      */
     @RequestMapping(value = "/saveForCreated", method = RequestMethod.POST)
     @ResponseBody
-    @RequiresPermissions(value = "search:add")
+    @RequiresPermissions(value = "add")
     public ApiResult<SearchBo> saveForCreated(@RequestBody @Validated SearchBo searchBo) {
         searchBo = searchService.saveSearchBo(searchBo);
         return get(searchBo.getId());
@@ -121,7 +121,7 @@ public class SearchController {
 
     @RequestMapping(value = "/saveForUpdated", method = RequestMethod.POST)
     @ResponseBody
-    @RequiresPermissions(value = "search:update")
+    @RequiresPermissions(value = "update")
     public ApiResult<SearchBo> saveForUpdated(@RequestBody @Validated SearchBo searchBo, HttpSession session) {
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
         if (searchBo.getId() == null) {
@@ -133,7 +133,7 @@ public class SearchController {
 
     @RequestMapping(value = "/deletes", method = RequestMethod.POST)
     @ResponseBody
-    @RequiresPermissions(value = "search:delete")
+    @RequiresPermissions(value = "delete")
     public ApiResult<List<SearchBo>> deletes(@RequestBody Integer[] ids, HttpSession session) {
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
         if (ids == null || ids.length == 0) {
@@ -145,7 +145,7 @@ public class SearchController {
 
     @RequestMapping(value = "/getSelectList", method = RequestMethod.GET)
     @ResponseBody
-    @RequiresPermissions(value = "search:view")
+    @RequiresPermissions(value = "view")
     public ApiResult<String> getSelectList() {
         SearchPageType[] searchPageTypes = SearchPageType.values();
         JsonObject listObject = new JsonObject();

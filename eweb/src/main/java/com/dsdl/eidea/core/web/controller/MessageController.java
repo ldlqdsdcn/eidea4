@@ -39,7 +39,7 @@ public class MessageController {
     private LanguageService languageService;
 
     @RequestMapping(value = "/showList", method = RequestMethod.GET)
-    @RequiresPermissions(value = "message:view")
+    @RequiresPermissions(value = "view")
     public ModelAndView showList() {
         ModelAndView modelAndView = new ModelAndView("/core/message/message");
         modelAndView.addObject("pagingSettingResult", PagingSettingResult.getDefault());
@@ -49,7 +49,7 @@ public class MessageController {
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
-    @RequiresPermissions(value = "message:view")
+    @RequiresPermissions(value = "view")
     public ApiResult<List<MessageBo>> list(HttpSession session) {
         Search search = SearchHelper.getSearchParam(URI, session);
         List<MessageBo> messageBoList = messageService.findMessage(search);
@@ -58,7 +58,7 @@ public class MessageController {
 
     @RequestMapping(value = "/deletes", method = RequestMethod.POST)
     @ResponseBody
-    @RequiresPermissions(value = "message:delete")
+    @RequiresPermissions(value = "delete")
     public ApiResult<List<MessageBo>> deletes(@RequestBody String[] keys, HttpSession session) {
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
         if (keys == null || keys.length == 0) {
@@ -70,7 +70,7 @@ public class MessageController {
 
     @RequestMapping(value = "/get", method = RequestMethod.GET)
     @ResponseBody
-    @RequiresPermissions(value = "message:view")
+    @RequiresPermissions(value = "view")
     public ApiResult<MessageBo> get(String key, HttpSession session) {
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
         MessageBo messageBo = null;
@@ -84,7 +84,7 @@ public class MessageController {
 
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     @ResponseBody
-    @RequiresPermissions(value = "message:add")
+    @RequiresPermissions(value = "add")
     public ApiResult<MessageBo> create() {
         MessageBo messageBo = new MessageBo();
         messageBo.setCreated(true);
@@ -102,7 +102,7 @@ public class MessageController {
 
     @RequestMapping(value = "/saveForCreated", method = RequestMethod.POST)
     @ResponseBody
-    @RequiresPermissions(value = "message:add")
+    @RequiresPermissions(value = "add")
     public ApiResult<MessageBo> saveForCreated(@RequestBody MessageBo messageBo, HttpSession session) {
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
         if (messageBo.isCreated()) {
@@ -117,7 +117,7 @@ public class MessageController {
 
     @RequestMapping(value = "/saveForUpdated", method = RequestMethod.POST)
     @ResponseBody
-    @RequiresPermissions(value = "message:update")
+    @RequiresPermissions(value = "update")
     public ApiResult<MessageBo> saveForUpdated(@RequestBody MessageBo messageBo, HttpSession session) {
         messageService.save(messageBo);
         return get(messageBo.getKey(), session);

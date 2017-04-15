@@ -2,12 +2,10 @@ package com.dsdl.eidea.security;
 
 
 import com.dsdl.eidea.base.def.OperatorDef;
-import com.dsdl.eidea.base.entity.bo.PermissionBo;
 import com.dsdl.eidea.base.entity.bo.UserBo;
 import com.dsdl.eidea.base.entity.bo.UserContent;
 import com.dsdl.eidea.base.service.SpringContextHolder;
 import com.dsdl.eidea.base.service.UserService;
-import com.dsdl.eidea.base.web.util.SecurityHelper;
 import com.dsdl.eidea.core.web.def.WebConst;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
@@ -17,8 +15,6 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.web.subject.support.WebDelegatingSubject;
-import org.h2.engine.User;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashSet;
@@ -31,7 +27,6 @@ import java.util.Set;
  */
 @Slf4j
 public class EideaRealm extends AuthorizingRealm {
-    private SecurityHelper securityHelper = SecurityHelper.getSecurityHelper();
     private UserService userService;
 
     /**

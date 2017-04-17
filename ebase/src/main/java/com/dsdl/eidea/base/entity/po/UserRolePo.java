@@ -9,7 +9,7 @@ import javax.persistence.*;
  * SysUserRole entity. @author MyEclipse Persistence Tools
  */
 @Entity
-@Table(name = "sys_user_role", catalog = "e_idea_public")
+@Table(name = "sys_user_role", catalog = "e_idea")
 @Getter
 @Setter
 public class UserRolePo implements java.io.Serializable {

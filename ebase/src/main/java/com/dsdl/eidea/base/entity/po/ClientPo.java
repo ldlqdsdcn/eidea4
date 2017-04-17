@@ -11,7 +11,7 @@ import java.util.Set;
  * SysClient entity. @author MyEclipse Persistence Tools
  */
 @Entity
-@Table(name = "sys_client", catalog = "e_idea_public", uniqueConstraints = @UniqueConstraint(columnNames = "no"))
+@Table(name = "sys_client", catalog = "e_idea", uniqueConstraints = @UniqueConstraint(columnNames = "no"))
 @Getter
 @Setter
 @org.hibernate.annotations.Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.READ_WRITE)

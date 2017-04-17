@@ -9,7 +9,7 @@ import javax.persistence.*;
  * CoreMessageTrl entity. @author MyEclipse Persistence Tools
  */
 @Entity
-@Table(name = "core_message_trl", catalog = "e_idea_public")
+@Table(name = "core_message_trl", catalog = "e_idea")
 @Getter
 @Setter
 public class MessageTrlPo implements java.io.Serializable {
@@ -25,6 +25,9 @@ public class MessageTrlPo implements java.io.Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "_key", nullable = false)
 	private MessagePo coreMessage;
+//	@ManyToOne(fetch = FetchType.LAZY)
+//	@JoinColumn(name = "key",nullable = false)
+//	private ReportPo reportPo;
 	@Column(name = "msgtext", nullable = false, length = 500)
 	private String msgtext;
 

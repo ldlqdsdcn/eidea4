@@ -9,7 +9,7 @@ import javax.persistence.*;
  * SysRoleOrgaccess entity. @author MyEclipse Persistence Tools
  */
 @Entity
-@Table(name = "sys_role_orgaccess", catalog = "e_idea_public")
+@Table(name = "sys_role_orgaccess", catalog = "e_idea")
 @Getter
 @Setter
 public class RoleOrgaccessPo implements java.io.Serializable {

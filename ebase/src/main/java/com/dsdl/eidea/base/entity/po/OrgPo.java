@@ -11,7 +11,7 @@ import java.util.Set;
  * SysOrg entity. @author MyEclipse Persistence Tools
  */
 @Entity
-@Table(name = "sys_org", catalog = "e_idea_public", uniqueConstraints = @UniqueConstraint(columnNames = "no"))
+@Table(name = "sys_org", catalog = "e_idea", uniqueConstraints = @UniqueConstraint(columnNames = "no"))
 @Getter
 @Setter
 @org.hibernate.annotations.Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.READ_WRITE)

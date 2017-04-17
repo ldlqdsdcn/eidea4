@@ -13,7 +13,7 @@ import javax.persistence.*;
  * CoreSearch entity. @author MyEclipse Persistence Tools
  */
 @Entity
-@Table(name = "core_search", catalog = "e_idea_public")
+@Table(name = "core_search", catalog = "e_idea")
 @Getter
 @Setter
 public class SearchPo implements java.io.Serializable {

@@ -5,7 +5,7 @@ import com.dsdl.eidea.base.entity.bo.ClientBo;
 import com.dsdl.eidea.base.service.ClientService;
 import com.dsdl.eidea.core.web.controller.BaseController;
 import com.dsdl.eidea.core.web.def.WebConst;
-import com.dsdl.eidea.core.web.result.ApiResult;
+import com.dsdl.eidea.core.web.result.JsonResult;
 import com.dsdl.eidea.core.web.result.def.ErrorCodes;
 import com.dsdl.eidea.core.web.util.SearchHelper;
 import com.dsdl.eidea.core.web.vo.PagingSettingResult;
@@ -46,32 +46,32 @@ public class ClientController extends BaseController {
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
     @RequiresPermissions("view")
-    public ApiResult<List<ClientBo>> list(HttpSession session) {
+    public JsonResult<List<ClientBo>> list(HttpSession session) {
         Search search = SearchHelper.getSearchParam(URI, session);
         List<ClientBo> clientBoList = clientService.getClientList(search);
-        return ApiResult.success(clientBoList);
+        return JsonResult.success(clientBoList);
     }
 
     @RequiresPermissions("view")
     @RequestMapping(value = "/get", method = RequestMethod.GET)
     @ResponseBody
-    public ApiResult<ClientBo> get(Integer id) {
+    public JsonResult<ClientBo> get(Integer id) {
         ClientBo clientBo = null;
         if (id == null) {
-            return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), getMessage("common.errror.get_object", getLabel("client.title")));
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), getMessage("common.errror.get_object", getLabel("client.title")));
         } else {
             clientBo = clientService.getClientBo(id);
         }
-        return ApiResult.success(clientBo);
+        return JsonResult.success(clientBo);
     }
 
     @RequiresPermissions("add")
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     @ResponseBody
-    public ApiResult<ClientBo> create() {
+    public JsonResult<ClientBo> create() {
         ClientBo clientBo = new ClientBo();
         clientBo.setIsactive(ActivateDef.INACTIVATED.getKey());
-        return ApiResult.success(clientBo);
+        return JsonResult.success(clientBo);
     }
 
     /**
@@ -81,9 +81,9 @@ public class ClientController extends BaseController {
     @RequiresPermissions("add")
     @RequestMapping(value = "/saveForCreated", method = RequestMethod.POST)
     @ResponseBody
-    public ApiResult<ClientBo> saveForCreate(@Validated @RequestBody ClientBo clientBo) {
+    public JsonResult<ClientBo> saveForCreate(@Validated @RequestBody ClientBo clientBo) {
         if (clientService.findExistClient(clientBo.getNo())) {
-            return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), getMessage("client.msg.client_code_exists"));
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), getMessage("client.msg.client_code_exists"));
         }
         clientService.save(clientBo);
         return get(clientBo.getId());
@@ -92,10 +92,10 @@ public class ClientController extends BaseController {
     @RequiresPermissions("update")
     @RequestMapping(value = "/saveForUpdated", method = RequestMethod.POST)
     @ResponseBody
-    public ApiResult<ClientBo> saveForUpdate(@Validated @RequestBody ClientBo clientBo) {
+    public JsonResult<ClientBo> saveForUpdate(@Validated @RequestBody ClientBo clientBo) {
 
         if (clientBo.getId() == null) {
-            return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), getMessage("common.primary_key.isempty"));
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), getMessage("common.primary_key.isempty"));
         }
         clientService.save(clientBo);
         return get(clientBo.getId());
@@ -104,9 +104,9 @@ public class ClientController extends BaseController {
     @RequiresPermissions("delete")
     @RequestMapping(value = "/deletes", method = RequestMethod.POST)
     @ResponseBody
-    public ApiResult<List<ClientBo>> deletes(@RequestBody Integer[] ids, HttpSession session) {
+    public JsonResult<List<ClientBo>> deletes(@RequestBody Integer[] ids, HttpSession session) {
         if (ids == null || ids.length == 0) {
-            return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), getMessage("client.msg.select_delete"));
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), getMessage("client.msg.select_delete"));
         }
         clientService.deletes(ids);
         return list(session);

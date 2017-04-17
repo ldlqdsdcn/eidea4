@@ -10,7 +10,7 @@ import com.dsdl.eidea.core.entity.bo.SearchBo;
 import com.dsdl.eidea.core.entity.bo.SearchColumnBo;
 import com.dsdl.eidea.core.service.SearchService;
 import com.dsdl.eidea.core.web.def.WebConst;
-import com.dsdl.eidea.core.web.result.ApiResult;
+import com.dsdl.eidea.core.web.result.JsonResult;
 import com.dsdl.eidea.core.web.result.def.ErrorCodes;
 import com.dsdl.eidea.core.web.util.SearchHelper;
 import com.dsdl.eidea.core.web.vo.PagingSettingResult;
@@ -53,16 +53,16 @@ public class SearchController {
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
     @RequiresPermissions(value = "view")
-    public ApiResult<List<SearchBo>> list(HttpSession session) {
+    public JsonResult<List<SearchBo>> list(HttpSession session) {
         Search search = SearchHelper.getSearchParam(URI, session);
         List<SearchBo> searchBoList = searchService.findList(search);
-        return ApiResult.success(searchBoList);
+        return JsonResult.success(searchBoList);
     }
 
     @RequestMapping(value = "/get", method = RequestMethod.GET)
     @ResponseBody
     @RequiresPermissions(value = "view")
-    public ApiResult<SearchBo> get(Integer id) {
+    public JsonResult<SearchBo> get(Integer id) {
         SearchBo searchBo = null;
         if (id == null) {
             searchBo = new SearchBo();
@@ -74,16 +74,16 @@ public class SearchController {
                 mapperRelOperator(searchColumnBo);
             }
         }
-        return ApiResult.success(searchBo);
+        return JsonResult.success(searchBo);
     }
 
     @RequestMapping(value = "/addOneColumn", method = RequestMethod.GET)
     @ResponseBody
     @RequiresPermissions(value = "add")
-    public ApiResult<SearchColumnBo> addNewColumn() {
+    public JsonResult<SearchColumnBo> addNewColumn() {
         SearchColumnBo searchColumnBo = new SearchColumnBo();
         mapperRelOperator(searchColumnBo);
-        return ApiResult.success(searchColumnBo);
+        return JsonResult.success(searchColumnBo);
     }
 
     private void mapperRelOperator(SearchColumnBo searchColumnBo) {
@@ -114,7 +114,7 @@ public class SearchController {
     @RequestMapping(value = "/saveForCreated", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions(value = "add")
-    public ApiResult<SearchBo> saveForCreated(@RequestBody @Validated SearchBo searchBo) {
+    public JsonResult<SearchBo> saveForCreated(@RequestBody @Validated SearchBo searchBo) {
         searchBo = searchService.saveSearchBo(searchBo);
         return get(searchBo.getId());
     }
@@ -122,10 +122,10 @@ public class SearchController {
     @RequestMapping(value = "/saveForUpdated", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions(value = "update")
-    public ApiResult<SearchBo> saveForUpdated(@RequestBody @Validated SearchBo searchBo, HttpSession session) {
+    public JsonResult<SearchBo> saveForUpdated(@RequestBody @Validated SearchBo searchBo, HttpSession session) {
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
         if (searchBo.getId() == null) {
-            return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("common.primary_key.isempty"));
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("common.primary_key.isempty"));
         }
         searchBo = searchService.saveSearchBo(searchBo);
         return get(searchBo.getId());
@@ -134,10 +134,10 @@ public class SearchController {
     @RequestMapping(value = "/deletes", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions(value = "delete")
-    public ApiResult<List<SearchBo>> deletes(@RequestBody Integer[] ids, HttpSession session) {
+    public JsonResult<List<SearchBo>> deletes(@RequestBody Integer[] ids, HttpSession session) {
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
         if (ids == null || ids.length == 0) {
-            return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("pagemenu.choose.information"));
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("pagemenu.choose.information"));
         }
         searchService.deleteSearches(ids);
         return list(session);
@@ -146,7 +146,7 @@ public class SearchController {
     @RequestMapping(value = "/getSelectList", method = RequestMethod.GET)
     @ResponseBody
     @RequiresPermissions(value = "view")
-    public ApiResult<String> getSelectList() {
+    public JsonResult<String> getSelectList() {
         SearchPageType[] searchPageTypes = SearchPageType.values();
         JsonObject listObject = new JsonObject();
         JsonArray jsonArray = new JsonArray();
@@ -181,6 +181,6 @@ public class SearchController {
             jsonArray.add(jsonObject);
         }
         listObject.add("searchDataType", jsonArray);
-        return ApiResult.success(listObject.toString());
+        return JsonResult.success(listObject.toString());
     }
 }

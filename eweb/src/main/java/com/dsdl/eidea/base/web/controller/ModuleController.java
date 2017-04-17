@@ -4,7 +4,7 @@ import com.dsdl.eidea.base.entity.bo.ModuleBo;
 import com.dsdl.eidea.base.service.ModuleService;
 import com.dsdl.eidea.base.web.vo.UserResource;
 import com.dsdl.eidea.core.web.def.WebConst;
-import com.dsdl.eidea.core.web.result.ApiResult;
+import com.dsdl.eidea.core.web.result.JsonResult;
 import com.dsdl.eidea.core.web.result.def.ErrorCodes;
 import com.dsdl.eidea.core.web.vo.PagingSettingResult;
 import com.googlecode.genericdao.search.Search;
@@ -54,9 +54,9 @@ public class ModuleController {
     @RequiresPermissions(value = "view")
     @RequestMapping(value = "/getModuleList", method = RequestMethod.POST)
     @ResponseBody
-    public ApiResult<List<ModuleBo>> getModuleList() {
+    public JsonResult<List<ModuleBo>> getModuleList() {
         List<ModuleBo> moduleList = moduleService.getModuleList(new Search());
-        return ApiResult.success(moduleList);
+        return JsonResult.success(moduleList);
     }
 
     /**
@@ -68,10 +68,10 @@ public class ModuleController {
     @RequiresPermissions(value = "view")
     @RequestMapping(value = "/deleteModuleList", method = RequestMethod.POST)
     @ResponseBody
-    public ApiResult<List<ModuleBo>> deleteModuleList(@RequestBody Integer[] ids, HttpSession session) {
+    public JsonResult<List<ModuleBo>> deleteModuleList(@RequestBody Integer[] ids, HttpSession session) {
         if (ids.length == 0) {
             UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
-            return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("pagemenu.primarykey.information"));
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("pagemenu.primarykey.information"));
         }
         moduleService.deleteModuleList(ids);
         return getModuleList();
@@ -86,11 +86,11 @@ public class ModuleController {
     @RequiresPermissions(value = "add")
     @RequestMapping(value = "/saveModuleForCreated", method = RequestMethod.POST)
     @ResponseBody
-    public ApiResult<ModuleBo> saveModuleForCreated(@RequestBody ModuleBo moduleBo, HttpSession session) {
+    public JsonResult<ModuleBo> saveModuleForCreated(@RequestBody ModuleBo moduleBo, HttpSession session) {
         if (moduleBo.isCreated()) {
             if (moduleService.findExistId(moduleBo.getId())) {
                 UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
-                return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("pagemenu.connection.point"));
+                return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("pagemenu.connection.point"));
             }
         }
         moduleService.saveModule(moduleBo);
@@ -100,10 +100,10 @@ public class ModuleController {
     @RequiresPermissions(value = "update")
     @RequestMapping(value = "/saveModuleForUpdated", method = RequestMethod.POST)
     @ResponseBody
-    public ApiResult<ModuleBo> saveModuleForUpdated(@RequestBody ModuleBo moduleBo, HttpSession session) {
+    public JsonResult<ModuleBo> saveModuleForUpdated(@RequestBody ModuleBo moduleBo, HttpSession session) {
         if (moduleBo.getId() == null) {
             UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
-            return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("pagemenu.primarykey.check.isnull"));
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("pagemenu.primarykey.check.isnull"));
         }
         moduleService.saveModule(moduleBo);
         return getModule(moduleBo.getId(), session);
@@ -119,15 +119,15 @@ public class ModuleController {
     @RequiresPermissions(value = "view")
     @RequestMapping(value = "/getModule", method = RequestMethod.POST)
     @ResponseBody
-    public ApiResult<ModuleBo> getModule(Integer id, HttpSession session) {
+    public JsonResult<ModuleBo> getModule(Integer id, HttpSession session) {
         ModuleBo moduleBo = null;
         if (id == null) {
             UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
-            return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("pagemenu.primarykey.information"));
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("pagemenu.primarykey.information"));
         } else {
             moduleBo = moduleService.getModule(id);
         }
-        return ApiResult.success(moduleBo);
+        return JsonResult.success(moduleBo);
     }
 
     /**
@@ -138,8 +138,8 @@ public class ModuleController {
     @RequiresPermissions(value = "add")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseBody
-    public ApiResult<ModuleBo> create() {
-        return ApiResult.success(new ModuleBo());
+    public JsonResult<ModuleBo> create() {
+        return JsonResult.success(new ModuleBo());
     }
 
 }

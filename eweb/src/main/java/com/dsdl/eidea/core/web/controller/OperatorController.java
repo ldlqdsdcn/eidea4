@@ -2,7 +2,7 @@ package com.dsdl.eidea.core.web.controller;
 
 import com.dsdl.eidea.base.entity.bo.OperatorBo;
 import com.dsdl.eidea.base.service.OperatorService;
-import com.dsdl.eidea.core.web.result.ApiResult;
+import com.dsdl.eidea.core.web.result.JsonResult;
 import com.dsdl.eidea.core.web.result.def.ErrorCodes;
 import com.dsdl.eidea.core.web.vo.PagingSettingResult;
 import com.googlecode.genericdao.search.Search;
@@ -37,16 +37,16 @@ public class OperatorController {
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
     @RequiresPermissions(value = "view")
-    public ApiResult<List<OperatorBo>> list(HttpSession session) {
+    public JsonResult<List<OperatorBo>> list(HttpSession session) {
         List<OperatorBo> operatorBoList = operatorService.findOperator(new Search());
-        return ApiResult.success(operatorBoList);
+        return JsonResult.success(operatorBoList);
     }
     @RequestMapping(value = "/deletes", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions(value = "delete")
-    public ApiResult<List<OperatorBo>> deletes(@RequestBody Integer[] ids, HttpSession session) {
+    public JsonResult<List<OperatorBo>> deletes(@RequestBody Integer[] ids, HttpSession session) {
         if (ids == null ) {
-            return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), "请选择再删除");
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), "请选择再删除");
         }
         operatorService.deleteOperatorById(ids);
         return list(session);
@@ -54,11 +54,11 @@ public class OperatorController {
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions(value = "update")
-    public ApiResult<OperatorBo> save(@RequestBody OperatorBo operatorBo) {
+    public JsonResult<OperatorBo> save(@RequestBody OperatorBo operatorBo) {
         List<OperatorBo> operatorBoList = operatorService.findOperator(new Search());
         for (OperatorBo bb:operatorBoList) {
           if(bb.getName().equals(operatorBo.getName())){
-              return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(),"该操作名已存在");
+              return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(),"该操作名已存在");
           }
 
         }
@@ -68,25 +68,25 @@ public class OperatorController {
     @RequestMapping(value = "/get", method = RequestMethod.GET)
     @ResponseBody
     @RequiresPermissions(value = "view")
-    public ApiResult<OperatorBo> get(Integer id) {
+    public JsonResult<OperatorBo> get(Integer id) {
         OperatorBo operatorBo = null;
         if (id==null) {
-            return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(),"主键为空，信息失败");
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(),"主键为空，信息失败");
         } else {
             operatorBo = operatorService.getOperatorBo(id);
         }
-        return ApiResult.success(operatorBo);
+        return JsonResult.success(operatorBo);
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     @ResponseBody
     @RequiresPermissions(value = "add")
-    public ApiResult<OperatorBo> create()
+    public JsonResult<OperatorBo> create()
     {
         OperatorBo operatorBo=new OperatorBo();
         operatorBo.setCreated(true);
         operatorBo.setIsactive("N");
-        return ApiResult.success(operatorBo);
+        return JsonResult.success(operatorBo);
     }
 
 }

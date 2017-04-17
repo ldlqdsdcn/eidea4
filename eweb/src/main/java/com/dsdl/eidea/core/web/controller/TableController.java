@@ -6,7 +6,7 @@ import com.dsdl.eidea.core.entity.bo.TableBo;
 import com.dsdl.eidea.core.entity.bo.TableMetaDataBo;
 import com.dsdl.eidea.core.service.TableService;
 import com.dsdl.eidea.core.web.def.WebConst;
-import com.dsdl.eidea.core.web.result.ApiResult;
+import com.dsdl.eidea.core.web.result.JsonResult;
 import com.dsdl.eidea.core.web.result.def.ErrorCodes;
 import com.dsdl.eidea.core.web.util.SearchHelper;
 import com.dsdl.eidea.core.web.vo.PagingSettingResult;
@@ -49,16 +49,16 @@ public class TableController {
     @RequiresPermissions("view")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
-    public ApiResult<List<TableBo>> list(HttpSession session) {
+    public JsonResult<List<TableBo>> list(HttpSession session) {
         Search search = SearchHelper.getSearchParam(URI, session);
         List<TableBo> tablePoList = tableService.findList(search);
-        return ApiResult.success(tablePoList);
+        return JsonResult.success(tablePoList);
     }
 
     @RequestMapping(value = "/get", method = RequestMethod.GET)
     @ResponseBody
     @RequiresPermissions(value = "view")
-    public ApiResult<TableBo> get(Integer id) {
+    public JsonResult<TableBo> get(Integer id) {
         TableBo tableBo = null;
         if (id == null) {
             tableBo = new TableBo();
@@ -68,7 +68,7 @@ public class TableController {
 
 
         }
-        return ApiResult.success(tableBo);
+        return JsonResult.success(tableBo);
     }
 
     /**
@@ -78,10 +78,10 @@ public class TableController {
     @RequestMapping(value = "/saveForUpdated", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions(value = "update")
-    public ApiResult<TableBo> saveForUpdated(@RequestBody TableBo tableBo) {
+    public JsonResult<TableBo> saveForUpdated(@RequestBody TableBo tableBo) {
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
         if (tableBo.getId() == null) {
-            return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("common.primary_key.isempty"));
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("common.primary_key.isempty"));
         }
         tableBo = tableService.saveTableBo(tableBo);
         return get(tableBo.getId());
@@ -90,7 +90,7 @@ public class TableController {
     @RequestMapping(value = "/saveForCreated", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions(value = "add")
-    public ApiResult<TableBo> saveForCreated(@RequestBody TableBo tableBo) {
+    public JsonResult<TableBo> saveForCreated(@RequestBody TableBo tableBo) {
         tableBo = tableService.saveTableBo(tableBo);
         return get(tableBo.getId());
     }
@@ -98,10 +98,10 @@ public class TableController {
     @RequestMapping(value = "/deletes", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions(value = "delete")
-    public ApiResult<List<TableBo>> deletes(@RequestBody Integer[] ids, HttpSession session) {
+    public JsonResult<List<TableBo>> deletes(@RequestBody Integer[] ids, HttpSession session) {
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
         if (ids == null || ids.length == 0) {
-            return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("client.msg.select_delete"));
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("client.msg.select_delete"));
         }
         tableService.deleteTables(ids);
         return list(session);
@@ -110,7 +110,7 @@ public class TableController {
     @RequestMapping(value = "/getJavaTypeList", method = RequestMethod.GET)
     @ResponseBody
     @RequiresPermissions(value = "view")
-    public ApiResult<String> getJavaTypeList() {
+    public JsonResult<String> getJavaTypeList() {
         JavaDataType[] columnDataTypes = JavaDataType.values();
         JsonArray jsonArray = new JsonArray();
         for (JavaDataType columnDataType : columnDataTypes) {
@@ -120,27 +120,27 @@ public class TableController {
             jsonArray.add(jsonObject);
         }
 
-        return ApiResult.success(jsonArray.toString());
+        return JsonResult.success(jsonArray.toString());
     }
 
     @RequestMapping(value = "/getTableInfo", method = RequestMethod.GET)
     @ResponseBody
     @RequiresPermissions(value = "view")
-    public ApiResult<TableMetaDataBo> getTableInfo(String tableName) {
+    public JsonResult<TableMetaDataBo> getTableInfo(String tableName) {
         TableMetaDataBo tableMetaDataBo = tableService.getTableDescription(tableName);
-        return ApiResult.success(tableMetaDataBo);
+        return JsonResult.success(tableMetaDataBo);
     }
 
     @RequestMapping(value = "/saveTableInfo", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions(value = "add")
-    public ApiResult<TableMetaDataBo> saveTableInfo(@RequestBody TableMetaDataBo tableInfo) {
+    public JsonResult<TableMetaDataBo> saveTableInfo(@RequestBody TableMetaDataBo tableInfo) {
         try {
             tableService.saveTableInfoByWizard(tableInfo);
         } catch (Exception validateException) {
             validateException.printStackTrace();
-            return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), validateException.getMessage());
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), validateException.getMessage());
         }
-        return ApiResult.success(tableInfo);
+        return JsonResult.success(tableInfo);
     }
 }

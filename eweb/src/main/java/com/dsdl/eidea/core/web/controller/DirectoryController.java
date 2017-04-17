@@ -4,7 +4,7 @@ import com.dsdl.eidea.base.entity.bo.DirectoryBo;
 import com.dsdl.eidea.base.service.DirectoryService;
 import com.dsdl.eidea.base.web.vo.UserResource;
 import com.dsdl.eidea.core.web.def.WebConst;
-import com.dsdl.eidea.core.web.result.ApiResult;
+import com.dsdl.eidea.core.web.result.JsonResult;
 import com.dsdl.eidea.core.web.result.def.ErrorCodes;
 import com.dsdl.eidea.core.web.util.SearchHelper;
 import com.dsdl.eidea.core.web.vo.PagingSettingResult;
@@ -43,19 +43,19 @@ public class DirectoryController {
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
     @RequiresPermissions(value = "view")
-    public ApiResult<List<DirectoryBo>> list(HttpSession session) {
+    public JsonResult<List<DirectoryBo>> list(HttpSession session) {
         Search search = SearchHelper.getSearchParam(URI, session);
         List<DirectoryBo> directoryBoList = directoryService.findDirectory(search);
-        return ApiResult.success(directoryBoList);
+        return JsonResult.success(directoryBoList);
     }
 
     @RequestMapping(value = "/deletes", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions(value = "delete")
-    public ApiResult<List<DirectoryBo>> deletes(@RequestBody Integer[] ids, HttpSession session) {
+    public JsonResult<List<DirectoryBo>> deletes(@RequestBody Integer[] ids, HttpSession session) {
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
         if (ids == null) {
-            return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("pagemenu.choose.information"));
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("pagemenu.choose.information"));
         }
         directoryService.deleteDirectoryById(ids);
         return list(session);
@@ -64,12 +64,12 @@ public class DirectoryController {
     @RequestMapping(value = "/saveForCreated", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions(value = "add")
-    public ApiResult<DirectoryBo> saveForCreated(@RequestBody DirectoryBo directoryBo, HttpSession session) {
+    public JsonResult<DirectoryBo> saveForCreated(@RequestBody DirectoryBo directoryBo, HttpSession session) {
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
         if (directoryBo.isCreated()) {
             if (directoryService.findExistId(directoryBo.getId())) ;
             {
-                return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("pagemenu.connection.point"));
+                return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("pagemenu.connection.point"));
             }
         }
         if (directoryBo.getIsactive() == null) {
@@ -82,10 +82,10 @@ public class DirectoryController {
     @RequestMapping(value = "/saveForUpdated", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions(value = "update")
-    public ApiResult<DirectoryBo> saveForUpdated(@RequestBody DirectoryBo directoryBo, HttpSession session) {
+    public JsonResult<DirectoryBo> saveForUpdated(@RequestBody DirectoryBo directoryBo, HttpSession session) {
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
         if (directoryBo.getId() == null) {
-            return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("common.primary_key.isempty"));
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("common.primary_key.isempty"));
         }
         if (directoryBo.getIsactive() == null) {
             directoryBo.setIsactive("N");
@@ -98,26 +98,26 @@ public class DirectoryController {
     @RequestMapping(value = "/get", method = RequestMethod.GET)
     @ResponseBody
     @RequiresPermissions(value = "view")
-    public ApiResult<DirectoryBo> get(Integer id, HttpSession session) {
+    public JsonResult<DirectoryBo> get(Integer id, HttpSession session) {
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
         DirectoryBo directoryBo = null;
         if (id == null) {
-            return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("client.msg.primary_key_validation"));
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("client.msg.primary_key_validation"));
         } else {
             directoryBo = directoryService.getDirectoryBo(id);
         }
-        return ApiResult.success(directoryBo);
+        return JsonResult.success(directoryBo);
 
     }
 
     @RequestMapping(value = "create", method = RequestMethod.GET)
     @ResponseBody
     @RequiresPermissions(value = "add")
-    public ApiResult<DirectoryBo> create() {
+    public JsonResult<DirectoryBo> create() {
         DirectoryBo directoryBo = new DirectoryBo();
         directoryBo.setCreated(true);
         directoryBo.setIsactive("N");
-        return ApiResult.success(directoryBo);
+        return JsonResult.success(directoryBo);
     }
 
 }

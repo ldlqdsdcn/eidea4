@@ -4,7 +4,7 @@ import com.dsdl.eidea.base.entity.bo.UserBo;
 import com.dsdl.eidea.base.service.UserService;
 import com.dsdl.eidea.base.web.vo.UserResource;
 import com.dsdl.eidea.core.web.def.WebConst;
-import com.dsdl.eidea.core.web.result.ApiResult;
+import com.dsdl.eidea.core.web.result.JsonResult;
 import com.dsdl.eidea.core.web.result.def.ErrorCodes;
 import com.dsdl.eidea.core.web.util.SearchHelper;
 import com.dsdl.eidea.core.web.vo.PagingSettingResult;
@@ -56,11 +56,11 @@ public class UserController {
     @RequestMapping(value = "/getUserList", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions(value = "view")
-    public ApiResult<List<UserBo>> getUserList(HttpServletRequest request) {
+    public JsonResult<List<UserBo>> getUserList(HttpServletRequest request) {
         Search search = SearchHelper.getSearchParam(URI, request.getSession());
 //        search.addFilterIn("orgId",securityHelper.getAccessOrgList(request));
         List<UserBo> userList = userService.getUserList(search);
-        return ApiResult.success(userList);
+        return JsonResult.success(userList);
     }
 
 
@@ -73,7 +73,7 @@ public class UserController {
     @RequestMapping(value = "/deleteUserList", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions(value = "delete")
-    public ApiResult<List<UserBo>> deleteUserList(@RequestBody Integer[] ids, HttpServletRequest request) {
+    public JsonResult<List<UserBo>> deleteUserList(@RequestBody Integer[] ids, HttpServletRequest request) {
         userService.deleteUserList(ids);
         return getUserList(request);
     }
@@ -87,10 +87,10 @@ public class UserController {
     @RequestMapping(value = "/saveUserForCreated", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions(value = "add")
-    public ApiResult<UserBo> saveUserForCreated(@Validated @RequestBody UserBo userBo, HttpSession session) {
+    public JsonResult<UserBo> saveUserForCreated(@Validated @RequestBody UserBo userBo, HttpSession session) {
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
         if (userService.findExistByUsername(userBo.getUsername())) {
-            return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("pagemenu.connection.point"));
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("pagemenu.connection.point"));
         }
         userService.saveUser(userBo);
         return getUser(userBo.getId(), session);
@@ -99,10 +99,10 @@ public class UserController {
     @RequestMapping(value = "/saveUserForUpdated", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions(value = "update")
-    public ApiResult<UserBo> saveUserForUpdated(@Validated @RequestBody UserBo userBo, HttpSession session) {
+    public JsonResult<UserBo> saveUserForUpdated(@Validated @RequestBody UserBo userBo, HttpSession session) {
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
         if (userBo.getId() == null) {
-            return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("common.primary_key.isempty"));
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("common.primary_key.isempty"));
         }
         userService.saveUser(userBo);
         return getUser(userBo.getId(), session);
@@ -117,15 +117,15 @@ public class UserController {
     @RequestMapping(value = "/getUser", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions(value = "view")
-    public ApiResult<UserBo> getUser(Integer id, HttpSession session) {
+    public JsonResult<UserBo> getUser(Integer id, HttpSession session) {
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
         UserBo userBo = null;
         if (id == null) {
-            return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("client.msg.primary_key_validation"));
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("client.msg.primary_key_validation"));
         } else {
             userBo = userService.getUser(id);
         }
-        return ApiResult.success(userBo);
+        return JsonResult.success(userBo);
     }
 
     /**
@@ -136,8 +136,8 @@ public class UserController {
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions(value = "add")
-    public ApiResult<UserBo> create() {
-        return ApiResult.success(new UserBo());
+    public JsonResult<UserBo> create() {
+        return JsonResult.success(new UserBo());
     }
 
     /**
@@ -149,15 +149,15 @@ public class UserController {
     @RequestMapping(value = "/getExistUserName", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions(value = "view")
-    public ApiResult<Boolean> getExistUserName(@RequestBody UserBo userBo, HttpSession session) {
+    public JsonResult<Boolean> getExistUserName(@RequestBody UserBo userBo, HttpSession session) {
         boolean flag = true;
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
         if (userBo.getUsername() == null || userBo.getUsername().equals("")) {
-            return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("logon.name.isnot.empty"));
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("logon.name.isnot.empty"));
         } else {
             flag = userService.getExistUserName(userBo);
         }
-        return ApiResult.success(flag);
+        return JsonResult.success(flag);
     }
 
 }

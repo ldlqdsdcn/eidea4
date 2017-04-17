@@ -29,12 +29,12 @@ public class JsonResult<T> implements Serializable {
     }
 
     public static <T> JsonResult<T> success(T data) {
-        JsonResult<T> apiResult = new JsonResult<>();
-        apiResult.success = true;
-        apiResult.code = ResultCode.SUCCESS.getCode();
-        apiResult.message = ResultCode.SUCCESS.getMessage();
-        apiResult.data = data;
-        return apiResult;
+        JsonResult<T> jsonResult = new JsonResult<>();
+        jsonResult.success = true;
+        jsonResult.code = ResultCode.SUCCESS.getCode();
+        jsonResult.message = ResultCode.SUCCESS.getMessage();
+        jsonResult.data = data;
+        return jsonResult;
     }
 
     public static <T> JsonResult<T> fail(int errorCode, String message) {

@@ -1,6 +1,6 @@
 package com.dsdl.eidea.core.web.filter;
 
-import com.dsdl.eidea.core.web.result.ApiResult;
+import com.dsdl.eidea.core.web.result.JsonResult;
 import com.dsdl.eidea.core.web.result.def.ErrorCodes;
 import com.google.gson.Gson;
 
@@ -58,7 +58,7 @@ public class UrlFilter implements Filter {
                     PrintWriter out = null;
                     try {
                         out = response.getWriter();
-                        ApiResult apiResult = ApiResult.fail(ErrorCodes.NO_LOGIN.getCode(), ErrorCodes.NO_LOGIN.getMessage());
+                        JsonResult apiResult = JsonResult.fail(ErrorCodes.NO_LOGIN.getCode(), ErrorCodes.NO_LOGIN.getMessage());
                         String result = new Gson().toJson(apiResult);
                         out.append(result);
                     } catch (IOException e) {

@@ -1,7 +1,6 @@
 package com.dsdl.eidea.common.web.controller;
 
 import com.dsdl.eidea.base.def.OperatorDef;
-import com.dsdl.eidea.base.entity.bo.PermissionBo;
 import com.dsdl.eidea.base.entity.bo.UserBo;
 import com.dsdl.eidea.base.entity.bo.UserSessionBo;
 import com.dsdl.eidea.base.service.PageMenuService;
@@ -15,7 +14,7 @@ import com.dsdl.eidea.core.i18n.DbResourceBundle;
 import com.dsdl.eidea.core.service.LanguageService;
 import com.dsdl.eidea.core.service.MessageService;
 import com.dsdl.eidea.core.web.def.WebConst;
-import com.dsdl.eidea.core.web.result.ApiResult;
+import com.dsdl.eidea.core.web.result.JsonResult;
 import com.dsdl.eidea.core.web.result.def.ErrorCodes;
 import com.dsdl.eidea.core.web.result.def.ResultCode;
 import com.dsdl.eidea.util.LocaleHelper;
@@ -65,15 +64,15 @@ public class UserLoginController {
 
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ApiResult<String> login(@RequestBody UserBo loginBo) {
+    public JsonResult<String> login(@RequestBody UserBo loginBo) {
         if (loginBo == null) {
-            return ApiResult.fail(ResultCode.FAILURE.getCode(), "用户名或密码不允许为空！");
+            return JsonResult.fail(ResultCode.FAILURE.getCode(), "用户名或密码不允许为空！");
         } else {
             if (StringUtil.isEmpty(loginBo.getUsername())) {
-                return ApiResult.fail(ResultCode.FAILURE.getCode(), "用户名不允许为空！");
+                return JsonResult.fail(ResultCode.FAILURE.getCode(), "用户名不允许为空！");
             }
             if (StringUtil.isEmpty(loginBo.getPassword())) {
-                return ApiResult.fail(ResultCode.FAILURE.getCode(), "密码不允许为空！");
+                return JsonResult.fail(ResultCode.FAILURE.getCode(), "密码不允许为空！");
             }
         }
 
@@ -87,11 +86,11 @@ public class UserLoginController {
             userInitCommon(loginBo);
             userBo.setCode(loginBo.getCode());
             userInit(userBo, false, request);
-            return ApiResult.success("登录成功");
+            return JsonResult.success("登录成功");
         } catch (IncorrectCredentialsException | UnknownAccountException e) {
-            return ApiResult.fail(ErrorCodes.NO_LOGIN.getCode(), "用户名或密码错误，请重新输入");
+            return JsonResult.fail(ErrorCodes.NO_LOGIN.getCode(), "用户名或密码错误，请重新输入");
         } catch (LockedAccountException e) {
-            return ApiResult.fail(ErrorCodes.NO_LOGIN.getCode(), "该用户已经被禁用");
+            return JsonResult.fail(ErrorCodes.NO_LOGIN.getCode(), "该用户已经被禁用");
         }
 
 
@@ -194,8 +193,8 @@ public class UserLoginController {
      * @return
      */
     @RequestMapping(value = "/languages", method = RequestMethod.GET)
-    public ApiResult<List<LanguageBo>> getLanguage() {
+    public JsonResult<List<LanguageBo>> getLanguage() {
         List<LanguageBo> languageList = languageService.getLanguageForActivated();
-        return ApiResult.success(languageList);
+        return JsonResult.success(languageList);
     }
 }

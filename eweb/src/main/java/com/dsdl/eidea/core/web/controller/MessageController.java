@@ -7,7 +7,7 @@ import com.dsdl.eidea.core.entity.bo.MessageTrlBo;
 import com.dsdl.eidea.core.service.LanguageService;
 import com.dsdl.eidea.core.service.MessageService;
 import com.dsdl.eidea.core.web.def.WebConst;
-import com.dsdl.eidea.core.web.result.ApiResult;
+import com.dsdl.eidea.core.web.result.JsonResult;
 import com.dsdl.eidea.core.web.result.def.ErrorCodes;
 import com.dsdl.eidea.core.web.util.SearchHelper;
 import com.dsdl.eidea.core.web.vo.PagingSettingResult;
@@ -50,19 +50,19 @@ public class MessageController {
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
     @RequiresPermissions(value = "view")
-    public ApiResult<List<MessageBo>> list(HttpSession session) {
+    public JsonResult<List<MessageBo>> list(HttpSession session) {
         Search search = SearchHelper.getSearchParam(URI, session);
         List<MessageBo> messageBoList = messageService.findMessage(search);
-        return ApiResult.success(messageBoList);
+        return JsonResult.success(messageBoList);
     }
 
     @RequestMapping(value = "/deletes", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions(value = "delete")
-    public ApiResult<List<MessageBo>> deletes(@RequestBody String[] keys, HttpSession session) {
+    public JsonResult<List<MessageBo>> deletes(@RequestBody String[] keys, HttpSession session) {
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
         if (keys == null || keys.length == 0) {
-            return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("pagemenu.choose.information"));
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("pagemenu.choose.information"));
         }
         messageService.deletes(keys);
         return list(session);
@@ -71,21 +71,21 @@ public class MessageController {
     @RequestMapping(value = "/get", method = RequestMethod.GET)
     @ResponseBody
     @RequiresPermissions(value = "view")
-    public ApiResult<MessageBo> get(String key, HttpSession session) {
+    public JsonResult<MessageBo> get(String key, HttpSession session) {
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
         MessageBo messageBo = null;
         if (StringUtil.isEmpty(key)) {
-            return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("client.msg.primary_key_validation"));
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("client.msg.primary_key_validation"));
         } else {
             messageBo = messageService.getMessageBo(key);
         }
-        return ApiResult.success(messageBo);
+        return JsonResult.success(messageBo);
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     @ResponseBody
     @RequiresPermissions(value = "add")
-    public ApiResult<MessageBo> create() {
+    public JsonResult<MessageBo> create() {
         MessageBo messageBo = new MessageBo();
         messageBo.setCreated(true);
         messageBo.setIsactive("N");
@@ -97,17 +97,17 @@ public class MessageController {
             messageTrlBoLists.add(messageTrlBo);
         });
         messageBo.setMessageTrlBoList(messageTrlBoLists);
-        return ApiResult.success(messageBo);
+        return JsonResult.success(messageBo);
     }
 
     @RequestMapping(value = "/saveForCreated", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions(value = "add")
-    public ApiResult<MessageBo> saveForCreated(@RequestBody MessageBo messageBo, HttpSession session) {
+    public JsonResult<MessageBo> saveForCreated(@RequestBody MessageBo messageBo, HttpSession session) {
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
         if (messageBo.isCreated()) {
             if (messageService.findExistMessage(messageBo.getKey())) {
-                return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("client.msg.client_code"));
+                return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("client.msg.client_code"));
             }
         }
 
@@ -118,7 +118,7 @@ public class MessageController {
     @RequestMapping(value = "/saveForUpdated", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions(value = "update")
-    public ApiResult<MessageBo> saveForUpdated(@RequestBody MessageBo messageBo, HttpSession session) {
+    public JsonResult<MessageBo> saveForUpdated(@RequestBody MessageBo messageBo, HttpSession session) {
         messageService.save(messageBo);
         return get(messageBo.getKey(), session);
     }

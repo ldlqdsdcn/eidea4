@@ -3,7 +3,7 @@ package com.dsdl.eidea.base.web.controller;
 import com.dsdl.eidea.base.entity.bo.UserSessionBo;
 import com.dsdl.eidea.base.web.content.UserOnlineContent;
 import com.dsdl.eidea.core.web.def.WebConst;
-import com.dsdl.eidea.core.web.result.ApiResult;
+import com.dsdl.eidea.core.web.result.JsonResult;
 import com.dsdl.eidea.core.web.vo.PagingSettingResult;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
@@ -34,9 +34,9 @@ public class UserOnlineController {
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
     @RequiresPermissions(value = "view")
-    public ApiResult<Set<UserSessionBo>> list() {
+    public JsonResult<Set<UserSessionBo>> list() {
         Set<UserSessionBo> userSessionBoSet = UserOnlineContent.getOnlineUsers();
-        return ApiResult.success(userSessionBoSet);
+        return JsonResult.success(userSessionBoSet);
     }
 
 }

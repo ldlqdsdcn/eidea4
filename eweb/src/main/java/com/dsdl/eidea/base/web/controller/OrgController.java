@@ -6,7 +6,7 @@ import com.dsdl.eidea.base.service.ClientService;
 import com.dsdl.eidea.base.service.OrgService;
 import com.dsdl.eidea.base.web.vo.UserResource;
 import com.dsdl.eidea.core.web.def.WebConst;
-import com.dsdl.eidea.core.web.result.ApiResult;
+import com.dsdl.eidea.core.web.result.JsonResult;
 import com.dsdl.eidea.core.web.result.def.ErrorCodes;
 import com.dsdl.eidea.core.web.util.SearchHelper;
 import com.dsdl.eidea.core.web.vo.PagingSettingResult;
@@ -50,33 +50,33 @@ public class OrgController {
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
     @RequiresPermissions(value = "view")
-    public ApiResult<List<OrgBo>> list(HttpSession session) {
+    public JsonResult<List<OrgBo>> list(HttpSession session) {
         Search search = SearchHelper.getSearchParam(URI, session);
         List<OrgBo> orgBoList = orgService.findOrgList(search);
-        return ApiResult.success(orgBoList);
+        return JsonResult.success(orgBoList);
     }
 
     @RequestMapping(value = "/get", method = RequestMethod.GET)
     @ResponseBody
     @RequiresPermissions(value = "view")
-    public ApiResult<OrgBo> get(Integer id) {
+    public JsonResult<OrgBo> get(Integer id) {
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
         OrgBo orgBo = null;
         if (id == null) {
-            return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("client.msg.primary_key_is_empty"));
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("client.msg.primary_key_is_empty"));
         } else {
             orgBo = orgService.getOrgBo(id);
         }
-        return ApiResult.success(orgBo);
+        return JsonResult.success(orgBo);
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     @ResponseBody
     @RequiresPermissions(value = "add")
-    public ApiResult<OrgBo> create() {
+    public JsonResult<OrgBo> create() {
         OrgBo orgBo = new OrgBo();
         orgBo.setIsactive("N");
-        return ApiResult.success(orgBo);
+        return JsonResult.success(orgBo);
     }
 
     /**
@@ -86,10 +86,10 @@ public class OrgController {
     @RequestMapping(value = "/saveForCreated", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions(value = "add")
-    public ApiResult<OrgBo> saveForAdded(@Validated @RequestBody OrgBo orgBo) {
+    public JsonResult<OrgBo> saveForAdded(@Validated @RequestBody OrgBo orgBo) {
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
         if (orgService.findExistOrg(orgBo.getNo())) {
-            return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("org.msg.no_exists"));
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("org.msg.no_exists"));
         }
         orgService.save(orgBo);
         return get(orgBo.getId());
@@ -98,10 +98,10 @@ public class OrgController {
     @RequestMapping(value = "/saveForUpdated", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions(value = "update")
-    public ApiResult<OrgBo> saveForUpdated(@Validated @RequestBody OrgBo orgBo) {
+    public JsonResult<OrgBo> saveForUpdated(@Validated @RequestBody OrgBo orgBo) {
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
         if (orgBo.getId() == null) {
-            return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("common.primary_key.isempty"));
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("common.primary_key.isempty"));
         }
         orgService.save(orgBo);
         return get(orgBo.getId());
@@ -110,10 +110,10 @@ public class OrgController {
     @RequestMapping(value = "/deletes", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions(value = "delete")
-    public ApiResult<List<OrgBo>> deletes(@RequestBody Integer[] ids, HttpSession session) {
+    public JsonResult<List<OrgBo>> deletes(@RequestBody Integer[] ids, HttpSession session) {
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
         if (ids == null || ids.length == 0) {
-            return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("client.msg.select_delete"));
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("client.msg.select_delete"));
         }
         orgService.deletes(ids);
         return list(session);
@@ -122,10 +122,10 @@ public class OrgController {
     @RequestMapping(value = "/clients", method = RequestMethod.GET)
     @ResponseBody
     @RequiresPermissions(value = "view")
-    public ApiResult<List<ClientBo>> clientList() {
+    public JsonResult<List<ClientBo>> clientList() {
         List<ClientBo> clientBoList = clientService.getClientListForActivated();
 
 
-        return ApiResult.success(clientBoList);
+        return JsonResult.success(clientBoList);
     }
 }

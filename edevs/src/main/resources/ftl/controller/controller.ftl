@@ -25,9 +25,8 @@ import java.util.List;
 
 /**
 * Created by 刘大磊 on ${datetime}.
-*/
-@Controller
-@RequestMapping("/${module}/${model}")
+*/ @Controller
+@RequestMapping("/${module}/${model?uncap_first}")
 public class ${model}Controller extends BaseController {
 private static final String URI = "${model?uncap_first}";
 @Autowired
@@ -57,12 +56,12 @@ public JsonResult<List<${model}Po>> list(HttpSession session) {
     @RequiresPermissions("view")
     @RequestMapping(value = "/get", method = RequestMethod.GET)
     @ResponseBody
-    public JsonResult<${model}Po> get(${pkClass} id) {
+    public JsonResult<${model}Po> get(${pkClass} ${pkName}) {
         ${model}Po ${model?uncap_first}Po = null;
-        if (id == null) {
+        if (${pkName} == null) {
         return JsonResult.fail(ErrorCodes.VALIDATE_PARAM_ERROR.getCode(),getMessage("common.errror.get_object",getLabel("${model?uncap_first}.title")));
         } else {
-        ${model?uncap_first}Po = ${model?uncap_first}Service.get${model}(id);
+        ${model?uncap_first}Po = ${model?uncap_first}Service.get${model}(${pkName});
         }
         return JsonResult.success(${model?uncap_first}Po);
         }
@@ -102,11 +101,11 @@ public JsonResult<List<${model}Po>> list(HttpSession session) {
     @RequiresPermissions("delete")
     @RequestMapping(value = "/deletes", method = RequestMethod.POST)
     @ResponseBody
-    public JsonResult<List<${model}Po>> deletes(@RequestBody ${pkClass}[] ids, HttpSession session) {
-        if (ids == null || ids.length == 0) {
+    public JsonResult<List<${model}Po>> deletes(@RequestBody ${pkClass}[] ${pkName}s, HttpSession session) {
+        if (${pkName}s == null || ${pkName}s.length == 0) {
         return JsonResult.fail(ErrorCodes.VALIDATE_PARAM_ERROR.getCode(), getMessage("common.error.delete.failure",getMessage("${model?uncap_first}.title")));
         }
-        ${model?uncap_first}Service.deletes(ids);
+        ${model?uncap_first}Service.deletes(${pkName}s);
         return list(session);
         }
 }

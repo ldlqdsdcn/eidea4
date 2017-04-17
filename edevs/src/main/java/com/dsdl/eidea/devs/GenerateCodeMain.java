@@ -6,6 +6,7 @@ import com.dsdl.eidea.devs.model.GenModelDto;
 import com.dsdl.eidea.devs.model.GenSettings;
 import com.dsdl.eidea.devs.service.CodeGenerationService;
 import com.dsdl.eidea.devs.strategy.ControllerGenerateStrategy;
+import com.dsdl.eidea.devs.strategy.JspPageGenerateStrategy;
 import com.dsdl.eidea.devs.strategy.PoGenerateStrategy;
 import com.dsdl.eidea.devs.strategy.ServiceGenerateStrategy;
 import org.springframework.context.ApplicationContext;
@@ -70,6 +71,11 @@ public class GenerateCodeMain implements CodeGenerationService {
              */
             ControllerGenerateStrategy controllerGenerateStrategy=new ControllerGenerateStrategy(genModelDto,tableMetaDataBo);
             controllerGenerateStrategy.generateController(genSettings.getControllerPath());
+            /**
+             * 生成Jsp页面
+             */
+            JspPageGenerateStrategy jspPageGenerateStrategy=new JspPageGenerateStrategy(genModelDto,tableMetaDataBo,tableService);
+            jspPageGenerateStrategy.generateJspPage(genSettings.getControllerPath());
         }
 
     }

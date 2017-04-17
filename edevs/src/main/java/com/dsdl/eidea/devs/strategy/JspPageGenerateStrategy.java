@@ -58,6 +58,7 @@ public class JspPageGenerateStrategy {
         root.put("model", model.getModelName());
         root.put("user",user);
         root.put("modelName", model.getName());
+        root.put("pkName",tableMetaDataBo.getPkColumn());
         root.put("datetime", DateTimeHelper.formatDateTime(new Date()));
         String lowerFirstModel = StringUtil.lowerFirstChar(model.getModelName());
         FreeMarkerHelper.getInstance().outFile("jsp/model.ftl", root, outPath + "/src/main/webapp" + namespace + "/" + lowerFirstModel + "/" + lowerFirstModel + ".jsp");

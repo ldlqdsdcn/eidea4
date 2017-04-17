@@ -127,8 +127,8 @@
         $http.get(url)
                 .success(function (response) {
                     if (response.success) {
-                        $scope.clientBo = response.data;
-                        $scope.canSave=(PrivilegeService.hasPrivilege('add')&&$scope.${model?uncap_first}Po.id==null)||PrivilegeService.hasPrivilege('update');
+                        $scope.${model?uncap_first}Po = response.data;
+                        $scope.canSave=(PrivilegeService.hasPrivilege('add')&&$scope.${model?uncap_first}Po.${pkName}==null)||PrivilegeService.hasPrivilege('update');
                     }
                     else {
                         bootbox.alert(response.message);
@@ -139,10 +139,10 @@
         $scope.save = function () {
             if ($scope.editForm.$valid) {
                 var postUrl = '<c:url value="/${module}/${model?uncap_first}/saveForUpdated"/>';
-                if ($scope.clientBo.id == null) {
+                if ($scope.${model?uncap_first}Po.${pkName} == null) {
                     postUrl = '<c:url value="/${module}/${model?uncap_first}/saveForCreated"/>';
                 }
-                $http.post(postUrl, $scope.clientBo).success(function (data) {
+                $http.post(postUrl, $scope.${model?uncap_first}Po).success(function (data) {
                     if (data.success) {
                         $scope.message = "<eidea:label key="base.save.success"/>";
                         $scope.${model?uncap_first}Po = data.data;

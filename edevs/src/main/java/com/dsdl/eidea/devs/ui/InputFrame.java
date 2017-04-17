@@ -7,6 +7,7 @@ package com.dsdl.eidea.devs.ui;
 
 
 import com.dsdl.eidea.devs.model.GenModelDto;
+import com.dsdl.eidea.devs.model.GenSettings;
 import com.dsdl.eidea.devs.service.CodeGenerationService;
 import com.dsdl.eidea.util.DateTimeHelper;
 import org.springframework.context.ApplicationContext;
@@ -157,10 +158,10 @@ public class InputFrame extends JFrame {
         tableText.setText(genModel.getTableName());
         classNameText.setText(genModel.getModelName());
         moduleText.setText(genModel.getModule());
-        nameText.setText(genModel.getRemark());
+        nameText.setText(genModel.getName());
         genServiceCheck.setSelected(genModel.isGenerateService());
         genActionCheck.setSelected(genModel.isGenerateWeb());
-        outputLocationComboBox.setSelectedItem(genModel.getOutputModule());
+        outputLocationComboBox.setSelectedItem(genModel.getModule());
         transCheck.setSelected(genModel.isTrl());
         pagingCheck.setSelected(genModel.isPagingByDb());
         List<GenModelDto> includeModelList= genModel.getIncludeModelList();
@@ -186,7 +187,7 @@ public class InputFrame extends JFrame {
             content[i][0]=genModelDto.getTableName();
             content[i][1]=genModelDto.getModelName();
             content[i][2]=genModelDto.getModule();
-            content[i][3]=genModelDto.getRemark();
+            content[i][3]=genModelDto.getName();
             content[i][4]=genModelDto.isGenerateService()?rb.getString("dev.generation.tool.yes"):rb.getString("dev.generation.tool.no");
             content[i][5]=genModelDto.isGenerateWeb()?rb.getString("dev.generation.tool.yes"):rb.getString("dev.generation.tool.no");
             String lineName="";
@@ -197,7 +198,8 @@ public class InputFrame extends JFrame {
                 }
 
             content[i][6]=lineName;
-            content[i][7]=genModelDto.getOutputModule();
+            //TODO need to fixed
+            content[i][7]=genModelDto.getModule();
             content[i][8]=genModelDto.isTrl()?rb.getString("dev.generation.tool.yes"):rb.getString("dev.generation.tool.no");
             content[i][9]=genModelDto.isPagingByDb()?rb.getString("dev.generation.tool.yes"):rb.getString("dev.generation.tool.no");
             i++;
@@ -514,10 +516,10 @@ public class InputFrame extends JFrame {
         genModelDto.setModule(moduleText.getText().trim());
         genModelDto.setModelName(classNameText.getText().trim());
 
-        genModelDto.setRemark(nameText.getText().trim());
+        genModelDto.setName(nameText.getText().trim());
         genModelDto.setGenerateService(genServiceCheck.isSelected());
         genModelDto.setGenerateWeb(genActionCheck.isSelected());
-        genModelDto.setOutputModule(outputLocationComboBox.getSelectedItem().toString());
+        //genModelDto.setModule(outputLocationComboBox.getSelectedItem().toString());
         genModelDto.setTrl(transCheck.isSelected());
         if(!include)
         {
@@ -547,14 +549,12 @@ public class InputFrame extends JFrame {
         msgTextArea.append(DateTimeHelper.formatDateTime(new Date())+":"+rb.getString("dev.generation.tool.generating")+"\n");
         if(genModelDtoList.size()>0)
         {
-            for(GenModelDto genModelDto:genModelDtoList)
-            {
-                genModelDto.setOutputPath(outModuleMap.get(genModelDto.getOutputModule()));
-            }
             CodeGenerationService codeGenerationService= applicationContext.getBean(CodeGenerationService.class);
             try
             {
-                codeGenerationService.generateCode(genModelDtoList);
+                //TODO
+                GenSettings genSettings=new GenSettings();
+                codeGenerationService.generateCode(genSettings);
                 msgTextArea.append(DateTimeHelper.formatDateTime(new Date())+":"+rb.getString("dev.generation.tool.generating.success")+"\n");
             }
             catch (Exception e)

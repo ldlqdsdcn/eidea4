@@ -3,7 +3,8 @@ package com.dsdl.eidea.devs.model;
 import lombok.Data;
 
 /**
- * Created by admin on 2016/8/26.
+ * Created by 刘大磊 on 2016/8/26.
+ * 字段信息
  */
 @Data
 public class ColumnInfo implements java.io.Serializable{

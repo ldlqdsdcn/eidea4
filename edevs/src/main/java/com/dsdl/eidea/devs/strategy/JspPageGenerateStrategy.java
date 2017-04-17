@@ -42,34 +42,32 @@ public class JspPageGenerateStrategy {
     /**
      * generate angular jsp
      */
-    public void generateJspPage() {
-        generateMainPage();
-        generateListPage();
-        generateFormPage();
+    public void generateJspPage(String outputModulePath) {
+        generateMainPage(outputModulePath);
+        generateListPage(outputModulePath);
+        generateFormPage(outputModulePath);
 
     }
 
     /**
      * 生成主页
      */
-    public void generateMainPage() {
+    public void generateMainPage(String outPath) {
         Map<String, Object> root = new HashMap();
         root.put("module", model.getModule());
         root.put("model", model.getModelName());
         root.put("user",user);
-        root.put("modelName", model.getRemark());
+        root.put("modelName", model.getName());
         root.put("datetime", DateTimeHelper.formatDateTime(new Date()));
         String lowerFirstModel = StringUtil.lowerFirstChar(model.getModelName());
-
-        File webPath = new File(this.model.getOutputPath().getParentFile(), "eweb");
-        FreeMarkerHelper.getInstance().outFile("jsp/model.ftl", root, webPath.getAbsolutePath() + "/src/main/webapp" + namespace + "/" + lowerFirstModel + "/" + lowerFirstModel + ".jsp");
+        FreeMarkerHelper.getInstance().outFile("jsp/model.ftl", root, outPath + "/src/main/webapp" + namespace + "/" + lowerFirstModel + "/" + lowerFirstModel + ".jsp");
     }
 
-    private void generateFormPage() {
+    private void generateFormPage(String outputModulePath) {
         List<JspModelProp> jspFormPropList = getOutPutList(StringUtil.lowerFirstChar(model.getModelName()), this.tableMetaDataBo);
         Map<String, Object> root = new HashMap();
         root.put("model", StringUtil.lowerFirstChar(model.getModelName()));
-        root.put("title", model.getRemark());
+        root.put("title", model.getName());
         root.put("namespace", namespace);
         root.put("user", user);
 
@@ -84,7 +82,7 @@ public class JspPageGenerateStrategy {
         if (genModelDtoList != null)
             for (GenModelDto genModelDto : genModelDtoList) {
                 FormLine formLine = new FormLine();
-                formLine.setLabel(genModelDto.getRemark());
+                formLine.setLabel(genModelDto.getName());
                 formLine.setModel(genModelDto.getModelName());
                 formLine.setTrl(genModelDto.isTrl());
                 TableMetaDataBo tableMetaDataDto = tableService.getTableDescription(genModelDto.getTableName());
@@ -96,15 +94,14 @@ public class JspPageGenerateStrategy {
             root.put("lineList", formLines);
         }
 
-        File webPath = new File(this.model.getOutputPath().getParentFile(), "eweb");
-        FreeMarkerHelper.getInstance().outFile("jsp/edit.ftl", root, webPath.getAbsolutePath() + "/src/main/webapp"  + namespace + "/" + StringUtil.lowerFirstChar(model.getModelName()) + "/edit.tpl.jsp");
+        FreeMarkerHelper.getInstance().outFile("jsp/edit.ftl", root, outputModulePath+ "/src/main/webapp"  + namespace + "/" + StringUtil.lowerFirstChar(model.getModelName()) + "/edit.tpl.jsp");
     }
 
-    public void generateListPage() {
+    public void generateListPage(String outputModulePath) {
         List<JspModelProp> jspListPropList = getOutPutList(StringUtil.lowerFirstChar(model.getModelName()), this.tableMetaDataBo);
         Map root = new HashMap();
         root.put("model", StringUtil.lowerFirstChar(model.getModelName()));
-        root.put("title", model.getRemark());
+        root.put("title", model.getName());
         root.put("namespace", namespace);
         root.put("module", model.getModule());
         root.put("user", user);
@@ -114,8 +111,7 @@ public class JspPageGenerateStrategy {
         String datetime = DateTimeHelper.formatDateTime(date);
         root.put("datetime", datetime);
         root.put("propertyList", jspListPropList);
-        File webPath = new File(this.model.getOutputPath().getParentFile(), "eweb");
-        FreeMarkerHelper.getInstance().outFile("jsp/list.ftl", root, webPath.getAbsolutePath() + "/src/main/webapp" + namespace + "/" + StringUtil.lowerFirstChar(model.getModelName()) + "/list.tpl.jsp");
+        FreeMarkerHelper.getInstance().outFile("jsp/list.ftl", root, outputModulePath + "/src/main/webapp" + namespace + "/" + StringUtil.lowerFirstChar(model.getModelName()) + "/list.tpl.jsp");
     }
 
     private List<JspModelProp> getOutPutList(String mode, TableMetaDataBo tableData) {

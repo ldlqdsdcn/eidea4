@@ -10,7 +10,6 @@ import java.util.Date;
 import java.math.BigDecimal;
 </#if>
 import javax.persistence.*;
-import java.util.Date;
 import lombok.Getter;
 import lombok.Setter;
 /**
@@ -24,9 +23,9 @@ import lombok.Setter;
 public class ${tableInfo.poName}Po implements java.io.Serializable {
  <#if tableInfo.pkColumn.propertyType=='Integer'||tableInfo.pkColumn.propertyType=='Long'>
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "${tableInfo.pkColumn.columnName}")
+    @Column(name = "[${tableInfo.pkColumn.columnName}]")
  <#else>
-    @Column(name = "${tableInfo.pkColumn.columnName}",length =${tableInfo.pkColumn.columnSize?c},unique = true, nullable = false )
+    @Column(name = "[${tableInfo.pkColumn.columnName}]",length =${tableInfo.pkColumn.columnSize?c},unique = true, nullable = false )
  </#if>
     @Id
     private ${tableInfo.pkColumn.propertyType} ${tableInfo.pkColumn.propertyName?uncap_first};
@@ -35,9 +34,9 @@ public class ${tableInfo.poName}Po implements java.io.Serializable {
     * ${prop.remarks}
     **/
     <#if prop.propertyType=='Integer'||prop.propertyType=='Long'>
-    @Column(name = "${prop.columnName}" )
+    @Column(name = "[${prop.columnName}]" )
     <#else>
-    @Column(name = "${prop.columnName}",length =${prop.columnSize?c} )
+    @Column(name = "[${prop.columnName}]",length =${prop.columnSize?c} )
     </#if>
     private ${prop.propertyType} ${prop.propertyName?uncap_first};
 </#list>

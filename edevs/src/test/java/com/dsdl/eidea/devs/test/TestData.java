@@ -17,10 +17,7 @@ public class TestData
         genModelDto.setGenerateWeb(true);
         genModelDto.setModelName("Window");
         genModelDto.setModule("core");
-        genModelDto.setOutputModule("base");
-        genModelDto.setOutputPath(new File("D:\\dsdl\\code\\eidea\\ebase"));
         genModelDto.setPagingByDb(false);
-        genModelDto.setRemark("窗体信息");
         genModelDto.setTableName("core_window");
         genModelDto.setTrl(false);
         return genModelDto;

@@ -22,7 +22,7 @@ public class ControllerGenerateStrategy {
         this.tableMetaDataBo=tableMetaDataBo;
     }
 
-  public void generateController()
+  public void generateController(String controllerModulePath)
   {
       Date date=new Date();
       Map<String,Object> root = new HashMap();
@@ -37,11 +37,12 @@ public class ControllerGenerateStrategy {
       root.put("datetime", datetime);
       root.put("lineList",model.getIncludeModelList());
       root.put("pkClass",tableMetaDataBo.getPkClass());
+      root.put("pkName",tableMetaDataBo.getPkColumn());
       root.put("memPaging",!model.isPagingByDb());
       //gc.setTime(date);
       try
       {
-          FreeMarkerHelper.getInstance().outFile("controller/controller.ftl",root,this.model.getOutputPath().getAbsolutePath()+"/src/main/java/"+interfacepackage.replace(".", "/")+"/"+model.getModelName()+"Controller.java");
+          FreeMarkerHelper.getInstance().outFile("controller/controller.ftl",root,controllerModulePath+"/src/main/java/"+interfacepackage.replace(".", "/")+"/"+model.getModelName()+"Controller.java");
       }
       catch(Exception e)
       {

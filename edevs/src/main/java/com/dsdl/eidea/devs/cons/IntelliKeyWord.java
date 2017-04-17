@@ -1,7 +1,5 @@
 package com.dsdl.eidea.devs.cons;
 
-import com.dsdl.eidea.devs.def.DecoratorType;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -27,6 +25,7 @@ public class IntelliKeyWord {
     static {
         TABLE_PREFIX.add("core_");
         TABLE_PREFIX.add("sys_");
+        TABLE_PREFIX.add("base_");
         LABEL_MAP.put("name", "名称");
         LABEL_MAP.put("created", "创建时间");
         LABEL_MAP.put("updated", "修改时间");
@@ -79,14 +78,6 @@ public class IntelliKeyWord {
         NOT_NEED_VAL_COLUMN_SET.add("clientId");
         NOT_NEED_VAL_COLUMN_SET.add("userId");
 
-        DISPLAY_DECORATOR_MAP.put("orgId", DecoratorType.ORG.getKey());
-        DISPLAY_DECORATOR_MAP.put("clientId", DecoratorType.CLIENT.getKey());
-        DISPLAY_DECORATOR_MAP.put("userId", DecoratorType.USER.getKey());
-        DISPLAY_DECORATOR_MAP.put("created", DecoratorType.DATETIME.getKey());
-
-        DISPLAY_DECORATOR_MAP.put("updated", DecoratorType.DATETIME.getKey());
-        DISPLAY_DECORATOR_MAP.put("createdby", DecoratorType.USER.getKey());
-        DISPLAY_DECORATOR_MAP.put("updatedby", DecoratorType.USER.getKey());
 
     }
 

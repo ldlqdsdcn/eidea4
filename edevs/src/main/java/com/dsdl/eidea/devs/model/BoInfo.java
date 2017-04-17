@@ -5,6 +5,7 @@ import lombok.Setter;
 
 /**
  * Created by 刘大磊 on 2017/1/11 10:24.
+ * Bo类信息
  */
 @Getter
 @Setter

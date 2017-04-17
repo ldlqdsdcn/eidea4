@@ -2,12 +2,13 @@
 
 package ${packagename};
 
+import com.dsdl.eidea.core.spring.annotation.DataAccess;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.googlecode.genericdao.search.ISearch;
-import ${interfacefulldaoname};
 import ${modelpackage}.${modelname}Po;
 import ${interfacefullservicename};
+import com.dsdl.eidea.core.dao.CommonDao;
 import java.util.List;
 <#if lineList??>
 <#list lineList as item>
@@ -19,23 +20,23 @@ import ${basePackage}.${item.module}.model.${item.model}Po;
  */
 ${serviceName}
 public class ${modelname}ServiceImpl  implements	${modelname}Service {
-	@Autowired
-	private ${modelname}Dao ${repositoryname};
+	@DataAccess(entity =${modelname}Po.class)
+	private CommonDao<${modelname}Po,${pkClass}> ${repositoryname};
 
     public List<${modelname}Po> get${modelname}List(ISearch search)
 	{
 		return ${repositoryname}.search(search);
 	}
-    public ${modelname}Po get${modelname}(${pkClass} id)
+    public ${modelname}Po get${modelname}(${pkClass} ${pkName})
 	{
-		return ${repositoryname}.find(id);
+		return ${repositoryname}.find(${pkName});
 	}
     public void save${modelname}(${modelname}Po ${modelname?uncap_first})
 	{
 		${repositoryname}.save(${modelname?uncap_first});
 	}
-    public void deletes(${pkClass}[] ids)
+    public void deletes(${pkClass}[] ${pkName}s)
 	{
-		${repositoryname}.removeByIds(ids);
+		${repositoryname}.removeByIds(${pkName}s);
 	}
 }

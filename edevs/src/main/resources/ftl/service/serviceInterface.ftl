@@ -10,7 +10,7 @@ import java.util.List;
  */
 public interface ${modelname}Service {
 	List<${modelname}Po> get${modelname}List(ISearch search);
-	${modelname}Po get${modelname}(${pkClass} id);
+	${modelname}Po get${modelname}(${pkClass} ${pkName});
 	void save${modelname}(${modelname}Po ${modelname?uncap_first});
-	void deletes(${pkClass}[] ids);
+	void deletes(${pkClass}[] ${pkName}s);
 }

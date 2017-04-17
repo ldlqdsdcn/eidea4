@@ -27,12 +27,24 @@ public class PoGenerateStrategy {
     private TableMetaDataBo tableMetaDataBo;
     private GenModelDto genModelDto;
 
-    public void generateModel() {
+    /**
+     *
+     * @param outPutModulePath 输出业务逻辑代码模块的目录
+     */
+    public void generateModel(String outPutModulePath) {
         TableInfo tableInfo=new TableInfo();
         tableInfo.setTableName(tableMetaDataBo.getName());
         String poName=IntelliKeyWord.removePrefix(tableMetaDataBo.getName());
         poName= StringUtil.upperFirstChar(poName);
+        poName=StringUtil.fieldToProperty(poName);
+
+
         tableInfo.setPoName(poName);
+        if(genModelDto.getModelName()==null)
+        {
+            genModelDto.setModelName(poName);
+        }
+
         Map<String, Object> param = new HashMap<>();
         param.put("tableInfo",tableInfo);
         param.put("module", genModelDto.getModule());
@@ -78,7 +90,7 @@ public class PoGenerateStrategy {
         tableInfo.setColumnInfoList(columnInfoList);
         tableInfo.setRemark(tableMetaDataBo.getRemark());
         tableInfo.setPkColumn(pkColumnInfo);
-        FreeMarkerHelper.getInstance().outFile("po/hibernate_po.ftl", param, this.genModelDto.getOutputPath().getAbsolutePath() + "/src/main/java/"+genModelDto.getBasePackage().replace(".","/")+"/" + genModelDto.getModule() + "/entity/po/" + StringUtil.upperFirstChar(genModelDto.getModelName()) + "Po.java");
+        FreeMarkerHelper.getInstance().outFile("po/hibernate_po.ftl", param, outPutModulePath + "/src/main/java/"+genModelDto.getBasePackage().replace(".","/")+"/" + genModelDto.getModule() + "/entity/po/" + StringUtil.upperFirstChar(genModelDto.getModelName()) + "Po.java");
 
     }
 }

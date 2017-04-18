@@ -20,5 +20,4 @@ public class ReportBo implements Serializable {
     @Length(min = 1,max = 45,message = "base.msgtext.length")
     private String value;
     private boolean created = false;
-    private List<MessageTrlBo> messageTrlBoList = new ArrayList<>();
 }

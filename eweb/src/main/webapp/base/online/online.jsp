@@ -31,8 +31,8 @@
     app.controller('listCtrl', function ($scope, $http) {
         $scope.allList = [];
         $scope.modelList = [];
-        $scope.canDel=PrivilegeService.hasPrivilege('online:delete');
-        $scope.canAdd=PrivilegeService.hasPrivilege('online:add');
+        $scope.canDel=PrivilegeService.hasPrivilege('delete');
+        $scope.canAdd=PrivilegeService.hasPrivilege('add');
         $http.get("<c:url value="/base/userOnline/list"/>")
                 .success(function (response) {
                     if (response.success) {

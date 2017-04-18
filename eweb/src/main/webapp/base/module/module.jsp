@@ -28,8 +28,8 @@
         $scope.allList = [];
         $scope.modelList = [];
         $scope.delFlag = false;
-        $scope.canDel=PrivilegeService.hasPrivilege('module:delete');
-        $scope.canAdd=PrivilegeService.hasPrivilege('module:add');
+        $scope.canDel=PrivilegeService.hasPrivilege('delete');
+        $scope.canAdd=PrivilegeService.hasPrivilege('add');
         //模块查询
         $http.post("<c:url value="/base/module/getModuleList"/>").success(function (data) {
             if (data.success) {
@@ -120,7 +120,7 @@
         $scope.directoryDelFlag = false;
         $scope.menuIds=[];
         $scope.dirIds=[];
-        $scope.canAdd=PrivilegeService.hasPrivilege('module:add');
+        $scope.canAdd=PrivilegeService.hasPrivilege('add');
         $scope.canSave=false;
         var url = "<c:url value="/base/module/create"/>";
         if ($routeParams.id != null) {
@@ -132,7 +132,7 @@
                 $scope.menuIds=data.data.menuIds;
                 $scope.dirIds=data.data.dirIds;
                 $scope.selectMenu();
-                $scope.canSave=(PrivilegeService.hasPrivilege('module:add')&&$scope.moduleBo.id==null)||PrivilegeService.hasPrivilege('module:update');
+                $scope.canSave=(PrivilegeService.hasPrivilege('add')&&$scope.moduleBo.id==null)||PrivilegeService.hasPrivilege('update');
             }else {
                 bootbox.alert(data.message);
             }

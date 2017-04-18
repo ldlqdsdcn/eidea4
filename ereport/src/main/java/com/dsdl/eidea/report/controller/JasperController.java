@@ -4,7 +4,7 @@ import com.dsdl.eidea.report.service.AuthenticationManger;
 import com.dsdl.eidea.report.util.PrivilegesHelper;
 import com.dsdl.eidea.util.AesUtils;
 import com.dsdl.eidea.util.ReadPropertiesUtil;
-import com.dsdl.report.entity.param.ReportParam;
+import com.dsdl.eidea.report.entity.param.ReportParam;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import net.sf.jasperreports.engine.JasperExportManager;

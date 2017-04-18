@@ -33,8 +33,8 @@
         $scope.modelList = [];
         $scope.delFlag = false;
         $scope.isLoading=true;
-        $scope.canDel=PrivilegeService.hasPrivilege('role:delete');
-        $scope.canAdd=PrivilegeService.hasPrivilege('role:add');
+        $scope.canDel=PrivilegeService.hasPrivilege('delete');
+        $scope.canAdd=PrivilegeService.hasPrivilege('add');
         $http.get("<c:url value="/base/role/list"/>")
                 .success(function (response) {
                     $scope.isLoading=false;
@@ -126,7 +126,7 @@
         $scope.message = '';
         $scope.allOrg=false;
         $scope.roleBo = {};
-        $scope.canAdd=PrivilegeService.hasPrivilege('role:add');
+        $scope.canAdd=PrivilegeService.hasPrivilege('add');
         $scope.canSave=false;
         var url = "<c:url value="/base/role/create"/>";
         if ($routeParams.id != null) {
@@ -136,7 +136,7 @@
                 .success(function (response) {
                     if (response.success) {
                         $scope.roleBo = response.data;
-                        $scope.canSave=(PrivilegeService.hasPrivilege('role:add')&&$scope.roleBo.id==null)||PrivilegeService.hasPrivilege('role:update');
+                        $scope.canSave=(PrivilegeService.hasPrivilege('add')&&$scope.roleBo.id==null)||PrivilegeService.hasPrivilege('update');
                     }
                     else {
                         bootbox.alert(response.message);

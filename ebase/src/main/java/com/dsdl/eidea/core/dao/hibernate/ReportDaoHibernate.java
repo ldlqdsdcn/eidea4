@@ -14,16 +14,5 @@ import java.util.List;
  */
 @Repository
 public class ReportDaoHibernate extends BaseDaoHibernate<ReportPo, String> implements ReportDao {
-    @Autowired
-    private SqlSessionTemplate sqlSessionTemplate;
 
-    @Override
-    public List<MsgUnion> selectLabelTrl(String lang) {
-        return sqlSessionTemplate.selectList("com.delmar.core.mybatis.sql.MessageAndLabelUnionMapper.selectLabelTrl", lang);
-    }
-
-    @Override
-    public List<MsgUnion> selectMessageTrl(String lang) {
-        return sqlSessionTemplate.selectList("com.delmar.core.mybatis.sql.MessageAndLabelUnionMapper.selectMessageTrl", lang);
-    }
 }

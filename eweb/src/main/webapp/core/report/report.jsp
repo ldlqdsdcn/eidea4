@@ -1,20 +1,12 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: admin
-  Date: 2016/12/13
-  Time: 14:57
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/inc/taglib.jsp" %>
 <html>
 <head>
-    <title><%--组织设置--%><eidea:label key="org.title"/></title>
+    <title>消息设置</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <%@include file="/inc/inc_ang_js_css.jsp" %>
-
 </head>
-<body >
+<body>
 <div ng-app='myApp' ng-view class="container-fluid"></div>
 <jsp:include page="/common/searchPage">
     <jsp:param name="uri" value="${uri}"/>
@@ -25,17 +17,17 @@
     var app = angular.module('myApp', ['ngRoute', 'ui.bootstrap', 'jcs-autoValidate'])
             .config(['$routeProvider', function ($routeProvider) {
                 $routeProvider
-                        .when('/list', {templateUrl: '<c:url value="/base/org/list.tpl.jsp"/>'})
-                        .when('/edit', {templateUrl: '<c:url value="/base/org/edit.tpl.jsp"/>'})
+                        .when('/list', {templateUrl: '<c:url value="/core/report/list.tpl.jsp"/>'})
+                        .when('/edit', {templateUrl: '<c:url value="/core/report/edit.tpl.jsp"/>'})
                         .otherwise({redirectTo: '/list'});
             }]);
     app.controller('listCtrl', function ($scope, $http) {
         $scope.allList = [];
         $scope.modelList = [];
         $scope.delFlag = false;
-        $scope.canDel=PrivilegeService.hasPrivilege('delete');
-        $scope.canAdd=PrivilegeService.hasPrivilege('add');
-        $http.get("<c:url value="/base/org/list"/>")
+        $scope.canDel = PrivilegeService.hasPrivilege('delete');
+        $scope.canAdd = PrivilegeService.hasPrivilege('add');
+        $http.get("<c:url value="/core/report/list"/>")
                 .success(function (response) {
                     if (response.success) {
                         $scope.updateList(response.data);
@@ -64,7 +56,6 @@
                 $scope.modelList.push(item);
 
             }
-
         }
         $scope.canDelete = function () {
             for (var i = 0; i < $scope.modelList.length; i++) {
@@ -83,11 +74,11 @@
                 message: "<eidea:message key="modile.deleteselect.check"/>",
                 buttons: {
                     confirm: {
-                        label: '<eidea:label key="common.button.checktrue"/>',
+                        label: '<eidea:label key="module.name.checktrue"/>',
                         className: 'btn-success'
                     },
                     cancel: {
-                        label: '<eidea:label key="common.button.checkfalse"/>',
+                        label: '<eidea:label key="module.name.checkfalse"/>',
                         className: 'btn-danger'
                     }
                 },
@@ -96,10 +87,10 @@
                         var ids = [];
                         for (var i = 0; i < $scope.modelList.length; i++) {
                             if ($scope.modelList[i].delFlag) {
-                                ids.push($scope.modelList[i].id);
+                                ids.push($scope.modelList[i].key);
                             }
                         }
-                        $http.post("<c:url value="/base/org/deletes"/>", ids).success(function (data) {
+                        $http.post("<c:url value="/core/report/deletes"/>", ids).success(function (data) {
                             if (data.success) {
                                 bootbox.alert("<eidea:message key="module.deleted.success"/>");
                                 $scope.updateList(data.data);
@@ -121,34 +112,24 @@
         $scope.bigCurrentPage = 1;
         //记录数
         $scope.bigTotalItems = 0;
+
     });
+
+
     app.controller('editCtrl', function ($scope, $http, $routeParams) {
-        $scope.message = '';
-        $scope.orgBo = {};
-        $scope.clientList = [];
-        $scope.errorCode=-1;
-        $scope.errorMessages=[];
-        $scope.canAdd=PrivilegeService.hasPrivilege('add');
-        $scope.canSave=false;
-        $http.get("<c:url value="/base/org/clients"/>")
-                .success(function (response) {
-                    if (response.success) {
-                        $scope.clientList = response.data;
-                    }
-                    else
-                    {
-                        bootbox.alert(response.message);
-                    }
-                });
-        var url = "<c:url value="/base/org/create"/>";
-        if ($routeParams.id != null) {
-            url = "<c:url value="/base/org/get"/>" + "?id=" + $routeParams.id;
+        $scope.message= '';
+        $scope.messageBo = {};
+        $scope.canAdd = PrivilegeService.hasPrivilege('add');
+        $scope.canSave = PrivilegeService.hasPrivilege('update');
+        var url = "<c:url value="/core/report/create"/>";
+        if ($routeParams.key != null) {
+            url = "<c:url value="/core/report/get"/>" + "?key=" + $routeParams.key;
         }
         $http.get(url)
                 .success(function (response) {
                     if (response.success) {
-                        $scope.orgBo = response.data;
-                        $scope.canSave=(PrivilegeService.hasPrivilege('add')&&$scope.orgBo.id==null)||PrivilegeService.hasPrivilege('update');
+                        $scope.reportBo = response.data;
+                        $scope.canSave = (PrivilegeService.hasPrivilege('add') && $scope.reportBo.created) || PrivilegeService.hasPrivilege('update');
                     }
                     else {
                         bootbox.alert(response.message);
@@ -158,40 +139,29 @@
         });
         $scope.save = function () {
             if ($scope.editForm.$valid) {
-                var postUrl = '<c:url value="/base/org/saveForUpdated"/>';
-                if ($scope.orgBo.id == null) {
-                    postUrl = '<c:url value="/base/org/saveForCreated"/>';
+                var postUrl = '<c:url value="/core/report/saveForUpdated"/>';
+                if ($scope.reportBo.created) {
+                    postUrl = '<c:url value="/core/report/saveForCreated"/>';
                 }
-                $http.post(postUrl, $scope.orgBo).success(function (data) {
+                $http.post(postUrl, $scope.reportBo).success(function (data) {
                     if (data.success) {
-                        $scope.errorCode=-1;
                         $scope.message = "<eidea:label key="base.save.success"/>";
-                        $scope.orgBo = data.data;
+                        $scope.reportBo = data.data;
                     }
                     else {
-                        $scope.message=data.message;
-                        $scope.errorCode=data.errorCode;
-                        if (data.errorCode == ERROR_VALIDATE_PARAM) {
-                            $scope.errorMessages=data.data;
-                        }
-                        else {
-                            $scope.errorMessages = [data.message];
-                        }
-
+                        $scope.message = data.message;
                     }
-
-
                 });
             }
         }
         $scope.create = function () {
             $scope.message = "";
-            $scope.orgBo = {};
-            var url = "<c:url value="/base/org/create"/>";
+            $scope.reportBo = {};
+            var url = "<c:url value="/core/report/create"/>";
             $http.get(url)
                     .success(function (response) {
                         if (response.success) {
-                            $scope.orgBo = response.data;
+                            $scope.reportBo = response.data;
                         }
                         else {
                             bootbox.alert(response.message);
@@ -207,6 +177,6 @@
         function (bootstrap3ElementModifier) {
             bootstrap3ElementModifier.enableValidationStateIcons(true);
         }]);
+
 </script>
 </html>
-

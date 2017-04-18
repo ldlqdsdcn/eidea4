@@ -25,9 +25,6 @@ public class MessageTrlPo implements java.io.Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "_key", nullable = false)
 	private MessagePo coreMessage;
-//	@ManyToOne(fetch = FetchType.LAZY)
-//	@JoinColumn(name = "key",nullable = false)
-//	private ReportPo reportPo;
 	@Column(name = "msgtext", nullable = false, length = 500)
 	private String msgtext;
 

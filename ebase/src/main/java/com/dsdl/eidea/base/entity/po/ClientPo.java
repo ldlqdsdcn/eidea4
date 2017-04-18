@@ -32,29 +32,4 @@ public class ClientPo implements java.io.Serializable {
 	private String remark;
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "sysClient")
 	private Set<OrgPo> sysOrgs = new HashSet<OrgPo>(0);
-
-	// Constructors
-
-	/** default constructor */
-	public ClientPo() {
-	}
-
-	/** minimal constructor */
-	public ClientPo(Integer id, String no, String name, String isactive) {
-		this.id = id;
-		this.no = no;
-		this.name = name;
-		this.isactive = isactive;
-	}
-
-	/** full constructor */
-	public ClientPo(Integer id, String no, String name, String isactive,
-			String remark, Set<OrgPo> sysOrgs) {
-		this.id = id;
-		this.no = no;
-		this.name = name;
-		this.isactive = isactive;
-		this.remark = remark;
-		this.sysOrgs = sysOrgs;
-	}
 }

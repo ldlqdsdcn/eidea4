@@ -27,23 +27,4 @@ public class LabelTrlPo implements java.io.Serializable {
 	private LabelPo coreLabel;
 	@Column(name = "msgtext", nullable = false, length = 500)
 	private String msgtext;
-
-	// Constructors
-
-	/** default constructor */
-	public LabelTrlPo() {
-	}
-
-	/** full constructor */
-	public LabelTrlPo(Integer id, LanguagePo coreLanguage,
-			LabelPo coreLabel, String msgtext) {
-		this.id = id;
-		this.coreLanguage = coreLanguage;
-		this.coreLabel = coreLabel;
-		this.msgtext = msgtext;
-	}
-
-	// Property accessors
-
-
 }

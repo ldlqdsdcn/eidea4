@@ -25,19 +25,4 @@ public class ModuleDirectoryPo implements java.io.Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "sys_directory_id", nullable = false)
 	private DirectoryPo sysDirectory;
-
-	// Constructors
-
-	/** default constructor */
-	public ModuleDirectoryPo() {
-	}
-
-	/** full constructor */
-	public ModuleDirectoryPo(Integer id, ModulePo sysModule,
-			DirectoryPo sysDirectory) {
-		this.id = id;
-		this.sysModule = sysModule;
-		this.sysDirectory = sysDirectory;
-	}
-
 }

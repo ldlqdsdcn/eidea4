@@ -39,42 +39,4 @@ public class LanguagePo implements java.io.Serializable {
             0);
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "coreLanguage")
     private Set<LabelTrlPo> coreLabelTrls = new HashSet<LabelTrlPo>(0);
-
-    // Constructors
-
-    /**
-     * default constructor
-     */
-    public LanguagePo() {
-    }
-
-    /**
-     * minimal constructor
-     */
-    public LanguagePo(String code, String name, String isactive) {
-        this.code = code;
-        this.name = name;
-        this.isactive = isactive;
-    }
-
-    /**
-     * full constructor
-     */
-    public LanguagePo(String code, String name, String remark,
-                      String isactive,
-                      List<LanguageTrlPo> coreLanguageTrlsForLanguageCode,
-                      Set<LanguageTrlPo> coreLanguageTrlsForLang,
-                      Set<LabelTrlPo> coreLabelTrls) {
-        this.code = code;
-        this.name = name;
-        this.remark = remark;
-        this.isactive = isactive;
-        this.coreLanguageTrlsForLanguageCode = coreLanguageTrlsForLanguageCode;
-        this.coreMessageTrls = coreMessageTrls;
-        this.coreLanguageTrlsForLang = coreLanguageTrlsForLang;
-        this.coreLabelTrls = coreLabelTrls;
-    }
-
-    // Property accessors
-
 }

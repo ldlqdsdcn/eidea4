@@ -43,31 +43,4 @@ public class UserSessionPo implements java.io.Serializable {
 	private String remoteHost;
 	@Column(name = "token",length = 800)
 	private String token;
-
-	// Constructors
-
-	/** default constructor */
-	public UserSessionPo() {
-	}
-
-	/** minimal constructor */
-	public UserSessionPo(Integer id, UserPo sysUser, String sessionId) {
-		this.id = id;
-		this.userPo = sysUser;
-		this.sessionId = sessionId;
-	}
-
-	/** full constructor */
-	public UserSessionPo(Integer id, UserPo sysUser, String sessionId,
-			Date loginDate, Date logoutDate, String remoteAddr,
-			String remoteHost) {
-		this.id = id;
-		this.userPo = sysUser;
-		this.sessionId = sessionId;
-		this.loginDate = loginDate;
-		this.logoutDate = logoutDate;
-		this.remoteAddr = remoteAddr;
-		this.remoteHost = remoteHost;
-	}
-
 }

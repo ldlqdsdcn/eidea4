@@ -15,33 +15,6 @@ import javax.persistence.*;
 @Getter
 @Setter
 public class DirectoryPo implements java.io.Serializable {
-
-	/** default constructor */
-	public DirectoryPo() {
-	}
-
-	/** minimal constructor */
-	public DirectoryPo(Integer id, String name, String directory,
-			String isactive) {
-		this.id = id;
-		this.name = name;
-		this.directory = directory;
-		this.isactive = isactive;
-	}
-
-	/** full constructor */
-	public DirectoryPo(Integer id, String name, String directory,
-			String remark, String isactive,
-			Set<ModuleDirectoryPo> sysModuleDirectories) {
-		this.id = id;
-		this.name = name;
-		this.directory = directory;
-		this.remark = remark;
-		this.isactive = isactive;
-		this.sysModuleDirectories = sysModuleDirectories;
-	}
-
-	// Property accessors
 	@Id
 	@Column(name = "id", unique = true, nullable = false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

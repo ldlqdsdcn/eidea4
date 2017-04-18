@@ -37,32 +37,4 @@ public class OrgPo implements java.io.Serializable {
 	private Set<RoleOrgaccessPo> sysRoleOrgaccesses = new HashSet<RoleOrgaccessPo>(
 			0);
 
-	// Constructors
-
-	/** default constructor */
-	public OrgPo() {
-	}
-
-	/** minimal constructor */
-	public OrgPo(Integer id, ClientPo sysClient, String no, String name,
-			String isactive) {
-		this.id = id;
-		this.sysClient = sysClient;
-		this.no = no;
-		this.name = name;
-		this.isactive = isactive;
-	}
-
-	/** full constructor */
-	public OrgPo(Integer id, ClientPo sysClient, String no, String name,
-			String isactive, String remark,
-			Set<RoleOrgaccessPo> sysRoleOrgaccesses) {
-		this.id = id;
-		this.sysClient = sysClient;
-		this.no = no;
-		this.name = name;
-		this.isactive = isactive;
-		this.remark = remark;
-		this.sysRoleOrgaccesses = sysRoleOrgaccesses;
-	}
 }

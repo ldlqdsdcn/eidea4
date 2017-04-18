@@ -38,37 +38,4 @@ public class LabelPo implements java.io.Serializable {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "coreLabel")
     private List<LabelTrlPo> coreLabelTrls = new ArrayList<>(0);
-
-    // Constructors
-
-    /**
-     * default constructor
-     */
-    public LabelPo() {
-    }
-
-    /**
-     * minimal constructor
-     */
-    public LabelPo(String key, String msgtext) {
-        this.key = key;
-        this.msgtext = msgtext;
-    }
-
-    /**
-     * full constructor
-     */
-    public LabelPo(String key, String msgtext, String isactive,
-                   List<SearchColumnPo> coreSearchColumns,
-                   List<LabelTrlPo> coreLabelTrls) {
-        this.key = key;
-        this.msgtext = msgtext;
-        this.isactive = isactive;
-        this.coreSearchColumns = coreSearchColumns;
-        this.coreLabelTrls = coreLabelTrls;
-    }
-
-    // Property accessors
-
-
 }

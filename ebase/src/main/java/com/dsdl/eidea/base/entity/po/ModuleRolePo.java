@@ -31,9 +31,4 @@ public class ModuleRolePo implements java.io.Serializable {
 	private RolePo sysRole;
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "sysModuleRole")
 	private List<PrivilegesPo> sysPrivilegeses = new ArrayList<PrivilegesPo>(0);
-	// Constructors
-	/** default constructor */
-	public ModuleRolePo() {
-	}
-
 }

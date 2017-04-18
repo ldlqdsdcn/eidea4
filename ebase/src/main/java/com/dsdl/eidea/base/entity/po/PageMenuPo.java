@@ -43,13 +43,5 @@ public class PageMenuPo implements java.io.Serializable {
     private Integer seqNo;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "pageMenuPo")
     private List<PageMenuTrlPo> pageMenuTrlPoList = new ArrayList<PageMenuTrlPo>(0);
-    // Constructors
-
-    /**
-     * default constructor
-     */
-    public PageMenuPo() {
-    }
-
 
 }

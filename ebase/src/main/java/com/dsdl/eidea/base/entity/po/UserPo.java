@@ -50,11 +50,4 @@ public class UserPo implements java.io.Serializable {
 	private List<UserSessionPo> coreUserSessions = new ArrayList<UserSessionPo>(0);
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "sysUser")
 	private List<UserRolePo> sysUserRoles = new ArrayList<UserRolePo>(0);
-
-	// Constructors
-
-	/** default constructor */
-	public UserPo() {
-	}
-
 }

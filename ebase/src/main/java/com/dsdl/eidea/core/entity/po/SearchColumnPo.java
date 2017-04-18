@@ -50,42 +50,4 @@ public class SearchColumnPo implements java.io.Serializable {
 	@Column(name = "newline", length = 1)
 	private String newline;
 
-	// Constructors
-
-	/** default constructor */
-	public SearchColumnPo() {
-	}
-
-	/** minimal constructor */
-	public SearchColumnPo(Integer id, SearchPo coreSearch,
-			LabelPo coreLabel, Integer seqNo) {
-		this.id = id;
-		this.coreSearch = coreSearch;
-		this.coreLabel = coreLabel;
-		this.seqNo = seqNo;
-	}
-
-	/** full constructor */
-	public SearchColumnPo(Integer id, SearchPo coreSearch,
-			LabelPo coreLabel, Integer seqNo, String name,
-			String propertyName, Integer dataType, Integer showType,
-			String relOper, String fkTable, String fkKeyColumn,
-			String fkLabelColumn, String coditions, String remark,
-			String newline) {
-		this.id = id;
-		this.coreSearch = coreSearch;
-		this.coreLabel = coreLabel;
-		this.seqNo = seqNo;
-		this.name = name;
-		this.propertyName = propertyName;
-		this.dataType = dataType;
-		this.showType = showType;
-		this.relOper = relOper;
-		this.fkTable = fkTable;
-		this.fkKeyColumn = fkKeyColumn;
-		this.fkLabelColumn = fkLabelColumn;
-		this.coditions = coditions;
-		this.remark = remark;
-		this.newline = newline;
-	}
 }

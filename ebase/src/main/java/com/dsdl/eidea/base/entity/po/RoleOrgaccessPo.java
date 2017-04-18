@@ -25,18 +25,4 @@ public class RoleOrgaccessPo implements java.io.Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "sys_role_id", nullable = false)
 	private RolePo sysRole;
-
-	// Constructors
-
-	/** default constructor */
-	public RoleOrgaccessPo() {
-	}
-
-	/** full constructor */
-	public RoleOrgaccessPo(Integer id, OrgPo sysOrg, RolePo sysRole) {
-		this.id = id;
-		this.sysOrg = sysOrg;
-		this.sysRole = sysRole;
-	}
-
 }

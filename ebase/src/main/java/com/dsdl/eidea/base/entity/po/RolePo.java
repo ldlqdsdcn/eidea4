@@ -46,32 +46,4 @@ public class RolePo implements java.io.Serializable {
 			0);
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "sysRole")
 	private List<ModuleRolePo> sysModuleRoles = new ArrayList<ModuleRolePo>(0);
-
-	// Constructors
-
-	/** default constructor */
-	public RolePo() {
-	}
-
-	/** minimal constructor */
-	public RolePo(Integer id, String name, String remark) {
-		this.id = id;
-		this.name = name;
-		this.remark = remark;
-	}
-
-	/** full constructor */
-	public RolePo(Integer id, String name, String remark, String isactive,
-				  List<UserRolePo> sysUserRoles,
-				  List<RoleOrgaccessPo> sysRoleOrgaccesses,
-				  List<ModuleRolePo> sysModuleRoles) {
-		this.id = id;
-		this.name = name;
-		this.remark = remark;
-		this.isactive = isactive;
-		this.sysUserRoles = sysUserRoles;
-		this.sysRoleOrgaccesses = sysRoleOrgaccesses;
-		this.sysModuleRoles = sysModuleRoles;
-	}
-	// Property accessors
 }

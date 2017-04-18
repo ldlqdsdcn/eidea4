@@ -9,34 +9,46 @@
     <tag>
         <name>message</name>
         <tag-class>com.dsdl.eidea.core.web.tld.MessageTag</tag-class>
-        <body-content>empty</body-content>
+        <body-content>JSP</body-content>
         <attribute>
             <name>key</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <name>paramValue</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
             <type>java.lang.String</type>
         </attribute>
     </tag>
     <tag>
         <name>label</name>
         <tag-class>com.dsdl.eidea.core.web.tld.LabelTag</tag-class>
-        <body-content>empty</body-content>
+        <body-content>JSP</body-content>
         <attribute>
             <name>key</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
             <type>java.lang.String</type>
         </attribute>
+    </tag>
+    <tag>
+        <description>
+            Supplies an argument for parametric replacement to a containing
+            &lt;message&gt; tag
+        </description>
+        <name>param</name>
+        <tag-class>com.dsdl.eidea.core.web.tld.ParamTag</tag-class>
+        <body-content>empty</body-content>
         <attribute>
-            <name>errorKey</name>
+            <description>
+                Argument used for parametric replacement.
+            </description>
+            <name>value</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>type</name>
+            <description>格式化参数 normal label 或者 message</description>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
             <type>java.lang.String</type>
         </attribute>
     </tag>

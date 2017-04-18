@@ -11,14 +11,14 @@ import org.apache.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.BodyTagSupport;
+import java.text.MessageFormat;
 
 /**
  * Created by 刘大磊 on 2016/12/29 9:50.
  */
-public class MessageTag extends BodyTagSupport {
+public class MessageTag extends BaseMessageSupport {
     private static final Logger logger = Logger.getLogger(MessageTag.class);
     private String key;
-    private String paramValue;
     private MessageService messageService= SpringContextHolder.getBean(MessageService.class);
 
     /* (non-Javadoc)
@@ -26,6 +26,7 @@ public class MessageTag extends BodyTagSupport {
      */
     @Override
     public int doEndTag() throws JspException {
+
         HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
         UserResource resource = (UserResource) request.getSession().getAttribute(WebConst.SESSION_RESOURCE);
         if(resource==null)
@@ -37,9 +38,9 @@ public class MessageTag extends BodyTagSupport {
         try {
             String keyValue = resource.getMessage(key);
 
-            if (StringUtil.isNotEmpty(paramValue)) {
-                Object[] paramArray = paramValue.split("#");
-                keyValue = String.format(keyValue, paramArray);
+            if (!params.isEmpty()) {
+                Object[] paramArray = params.toArray();
+                keyValue = MessageFormat.format(keyValue,paramArray);
             }
 
             pageContext.getOut().print(keyValue);
@@ -56,8 +57,5 @@ public class MessageTag extends BodyTagSupport {
         this.key = key;
     }
 
-    public void setParamValue(String paramValue) {
 
-        this.paramValue = paramValue;
-    }
 }

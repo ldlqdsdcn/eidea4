@@ -11,7 +11,6 @@
         <button type="button" class="btn  btn-primary btn-sm" ng-disabled="!canDelete()"
                 ng-click="deleteRecord()" ng-show="canDel" ><eidea:label key="common.button.delete"/></button>
     </div>
-
     <div class="row-fluid">
         <div class="span12">
             <table  class="table table-hover table-striped table-condensed">

@@ -107,7 +107,7 @@ public class MessageController {
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
         if (messageBo.isCreated()) {
             if (messageService.findExistMessage(messageBo.getKey())) {
-                return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("client.msg.client_code"));
+                return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("client.msg.key_exists"));
             }
         }
 

@@ -28,21 +28,4 @@ public class LanguageTrlPo implements java.io.Serializable {
 	private LanguagePo coreLanguageByLanguageCode;
 	@Column(name = "name", nullable = false, length = 200)
 	private String name;
-
-
-	// Constructors
-
-	/** default constructor */
-	public LanguageTrlPo() {
-	}
-
-	/** full constructor */
-	public LanguageTrlPo(Integer id, LanguagePo coreLanguageByLang,
-			LanguagePo coreLanguageByLanguageCode, String name) {
-		this.id = id;
-		this.coreLanguageByLang = coreLanguageByLang;
-		this.coreLanguageByLanguageCode = coreLanguageByLanguageCode;
-		this.name = name;
-	}
-
 }

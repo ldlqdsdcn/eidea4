@@ -35,32 +35,4 @@ public class ModulePo implements java.io.Serializable {
 	private List<ModuleRolePo> sysModuleRoles = new ArrayList<ModuleRolePo>(0);
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "sysModule")
 	private List<ModuleDirectoryPo> sysModuleDirectories = new ArrayList<ModuleDirectoryPo>(0);
-
-	// Constructors
-
-	/** default constructor */
-	public ModulePo() {
-	}
-
-	/** minimal constructor */
-	public ModulePo(Integer id, String name, String isactive) {
-		this.id = id;
-		this.name = name;
-		this.isactive = isactive;
-	}
-
-	/** full constructor */
-	public ModulePo(Integer id, String name, String remark, String isactive,
-			List<ModuleMenuPo> sysModuleMenus,
-			List<ModuleRolePo> sysModuleRoles,
-			List<ModuleDirectoryPo> sysModuleDirectories) {
-		this.id = id;
-		this.name = name;
-		this.remark = remark;
-		this.isactive = isactive;
-		this.sysModuleMenus = sysModuleMenus;
-		this.sysModuleRoles = sysModuleRoles;
-		this.sysModuleDirectories = sysModuleDirectories;
-	}
-
 }

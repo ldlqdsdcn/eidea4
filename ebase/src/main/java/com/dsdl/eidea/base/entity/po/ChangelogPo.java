@@ -47,9 +47,4 @@ public class ChangelogPo implements java.io.Serializable {
 	@JoinColumn(name = "core_table_id", nullable = false)
 	private TablePo tablePo;
 
-	// Constructors
-
-	/** default constructor */
-	public ChangelogPo() {
-	}
 }

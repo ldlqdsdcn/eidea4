@@ -49,12 +49,6 @@ public class TableColumnPo implements java.io.Serializable {
 	@Column(name = "nullable", length = 1)
 	private String nullable;
 
-	// Constructors
-
-	/** default constructor */
-	public TableColumnPo() {
-	}
-
 
 
 }

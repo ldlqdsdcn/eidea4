@@ -38,33 +38,4 @@ public class MessagePo implements java.io.Serializable {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "coreMessage")
     private List<MessageTrlPo> coreMessageTrls = new ArrayList<MessageTrlPo>(0);
 
-    // Constructors
-
-    /**
-     * default constructor
-     */
-    public MessagePo() {
-    }
-
-    /**
-     * minimal constructor
-     */
-    public MessagePo(String key, String msgtext, String isactive) {
-        this.key = key;
-        this.msgtext = msgtext;
-        this.isactive = isactive;
-    }
-
-    /**
-     * full constructor
-     */
-    public MessagePo(String key, String msgtext, String isactive,
-                     List<MessageTrlPo> coreMessageTrls) {
-        this.key = key;
-        this.msgtext = msgtext;
-        this.isactive = isactive;
-        this.coreMessageTrls = coreMessageTrls;
-    }
-
-
 }

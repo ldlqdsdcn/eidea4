@@ -28,19 +28,4 @@ public class MessageTrlPo implements java.io.Serializable {
 	@Column(name = "msgtext", nullable = false, length = 500)
 	private String msgtext;
 
-	// Constructors
-
-	/** default constructor */
-	public MessageTrlPo() {
-	}
-
-	/** full constructor */
-	public MessageTrlPo(Integer id, LanguagePo coreLanguage,
-			MessagePo coreMessage, String msgtext) {
-		this.id = id;
-		this.coreLanguage = coreLanguage;
-		this.coreMessage = coreMessage;
-		this.msgtext = msgtext;
-	}
-
 }

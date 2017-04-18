@@ -1,8 +1,8 @@
 package com.dsdl.eidea.core.web.controller;
 
 import com.dsdl.eidea.base.web.vo.UserResource;
-import com.dsdl.eidea.core.entity.bo.ReportBo;
-import com.dsdl.eidea.core.service.ReportService;
+import com.dsdl.eidea.core.entity.po.ReportSettingsPo;
+import com.dsdl.eidea.core.service.ReportSettingsService;
 import com.dsdl.eidea.core.web.def.WebConst;
 import com.dsdl.eidea.core.web.result.JsonResult;
 import com.dsdl.eidea.core.web.result.def.ErrorCodes;
@@ -27,60 +27,61 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/core/report")
-public class ReportController {
+public class ReportSettingsController {
     private static final String URl = "core_report";
 
     @Autowired
-    private ReportService reportService;
+    private ReportSettingsService reportSettingsService;
 
     @RequestMapping(value = "/showList", method = RequestMethod.GET)
     @RequiresPermissions(value = "view")
     public ModelAndView showList() {
         ModelAndView modelAndView = new ModelAndView("/core/report/report");
         modelAndView.addObject("pagingSettingResult", PagingSettingResult.getDefault());
-        modelAndView.addObject(WebConst.PAGE_URI,URl);
+        modelAndView.addObject(WebConst.PAGE_URI, URl);
         return modelAndView;
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
     @RequiresPermissions(value = "view")
-    public JsonResult<List<ReportBo>> list(HttpSession session) {
+    public JsonResult<List<ReportSettingsPo>> list(HttpSession session) {
         Search search = SearchHelper.getSearchParam(URl, session);
-        List<ReportBo> reportBoList = reportService.findReport(search);
-        return JsonResult.success(reportBoList);
+        List<ReportSettingsPo> reportSettingsPoList = reportSettingsService.getReportSettingsList(search);
+        return JsonResult.success(reportSettingsPoList);
     }
 
     @RequestMapping(value = "/deletes", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions(value = "delete")
-    public JsonResult<List<ReportBo>> deletes(@RequestBody String[] keys, HttpSession session) {
+    public JsonResult<List<ReportSettingsPo>> deletes(@RequestBody String[] keys, HttpSession session) {
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
         if (keys == null || keys.length == 0) {
             return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("pagemenu.choose.information"));
         }
-        reportService.deletes(keys);
+        reportSettingsService.deletes(keys);
         return list(session);
     }
-    @RequestMapping(value = "/get",method = RequestMethod.GET)
+
+    @RequestMapping(value = "/get", method = RequestMethod.GET)
     @ResponseBody
     @RequiresPermissions(value = "view")
-    public JsonResult<ReportBo> get(String key,HttpSession session){
-        UserResource userResource = (UserResource)session.getAttribute(WebConst.SESSION_RESOURCE);
-        ReportBo reportBo = null;
-        if (StringUtil.isEmpty(key)){
-            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(),userResource.getMessage("client.msg.primary_key_validation"));
-        }else{
-            reportBo = reportService.getReportBo(key);
+    public JsonResult<ReportSettingsPo> get(String key, HttpSession session) {
+        UserResource userResource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
+        ReportSettingsPo reportSettingsPo = null;
+        if (StringUtil.isEmpty(key)) {
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), userResource.getMessage("client.msg.primary_key_validation"));
+        } else {
+            reportSettingsPo = reportSettingsService.getReportSettingsPo(key);
         }
-        return JsonResult.success(reportBo);
+        return JsonResult.success(reportSettingsPo);
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     @ResponseBody
     @RequiresPermissions(value = "add")
-    public JsonResult<ReportBo> create() {
-        ReportBo reportBo = new ReportBo();
+    public JsonResult<ReportSettingsPo> create() {
+        ReportSettingsPo reportBo = new ReportSettingsPo();
         reportBo.setCreated(true);
         return JsonResult.success(reportBo);
     }
@@ -88,23 +89,23 @@ public class ReportController {
     @RequestMapping(value = "/saveForCreated", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions(value = "add")
-    public JsonResult<ReportBo> saveForCreated(@RequestBody ReportBo reportBo, HttpSession session) {
+    public JsonResult<ReportSettingsPo> saveForCreated(@RequestBody ReportSettingsPo reportSettingsPo, HttpSession session) {
         UserResource userResource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
-        if (reportBo.isCreated()) {
-            if (reportService.findExistReport(reportBo.getKey())) {
-                return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), userResource.getMessage("client.msg.client_code"));
+        if (reportSettingsPo.isCreated()) {
+            if (reportSettingsService.findExistReport(reportSettingsPo.getKey())) {
+                return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), userResource.getMessage("report.msg.key_exits"));
             }
         }
-        reportService.save(reportBo);
-        return get(reportBo.getKey(), session);
+        reportSettingsService.save(reportSettingsPo);
+        return get(reportSettingsPo.getKey(), session);
     }
 
     @RequestMapping(value = "/saveForUpdated", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions(value = "update")
-    public JsonResult<ReportBo> saveForUpadted(@RequestBody ReportBo reportBo, HttpSession session) {
-        reportService.save(reportBo);
-        return get(reportBo.getKey(), session);
+    public JsonResult<ReportSettingsPo> saveForUpadted(@RequestBody ReportSettingsPo reportSettingsPo, HttpSession session) {
+        reportSettingsService.save(reportSettingsPo);
+        return get(reportSettingsPo.getKey(), session);
     }
 
 

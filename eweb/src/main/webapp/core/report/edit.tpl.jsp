@@ -12,11 +12,11 @@
             <form role="form" name="editForm" novalidate  ng-submit="save()">
                 <div class="form-group">
                     <label for="key"><%--键值--%><eidea:label key="label.keyvalue"/></label>
-                    <input type="text" class="form-control" id="key" ng-model="reportBo.key" placeholder="<eidea:message key="label.input.keyvalue"/>" required ng-minlength="2" ng-maxlength="100" ng-disabled="!reportBo.created">
+                    <input type="text" class="form-control" id="key" ng-model="reportBo.key" placeholder="<eidea:message key="label.input.keyvalue"/>" required ng-minlength="2" ng-maxlength="45" ng-disabled="!reportBo.created">
                 </div>
                 <div class="form-group">
                     <label for="value"><%--信息--%><eidea:label key="label.message"/></label>
-                    <input type="text" class="form-control" id="value" placeholder="<eidea:message key="label.input.message"/>" ng-model="reportBo.value" required ng-minlength="2" ng-maxlength="500">
+                    <input type="text" class="form-control" id="value" placeholder="<eidea:message key="label.input.message"/>" ng-model="reportBo.value" required ng-minlength="2" ng-maxlength="45">
                 </div>
                 <div class="form-group">
                     <p class="text-right">

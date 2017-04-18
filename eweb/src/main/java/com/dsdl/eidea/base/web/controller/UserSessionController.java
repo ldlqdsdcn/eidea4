@@ -32,7 +32,7 @@ public class UserSessionController {
     @RequiresPermissions(value = "view")
     public ModelAndView showList() {
         ModelAndView modelAndView = new ModelAndView("/base/userSession/userSession");
-        modelAndView.addObject("pagingSettingResult", PagingSettingResult.getDefault());
+        modelAndView.addObject("pagingSettingResult", PagingSettingResult.getDbPaging());
         modelAndView.addObject(WebConst.PAGE_URI, URI);
         return modelAndView;
     }

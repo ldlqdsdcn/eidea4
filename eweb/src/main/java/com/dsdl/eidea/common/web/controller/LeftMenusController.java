@@ -14,15 +14,15 @@ import javax.servlet.http.HttpServletRequest;
  * Created by Bobo on 2016/12/23 9:07.
  */
 @Controller
-@RequestMapping("/common/getLeftMenus")
-public class GetLeftMenusController {
+@RequestMapping("/common/leftMenu")
+public class LeftMenusController {
 
 
     /**
      * getLeftMenuList:左侧菜单列表
      * @return
      */
-    @RequestMapping(value = "/getLeftMenuList",method = RequestMethod.GET)
+    @RequestMapping(value = "/showLeftMenu",method = RequestMethod.GET)
     @ResponseBody
     public ModelAndView getLeftMenuList(HttpServletRequest request){
         String serverName=request.getServletContext().getContextPath();

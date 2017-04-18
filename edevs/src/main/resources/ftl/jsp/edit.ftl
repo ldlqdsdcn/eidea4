@@ -16,17 +16,16 @@ Date: ${datetime}
             <form role="form" name="editForm" novalidate  ng-submit="save()">
                 <#list propertyList as prop>
                 <div class="form-group">
-                    <label for="name" class="col-sm-2 text-right"><%--${prop.label}--%><eidea:label key="${prop.propertyLabel}"/></label>
-                    <div class="col-sm-10">
-                        <#if prop.booleanTag>
-                            <input type="checkbox"  ng-true-value="'Y'" ng-false-value="'N'" ng-model="${model?uncap_first}Po.${prop.prop}">
+                    <label for="${prop.prop}" ><%--${prop.label}--%><eidea:label key="${prop.propertyLabel}"/>
+                       <#if prop.booleanTag>
+                            <input id="${prop.prop}" type="checkbox"  ng-true-value="'Y'" ng-false-value="'N'" ng-model="${model?uncap_first}Po.${prop.prop}">
                         <#else>
-                            <input type="text" class="form-control" id="${prop.prop}" placeholder="<eidea:message key="${prop.propertyLabel}"/>" ng-model="${model?uncap_first}Po.${prop.prop}" >
+                            <input type="text" class="form-control" id="${prop.prop}" placeholder="<eidea:label key="${prop.propertyLabel}"/>" ng-model="${model?uncap_first}Po.${prop.prop}" >
                         </#if>
-
-                    </div>
                 </div>
-                </#list>
+                    </#list>
+
+
                 <div class="form-group">
                     <p class="text-right">
                         <button type="reset" ng-click="create()"  class="btn btn-default btn-sm" ng-show="canAdd"><%--新建--%><eidea:label key="common.button.create"/></button>

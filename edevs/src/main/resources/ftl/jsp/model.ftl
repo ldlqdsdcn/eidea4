@@ -87,13 +87,13 @@
                 },
                 callback: function (result) {
                     if (result) {
-                        var ids = [];
+                        var ${pkProp}s = [];
                         for (var i = 0; i < $scope.modelList.length; i++) {
                             if ($scope.modelList[i].delFlag) {
                                 ids.push($scope.modelList[i].id);
                             }
                         }
-                        $http.post("<c:url value="/${module}/${model?uncap_first}/deletes"/>", ids).success(function (data) {
+                        $http.post("<c:url value="/${module}/${model?uncap_first}/deletes"/>", ${pkProp}).success(function (data) {
                             if (data.success) {
                                 bootbox.alert("<eidea:message key="common.warn.deleted.success"/>");
                                 $scope.updateList(data.data);
@@ -121,14 +121,14 @@
         $scope.${model?uncap_first}Po = {};
         $scope.canAdd=PrivilegeService.hasPrivilege('add');
         var url = "<c:url value="/${module}/${model?uncap_first}/create"/>";
-        if ($routeParams.id != null) {
-            url = "<c:url value="/${module}/${model?uncap_first}/get"/>" + "?id=" + $routeParams.id;
+        if ($routeParams.${pkProp} != null) {
+            url = "<c:url value="/${module}/${model?uncap_first}/get"/>" + "?${pkProp}=" + $routeParams.${pkProp};
         }
         $http.get(url)
                 .success(function (response) {
                     if (response.success) {
                         $scope.${model?uncap_first}Po = response.data;
-                        $scope.canSave=(PrivilegeService.hasPrivilege('add')&&$scope.${model?uncap_first}Po.${pkName}==null)||PrivilegeService.hasPrivilege('update');
+                        $scope.canSave=(PrivilegeService.hasPrivilege('add')&&$scope.${model?uncap_first}Po.${pkProp}==null)||PrivilegeService.hasPrivilege('update');
                     }
                     else {
                         bootbox.alert(response.message);
@@ -139,7 +139,7 @@
         $scope.save = function () {
             if ($scope.editForm.$valid) {
                 var postUrl = '<c:url value="/${module}/${model?uncap_first}/saveForUpdated"/>';
-                if ($scope.${model?uncap_first}Po.${pkName} == null) {
+                if ($scope.${model?uncap_first}Po.${pkProp} == null) {
                     postUrl = '<c:url value="/${module}/${model?uncap_first}/saveForCreated"/>';
                 }
                 $http.post(postUrl, $scope.${model?uncap_first}Po).success(function (data) {
@@ -164,7 +164,7 @@
                     .success(function (response) {
                         if (response.success) {
                             $scope.${model?uncap_first}Po = response.data;
-                            $scope.canSave=(PrivilegeService.hasPrivilege('add')&&$scope.${model?uncap_first}Po.id==null)||PrivilegeService.hasPrivilege('update');
+                            $scope.canSave=(PrivilegeService.hasPrivilege('add')&&$scope.${model?uncap_first}Po.${pkProp}==null)||PrivilegeService.hasPrivilege('update');
                         }
                         else {
                             bootbox.alert(response.message);

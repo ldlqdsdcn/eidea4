@@ -57,15 +57,17 @@ public class I18NGenerateStrategy {
             labelKeyBo.setIsactive("Y");
             labelKeyBo.setKey(titleKey);
             labelKeyBo.setMsgtext(tableMetaDataBo.getRemark());
-            LabelTrlBo labelTrlBo = new LabelTrlBo();
+
             List<LanguageBo> languageTrlList = languageService.getLanguageForActivated();
             for (LanguageBo languageBo : languageTrlList) {
+                LabelTrlBo labelTrlBo = new LabelTrlBo();
                 labelTrlBo.setLang(languageBo.getCode());
                 if (!"zh_CN".equals(languageBo.getCode())) {
                     labelTrlBo.setMsgtext(TranslateHelper.translate(tableMetaDataBo.getRemark(), "zh_CN", languageBo.getCode()));
                 } else {
                     labelTrlBo.setMsgtext(labelKeyBo.getMsgtext());
                 }
+                labelTrlBo.setLang(languageBo.getCode());
                 labelTrlBo.setKey(titleKey);
                 labelKeyBo.getLabelTrlBoList().add(labelTrlBo);
 
@@ -81,9 +83,10 @@ public class I18NGenerateStrategy {
                 labelBo.setIsactive("Y");
                 labelBo.setKey(jspModelProp.getPropertyLabel());
                 labelBo.setMsgtext(jspModelProp.getLabel());
-                LabelTrlBo labelTrlBo = new LabelTrlBo();
+
                 List<LanguageBo> languageTrlList = languageService.getLanguageForActivated();
                 for (LanguageBo languageBo : languageTrlList) {
+                    LabelTrlBo labelTrlBo = new LabelTrlBo();
                     labelTrlBo.setLang(languageBo.getCode());
                     if (!"zh_CN".equals(languageBo.getCode())) {
                         labelTrlBo.setMsgtext(TranslateHelper.translate(labelBo.getMsgtext(), "zh_CN", languageBo.getCode()));

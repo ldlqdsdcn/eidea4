@@ -4,6 +4,7 @@ import com.dsdl.eidea.core.entity.bo.TableMetaDataBo;
 import com.dsdl.eidea.devs.model.GenModelDto;
 import com.dsdl.eidea.devs.util.FreeMarkerHelper;
 import com.dsdl.eidea.util.DateTimeHelper;
+import com.dsdl.eidea.util.StringUtil;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -37,7 +38,7 @@ public class ControllerGenerateStrategy {
       root.put("datetime", datetime);
       root.put("lineList",model.getIncludeModelList());
       root.put("pkClass",tableMetaDataBo.getPkClass());
-      root.put("pkName",tableMetaDataBo.getPkColumn());
+      root.put("pkProperty", StringUtil.fieldToProperty(tableMetaDataBo.getPkColumn()));
       root.put("memPaging",!model.isPagingByDb());
       //gc.setTime(date);
       try

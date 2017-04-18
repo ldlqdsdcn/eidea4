@@ -98,7 +98,7 @@ public class LabelController {
 
     @RequestMapping(value = "/deletes", method = RequestMethod.POST)
     @ResponseBody
-    @RequiresPermissions(value = "core:delete")
+    @RequiresPermissions(value = "delete")
     public JsonResult<List<LabelBo>> deletes(@RequestBody String[] codes, HttpSession session) {
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
         if (codes == null || codes.length == 0) {

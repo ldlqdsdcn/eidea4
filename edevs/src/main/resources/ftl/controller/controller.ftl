@@ -56,12 +56,12 @@ public JsonResult<List<${model}Po>> list(HttpSession session) {
     @RequiresPermissions("view")
     @RequestMapping(value = "/get", method = RequestMethod.GET)
     @ResponseBody
-    public JsonResult<${model}Po> get(${pkClass} ${pkName}) {
+    public JsonResult<${model}Po> get(${pkClass} ${pkProperty}) {
         ${model}Po ${model?uncap_first}Po = null;
-        if (${pkName} == null) {
+        if (${pkProperty} == null) {
         return JsonResult.fail(ErrorCodes.VALIDATE_PARAM_ERROR.getCode(),getMessage("common.errror.get_object",getLabel("${model?uncap_first}.title")));
         } else {
-        ${model?uncap_first}Po = ${model?uncap_first}Service.get${model}(${pkName});
+        ${model?uncap_first}Po = ${model?uncap_first}Service.get${model}(${pkProperty});
         }
         return JsonResult.success(${model?uncap_first}Po);
         }
@@ -83,7 +83,7 @@ public JsonResult<List<${model}Po>> list(HttpSession session) {
     @ResponseBody
     public JsonResult<${model}Po> saveForCreate(@Validated @RequestBody ${model}Po ${model?uncap_first}Po) {
         ${model?uncap_first}Service.save${model}(${model?uncap_first}Po);
-        return get(${model?uncap_first}Po.get${pkName?cap_first}());
+        return get(${model?uncap_first}Po.get${pkProperty?cap_first}());
         }
 
         @RequiresPermissions("update")
@@ -91,21 +91,21 @@ public JsonResult<List<${model}Po>> list(HttpSession session) {
         @ResponseBody
         public JsonResult<${model}Po> saveForUpdate(@Validated @RequestBody ${model}Po ${model?uncap_first}Po) {
 
-            if(${model?uncap_first}Po.get${pkName?cap_first}() == null){
+            if(${model?uncap_first}Po.get${pkProperty?cap_first}() == null){
             return JsonResult.fail(ErrorCodes.VALIDATE_PARAM_ERROR.getCode(), getMessage("common.errror.pk.required"));
             }
             ${model?uncap_first}Service.save${model}(${model?uncap_first}Po);
-            return get(${model?uncap_first}Po.get${pkName?cap_first}());
+            return get(${model?uncap_first}Po.get${pkProperty?cap_first}());
             }
 
     @RequiresPermissions("delete")
     @RequestMapping(value = "/deletes", method = RequestMethod.POST)
     @ResponseBody
-    public JsonResult<List<${model}Po>> deletes(@RequestBody ${pkClass}[] ${pkName}s, HttpSession session) {
-        if (${pkName}s == null || ${pkName}s.length == 0) {
+    public JsonResult<List<${model}Po>> deletes(@RequestBody ${pkClass}[] ${pkProperty}s, HttpSession session) {
+        if (${pkProperty}s == null || ${pkProperty}s.length == 0) {
         return JsonResult.fail(ErrorCodes.VALIDATE_PARAM_ERROR.getCode(), getMessage("common.error.delete.failure",getMessage("${model?uncap_first}.title")));
         }
-        ${model?uncap_first}Service.deletes(${pkName}s);
+        ${model?uncap_first}Service.deletes(${pkProperty}s);
         return list(session);
         }
 }

@@ -15,9 +15,9 @@ import java.io.Serializable;
 @Table(name = "core_report_settings", catalog = "e_idea")
 public class ReportSettingsPo implements Serializable {
     @Id
-    @Column(name = "[key]", unique = true, nullable = false, length = 100)
+    @Column(name = "[key]", unique = true, nullable = false, length = 45)
     private String key;
-    @Column(name = "value", nullable = false, length = 50)
+    @Column(name = "value", nullable = false, length = 45)
     private String value;
     @Transient
     private boolean created = false;

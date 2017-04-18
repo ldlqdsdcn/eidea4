@@ -13,6 +13,7 @@ import com.googlecode.genericdao.search.Search;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -89,7 +90,7 @@ public class ReportSettingsController {
     @RequestMapping(value = "/saveForCreated", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions(value = "add")
-    public JsonResult<ReportSettingsPo> saveForCreated(@RequestBody ReportSettingsPo reportSettingsPo, HttpSession session) {
+    public JsonResult<ReportSettingsPo> saveForCreated(@Validated @RequestBody ReportSettingsPo reportSettingsPo, HttpSession session) {
         UserResource userResource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
         if (reportSettingsPo.isCreated()) {
             if (reportSettingsService.findExistReport(reportSettingsPo.getKey())) {
@@ -103,7 +104,7 @@ public class ReportSettingsController {
     @RequestMapping(value = "/saveForUpdated", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions(value = "update")
-    public JsonResult<ReportSettingsPo> saveForUpadted(@RequestBody ReportSettingsPo reportSettingsPo, HttpSession session) {
+    public JsonResult<ReportSettingsPo> saveForUpadted(@Validated@RequestBody ReportSettingsPo reportSettingsPo, HttpSession session) {
         reportSettingsService.save(reportSettingsPo);
         return get(reportSettingsPo.getKey(), session);
     }

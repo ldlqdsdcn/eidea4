@@ -9,7 +9,7 @@ import javax.persistence.*;
  * SysPrivileges entity. @author MyEclipse Persistence Tools
  */
 @Entity
-@Table(name = "sys_privileges", catalog = "e_idea_public")
+@Table(name = "sys_privileges", catalog = "e_idea")
 @Getter
 @Setter
 public class PrivilegesPo implements java.io.Serializable {

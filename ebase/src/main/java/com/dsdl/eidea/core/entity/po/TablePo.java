@@ -13,7 +13,7 @@ import javax.persistence.*;
  * CoreTable entity. @author MyEclipse Persistence Tools
  */
 @Entity
-@Table(name = "core_table", catalog = "e_idea_public")
+@Table(name = "core_table", catalog = "e_idea")
 @Getter
 @Setter
 public class TablePo implements java.io.Serializable {

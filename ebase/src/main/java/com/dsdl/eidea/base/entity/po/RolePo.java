@@ -22,7 +22,7 @@ import lombok.Setter;
  * SysRole entity. @author MyEclipse Persistence Tools
  */
 @Entity
-@Table(name = "sys_role", catalog = "e_idea_public", uniqueConstraints = @UniqueConstraint(columnNames = "name"))
+@Table(name = "sys_role", catalog = "e_idea", uniqueConstraints = @UniqueConstraint(columnNames = "name"))
 @Getter
 @Setter
 @org.hibernate.annotations.Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.READ_WRITE)

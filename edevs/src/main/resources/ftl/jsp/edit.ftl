@@ -16,7 +16,7 @@ Date: ${datetime}
             <form role="form" name="editForm" novalidate  ng-submit="save()">
                 <#list propertyList as prop>
                 <div class="form-group">
-                    <label for="${prop.prop}" ><%--${prop.label}--%><eidea:label key="${prop.propertyLabel}"/>
+                    <label for="${prop.prop}" ><%--${prop.label}--%><eidea:label key="${prop.propertyLabel}"/></label>
                        <#if prop.booleanTag>
                             <input id="${prop.prop}" type="checkbox"  ng-true-value="'Y'" ng-false-value="'N'" ng-model="${model?uncap_first}Po.${prop.prop}">
                         <#else>

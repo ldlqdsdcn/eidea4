@@ -45,10 +45,7 @@ public class ParamTag extends BodyTagSupport {
             case MESSAGE_PARAM:
                 this.value = resource.getMessage((String) value);
                 break;
-            default:
-                this.value = value;
         }
-
         parent.params.add(value);
         return super.doEndTag();
     }

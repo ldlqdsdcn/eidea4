@@ -20,7 +20,7 @@ Date: ${datetime}
                        <#if prop.booleanTag>
                             <input id="${prop.prop}" type="checkbox"  ng-true-value="'Y'" ng-false-value="'N'" ng-model="${model?uncap_first}Po.${prop.prop}">
                         <#else>
-                            <input type="text" class="form-control" id="${prop.prop}" placeholder="<eidea:label key="${prop.propertyLabel}"/>" ng-model="${model?uncap_first}Po.${prop.prop}" >
+                            <input type="text" class="form-control" id="${prop.prop}" placeholder="<eidea:message key="common.please.input"><eidea:param value="${prop.propertyLabel}" type="label"/></eidea:message>"/>" ng-model="${model?uncap_first}Po.${prop.prop}" >
                         </#if>
                 </div>
                     </#list>

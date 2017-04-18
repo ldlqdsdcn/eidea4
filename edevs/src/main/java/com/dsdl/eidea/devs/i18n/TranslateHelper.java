@@ -1,6 +1,8 @@
 package com.dsdl.eidea.devs.i18n;
 
 
+import com.alibaba.druid.sql.visitor.functions.Locate;
+import com.dsdl.eidea.util.LocaleHelper;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -14,7 +16,7 @@ public class TranslateHelper {
     public static String translate(String message,String from,String to)
     {
 
-        String resultJson=api.getTransResult(message,from,to);
+        String resultJson=api.getTransResult(message, LocaleHelper.geLanguageCode(from),LocaleHelper.geLanguageCode(to));
         System.out.println(resultJson);
         JsonParser parser = new JsonParser();
         JsonObject jsonObj = (JsonObject) parser.parse(resultJson);

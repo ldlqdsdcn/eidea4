@@ -21,6 +21,7 @@ import java.util.List;
 
 /**
  * Created by 刘大磊 on 2017/1/13 15:24.
+ * 生成国际化label和message
  */
 public class I18NGenerateStrategy {
     private LabelService labelService;
@@ -29,6 +30,22 @@ public class I18NGenerateStrategy {
     LanguageService languageService;
     private GenModelDto genModelDto;
 
+    /**
+     *
+     * @param genModelDto 生成 一个model的配置详情
+     * @param tableMetaDataBo 读取数据库表元素信息
+     * @param languageService 语言业务类
+     * @param messageService 消息业务类
+     * @param labelService 标签业务类
+     */
+    public I18NGenerateStrategy(GenModelDto genModelDto,TableMetaDataBo tableMetaDataBo,LanguageService languageService,MessageService messageService,LabelService labelService)
+    {
+        this.genModelDto=genModelDto;
+        this.tableMetaDataBo=tableMetaDataBo;
+        this.labelService=labelService;
+        this.languageService=languageService;
+        this.messageService=messageService;
+    }
     public void generateLabel() {
         List<JspModelProp> jspModelProps = getOutPutList(tableMetaDataBo);
 

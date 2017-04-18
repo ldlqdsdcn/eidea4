@@ -25,8 +25,8 @@
         $scope.allList = [];
         $scope.modelList = [];
         $scope.delFlag = false;
-        $scope.canDel=PrivilegeService.hasPrivilege('directory:delete');
-        $scope.canAdd=PrivilegeService.hasPrivilege('directory:add');
+        $scope.canDel=PrivilegeService.hasPrivilege('delete');
+        $scope.canAdd=PrivilegeService.hasPrivilege('add');
         $http.get("<c:url value="/base/directory/list"/>")
                 .success(function (response) {
                     if (response.success) {
@@ -115,15 +115,15 @@
     app.controller('editCtrl', function ($scope, $http, $routeParams) {
         $scope.message = '';
         $scope.directoryBo = {};
-        $scope.canAdd=PrivilegeService.hasPrivilege('directory:add');
-        $scope.canSave=PrivilegeService.hasPrivilege('directory:update');;
+        $scope.canAdd=PrivilegeService.hasPrivilege('add');
+        $scope.canSave=false;
         if ($routeParams.id != null) {
             url = "<c:url value="/base/directory/get"/>" + "?id=" + $routeParams.id;
             $http.get(url)
                     .success(function (response) {
                         if (response.success) {
                             $scope.directoryBo = response.data;
-                            $scope.canSave=(PrivilegeService.hasPrivilege('directory:add')&&$scope.directoryBo.id==null)||PrivilegeService.hasPrivilege('directory:update');
+                            $scope.canSave=(PrivilegeService.hasPrivilege('add')&&$scope.directoryBo.id==null)||PrivilegeService.hasPrivilege('update');
                         }
                         else {
                             bootbox.alert(response.message);

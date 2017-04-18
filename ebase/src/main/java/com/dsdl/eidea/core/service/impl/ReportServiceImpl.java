@@ -1,9 +1,10 @@
 package com.dsdl.eidea.core.service.impl;
 
-import com.dsdl.eidea.core.dao.ReportDao;
+import com.dsdl.eidea.core.dao.CommonDao;
 import com.dsdl.eidea.core.entity.bo.ReportBo;
 import com.dsdl.eidea.core.entity.po.ReportPo;
 import com.dsdl.eidea.core.service.ReportService;
+import com.dsdl.eidea.core.spring.annotation.DataAccess;
 import com.googlecode.genericdao.search.Search;
 import org.apache.log4j.Logger;
 import org.modelmapper.ModelMapper;
@@ -18,9 +19,8 @@ import java.util.List;
  */
 @Service
 public class ReportServiceImpl implements ReportService {
-    private static final Logger logger = Logger.getLogger(ReportServiceImpl.class);
-    @Autowired
-    private ReportDao reportDao;
+    @DataAccess(entity = ReportPo.class)
+    private CommonDao<ReportPo,String >reportDao;
     private ModelMapper modelMapper = new ModelMapper();
 
     @Override

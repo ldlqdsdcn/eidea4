@@ -1,19 +1,15 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/inc/taglib.jsp" %>
-<div   ng-controller="listCtrl">
-    <div class="page-title">
-        <h3>
-            <div class="row">
-                <div class="col-lg-4"><%--消息设置--%><eidea:label key="message.message.setting"/></div>
-                <div class="col-lg-8  text-right">
-                    <a href="#/edit" class="btn  btn-primary btn-sm" ng-show="canAdd"><eidea:label key="common.button.create"/><%--新建--%></a>
-                    <button type="button" class="btn  btn-primary btn-sm"  id="search_but" data-toggle="modal"
-                            data-target="#searchModal"><eidea:label key="common.button.search"/><%--查找--%></button>
-                    <button type="button" class="btn  btn-primary btn-sm" ng-disabled="!canDelete()"
-                            ng-click="deleteRecord()" ng-show="canDel"><eidea:label key="common.button.delete"/><%--删除--%></button>
-                </div>
-            </div>
-        </h3>
+<div  class="container-fluid" ng-controller="listCtrl">
+    <div class="page-header" >
+        <ol class="breadcrumb">
+            <li><a href="javascript:;"><i class="icon icon-tasks"></i><eidea:label key="message.message.setting"/></a></li>
+        </ol>
+        <a href="#/edit" class="btn  btn-primary btn-sm" ng-show="canAdd"><eidea:label key="common.button.create"/></a>
+        <button type="button" class="btn  btn-primary btn-sm" id="search_but" data-toggle="modal"
+                data-target="#searchModal"><eidea:label key="common.button.search"/></button>
+        <button type="button" class="btn  btn-primary btn-sm" ng-disabled="!canDelete()"
+                ng-click="deleteRecord()" ng-show="canDel" ><eidea:label key="common.button.delete"/></button>
     </div>
 
     <div class="row-fluid">

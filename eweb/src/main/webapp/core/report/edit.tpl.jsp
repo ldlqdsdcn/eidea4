@@ -3,7 +3,7 @@
 <div class="container-fluid" ng-controller="editCtrl">
     <div class="page-header">
         <ol class="breadcrumb">
-            <li><a href="javascript:;"><i class="icon-tasks"></i> <%--消息设置--%><eidea:label key="message.message.setting"/></a></li>
+            <li><a href="javascript:;"><i class="icon-tasks"></i> <%--消息设置--%><eidea:label key="report.title"/></a></li>
         </ol>
     </div>
     <div class="row-fluid">

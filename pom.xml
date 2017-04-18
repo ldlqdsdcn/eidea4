@@ -14,7 +14,6 @@
         <module>ereport</module>
         <module>eapi</module>
         <module>ecomm</module>
-        <module>e-web-security</module>
     </modules>
     <groupId>com.dsdl</groupId>
     <artifactId>eidea</artifactId>

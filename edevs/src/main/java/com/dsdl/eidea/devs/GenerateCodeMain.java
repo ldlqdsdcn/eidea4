@@ -1,5 +1,6 @@
 package com.dsdl.eidea.devs;
 
+import com.dsdl.eidea.base.service.PageMenuService;
 import com.dsdl.eidea.core.entity.bo.TableMetaDataBo;
 import com.dsdl.eidea.core.service.LabelService;
 import com.dsdl.eidea.core.service.LanguageService;
@@ -9,6 +10,7 @@ import com.dsdl.eidea.devs.model.GenModelDto;
 import com.dsdl.eidea.devs.model.GenSettings;
 import com.dsdl.eidea.devs.service.CodeGenerationService;
 import com.dsdl.eidea.devs.strategy.*;
+import com.dsdl.eidea.util.StringUtil;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -25,6 +27,8 @@ public class GenerateCodeMain implements CodeGenerationService {
     private LabelService labelService;
     private MessageService messageService;
 
+    private PageMenuService pageMenuService;
+
     public static void main(String[] args) {
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
         GenerateCodeMain codeMain = new GenerateCodeMain();
@@ -32,6 +36,7 @@ public class GenerateCodeMain implements CodeGenerationService {
         codeMain.labelService = applicationContext.getBean(LabelService.class);
         codeMain.messageService = applicationContext.getBean(MessageService.class);
         codeMain.languageService = applicationContext.getBean(LanguageService.class);
+        codeMain.pageMenuService=applicationContext.getBean(PageMenuService.class);
         GenModelDto genModelDto = new GenModelDto("core_report_settings", "ReportSettings", "core", "报表设置");
         genModelDto.setBasePackage("com.dsdl.eidea");
         List<GenModelDto> list = new ArrayList<>();
@@ -86,6 +91,9 @@ public class GenerateCodeMain implements CodeGenerationService {
              */
             I18NGenerateStrategy i18NGenerateStrategy = new I18NGenerateStrategy(genModelDto, tableMetaDataBo, languageService, messageService, labelService);
             i18NGenerateStrategy.generateLabel();
+            String model=StringUtil.lowerFirstChar(genModelDto.getModelName());
+            PagemenuGenerateStrategy pagemenuGenerateStrategy=new PagemenuGenerateStrategy("/"+genModelDto.getModule()+"/"+model+"/showList",tableMetaDataBo.getRemark(),languageService,pageMenuService);
+            pagemenuGenerateStrategy.generatePagemenu();
         }
 
     }

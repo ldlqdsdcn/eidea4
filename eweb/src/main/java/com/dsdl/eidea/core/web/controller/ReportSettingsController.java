@@ -94,7 +94,7 @@ public class ReportSettingsController {
         UserResource userResource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
         if (reportSettingsPo.isCreated()) {
             if (reportSettingsService.findExistReport(reportSettingsPo.getKey())) {
-                return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), userResource.getMessage("report.msg.key_exists"));
+                return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), userResource.getMessage("reportSettings.msg.key_exists"));
             }
         }
         reportSettingsService.save(reportSettingsPo);

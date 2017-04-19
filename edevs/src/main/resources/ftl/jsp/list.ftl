@@ -31,7 +31,7 @@
                     <td>
                         <input type="checkbox" ng-model="model.delFlag">
                     </td>
-                    <td>{{(bigCurrentPage-1)*itemsPerPage+$index+1}}</td>
+                    <td>{{(queryParams.pageNo-1)*queryParams.pageSize+$index+1}}</td>
                     <#list propertyList as prop>
                     <td>
                         ${r'{{'}model.${prop.prop}${r'}}'}
@@ -43,10 +43,11 @@
                 </tr>
                 </tbody>
             </table>
-            <ul uib-pagination boundary-links="true" total-items="bigTotalItems" ng-model="bigCurrentPage"
+            <ul uib-pagination boundary-links="true" total-items="queryParams.totalRecords" ng-model="queryParams.pageNo"
                 max-size="maxSize" first-text="<eidea:label key="common.label.firstpage"/>" previous-text="<eidea:label key="common.label.previouspage"/>" next-text="<eidea:label key="common.label.nextpage"/>" last-text="<eidea:label key="common.label.lastpage"/>"
-            class="pagination-sm" boundary-link-numbers="true" rotate="false" items-per-page="itemsPerPage"
+            class="pagination-sm" boundary-link-numbers="true" rotate="false" items-per-page="queryParams.pageSize"
             ng-change="pageChanged()"></ul>
+            <div class="text-left"><eidea:message key="common.msg.result.prefix"/>{{queryParams.totalRecords}}<eidea:message key="common.msg.result.suffix"/></div>
         </div>
     </div>
 </div>

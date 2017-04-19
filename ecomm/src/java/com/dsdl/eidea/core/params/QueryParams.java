@@ -15,7 +15,7 @@ public class QueryParams implements Serializable {
     /**
      * 当前页 当 pageNo为-1的时候，进行统计页数count操作
      */
-    private int pageNo = 1;
+    private int pageNo = 0;
     /**
      * 页面显示记录数
      */
@@ -23,10 +23,16 @@ public class QueryParams implements Serializable {
     /**
      * 总页数
      */
-    private int totalPage = 1;
+    private int totalRecords = 0;
+    /**
+     * 是否首次查询
+     * 首次查询需要统计总记录数
+     */
+    private boolean init = true;
 
     /**
      * 获得每页15页分页参数
+     *
      * @return
      */
     public static QueryParams get15PerPageParam() {
@@ -37,6 +43,7 @@ public class QueryParams implements Serializable {
 
     /**
      * 获得每页20页分页参数
+     *
      * @return
      */
     public static QueryParams get20PerPageParam() {
@@ -47,6 +54,7 @@ public class QueryParams implements Serializable {
 
     /**
      * 获得每页10页分页参数
+     *
      * @return
      */
     public static QueryParams get10PerPageParam() {
@@ -61,25 +69,13 @@ public class QueryParams implements Serializable {
      * @return
      */
     public int getFirstResult() {
-        int firstRow = pageNo - 1;
+        int firstRow = 0;
+        if (pageNo > 0) {
+            firstRow = pageNo - 1;
+        }
         if (firstRow < 0) {
             firstRow = 0;
         }
         return firstRow * pageSize;
-    }
-
-    /**
-     * 根据记录数获取页数
-     *
-     * @param recordCount
-     * @return
-     */
-    public int getTotalPageByRecordCount(int recordCount) {
-        if (recordCount % pageSize == 0) {
-            totalPage = recordCount / pageSize;
-        } else {
-            totalPage = recordCount / pageSize + 1;
-        }
-        return totalPage;
     }
 }

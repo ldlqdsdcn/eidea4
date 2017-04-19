@@ -37,7 +37,8 @@ public class GenerateCodeMain implements CodeGenerationService {
         codeMain.messageService = applicationContext.getBean(MessageService.class);
         codeMain.languageService = applicationContext.getBean(LanguageService.class);
         codeMain.pageMenuService=applicationContext.getBean(PageMenuService.class);
-        GenModelDto genModelDto = new GenModelDto("core_report_settings", "ReportSettings", "core", "报表设置");
+        GenModelDto genModelDto = new GenModelDto("sys_user_session2", "UserSession2", "sys", "用户会话记录");
+        genModelDto.setPagingByDb(true);
         genModelDto.setBasePackage("com.dsdl.eidea");
         List<GenModelDto> list = new ArrayList<>();
         list.add(genModelDto);
@@ -66,6 +67,10 @@ public class GenerateCodeMain implements CodeGenerationService {
 
         for (GenModelDto genModelDto : genSettings.getGenModelDtoList()) {
             TableMetaDataBo tableMetaDataBo = tableService.getTableDescription(genModelDto.getTableName());
+            if(StringUtil.isEmpty(tableMetaDataBo.getRemark()))
+            {
+                tableMetaDataBo.setRemark(genModelDto.getName());
+            }
             /**
              * 生成PO代码
              */

@@ -1,13 +1,10 @@
-package com.dsdl.eidea.base.api.test;
+package com.dsdl.eidea.base.rest.test;
 
-import com.dsdl.eidea.api.model.Client;
-import com.dsdl.eidea.api.model.Org;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
 import org.junit.Test;
 import org.springframework.http.*;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
 import java.nio.charset.Charset;

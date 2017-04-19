@@ -1,4 +1,4 @@
-package com.dsdl.eidea.base.api;
+package com.dsdl.eidea.base.rest;
 
 import com.dsdl.eidea.api.model.Client;
 import io.swagger.annotations.Api;
@@ -19,7 +19,7 @@ import java.util.Date;
  */
 @RestController
 @Api(value = "Client", position = 0, description = "实体信息", consumes = "application/json")
-public class ClientApi {
+public class ClientRestController {
     @ApiOperation(value = "根据实体ID获取实体", httpMethod = "GET", response = Client.class, notes = "根据实体的id信息获取实体的详情", produces = MediaType.APPLICATION_JSON_VALUE)
     @RequestMapping("/client/{id}")
     public Client getClient(@PathVariable("id") Integer id) {

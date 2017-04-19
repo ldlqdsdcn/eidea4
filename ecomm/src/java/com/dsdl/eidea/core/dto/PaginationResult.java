@@ -11,21 +11,17 @@ import java.util.List;
 @Getter
 public class PaginationResult<T> implements Serializable {
     /**
-     * 每页显示分页tab数
-     */
-    private int numberOfPages = 10;
-    /**
      * 当前页码
      */
     private int pageNumber = 1;
     /**
-     * 每页显示记录数
-     */
-    private int pageSize=15;
-    /**
      * 总页数
      */
     private int totalPages = 1;
+    /**
+     * 总记录数
+     */
+    private int totalRecords = 0;
     /**
      * 必须是list
      */
@@ -49,14 +45,13 @@ public class PaginationResult<T> implements Serializable {
 
     public static <T> PaginationResult<T> pagination(List<T> data, int totalRecord, int pageNumber, int pageSize) {
         PaginationResult<T> paginationResult = new PaginationResult<>();
-        if(pageNumber<1)
-        {
-            pageNumber=1;
+        if (pageNumber < 1) {
+            pageNumber = 1;
         }
         paginationResult.pageNumber = pageNumber;
-        paginationResult.pageSize = pageSize;
+        paginationResult.totalRecords = totalRecord;
         if (totalRecord == 0) {
-            paginationResult.totalPages = 1 ;
+            paginationResult.totalPages = 1;
         } else {
             if (totalRecord % pageSize == 0) {
                 paginationResult.totalPages = totalRecord / pageSize;

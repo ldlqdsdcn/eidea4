@@ -39,6 +39,7 @@ public class ControllerGenerateStrategy {
       root.put("lineList",model.getIncludeModelList());
       root.put("pkClass",tableMetaDataBo.getPkClass());
       root.put("pkProperty", StringUtil.fieldToProperty(tableMetaDataBo.getPkColumn()));
+
       root.put("memPaging",!model.isPagingByDb());
       //gc.setTime(date);
       try

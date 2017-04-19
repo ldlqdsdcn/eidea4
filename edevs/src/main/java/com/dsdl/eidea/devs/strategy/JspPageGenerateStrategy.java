@@ -60,6 +60,7 @@ public class JspPageGenerateStrategy {
         root.put("modelName", model.getName());
         root.put("pkProp",StringUtil.fieldToProperty(tableMetaDataBo.getPkColumn()));
         root.put("datetime", DateTimeHelper.formatDateTime(new Date()));
+        root.put("pagingByDb",model.isPagingByDb());
         String lowerFirstModel = StringUtil.lowerFirstChar(model.getModelName());
         FreeMarkerHelper.getInstance().outFile("jsp/model.ftl", root, outPath + "/src/main/webapp" + namespace + "/" + lowerFirstModel + "/" + lowerFirstModel + ".jsp");
     }

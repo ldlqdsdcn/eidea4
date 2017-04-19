@@ -82,8 +82,14 @@ public class I18NGenerateStrategy {
                 labelBo.setCreated(true);
                 labelBo.setIsactive("Y");
                 labelBo.setKey(jspModelProp.getPropertyLabel());
-                labelBo.setMsgtext(jspModelProp.getLabel());
-
+                if(StringUtil.isEmpty(jspModelProp.getLabel()))
+                {
+                    labelBo.setMsgtext(StringUtil.propertyToLabel(jspModelProp.getProp()));
+                }
+                else
+                {
+                    labelBo.setMsgtext(jspModelProp.getLabel());
+                }
                 List<LanguageBo> languageTrlList = languageService.getLanguageForActivated();
                 for (LanguageBo languageBo : languageTrlList) {
                     LabelTrlBo labelTrlBo = new LabelTrlBo();
@@ -91,7 +97,7 @@ public class I18NGenerateStrategy {
                     if (!"zh_CN".equals(languageBo.getCode())) {
                         labelTrlBo.setMsgtext(TranslateHelper.translate(labelBo.getMsgtext(), "zh_CN", languageBo.getCode()));
                     } else {
-                        labelTrlBo.setMsgtext(jspModelProp.getLabel());
+                        labelTrlBo.setMsgtext(labelBo.getMsgtext());
                     }
                     labelTrlBo.setKey(jspModelProp.getPropertyLabel());
                     labelBo.getLabelTrlBoList().add(labelTrlBo);

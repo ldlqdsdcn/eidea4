@@ -35,9 +35,8 @@ public class ServiceGenerateStrategy {
         root.put("datetime", datetime);
         root.put("lineList",model.getIncludeModelList());
         root.put("pkClass",tableMetaDataBo.getPkClass());
-
         root.put("pkName", StringUtil.fieldToProperty(tableMetaDataBo.getPkColumn()));
-
+        root.put("paingByDb",model.isPagingByDb());
         //gc.setTime(date);
         try
         {
@@ -63,6 +62,7 @@ public class ServiceGenerateStrategy {
         root.put("basePackage",model.getBasePackage());
         root.put("pkClass",tableMetaDataBo.getPkClass());
         root.put("pkName", StringUtil.fieldToProperty(tableMetaDataBo.getPkColumn()));
+        root.put("paingByDb",model.isPagingByDb());
         try
         {
             root.put("interfacefulldaoname", model.getBasePackage()+"."+model.getModule()+".dao."+model.getModelName()+"Dao");

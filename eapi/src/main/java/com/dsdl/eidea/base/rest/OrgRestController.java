@@ -1,4 +1,4 @@
-package com.dsdl.eidea.base.api;
+package com.dsdl.eidea.base.rest;
 
 import com.dsdl.eidea.api.model.Client;
 import com.dsdl.eidea.api.model.Org;
@@ -17,7 +17,7 @@ import java.util.Date;
  */
 @RestController
 @Api(value = "Org", position = 1, description = "组织信息", consumes = "application/json")
-public class OrgApi {
+public class OrgRestController {
     @ApiOperation(httpMethod = "GET",
             value = "获取组织信息",
             response = Org.class,

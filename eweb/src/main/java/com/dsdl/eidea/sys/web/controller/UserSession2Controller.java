@@ -26,11 +26,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import com.dsdl.eidea.core.dto.PaginationResult;
 import com.dsdl.eidea.core.params.QueryParams;
+import com.dsdl.eidea.core.params.DeleteParams;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
-* Created by 刘大磊 on 2017-04-19 17:18:11.
+* Created by 刘大磊 on 2017-04-19 18:04:59.
 */ @Controller
 @RequestMapping("/sys/userSession2")
 public class UserSession2Controller extends BaseController {
@@ -102,12 +103,12 @@ public JsonResult<PaginationResult<UserSession2Po>> list(HttpSession session,@Re
     @RequestMapping(value = "/deletes", method = RequestMethod.POST)
     @ResponseBody
 
-    public JsonResult<PaginationResult<UserSession2Po>> deletes(@RequestBody Integer[] ids, HttpSession session) {
-                if (ids == null || ids.length == 0) {
+    public JsonResult<PaginationResult<UserSession2Po>> deletes(@RequestBody DeleteParams<Integer> deleteParams, HttpSession session) {
+    if (deleteParams.getIds() == null||deleteParams.getIds().length == 0)  {
                 return JsonResult.fail(ErrorCodes.VALIDATE_PARAM_ERROR.getCode(), getMessage("common.error.delete.failure",getMessage("userSession2.title")));
                 }
-            userSession2Service.deletes(ids);
-                return list(session,QueryParams.get15PerPageParam());
+            userSession2Service.deletes(deleteParams.getIds());
+                return list(session,deleteParams.getQueryParams());
         }
 
 

@@ -29,7 +29,6 @@ public class QueryParams implements Serializable {
      * 首次查询需要统计总记录数
      */
     private boolean init = true;
-
     /**
      * 获得每页15页分页参数
      *

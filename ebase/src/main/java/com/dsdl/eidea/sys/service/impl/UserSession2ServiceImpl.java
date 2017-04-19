@@ -18,7 +18,7 @@ import com.googlecode.genericdao.search.Search;
 import com.dsdl.eidea.core.dao.CommonDao;
 import java.util.List;
 /**
- * @author 刘大磊 2017-04-19 17:18:11
+ * @author 刘大磊 2017-04-19 18:04:59
  */
 @Service("userSession2Service")
 public class UserSession2ServiceImpl  implements	UserSession2Service {

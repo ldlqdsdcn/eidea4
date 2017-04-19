@@ -23,6 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 <#if !memPaging>
 import com.dsdl.eidea.core.dto.PaginationResult;
 import com.dsdl.eidea.core.params.QueryParams;
+import com.dsdl.eidea.core.params.DeleteParams;
 </#if>
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -122,12 +123,12 @@ public JsonResult<PaginationResult<${model}Po>> list(HttpSession session,@Reques
         ${model?uncap_first}Service.deletes(${pkProperty}s);
         return list(session);
         }<#else>
-    public JsonResult<PaginationResult<${model}Po>> deletes(@RequestBody ${pkClass}[] ${pkProperty}s, HttpSession session) {
-                if (${pkProperty}s == null || ${pkProperty}s.length == 0) {
+    public JsonResult<PaginationResult<${model}Po>> deletes(@RequestBody DeleteParams<${pkClass}> deleteParams, HttpSession session) {
+    if (deleteParams.getIds() == null||deleteParams.getIds().length == 0)  {
                 return JsonResult.fail(ErrorCodes.VALIDATE_PARAM_ERROR.getCode(), getMessage("common.error.delete.failure",getMessage("${model?uncap_first}.title")));
                 }
-            ${model?uncap_first}Service.deletes(${pkProperty}s);
-                return list(session,QueryParams.get15PerPageParam());
+            ${model?uncap_first}Service.deletes(deleteParams.getIds());
+                return list(session,deleteParams.getQueryParams());
         }
     </#if>
 

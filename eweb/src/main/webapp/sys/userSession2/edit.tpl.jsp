@@ -1,6 +1,6 @@
 <%--
 User: 刘大磊
-Date: 2017-04-19 18:04:59
+Date: 2017-04-20 09:49:45
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/inc/taglib.jsp" %>
@@ -17,30 +17,37 @@ Date: 2017-04-19 18:04:59
                 <div class="form-group">
                     <label for="sessionId" ><%--sessionId--%><eidea:label key="sys.userSession2.label.sessionId"/></label>
                             <input type="text" class="form-control" id="sessionId" placeholder="<eidea:message key="common.please.input"><eidea:param value="sys.userSession2.label.sessionId" type="label"/></eidea:message>" ng-model="userSession2Po.sessionId" >
+
                 </div>
                 <div class="form-group">
                     <label for="loginDate" ><%--loginDate--%><eidea:label key="sys.userSession2.label.loginDate"/></label>
-                            <input type="text" class="form-control" id="loginDate" placeholder="<eidea:message key="common.please.input"><eidea:param value="sys.userSession2.label.loginDate" type="label"/></eidea:message>" ng-model="userSession2Po.loginDate" >
+                                <input type="text" class="form-control" id="loginDate" placeholder="<eidea:message key="common.please.input"><eidea:param value="sys.userSession2.label.loginDate" type="label"/></eidea:message>" ng-model="userSession2Po.loginDate|date:'yyyy-MM-dd hh:mm:ss'" >
+
                 </div>
                 <div class="form-group">
                     <label for="logoutDate" ><%--logoutDate--%><eidea:label key="sys.userSession2.label.logoutDate"/></label>
-                            <input type="text" class="form-control" id="logoutDate" placeholder="<eidea:message key="common.please.input"><eidea:param value="sys.userSession2.label.logoutDate" type="label"/></eidea:message>" ng-model="userSession2Po.logoutDate" >
+                                <input type="text" class="form-control" id="logoutDate" placeholder="<eidea:message key="common.please.input"><eidea:param value="sys.userSession2.label.logoutDate" type="label"/></eidea:message>" ng-model="userSession2Po.logoutDate|date:'yyyy-MM-dd hh:mm:ss'" >
+
                 </div>
                 <div class="form-group">
                     <label for="remoteAddr" ><%--remoteAddr--%><eidea:label key="sys.userSession2.label.remoteAddr"/></label>
                             <input type="text" class="form-control" id="remoteAddr" placeholder="<eidea:message key="common.please.input"><eidea:param value="sys.userSession2.label.remoteAddr" type="label"/></eidea:message>" ng-model="userSession2Po.remoteAddr" >
+
                 </div>
                 <div class="form-group">
                     <label for="remoteHost" ><%--remoteHost--%><eidea:label key="sys.userSession2.label.remoteHost"/></label>
                             <input type="text" class="form-control" id="remoteHost" placeholder="<eidea:message key="common.please.input"><eidea:param value="sys.userSession2.label.remoteHost" type="label"/></eidea:message>" ng-model="userSession2Po.remoteHost" >
+
                 </div>
                 <div class="form-group">
                     <label for="sysUserId" ><%--sysUserId--%><eidea:label key="sys.userSession2.label.sysUserId"/></label>
                             <input type="text" class="form-control" id="sysUserId" placeholder="<eidea:message key="common.please.input"><eidea:param value="sys.userSession2.label.sysUserId" type="label"/></eidea:message>" ng-model="userSession2Po.sysUserId" >
+
                 </div>
                 <div class="form-group">
                     <label for="token" ><%--token--%><eidea:label key="sys.userSession2.label.token"/></label>
                             <input type="text" class="form-control" id="token" placeholder="<eidea:message key="common.please.input"><eidea:param value="sys.userSession2.label.token" type="label"/></eidea:message>" ng-model="userSession2Po.token" >
+
                 </div>
 
 

@@ -34,7 +34,13 @@
                     <td>{{(queryParams.pageNo-1)*queryParams.pageSize+$index+1}}</td>
                     <#list propertyList as prop>
                     <td>
+                        <#if prop.inputType==3>
+                        ${r'{{'}model.${prop.prop}|date:"yyyy-MM-dd"${r'}}'}
+                        <#elseif prop.inputType==4>
+                        ${r'{{'}model.${prop.prop}|date:"yyyy-MM-dd hh:mm:ss"${r'}}'}
+                        <#else>
                         ${r'{{'}model.${prop.prop}${r'}}'}
+                        </#if>
                     </td>
                     </#list>
                     <td>

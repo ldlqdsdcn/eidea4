@@ -84,8 +84,6 @@
 
 </div>
 <script type="text/javascript">
-    $.datetimepicker.setLocale('cn');
-
     var searchApp = angular.module('searchApp', []);
     console.log("search ...");
     searchApp.controller('searchCtrl', function ($scope, $http)  {
@@ -96,11 +94,18 @@
             timepicker:false,
             format:"Y-m-d"
         });
-        $('#value-date-time').datetimepicker({
-            dayOfWeekStart : 1,
-            lang:'cn',
-            format:"Y-m-d H:i:s",step:10
-        });
+      $('#value-date-time').datetimepicker({
+        language:  'zh-CN',
+        format: 'yyyy-mm-dd hh:ii:ss',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        forceParse: 0,
+        showMeridian: 1,
+        clearBtn: true
+      });
         $scope.columnList=${searchColumnJson};
         console.log("columnList="+$scope.columnList);
         $scope.searchColumnList=${addedSearchColumnVoListJson};

@@ -1,6 +1,6 @@
 <%--
   Created by 刘大磊.
-  Date: 2017-04-21 14:21:47
+  Date: 2017-04-21 15:07:01
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/inc/taglib.jsp" %>
@@ -114,10 +114,11 @@ $scope.pageChanged();
     app.controller('editCtrl', function ($scope, $http, $routeParams) {
         /**
          * 日期时间选择控件
+         * bootstrap-datetime 24小时时间是hh
          */
         $('.bootstrap-datetime').datetimepicker({
             language:  'zh-CN',
-            format: 'yyyy-mm-dd HH:ii:ss',
+            format: 'yyyy-mm-dd hh:ii:ss',
             weekStart: 1,
             todayBtn:  1,
             autoclose: 1,

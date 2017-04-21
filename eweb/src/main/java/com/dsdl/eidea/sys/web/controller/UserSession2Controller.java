@@ -31,7 +31,7 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
-* Created by 刘大磊 on 2017-04-21 14:21:47.
+* Created by 刘大磊 on 2017-04-21 15:07:01.
 */ @Controller
 @RequestMapping("/sys/userSession2")
 public class UserSession2Controller extends BaseController {

@@ -33,10 +33,11 @@
     app.controller('editCtrl', function ($scope, $http, $routeParams) {
         /**
          * 日期时间选择控件
+         * bootstrap-datetime 24小时时间是hh
          */
         $('.bootstrap-datetime').datetimepicker({
             language:  'zh-CN',
-            format: 'yyyy-mm-dd HH:ii:ss',
+            format: 'yyyy-mm-dd hh:ii:ss',
             weekStart: 1,
             todayBtn:  1,
             autoclose: 1,

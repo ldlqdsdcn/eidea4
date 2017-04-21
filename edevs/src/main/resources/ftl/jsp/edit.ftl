@@ -21,16 +21,16 @@ Date: ${datetime}
                             <input id="${prop.prop}" type="checkbox"  ng-true-value="'Y'" ng-false-value="'N'" ng-model="${model?uncap_first}Po.${prop.prop}">
                         <#else>
                         <#if prop.inputType==3>
-                        <div class=" input-group date bootstrap_date">
+                        <div class=" input-group date bootstrap-date">
                             <input type="text" class="form-control" id="${prop.prop}" placeholder="<eidea:message key="common.please.input"><eidea:param value="${prop.propertyLabel}" type="label"/></eidea:message>" ng-model="${model?uncap_first}Po.${prop.prop}"
                              uib-datepicker-popup="yyyy-MM-dd">
-                            <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                         </div>
                             <#elseif  prop.inputType==4>
                             <div class="input-group date bootstrap-datetime">
                                 <input type="text" class="form-control" id="${prop.prop}" placeholder="<eidea:message key="common.please.input"><eidea:param value="${prop.propertyLabel}" type="label"/></eidea:message>" ng-model="${model?uncap_first}Po.${prop.prop}"
                                 uib-datepicker-popup="yyyy-MM-dd HH:mm:ss">
-                                <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                             </div>
                         <#else>
                             <input type="text" class="form-control" id="${prop.prop}" placeholder="<eidea:message key="common.please.input"><eidea:param value="${prop.propertyLabel}" type="label"/></eidea:message>" ng-model="${model?uncap_first}Po.${prop.prop}" >

@@ -185,7 +185,7 @@ public class SearchServiceImpl implements SearchService {
                 search.addFilterGreaterOrEqual(columnName, value);
             } else if (RelOperDef.GREATER_EQ_THAN.getDesc().equals(searchColumnDto.getOpearType())) {
                 search.addFilterGreaterOrEqual(columnName, value);
-            } else if (RelOperDef.LESS_EQ_THAN.equals(searchColumnDto.getOpearType())) {
+            } else if (RelOperDef.LESS_EQ_THAN.getDesc().equals(searchColumnDto.getOpearType())) {
                 if (searchColumnDto.getDataType() == SearchDataTypeDef.DATE.getKey()) {
                     search.addFilterLessOrEqual(columnName, DateTimeHelper.getDayEndTime((Date) value));
                 } else if (searchColumnDto.getDataType() == SearchDataTypeDef.DATETIME.getKey()) {

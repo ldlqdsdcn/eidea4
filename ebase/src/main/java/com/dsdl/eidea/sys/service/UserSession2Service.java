@@ -12,7 +12,7 @@ import com.googlecode.genericdao.search.Search;
 import java.util.List;
 
 /**
- * @author 刘大磊 2017-04-21 14:21:47
+ * @author 刘大磊 2017-04-21 15:07:01
  */
 public interface UserSession2Service {
 	PaginationResult<UserSession2Po> getUserSession2ListByPaging(Search search,QueryParams queryParams);

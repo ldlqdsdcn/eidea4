@@ -59,7 +59,7 @@
     </script>
 </head>
 <%UserBo user=(UserBo)session.getAttribute("loginUser"); %>
-<body class="nav-md" ng-app="loginApp">
+<body class="nav-md">
 <div class="container body">
     <div class="main_container">
         <div class="col-md-3 left_col menu_fixed">
@@ -112,7 +112,7 @@
         </div>
         <!--left menu end-->
         <!--top navigation-->
-        <div class="top_nav" ng-controller="switchLanguageCtrl">
+        <div class="top_nav" ng-app="changeLanguageApp" ng-controller="changeLanguageCtrl">
             <div class="nav_menu">
                 <nav>
                     <div class="nav toggle">
@@ -196,8 +196,8 @@
 <script src='<c:url value="/js/custom.js"/>' type="text/javascript"></script>
 <script type="text/javascript">
     //$("#content").load("<c:url value="/core/language/showList"/>");
-    var app = angular.module('loginApp', ['ui.bootstrap', 'jcs-autoValidate']);
-    app.controller('switchLanguageCtrl',function ($scope,$http) {
+    var app = angular.module('changeLanguageApp', ['ui.bootstrap', 'jcs-autoValidate']);
+    app.controller('changeLanguageCtrl',function ($scope,$http) {
         //获取语言列表
         $http.get("<c:url value="/languages"/>").success(function (data) {
             if (data.success) {

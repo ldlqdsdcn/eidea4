@@ -112,7 +112,7 @@
         </div>
         <!--left menu end-->
         <!--top navigation-->
-        <div class="top_nav">
+        <div class="top_nav" ng-app="changeLanguageApp" ng-controller="changeLanguageCtrl">
             <div class="nav_menu">
                 <nav>
                     <div class="nav toggle">
@@ -165,6 +165,17 @@
                                 </li>
                             </ul>
                         </li>
+                        <li>
+                            <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                {{defaultLanguageName}}
+                            </a>
+                            <ul class="dropdown-menu dropdown-usermenu pull-right">
+                                <li ng-repeat="language in languages">
+                                    <a ng-click="swithLanguage(language.code)">{{language.name}}</a>
+                                </li>
+                            </ul>
+
+                        </li>
                     </ul>
                 </nav>
             </div>
@@ -185,6 +196,32 @@
 <script src='<c:url value="/js/custom.js"/>' type="text/javascript"></script>
 <script type="text/javascript">
     //$("#content").load("<c:url value="/core/language/showList"/>");
+    var app = angular.module('changeLanguageApp', ['ui.bootstrap', 'jcs-autoValidate']);
+    app.controller('changeLanguageCtrl',function ($scope,$http) {
+        //获取语言列表
+        $http.get("<c:url value="/languages"/>").success(function (data) {
+            if (data.success) {
+                $scope.languages = data.data;
+                var languageCode="<%=(request.getSession().getAttribute("language")==null)?request.getLocale().toString():request.getSession().getAttribute("language")%>";
+                $.each($scope.languages,function (index,value) {
+                    if(value.code == languageCode){
+                        $scope.defaultLanguageName=value.name;
+                    }
+                })
+            }else {
+                $scope.serverReturnMessage = data.message;
+            }
+        });
+        //切换语种
+        $scope.swithLanguage=function (languageCode) {
+            $.each($scope.languages,function (index,value) {
+                if(value.code == languageCode){
+                    $scope.defaultLanguageName=value.name;
+                }
+            })
+            window.parent.location.href = "<c:url value="/common/changeLanguageCode"/>?language="+languageCode;
+        }
+    });
 </script>
 </body>
 </html>

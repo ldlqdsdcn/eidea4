@@ -7,7 +7,6 @@
 package com.dsdl.eidea.sys.service.impl;
 
 import com.dsdl.eidea.core.spring.annotation.DataAccess;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.dsdl.eidea.sys.entity.po.UserSession2Po;
 import com.dsdl.eidea.sys.service.UserSession2Service;
@@ -18,7 +17,7 @@ import com.googlecode.genericdao.search.Search;
 import com.dsdl.eidea.core.dao.CommonDao;
 import java.util.List;
 /**
- * @author 刘大磊 2017-04-20 09:49:45
+ * @author 刘大磊 2017-04-21 11:15:39
  */
 @Service("userSession2Service")
 public class UserSession2ServiceImpl  implements	UserSession2Service {

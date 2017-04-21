@@ -1,6 +1,6 @@
 <%--
   Created by 刘大磊.
-  Date: 2017-04-20 09:49:45
+  Date: 2017-04-21 11:15:39
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/inc/taglib.jsp" %>
@@ -112,6 +112,18 @@ init: true
 $scope.pageChanged();
 });
     app.controller('editCtrl', function ($scope, $http, $routeParams) {
+
+
+        $('.form_datetime').datetimepicker({
+            language:  'zh-CN',
+            weekStart: 1,
+            todayBtn:  1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 2,
+            forceParse: 0,
+            showMeridian: 1
+        });
         $scope.message = '';
         $scope.userSession2Po = {};
         $scope.canAdd=PrivilegeService.hasPrivilege('add');

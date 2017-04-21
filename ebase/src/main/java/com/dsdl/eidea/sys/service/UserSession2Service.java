@@ -9,10 +9,9 @@ import com.dsdl.eidea.sys.entity.po.UserSession2Po;
 import com.dsdl.eidea.core.dto.PaginationResult;
 import com.dsdl.eidea.core.params.QueryParams;
 import com.googlecode.genericdao.search.Search;
-import java.util.List;
 
 /**
- * @author 刘大磊 2017-04-20 09:49:45
+ * @author 刘大磊 2017-04-21 11:15:39
  */
 public interface UserSession2Service {
 	PaginationResult<UserSession2Po> getUserSession2ListByPaging(Search search,QueryParams queryParams);

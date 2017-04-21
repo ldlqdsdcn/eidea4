@@ -1,6 +1,6 @@
 <%--
 User: 刘大磊
-Date: 2017-04-21 11:15:39
+Date: 2017-04-21 14:21:47
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/inc/taglib.jsp" %>
@@ -20,16 +20,21 @@ Date: 2017-04-21 11:15:39
 
                 </div>
                 <div class="form-group">
-                <label for="loginDate" ><%--loginDate--%><eidea:label key="sys.userSession2.label.loginDate"/></label>
-                <div class=" input-group date form_datetime" data-date="1979-09-16T05:25:07Z" data-date-format="yyyy-mm-dd hh:ii:ss" data-link-field="dtp_input1">
-                    <input type="datetime" class="form-control" id="loginDate" uib-datepicker-popup="yyyy-MM-dd HH:mm:ss" data-date-format="yyyy-mm-dd hh:ii:ss" placeholder="<eidea:message key="common.please.input"><eidea:param value="sys.userSession2.label.loginDate" type="label"/></eidea:message>" ng-model="userSession2Po.loginDate" >
-                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
-                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-                </div>
+                    <label for="loginDate" ><%--loginDate--%><eidea:label key="sys.userSession2.label.loginDate"/></label>
+                            <div class="input-group date bootstrap-datetime">
+                                <input type="text" class="form-control" id="loginDate" placeholder="<eidea:message key="common.please.input"><eidea:param value="sys.userSession2.label.loginDate" type="label"/></eidea:message>" ng-model="userSession2Po.loginDate"
+                                uib-datepicker-popup="yyyy-MM-dd HH:mm:ss">
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+                            </div>
+
                 </div>
                 <div class="form-group">
                     <label for="logoutDate" ><%--logoutDate--%><eidea:label key="sys.userSession2.label.logoutDate"/></label>
-                                <input type="text" class="form-control" id="logoutDate" uib-datepicker-popup="yyyy-MM-dd HH:mm:ss" placeholder="<eidea:message key="common.please.input"><eidea:param value="sys.userSession2.label.logoutDate" type="label"/></eidea:message>" ng-model="userSession2Po.logoutDate" >
+                            <div class="input-group date bootstrap-datetime">
+                                <input type="text" class="form-control" id="logoutDate" placeholder="<eidea:message key="common.please.input"><eidea:param value="sys.userSession2.label.logoutDate" type="label"/></eidea:message>" ng-model="userSession2Po.logoutDate"
+                                uib-datepicker-popup="yyyy-MM-dd HH:mm:ss">
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+                            </div>
 
                 </div>
                 <div class="form-group">

@@ -37,7 +37,7 @@
                         <#if prop.inputType==3>
                         ${r'{{'}model.${prop.prop}|date:"yyyy-MM-dd"${r'}}'}
                         <#elseif prop.inputType==4>
-                        ${r'{{'}model.${prop.prop}|date:"yyyy-MM-dd hh:mm:ss"${r'}}'}
+                        ${r'{{'}model.${prop.prop}|date:"yyyy-MM-dd HH:mm:ss"${r'}}'}
                         <#else>
                         ${r'{{'}model.${prop.prop}${r'}}'}
                         </#if>

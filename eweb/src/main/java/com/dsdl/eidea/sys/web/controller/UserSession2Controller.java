@@ -28,9 +28,10 @@ import com.dsdl.eidea.core.dto.PaginationResult;
 import com.dsdl.eidea.core.params.QueryParams;
 import com.dsdl.eidea.core.params.DeleteParams;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 /**
-* Created by 刘大磊 on 2017-04-21 11:15:39.
+* Created by 刘大磊 on 2017-04-21 14:21:47.
 */ @Controller
 @RequestMapping("/sys/userSession2")
 public class UserSession2Controller extends BaseController {

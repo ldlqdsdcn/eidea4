@@ -19,7 +19,7 @@
     <script type='text/javascript' src='<c:url value="/js/jquery-3.1.1.min.js"/>'></script>
     <script type='text/javascript' src='<c:url value="/js/bootstrap/bootstrap.min.js"/>'></script>
     <script type='text/javascript' src='<c:url value="/js/bootbox.min.js"/>'></script>
-    <script type='text/javascript' src='<c:url value="/js/bootstrap/bootstrap-datetimepicker.min.js"/>'></script>
+    <script type='text/javascript' src='<c:url value="/js/bootstrap/datetimepicker/bootstrap-datetimepicker.min.js"/>'></script>
     <script type='text/javascript' src="<c:url value="/js/angular/angular.min.js"/>"></script>
     <script type='text/javascript' src="<c:url value="/js/angular/angular-route.min.js"/>"></script>
     <script type='text/javascript' src="<c:url value="/js/angular/jcs-auto-validate.min.js"/>"></script>

@@ -40,10 +40,10 @@
                         {{model.sessionId}}
                     </td>
                     <td>
-                        {{model.loginDate|date:"yyyy-MM-dd hh:mm:ss"}}
+                        {{model.loginDate|date:"yyyy-MM-dd HH:mm:ss"}}
                     </td>
                     <td>
-                        {{model.logoutDate|date:"yyyy-MM-dd hh:mm:ss"}}
+                        {{model.logoutDate|date:"yyyy-MM-dd HH:mm:ss"}}
                     </td>
                     <td>
                         {{model.remoteAddr}}

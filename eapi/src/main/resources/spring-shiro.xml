@@ -1,34 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	   xmlns="http://www.springframework.org/schema/beans"
-	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
-	<!-- 自定义Realm -->
-	<bean id="apiRealm" class="com.dsdl.eidea.api.shiro.StaticRealm" />
-	<!-- 安全管理器 -->
-	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
-  	  <property name="realm" ref="apiRealm"/>
-	</bean>  
-	<!-- Shiro过滤器 -->
-	<bean id="userloginFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">  
-	    <!-- Shiro的核心安全接口,这个属性是必须的 -->  
-	    <property name="securityManager" ref="securityManager"/>
-	    <!-- 身份认证失败，则跳转到登录页面的配置 -->  
-	    <property name="loginUrl" value="/error/noprivileges.jsp"/>
-		<!-- 权限认证失败，则跳转到指定页面 -->
-	    <property name="unauthorizedUrl" value="/error/noprivileges.jsp"/>
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <!-- 自定义Realm -->
+    <bean id="apiRealm" class="com.dsdl.eidea.api.shiro.StaticRealm"/>
+    <!-- 安全管理器 -->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref="apiRealm"/>
+    </bean>
+    <!-- Shiro过滤器 -->
+    <bean id="userloginFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <!-- Shiro的核心安全接口,这个属性是必须的 -->
+        <property name="securityManager" ref="securityManager"/>
+        <!-- 身份认证失败，则跳转到登录页面的配置 -->
+        <property name="loginUrl" value="/error/noprivileges.jsp"/>
+        <!-- 权限认证失败，则跳转到指定页面 -->
+        <property name="unauthorizedUrl" value="/error/noprivileges.jsp"/>
+        <!-- Shiro连接约束配置,即过滤链的定义 -->
+        <property name="filterChainDefinitions">
+            <value>
+                /img/*=anon
+                /error/*=anon
+                /**=authcBasic
+            </value>
+        </property>
+    </bean>
+    <!-- 保证实现了Shiro内部lifecycle函数的bean执行 -->
 
-	    <!-- Shiro连接约束配置,即过滤链的定义 -->  
-	    <property name="filterChainDefinitions">  
-	        <value>
-				/img/*=anon
-				/error/*=anon
-	            /**=authcBasic
-	        </value>
-	    </property>
-	</bean>  
-	<!-- 保证实现了Shiro内部lifecycle函数的bean执行 -->
-
-	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
 
 </beans>
 

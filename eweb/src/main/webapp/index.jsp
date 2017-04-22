@@ -112,7 +112,7 @@
         </div>
         <!--left menu end-->
         <!--top navigation-->
-        <div class="top_nav" ng-app="changeLanguageApp" ng-controller="changeLanguageCtrl">
+        <div class="top_nav">
             <div class="nav_menu">
                 <nav>
                     <div class="nav toggle">
@@ -165,7 +165,7 @@
                                 </li>
                             </ul>
                         </li>
-                        <li>
+                        <li ng-app="changeLanguageApp" ng-controller="changeLanguageCtrl">
                             <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                                 {{defaultLanguageName}}
                             </a>

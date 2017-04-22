@@ -56,7 +56,7 @@
                 <div class="form-group">
                     <label class="col-sm-2 text-right"><%--电话--%><eidea:label key="user.column.telephone"/></label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="telephone" placeholder="<%--请输入电话--%><eidea:message key="user.input.user.phone"/>" ng-model="userBo.telephone"
+                        <input type="tel" class="form-control" id="telephone" placeholder="<%--请输入电话--%><eidea:message key="user.input.user.phone"/>" ng-model="userBo.telephone"
                                ng-maxlength="45">
                     </div>
                 </div>

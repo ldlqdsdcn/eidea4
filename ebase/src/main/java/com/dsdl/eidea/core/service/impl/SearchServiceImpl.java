@@ -111,7 +111,10 @@ public class SearchServiceImpl implements SearchService {
                 notNeedRemovedColumnList.add(searchColumnPo.getId());
             }
         }
-        searchColumnDao.removeSearchColumnIdNotIn(notNeedRemovedColumnList, searchBo.getId());
+        if( searchBo.getId()!=null)
+        {
+            searchColumnDao.removeSearchColumnIdNotIn(notNeedRemovedColumnList, searchBo.getId());
+        }
         searchPo.setCoreSearchColumns(searchColumnPoList);
 
         searchDao.save(searchPo);

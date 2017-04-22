@@ -131,7 +131,7 @@
                     oneColumn.value=$("#"+oneColumn.columnId).val();
                     if(oneColumn.dataType==2)
                     {
-                        if(!isInt( oneColumn.value))
+                        if(!eideaValidator.isInt( oneColumn.value))
                         {
                             bootbox.alert(oneColumn.columnName+"<eidea:message key="common.search.error.Integer.column_name"/>");
                             return false;
@@ -139,7 +139,7 @@
                     }
                     else if(oneColumn.dataType==3)
                     {
-                        if(!isFloat( oneColumn.value))
+                        if(!eideaValidator.isFloat( oneColumn.value))
                         {
                             bootbox.alert(oneColumn.columnName+"<eidea:message key="common.search.error.number.column_name"/>");
                             return false;

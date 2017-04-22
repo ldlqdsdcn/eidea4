@@ -57,7 +57,8 @@
                             <td  class="form-group" >
                                 <input type="checkbox" ng-model="searchColumn.delFlag" formnovalidate>
                             </td>
-                            <td class="form-group" style="width: 100px;"><input ng-model="searchColumn.seqNo"  required type="number" style="width: 100px;"></td>
+                            <td class="form-group" style="width: 100px;">
+                                <input ng-model="searchColumn.seqNo"  required type="number" style="width: 100px;" ng-pattern="/^\d+$/" min="0"></td>
                             <td class="form-group" style="width: 100px;">
                                 <input type="text"  ng-model="searchColumn.name"  style="width: 100px;" required>
                             </td>

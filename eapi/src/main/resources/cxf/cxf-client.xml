@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+      xmlns:jaxws="http://cxf.apache.org/jaxws"
+	  xsi:schemaLocation="
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://cxf.apache.org/jaxws 
+		http://cxf.apache.org/schemas/jaxws.xsd">
+<bean id="cxfConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+	<property name="location" value="classpath:users.properties"></property>
+</bean>
+ <bean id="loggingInInterceptor" class="com.dsdl.eidea.soap.cxf2.interceptor.LoggingInInterceptor"></bean>
+ <bean id="loggingOutInterceptor" class="com.dsdl.eidea.soap.cxf2.interceptor.LoggingOutInterceptor"></bean>
+   
+ <!--<bean id="abstractJaxWsBean" abstract="true">-->
+
+ 	<!--<property name="features"><list> -->
+ 		 	<!--<bean class="com.powere2e.cxf.feature.DBLoggingFeature"></bean>-->
+ 			<!--</list>-->
+ 		<!--</property>-->
+ 	<!--<property name="username" value="${sap.username}"></property>-->
+	<!--<property name="password" value="${sap.password}"></property>-->
+ <!--</bean>-->
+ <!--<bean id="respFactory" class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean" parent="abstractJaxWsBean">-->
+ 		<!--<property name="serviceClass" value="com.powere2e.core.client.resp.OIRESPASYNC" />-->
+		<!--<property name="address"-->
+			<!--value="${sap.url}/XISOAPAdapter/MessageServlet?channel=:${sap.channel}:CC_WMS2SAP_AsyncResult_SOAP_SEND&amp;version=3.0&amp;Sender.Service=*&amp;Interface=*%5E*" />		-->
+	<!--</bean>-->
+</beans>

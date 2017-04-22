@@ -38,10 +38,10 @@
                         {{model.key}}
                     </td>
                     <td>
-                        {{model.isactive}}
+                        {{model.msgtext}}
                     </td>
                     <td>
-                        {{model.msgtext}}
+                        {{model.isactive}}
                     </td>
                     <td>
                         <a class="btn btn-primary btn-xs" href="#/edit?key={{model.key}}"><eidea:label key="common.button.edit"/><%--编辑--%></a>

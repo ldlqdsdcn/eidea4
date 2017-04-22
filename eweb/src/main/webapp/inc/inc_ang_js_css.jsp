@@ -27,6 +27,8 @@
 <script type='text/javascript' id="privileges" src="<c:url value="/js/angular/eidea.privileges.js"/>" data-privileges='${pagePrivileges}'></script>
 <%--加特殊效果 css 例如 等待按钮--%>
 <link rel="stylesheet" href="<c:url value="/css/font-awesome.min.css"/>" type="text/css" media="all"/>
+<%--eidea项目自己的样式--%>
+<link rel="stylesheet" href="<c:url value="/css/eidea.css"/>" type="text/css" media="all"/>
 <%--日期控件支持--%>
 <link rel="stylesheet" href="<c:url value="/css/bootstrap/datetimepicker/bootstrap-datetimepicker.min.css"/>" type="text/css" media="all"/>
 <link rel="stylesheet" href="<c:url value="/css/bootstrap/datepicker/bootstrap-datepicker3.min.css"/>" type="text/css" media="all"/>

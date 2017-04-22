@@ -131,6 +131,11 @@ public class PageMenuServiceImpl implements PageMenuService {
     }
 
     public String getLeftMenuListByUserId(Integer userId, String contextPath) {
+        return getLeftMenuListByUserId(userId, contextPath,"zh_CN");
+    }
+
+    @Override
+    public String getLeftMenuListByUserId(Integer userId, String contextPath, String languageCode) {
         UserPo userPo = userDao.find(userId);
         List<UserRolePo> userRolePoList = userPo.getSysUserRoles();
         List<PageMenuPo> pageMenuPoList = new ArrayList<>();
@@ -157,7 +162,7 @@ public class PageMenuServiceImpl implements PageMenuService {
             }
         }
         logger.debug("pageMenuPoList.size=" + pageMenuPoList.size());
-        return getLeftMenuList(pageMenuPoList, contextPath);
+        return getLeftMenuList(pageMenuPoList, contextPath,languageCode);
     }
 
     private boolean hasViewPrivilege(ModuleRolePo moduleRolePo) {
@@ -188,7 +193,7 @@ public class PageMenuServiceImpl implements PageMenuService {
         return menuForderList;
     }
 
-    private String getLeftMenuList(List<PageMenuPo> pageMenuPoList, String contextPath) {
+    private String getLeftMenuList(List<PageMenuPo> pageMenuPoList, String contextPath,String languageCode) {
 
         List<PageMenuPo> menuForderList = new ArrayList<>();
 
@@ -197,8 +202,30 @@ public class PageMenuServiceImpl implements PageMenuService {
         }
         pageMenuPoList.addAll(menuForderList);
         logger.debug("pageMenuPoList.size="+pageMenuPoList.size());
-        List<PageMenuBo> pageMenuBoList = modelMapper.map(pageMenuPoList, new TypeToken<List<PageMenuBo>>() {
-        }.getType());
+        List<PageMenuBo> pageMenuBoList =new ArrayList<>();
+        for(PageMenuPo pageMenuPo:pageMenuPoList)
+        {
+            List<PageMenuTrlPo> pageMenuTrlPoList=pageMenuPo.getPageMenuTrlPoList();
+            PageMenuBo pageMenuBo=modelMapper.map(pageMenuPo,PageMenuBo.class);
+            if(pageMenuTrlPoList!=null)
+            {
+                for(PageMenuTrlPo pageMenuTrlPo:pageMenuTrlPoList)
+                {
+                    if(languageCode.equals(pageMenuTrlPo.getLanguageCode()))
+                    {
+                        if(StringUtil.isNotEmpty(pageMenuTrlPo.getName()))
+                        {
+                            pageMenuBo.setName(pageMenuTrlPo.getName());
+                        }
+                        break;
+                    }
+                }
+            }
+            pageMenuBoList.add(pageMenuBo);
+
+        }
+//        List<PageMenuBo> pageMenuBoList = modelMapper.map(pageMenuPoList, new TypeToken<List<PageMenuBo>>() {
+//        }.getType());
         logger.debug("pageMenuBoList.size="+pageMenuBoList.size());
         return buildMenu(null, pageMenuBoList, contextPath);
 

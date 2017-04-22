@@ -59,7 +59,7 @@ public class ChangedLanguageController {
         request.getSession().setAttribute("language",language);
         UserBo loginUser=(UserBo) session.getAttribute(WebConst.SESSION_LOGINUSER);
         String contextPath = request.getServletContext().getContextPath();
-        String leftMenuStr = pageMenuService.getLeftMenuListByUserId(loginUser.getId(), contextPath);
+        String leftMenuStr = pageMenuService.getLeftMenuListByUserId(loginUser.getId(), contextPath,language);
         session.setAttribute(WebConst.SESSION_LEFTMENU, leftMenuStr);
         return modelAndView;
     }

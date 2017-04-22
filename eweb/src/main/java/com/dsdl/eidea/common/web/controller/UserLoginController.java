@@ -150,16 +150,16 @@ public class UserLoginController {
         UserContent userContent = new UserContent(privilegesMap, userSessionBo, token, orgIdList);
         session.setAttribute(WebConst.SESSION_USERCONTENT, userContent);
         String contextPath = request.getServletContext().getContextPath();
-        String leftMenuStr = pageMenuService.getLeftMenuListByUserId(loginUser.getId(), contextPath);
-        session.setAttribute(WebConst.SESSION_LEFTMENU, leftMenuStr);
 
+        Locale locale = LocaleHelper.parseLocale(loginUser.getCode());
         if (request.getSession().getAttribute(WebConst.SESSION_RESOURCE) == null) {
-            Locale locale = LocaleHelper.parseLocale(loginUser.getCode());
+
             DbResourceBundle dbResourceBundle = messageService.getResourceBundle(loginUser.getCode());
             UserResource userResource = new UserResource(locale, dbResourceBundle);
             session.setAttribute(WebConst.SESSION_RESOURCE, userResource);
         }
-
+        String leftMenuStr = pageMenuService.getLeftMenuListByUserId(loginUser.getId(), contextPath,locale.toString());
+        session.setAttribute(WebConst.SESSION_LEFTMENU, leftMenuStr);
 
     }
 

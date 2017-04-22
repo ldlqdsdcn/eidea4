@@ -16,8 +16,7 @@
             <table  class="table table-hover table-striped table-condensed">
                 <thead>
                 <tr>
-                    <th><input type="checkbox" name="selectAll" style="margin:0px;" ng-change="selectAll()"
-                               ng-model="delFlag"></th>
+                    <th><input type="checkbox" name="selectAll" style="margin:0px;" ng-change="selectAll()"  ng-model="delFlag"></th>
                     <th><%--序号--%><eidea:label key="base.serialNumber"/></th>
                     <#list propertyList as prop>
                     <th><%--${prop.label}--%><eidea:label key="${prop.propertyLabel}"/></th>
@@ -53,7 +52,7 @@
                 max-size="maxSize" first-text="<eidea:label key="common.label.firstpage"/>" previous-text="<eidea:label key="common.label.previouspage"/>" next-text="<eidea:label key="common.label.nextpage"/>" last-text="<eidea:label key="common.label.lastpage"/>"
             class="pagination-sm" boundary-link-numbers="true" rotate="false" items-per-page="queryParams.pageSize"
             ng-change="pageChanged()"></ul>
-            <div class="text-left"><eidea:message key="common.msg.result.prefix"/>{{queryParams.totalRecords}}<eidea:message key="common.msg.result.suffix"/></div>
+            <div class="text-left ng-binding padding_total_banner"><eidea:message key="common.msg.result.prefix"/><span>{{queryParams.totalRecords}}</span><eidea:message key="common.msg.result.suffix"/></div>
         </div>
     </div>
 </div>

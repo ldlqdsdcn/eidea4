@@ -93,7 +93,7 @@
         $scope.submit = function () {
             $("#loginBtn").button('loading');
             if ($scope.loginForm.$valid) {
-                loginParam={username:$scope.loginBo.username,password:md5($scope.loginBo.password)};
+                loginParam={username:$scope.loginBo.username,password:md5($scope.loginBo.password),"code":$scope.loginBo.code};
                 $scope.serverReturnMessage = "";
                 $http.post("<c:url value="/login"/>", loginParam).success(function (data) {
                     if (data.success) {

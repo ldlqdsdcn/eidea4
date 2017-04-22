@@ -44,4 +44,13 @@ public interface PageMenuService {
      * @return
      */
     String getLeftMenuListByUserId(Integer userId, String contextPath);
+
+    /**
+     * 获取国际化左菜单
+     * @param userId
+     * @param contextPath
+     * @param languageCode
+     * @return
+     */
+    String getLeftMenuListByUserId(Integer userId,String contextPath,String languageCode);
 }

@@ -13,7 +13,7 @@ import org.hibernate.validator.constraints.NotBlank;
 public class ClientBo {
     private Integer id;
     @NotBlank(message="client.error.no.not_null")
-    @Length(min=4,max=10,message="client.error.no.length_error")
+    @Length(min=2,max=10,message="client.error.no.length_error")
     private String no;
     @NotBlank(message="client.error.name.not_null")
     @Length(min=2,max=30,message="client.error.name.length_error")

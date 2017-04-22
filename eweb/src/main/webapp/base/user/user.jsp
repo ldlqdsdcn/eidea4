@@ -184,8 +184,6 @@
                     postUrl = '<c:url value="/base/user/saveUserForCreated"/>';
                     $scope.userBo.password=md5($scope.userBo.password);
                 }
-
-                alert(postUrl);
                 $http.post(postUrl, $scope.userBo).success(function (data) {
                     if (data.success) {
                         $scope.errorCode = -1;

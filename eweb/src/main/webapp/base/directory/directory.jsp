@@ -116,7 +116,7 @@
         $scope.message = '';
         $scope.directoryBo = {};
         $scope.canAdd=PrivilegeService.hasPrivilege('add');
-        $scope.canSave=false;
+        $scope.canSave=PrivilegeService.hasPrivilege('update');
         if ($routeParams.id != null) {
             url = "<c:url value="/base/directory/get"/>" + "?id=" + $routeParams.id;
             $http.get(url)

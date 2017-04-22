@@ -38,14 +38,9 @@ public class UserBo {
     @Length(min = 1,max = 1,message = "isactive.length")
     private String isactive;
     private String userPic;
-    @NotNull(message = "entity.information.not.empty")
-    private RoleBo role;
-    @Length(min = 1,max = 11,message = "entity.id.length")
     private Integer clientId;
-    @Length(min = 1,max = 11,message = "tissue.id.length")
     private Integer orgId;
     private Integer[] roleIds;
-    private Integer[] roleRemoveIds;
     private boolean created=false;
     private String code;
 }

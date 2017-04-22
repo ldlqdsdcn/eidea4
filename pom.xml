@@ -27,9 +27,9 @@
     </properties>
     <repositories>
         <repository>
-            <id>nexus</id>
-            <name>鼎商动力私服</name>
-            <url>http://139.129.98.64:8083/nexus/content/group/public</url>
+            <id>nexus-in</id>
+            <name>鼎商动力私服-wms团队私服</name>
+            <url>http://192.168.0.57:8181/nexus/content/groups/public</url>
         </repository>
         <repository>
             <id>spring-maven-release</id>

@@ -42,4 +42,6 @@
     <import resource="classpath:spring/spring-mybatis.xml"/>
     <!--hibernate 设置-->
     <import resource="classpath:spring/spring-hibernate.xml"/>
+    <!--activemq-->
+    <import resource="classpath:spring/spirng-jms.xml"/>
 </beans>

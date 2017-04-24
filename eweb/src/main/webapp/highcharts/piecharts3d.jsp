@@ -13,8 +13,10 @@
 </head>
 <body>
 <div class="page-header">
+    <a href="http://localhost:8080/eweb/highcharts/columncharts3d.jsp" class="btn  btn-primary btn-sm" >柱状图<%--新建--%></a>
     <a href="http://localhost:8080/eweb/highcharts/linecharts.jsp" class="btn  btn-primary btn-sm">线性图<%--新建--%></a>
-    <a href="http://localhost:8080/eweb/highcharts/columncharts3d.jsp" class="btn  btn-primary btn-sm">柱状图<%--新建--%></a>
+    <a href="http://localhost:8080/eweb/highcharts/highchartpie.jsp" class="btn  btn-primary btn-sm">饼状图数据下钻<%--新建--%></a>
+    <a href="http://localhost:8080/eweb/highcharts/columnchart3d.jsp" class="btn  btn-primary btn-sm">柱状图2<%--新建--%></a>
 </div>
 <div id="container"></div>
 <script type="text/javascript">

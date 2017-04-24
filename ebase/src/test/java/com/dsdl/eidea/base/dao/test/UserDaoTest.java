@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -16,7 +17,7 @@ import java.util.List;
 /**
  * Created by 刘大磊 on 2017/2/6.
  */
-@RunWith(JUnit4ClassRunner.class)
+@RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:applicationContext.xml")
 @Slf4j
 public class UserDaoTest {

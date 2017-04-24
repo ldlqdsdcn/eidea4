@@ -19,4 +19,11 @@ public interface ReportSettingsService {
     void deletes(String[] keys);
 
     boolean findExistReport(String key);
+
+    /**
+     * 获取报表服务器设置
+     * @param key
+     * @return
+     */
+    String getReportSettingProperty(String key);
 }

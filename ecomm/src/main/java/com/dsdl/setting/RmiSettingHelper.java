@@ -24,16 +24,41 @@ public class RmiSettingHelper {
             log.error("No AreaPhone.properties defined error", e);
         }
     }
-   public static String getMainRmiUrl()
-   {
-      return config.getProperty("web.url");
-   }
-    public static String getApiRmiUrl()
-    {
-        return config.getProperty("api.url");
+
+    /**
+     * 获取主服务rmi端口
+     *
+     * @return
+     */
+    public static int getMainPort() {
+        return Integer.parseInt(config.getProperty("web.port"));
     }
-    public static String getReportRmiUrl()
-    {
-        return config.getProperty("report.url");
+
+    /**
+     * 获取主rmi url地址
+     *
+     * @return
+     */
+    public static String getMainRmiUrl() {
+        return config.getProperty("web.base.url") + ":" + config.getProperty("web.port") + "/";
     }
+
+    /**
+     * 获取Api rmi url地址
+     *
+     * @return
+     */
+    public static String getApiRmiUrl() {
+        return config.getProperty("api.base.url") + ":" + config.getProperty("api.port") + "/";
+    }
+
+    /**
+     * 获取api rmi端口
+     *
+     * @return
+     */
+    public static int getApiPort() {
+        return Integer.parseInt(config.getProperty("api.port"));
+    }
+
 }

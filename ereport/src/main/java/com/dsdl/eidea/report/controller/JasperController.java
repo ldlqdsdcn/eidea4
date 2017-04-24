@@ -1,5 +1,6 @@
 package com.dsdl.eidea.report.controller;
 
+import com.dsdl.eidea.core.rmi.ReportSettingsRmi;
 import com.dsdl.eidea.report.service.AuthenticationManger;
 import com.dsdl.eidea.report.util.PrivilegesHelper;
 import com.dsdl.eidea.util.AesUtils;
@@ -39,6 +40,8 @@ import java.util.*;
 @RequestMapping("/jasper")
 public class JasperController {
     private static final Logger logger = Logger.getLogger(JasperController.class);
+    @Autowired(required = false)
+    ReportSettingsRmi reportSettingsRmi;
     @Autowired
     private DataSource dataSource;
     @Autowired
@@ -72,8 +75,7 @@ public class JasperController {
         {
             sqlWhereParam=null;
         }
-        //TODO 需要替换掉
-        String tempFile = "e:/report" + System.getProperty("file.separator") + reportName + ".jasper";
+        String tempFile =  reportSettingsRmi.getTemplateFilePath() + System.getProperty("file.separator") + reportName + ".jasper";
         InputStream jasperStream = new FileInputStream(tempFile);
         JasperReport jasperReport = (JasperReport) JRLoader.loadObject(jasperStream);
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, conn);
@@ -112,8 +114,7 @@ public class JasperController {
         String exportName = null;
         for (ReportParam reportParam : reportParamList) {
             exportName = reportParam.getExportName();
-            //TODO 需要替换掉
-            String tempFile = "e:/report" + System.getProperty("file.separator") + reportParam.getReportName() + ".jasper";
+            String tempFile = reportSettingsRmi.getTemplateFilePath() + System.getProperty("file.separator") + reportParam.getReportName() + ".jasper";
             InputStream jasperStream = new FileInputStream(tempFile);
             JasperReport jasperReport = (JasperReport) JRLoader.loadObject(jasperStream);
             Map<String, Object> params = new HashMap<>();

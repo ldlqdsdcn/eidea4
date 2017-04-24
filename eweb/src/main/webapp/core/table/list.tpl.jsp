@@ -5,6 +5,7 @@
         <ol class="breadcrumb">
             <li><a href="javascript:;"><i class="icon icon-tasks"></i><eidea:label key="table.title"/></a></li>
         </ol>
+        <a href="#/wizard" class="btn  btn-primary btn-sm" ng-show="canAdd"><%--新建向导--%><eidea:label key="common.button.create_wizard"/></a>
         <a href="#/edit" class="btn  btn-primary btn-sm" ng-show="canAdd"><eidea:label key="common.button.create"/></a>
         <button type="button" class="btn  btn-primary btn-sm" id="search_but" data-toggle="modal"
                 data-target="#searchModal"><eidea:label key="common.button.search"/></button>

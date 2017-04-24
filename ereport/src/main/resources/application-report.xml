@@ -40,7 +40,7 @@
 	</bean>
 	<!-- 扫描mybatis映射接口类 -->
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.dsdl.**.dao" />
+		<property name="basePackage" value="com.dsdl.eidea.**.dao" />
 		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
 	</bean>
 	<!--datasource-->

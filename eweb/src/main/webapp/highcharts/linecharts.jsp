@@ -7,19 +7,20 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/inc/inc_ang_js_css.jsp" %>
+<%@include file="/inc/highcharts_js.jsp" %>
 <html>
 <head>
     <title>3d饼图2</title>
 </head>
 <body>
 <div class="page-header">
-    <a href="http://localhost:8080/eweb/highcharts/columncharts3d.jsp" class="btn  btn-primary btn-sm" >柱状图<%--新建--%></a>
-    <a href="http://localhost:8080/eweb/highcharts/columnchart3d.jsp" class="btn  btn-primary btn-sm">柱状图2<%--新建--%></a>
-    <a href="http://localhost:8080/eweb/highcharts/piecharts3d.jsp" class="btn  btn-primary btn-sm">饼状图数据下钻<%--新建--%></a>
-    <a href="http://localhost:8080/eweb/highcharts/highchartpie.jsp" class="btn  btn-primary btn-sm">饼状图<%--新建--%></a>
+    <a href="<c:url value="/highcharts/columncharts3d.jsp"/>" class="btn  btn-primary btn-sm">柱状图</a>
+    <a href="<c:url value="/highcharts/columnchart3d.jsp"/>" class="btn  btn-primary btn-sm">柱状图2</a>
+    <a href="<c:url value="/highcharts/piecharts3d.jsp"/>" class="btn  btn-primary btn-sm">饼状图数据下钻</a>
+    <a href="<c:url value="/highcharts/highchartpie.jsp"/>" class="btn  btn-primary btn-sm">饼状图</a>
 </div>
-<div ng-app='myModule' ng-controller="myController" style="width: 100%;height: 100%">
-    <hc-line-chart title="聊天市场占有率" subtitle="青岛" data="lineData">piechart</hc-line-chart>
+<div ng-app='myModule' ng-controller="myController">
+    <hc-line-chart title="聊天市场占有率" subtitle="青岛" data="lineData"style="width: 100%;height: 50%">piechart</hc-line-chart>
 </div>
 <div class="message"></div>
 <script type="text/javascript">
@@ -30,13 +31,13 @@
                 template: '<div></div>',
                 scope: {
                     title: '@',
-                    subtitle:'@',
+                    subtitle: '@',
                     data: '='
                 },
                 link: function (scope, element) {
                     Highcharts.chart(element[0], {
                         chart: {
-                            zoomType:'x'
+                            zoomType: 'x'
                         },
                         title: {
                             text: scope.title
@@ -46,21 +47,21 @@
                         },
                         xAxis: {
                             //十字准星线
-                            crosshair:{
-                                color:'#c6c6cc',
-                                snap:true,
-                                width:1
+                            crosshair: {
+                                color: '#c6c6cc',
+                                snap: true,
+                                width: 1
                             },
                             categories: Highcharts.getOptions().lang.months
                         },
                         yAxis: {
-                            crosshair:{
-                                color:'#9f9ccc'
+                            crosshair: {
+                                color: '#9f9ccc'
                             },
                             title: {
                                 text: '温度 (°C)',
-                                align:'high',
-                                rotation:'0'
+                                align: 'high',
+                                rotation: '0'
                             }, plotLines: [{
                                 value: 0,
                                 width: 1,
@@ -76,9 +77,9 @@
                             verticalAlign: 'middle',
                             borderWidth: 0
                         },
-                        plotOptions:{
+                        plotOptions: {
 
-                            area:{
+                            area: {
                                 fillColor: {
                                     linearGradient: {
                                         x1: 0,
@@ -93,16 +94,16 @@
                                 }
                             }
                         },
-                        series:scope.data
+                        series: scope.data
                     });
                 }
             }
         });
     app.controller('myController', function ($scope) {
-        $scope.lineData =  [{
+        $scope.lineData = [{
             name: '青岛',
             data: [-3, -2, 2, 8, 13, 18, 25.5, 27.4, 22, 15.6, 9.5, 3.0]
-        },{
+        }, {
             name: '东京',
             data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
         }, {

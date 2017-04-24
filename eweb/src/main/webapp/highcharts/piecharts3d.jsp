@@ -7,16 +7,17 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/inc/inc_ang_js_css.jsp" %>
+<%@include file="/inc/highcharts_js.jsp" %>
 <html>
 <head>
     <title>3d饼图</title>
 </head>
 <body>
 <div class="page-header">
-    <a href="http://localhost:8080/eweb/highcharts/columncharts3d.jsp" class="btn  btn-primary btn-sm" >柱状图<%--新建--%></a>
-    <a href="http://localhost:8080/eweb/highcharts/linecharts.jsp" class="btn  btn-primary btn-sm">线性图<%--新建--%></a>
-    <a href="http://localhost:8080/eweb/highcharts/highchartpie.jsp" class="btn  btn-primary btn-sm">饼状图数据下钻<%--新建--%></a>
-    <a href="http://localhost:8080/eweb/highcharts/columnchart3d.jsp" class="btn  btn-primary btn-sm">柱状图2<%--新建--%></a>
+    <a href="<c:url value="/highcharts/columncharts3d.jsp"/>" class="btn  btn-primary btn-sm">柱状图</a>
+    <a href="<c:url value="/highcharts/columnchart3d.jsp"/>" class="btn  btn-primary btn-sm">饼状图</a>
+    <a href="<c:url value="/highcharts/linecharts.jsp"/>" class="btn  btn-primary btn-sm">线性图</a>
+    <a href="<c:url value="/highcharts/piecharts3d.jsp"/>" class="btn  btn-primary btn-sm">饼状图数据下钻</a>
 </div>
 <div id="container"></div>
 <script type="text/javascript">
@@ -41,12 +42,12 @@
                 text: '鼎商动力软件股份有限公司 ',
                 href: 'http://www.dsdl.com ',
                 style: {
-                    color:'#c6c6cc',
+                    color: '#c6c6cc',
                     fontSize: '15px'
                 },
                 position: {
                     align: 'right',
-                    verticalalign:'bottom'
+                    verticalalign: 'bottom'
                 },
             },
             tooltip: {

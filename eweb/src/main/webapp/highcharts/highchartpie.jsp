@@ -7,19 +7,21 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/inc/inc_ang_js_css.jsp" %>
+<%@include file="/inc/highcharts_js.jsp" %>
 <html>
 <head>
     <title>3d饼图2</title>
 </head>
 <body>
 <div class="page-header">
-    <a href="http://localhost:8080/eweb/highcharts/columncharts3d.jsp" class="btn  btn-primary btn-sm" >柱状图<%--新建--%></a>
-    <a href="http://localhost:8080/eweb/highcharts/linecharts.jsp" class="btn  btn-primary btn-sm">线性图<%--新建--%></a>
-    <a href="http://localhost:8080/eweb/highcharts/piecharts3d.jsp" class="btn  btn-primary btn-sm">饼状图数据下钻<%--新建--%></a>
-    <a href="http://localhost:8080/eweb/highcharts/columnchart3d.jsp" class="btn  btn-primary btn-sm">柱状图2<%--新建--%></a>
+    <a href="<c:url value="/highcharts/columncharts3d.jsp"/>" class="btn  btn-primary btn-sm">柱状图</a>
+    <a href="<c:url value="/highcharts/linecharts.jsp"/>" class="btn  btn-primary btn-sm">线性图</a>
+    <a href="<c:url value="/highcharts/piecharts3d.jsp"/>" class="btn  btn-primary btn-sm">饼状图数据下钻</a>
+    <a href="<c:url value="/highcharts/columnchart3d.jsp"/>" class="btn  btn-primary btn-sm">柱状图2</a>
 </div>
-<div ng-app='myModule' ng-controller="myController" >
-    <hc-pie-chart title="各地每月平均气温" subtitle="DSDL" data="pieData" style="width: 100%;height: 100%">piechart</hc-pie-chart>
+<div ng-app='myModule' ng-controller="myController">
+    <hc-pie-chart title="各地每月平均气温" subtitle="DSDL" data="pieData" style="width: 50%;height: 50%">piechart
+    </hc-pie-chart>
 </div>
 <script type="text/javascript">
     var app = angular.module('myModule', [])
@@ -29,7 +31,7 @@
                 template: '<div></div>',
                 scope: {
                     title: '@',
-                    subtitle:'@',
+                    subtitle: '@',
                     data: '='
                 },
                 link: function (scope, element) {

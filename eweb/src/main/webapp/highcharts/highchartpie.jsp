@@ -18,8 +18,8 @@
     <a href="http://localhost:8080/eweb/highcharts/piecharts3d.jsp" class="btn  btn-primary btn-sm">饼状图数据下钻<%--新建--%></a>
     <a href="http://localhost:8080/eweb/highcharts/columnchart3d.jsp" class="btn  btn-primary btn-sm">柱状图2<%--新建--%></a>
 </div>
-<div ng-app='myModule' ng-controller="myController">
-    <hc-pie-chart title="各地每月平均气温" subtitle="DSDL" data="pieData">piechart</hc-pie-chart>
+<div ng-app='myModule' ng-controller="myController" >
+    <hc-pie-chart title="各地每月平均气温" subtitle="DSDL" data="pieData" style="width: 100%;height: 100%">piechart</hc-pie-chart>
 </div>
 <script type="text/javascript">
     var app = angular.module('myModule', [])

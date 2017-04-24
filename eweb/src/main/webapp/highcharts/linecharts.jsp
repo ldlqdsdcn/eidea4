@@ -18,9 +18,10 @@
     <a href="http://localhost:8080/eweb/highcharts/piecharts3d.jsp" class="btn  btn-primary btn-sm">饼状图数据下钻<%--新建--%></a>
     <a href="http://localhost:8080/eweb/highcharts/highchartpie.jsp" class="btn  btn-primary btn-sm">饼状图<%--新建--%></a>
 </div>
-<div ng-app='myModule' ng-controller="myController">
+<div ng-app='myModule' ng-controller="myController" style="width: 100%;height: 100%">
     <hc-line-chart title="聊天市场占有率" subtitle="青岛" data="lineData">piechart</hc-line-chart>
 </div>
+<div class="message"></div>
 <script type="text/javascript">
     var app = angular.module('myModule', [])
         .directive('hcLineChart', function () {
@@ -89,16 +90,6 @@
                                         [0, Highcharts.getOptions().colors[0]],
                                         [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('#cccccc')]
                                     ]
-                                }
-                            },
-                            series: {
-                                cursor:'pointer',
-                                point: {
-                                    events: {
-                                        click: function (event) {
-                                            $('.message').html(this.series.name + "平均气温：" + this.y);
-                                        }
-                                    }
                                 }
                             }
                         },

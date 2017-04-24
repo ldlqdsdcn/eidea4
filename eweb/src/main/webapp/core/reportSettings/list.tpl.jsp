@@ -21,6 +21,7 @@
                     <th><%--序号--%><eidea:label key="base.serialNumber"/></th>
                     <th><%--键值--%><eidea:label key="label.keyvalue"/></th>
                     <th><%--信息--%><eidea:label key="label.message"/></th>
+                    <th><%--init--%>Init</th>
                     <th><eidea:label key="common.button.edit"/><%--编辑--%></th>
 
                 </tr>
@@ -29,14 +30,18 @@
 
                 <tr ng-repeat="model in modelList track by $index" ng-class-even="success">
                     <td>
-                        <input type="checkbox" ng-model="model.delFlag">
+
+                        <input type="checkbox" ng-model="model.delFlag" ng-disabled="model.init=='Y'">
                     </td>
                     <td>{{(bigCurrentPage-1)*itemsPerPage+$index+1}}</td>
                     <td>
                         {{model.key}}
                     </td>
                     <td>
-                        {{model.value}}
+                    {{model.value}}
+                    </td>
+                    <td>
+                     {{model.init}}
                     </td>
                     <td>
                         <a class="btn btn-primary btn-xs" href="#/edit?key={{model.key}}"><eidea:label key="common.button.edit"/><%--编辑--%></a>

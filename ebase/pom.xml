@@ -14,6 +14,24 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-core</artifactId>
+            <version>5.14.3</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.activemq/activemq-spring -->
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-spring</artifactId>
+            <version>5.14.3</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.springframework/spring-jms -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jms</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>javax.mail</groupId>
             <artifactId>mail</artifactId>
             <version>1.4.7</version>

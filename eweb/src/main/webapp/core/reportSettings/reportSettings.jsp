@@ -17,8 +17,8 @@
     var app = angular.module('myApp', ['ngRoute', 'ui.bootstrap', 'jcs-autoValidate'])
             .config(['$routeProvider', function ($routeProvider) {
                 $routeProvider
-                        .when('/list', {templateUrl: '<c:url value="/core/report/list.tpl.jsp"/>'})
-                        .when('/edit', {templateUrl: '<c:url value="/core/report/edit.tpl.jsp"/>'})
+                        .when('/list', {templateUrl: '<c:url value="/core/reportSettings/list.tpl.jsp"/>'})
+                        .when('/edit', {templateUrl: '<c:url value="/core/reportSettings/edit.tpl.jsp"/>'})
                         .otherwise({redirectTo: '/list'});
             }]);
     app.controller('listCtrl', function ($scope, $http) {
@@ -27,7 +27,7 @@
         $scope.delFlag = false;
         $scope.canDel = PrivilegeService.hasPrivilege('delete');
         $scope.canAdd = PrivilegeService.hasPrivilege('add');
-        $http.get("<c:url value="/core/report/list"/>")
+        $http.get("<c:url value="/core/reportSettings/list"/>")
                 .success(function (response) {
                     if (response.success) {
                         $scope.updateList(response.data);
@@ -52,7 +52,11 @@
             }
             for (var i = bgn; i < end && i < $scope.allList.length; i++) {
                 var item = $scope.allList[i];
-                item.delFlag = delF;
+                if(item.init!='Y')
+                {
+                    item.delFlag = delF;
+
+                }
                 $scope.modelList.push(item);
 
             }
@@ -90,7 +94,7 @@
                                 ids.push($scope.modelList[i].key);
                             }
                         }
-                        $http.post("<c:url value="/core/report/deletes"/>", ids).success(function (data) {
+                        $http.post("<c:url value="/core/reportSettings/deletes"/>", ids).success(function (data) {
                             if (data.success) {
                                 bootbox.alert("<eidea:message key="module.deleted.success"/>");
                                 $scope.updateList(data.data);
@@ -121,9 +125,9 @@
         $scope.messageBo = {};
         $scope.canAdd = PrivilegeService.hasPrivilege('add');
         $scope.canSave = PrivilegeService.hasPrivilege('update');
-        var url = "<c:url value="/core/report/create"/>";
+        var url = "<c:url value="/core/reportSettings/create"/>";
         if ($routeParams.key != null) {
-            url = "<c:url value="/core/report/get"/>" + "?key=" + $routeParams.key;
+            url = "<c:url value="/core/reportSettings/get"/>" + "?key=" + $routeParams.key;
         }
         $http.get(url)
                 .success(function (response) {
@@ -139,9 +143,9 @@
         });
         $scope.save = function () {
             if ($scope.editForm.$valid) {
-                var postUrl = '<c:url value="/core/report/saveForUpdated"/>';
+                var postUrl = '<c:url value="/core/reportSettings/saveForUpdated"/>';
                 if ($scope.reportBo.created) {
-                    postUrl = '<c:url value="/core/report/saveForCreated"/>';
+                    postUrl = '<c:url value="/core/reportSettings/saveForCreated"/>';
                 }
                 $http.post(postUrl, $scope.reportBo).success(function (data) {
                     if (data.success) {
@@ -157,7 +161,7 @@
         $scope.create = function () {
             $scope.message = "";
             $scope.reportBo = {};
-            var url = "<c:url value="/core/report/create"/>";
+            var url = "<c:url value="/core/reportSettings/create"/>";
             $http.get(url)
                     .success(function (response) {
                         if (response.success) {

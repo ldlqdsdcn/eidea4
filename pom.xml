@@ -39,7 +39,7 @@
         <repository>
             <id>mvnrepository</id>
             <name>mvnrepository</name>
-            <url>http://www.mvnrepository.com</url>
+            <url>http://central.maven.org/maven2</url>
         </repository>
         <repository>
             <id>alibaba</id>

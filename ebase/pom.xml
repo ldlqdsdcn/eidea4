@@ -13,11 +13,11 @@
     <artifactId>ebase</artifactId>
 
     <dependencies>
-        <dependency>
+<!--        <dependency>
             <groupId>org.apache.activemq</groupId>
             <artifactId>activemq-core</artifactId>
             <version>5.14.3</version>
-        </dependency>
+        </dependency>-->
         <!-- https://mvnrepository.com/artifact/org.apache.activemq/activemq-spring -->
         <dependency>
             <groupId>org.apache.activemq</groupId>

@@ -23,7 +23,14 @@
 <script type='text/javascript' src="<c:url value="/js/bootstrap/datepicker/locales/bootstrap-datepicker.zh-CN.min.js"/>"></script>
 <script type='text/javascript' src="<c:url value="/js/consts.js"/>"></script>
 <script type='text/javascript' src="<c:url value="/js/eidea.util.js"/>"></script>
+
 <script type='text/javascript' src="<c:url value="/js/eidea.validate.js"/>"></script>
+<%--第三方图表JS--%>
+<script type='text/javascript' src="<c:url value="/js/highchart/highcharts.js"/>"></script>
+<script type='text/javascript' src="<c:url value="/js/highchart/highcharts-ZN_CN.js"/>"></script>
+<script type="text/javascript" src="<c:url value="/js/highcharts-3d.js" />"></script>
+<script type='text/javascript' src="<c:url value="/js/highchart/exporting.js"/>"></script>
+<script type="text/javascript"src="<c:url value="/js/highchart/drilldown.js"/> "></script>
 <%--角色权限控制--%>
 <script type='text/javascript' id="privileges" src="<c:url value="/js/angular/eidea.privileges.js"/>" data-privileges='${pagePrivileges}'></script>
 <%--加特殊效果 css 例如 等待按钮--%>

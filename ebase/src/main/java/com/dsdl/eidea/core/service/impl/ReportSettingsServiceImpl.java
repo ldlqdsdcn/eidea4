@@ -34,6 +34,12 @@ public class ReportSettingsServiceImpl implements ReportSettingsService {
 
     @Override
     public boolean save(ReportSettingsPo reportSettingsPo) {
+        reportSettingsPo.setInit("N");
+        ReportSettingsPo temp=reportSettingsDao.find(reportSettingsPo.getKey());
+        if(temp!=null)
+        {
+            reportSettingsPo.setInit(temp.getInit());
+        }
         return reportSettingsDao.save(reportSettingsPo);
     }
 

@@ -27,7 +27,7 @@ import java.util.List;
  * Created by 车东明 on 2017/4/17.
  */
 @Controller
-@RequestMapping("/core/report")
+@RequestMapping("/core/reportSettings")
 public class ReportSettingsController {
     private static final String URl = "core_report";
 
@@ -37,7 +37,7 @@ public class ReportSettingsController {
     @RequestMapping(value = "/showList", method = RequestMethod.GET)
     @RequiresPermissions(value = "view")
     public ModelAndView showList() {
-        ModelAndView modelAndView = new ModelAndView("/core/report/report");
+        ModelAndView modelAndView = new ModelAndView("/core/reportSettings/reportSettings");
         modelAndView.addObject("pagingSettingResult", PagingSettingResult.getDefault());
         modelAndView.addObject(WebConst.PAGE_URI, URl);
         return modelAndView;
@@ -58,7 +58,15 @@ public class ReportSettingsController {
     public JsonResult<List<ReportSettingsPo>> deletes(@RequestBody String[] keys, HttpSession session) {
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
         if (keys == null || keys.length == 0) {
-            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("pagemenu.choose.information"));
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("common.error.delete.key_empty.failure"));
+        }
+        for(String key:keys)
+        {
+           ReportSettingsPo reportSettingsPo= reportSettingsService.getReportSettingsPo(key);
+            if("Y".equals(reportSettingsPo.getInit()))
+            {
+                return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("不允许删除init为Y的报表属性记录"));
+            }
         }
         reportSettingsService.deletes(keys);
         return list(session);
@@ -83,6 +91,7 @@ public class ReportSettingsController {
     @RequiresPermissions(value = "add")
     public JsonResult<ReportSettingsPo> create() {
         ReportSettingsPo reportBo = new ReportSettingsPo();
+        reportBo.setInit("Y");
         reportBo.setCreated(true);
         return JsonResult.success(reportBo);
     }
@@ -96,6 +105,11 @@ public class ReportSettingsController {
             if (reportSettingsService.findExistReport(reportSettingsPo.getKey())) {
                 return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), userResource.getMessage("reportSettings.msg.key_exists"));
             }
+        }
+        if("Y".equals(reportSettingsPo.getInit()))
+        {
+            //TODO 需要用message替换掉
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(),"不允许创建init为Y的报表参数");
         }
         reportSettingsService.save(reportSettingsPo);
         return get(reportSettingsPo.getKey(), session);

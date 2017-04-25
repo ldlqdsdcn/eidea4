@@ -94,7 +94,7 @@ public class PageMenuController {
             return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("pagemenu.primarykey.information"));
         } else {
             pageMenuBo = pageMenuService.getPageMenuBo(id);
-
+            pageMenuBo.setIsCheck("true");
         }
         return JsonResult.success(pageMenuBo);
 
@@ -108,6 +108,18 @@ public class PageMenuController {
         if (ids == null) {
             UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
             return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("pagemenu.choose.information"));
+        }
+        /**
+         * 查询子集引用
+         */
+        for(Integer id:ids){
+                Search search=new Search();
+                 search.addFilterEqual("parentMenuId",id);
+            List<PageMenuBo> pageMenuBos=pageMenuService.findPageMenu(search);
+            if (pageMenuBos.size()>0){
+                UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
+                return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("pagemenu.exit.information"));
+            }
         }
         pageMenuService.deleteMenuById(ids);
         return list(session);
@@ -138,6 +150,10 @@ public class PageMenuController {
     @RequiresPermissions(value = "view")
     public JsonResult<List<PageMenuBo>> getListMenuType() {
         List<PageMenuBo> pageMenuBoList = pageMenuService.getListMenuType();
+        PageMenuBo pageMenuBo=new PageMenuBo();
+        pageMenuBo.setId(null);
+        pageMenuBo.setName("  --  ");
+        pageMenuBoList.add(0,pageMenuBo);
         return JsonResult.success(pageMenuBoList);
     }
 

@@ -5,12 +5,14 @@
   Time: 8:46
   To change this template use File | Settings | File Templates.
 --%>
+
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/inc/taglib.jsp" %>
 <div class="container-fluid" ng-controller="editCtrl">
     <div class="page-header">
         <ol class="breadcrumb">
-            <li><a href="javascript:;"><i class="icon-tasks"></i><eidea:label key="dymenu.label.newmenu"/></a></li>
+            <li><a href="javascript:;"><i class="icon-tasks"></i><eidea:label key="dymenus.title"/></a></li>
         </ol>
     </div>
     <div class="row-fluid">

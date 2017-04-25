@@ -61,7 +61,7 @@
     </script>
 </head>
 <%UserBo user=(UserBo)session.getAttribute("loginUser"); %>
-<body class="nav-md">
+<body class="nav-md gun_dong">
 <div class="container body">
     <div class="main_container">
         <div class="col-md-3 left_col menu_fixed">

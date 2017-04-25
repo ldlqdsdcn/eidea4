@@ -20,6 +20,7 @@ public interface SearchService {
 
     SearchBo saveSearchBo(SearchBo searchBo);
 
+
     void deleteSearches(Integer[] ids);
 
     /**

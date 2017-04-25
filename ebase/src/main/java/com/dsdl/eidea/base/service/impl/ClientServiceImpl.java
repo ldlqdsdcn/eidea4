@@ -39,6 +39,17 @@ public class ClientServiceImpl implements ClientService {
         return false;
     }
 
+    public boolean findExistClientByName(String name) {
+        Search search = new Search();
+        search.addFilterEqual("name", name);
+        List<ClientPo> clientPoList = clientDao.search(search);
+        if (clientPoList.size() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public ClientBo getClientBo(Integer id) {
         ClientPo clientPo = clientDao.find(id);
         return modelMapper.map(clientPo, ClientBo.class);

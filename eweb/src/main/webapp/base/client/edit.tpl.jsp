@@ -20,7 +20,8 @@
 
                 <div class="form-group">
                     <label for="code"><%--no--%><eidea:label key="client.column.no"/></label>
-                    <input type="text" class="form-control" id="code" name="code" ng-model="clientBo.no" placeholder="<eidea:message key="client.input.no"/>" required ng-minlength="2" ng-maxlength="10" ng-disabled="clientBo.id!=null">
+                    <input type="text" class="form-control" id="code" name="code" ng-model="clientBo.no" placeholder="<eidea:message key="client.input.no"/>" required ng-minlength="2" ng-maxlength="10"
+                           ng-disabled="clientBo.id!=null" ng-pattern="/^[a-zA-Z0-9]+$/">
                 </div>
                 <div class="form-group">
                     <label for="name"><%--name--%><eidea:label key="datadict.column.name"/></label>

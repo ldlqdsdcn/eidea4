@@ -2,6 +2,7 @@ package com.dsdl.eidea.base.web.controller;
 
 import com.dsdl.eidea.base.def.ActivateDef;
 import com.dsdl.eidea.base.entity.bo.ClientBo;
+import com.dsdl.eidea.base.entity.po.ClientPo;
 import com.dsdl.eidea.base.service.ClientService;
 import com.dsdl.eidea.core.web.controller.BaseController;
 import com.dsdl.eidea.core.web.def.WebConst;
@@ -83,7 +84,7 @@ public class ClientController extends BaseController {
     @ResponseBody
     public JsonResult<ClientBo> saveForCreate(@Validated @RequestBody ClientBo clientBo) {
         if (clientService.findExistClient(clientBo.getNo())) {
-            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), getMessage("client.msg.client_code_exists"));
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), getMessage("client.error.client_name_exists"));
         }
         clientService.save(clientBo);
         return get(clientBo.getId());
@@ -96,6 +97,13 @@ public class ClientController extends BaseController {
 
         if (clientBo.getId() == null) {
             return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), getMessage("common.primary_key.isempty"));
+        }
+        if (clientService.findExistClientByName(clientBo.getName())){
+            ClientBo client = clientService.getClientBo(clientBo.getId());
+            client.setRemark(clientBo.getRemark());
+            client.setIsactive(clientBo.getIsactive());
+            clientService.save(client);
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(),getMessage("client.value.save_success"));
         }
         clientService.save(clientBo);
         return get(clientBo.getId());

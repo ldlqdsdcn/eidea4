@@ -22,7 +22,7 @@
                     <div class="col-sm-10">
                         <input type="text" class="form-control" id="code" name="code" ng-model="orgBo.no"
                                placeholder="<eidea:message key="client.input.no"/>" required ng-minlength="2" ng-maxlength="10"
-                               ng-disabled="clientBo.id!=null" >
+                               ng-disabled="clientBo.id!=null" ng-pattern="/^[a-zA-z0-9]+$/">
                     </div>
 
                 </div>
@@ -36,7 +36,7 @@
                     <label for="remark" class="col-sm-2 text-right"><%--实体--%><eidea:label key="user.column.client"/></label>
                     <div class="col-sm-10">
                     <select class="form-control" id="client" ng-model="orgBo.client.id"
-                            ng-options="client.id as client.name for client in clientList"></select>
+                            ng-options="client.id as client.name for client in clientList" required></select>
                         </div>
                 </div>
                 <div class="form-group">

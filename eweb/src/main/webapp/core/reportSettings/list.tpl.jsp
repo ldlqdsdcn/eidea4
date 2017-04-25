@@ -3,7 +3,7 @@
 <div  class="container-fluid" ng-controller="listCtrl">
     <div class="page-header" >
         <ol class="breadcrumb">
-            <li><a href="javascript:;"><i class="icon icon-tasks"></i><eidea:label key="report.title"/></a></li>
+            <li><a href="javascript:;"><i class="icon icon-tasks"></i><eidea:label key="reportSettings.title"/></a></li>
         </ol>
         <a href="#/edit" class="btn  btn-primary btn-sm" ng-show="canAdd"><eidea:label key="common.button.create"/></a>
         <button type="button" class="btn  btn-primary btn-sm" id="search_but" data-toggle="modal"
@@ -21,7 +21,7 @@
                     <th><%--序号--%><eidea:label key="base.serialNumber"/></th>
                     <th><%--键值--%><eidea:label key="label.keyvalue"/></th>
                     <th><%--信息--%><eidea:label key="label.message"/></th>
-                    <th><%--init--%>Init</th>
+                    <th><%--init--%><eidea:label key="reportSettings.init"/></th>
                     <th><eidea:label key="common.button.edit"/><%--编辑--%></th>
 
                 </tr>

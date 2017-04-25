@@ -91,7 +91,7 @@ public class ReportSettingsController {
     @RequiresPermissions(value = "add")
     public JsonResult<ReportSettingsPo> create() {
         ReportSettingsPo reportBo = new ReportSettingsPo();
-        reportBo.setInit("Y");
+        reportBo.setInit("N");
         reportBo.setCreated(true);
         return JsonResult.success(reportBo);
     }
@@ -109,7 +109,7 @@ public class ReportSettingsController {
         if("Y".equals(reportSettingsPo.getInit()))
         {
             //TODO 需要用message替换掉
-            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(),"不允许创建init为Y的报表参数");
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(),userResource.getMessage("reportSettings.error.init.value"));
         }
         reportSettingsService.save(reportSettingsPo);
         return get(reportSettingsPo.getKey(), session);

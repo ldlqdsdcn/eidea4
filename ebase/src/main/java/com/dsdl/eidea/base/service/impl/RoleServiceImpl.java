@@ -132,7 +132,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public boolean findExistClient(String no) {
+    public boolean findExistRole(String no) {
         Search search = new Search();
         search.addFilterEqual("name", no);
         List<RolePo> clientPoList = roleDao.search(search);

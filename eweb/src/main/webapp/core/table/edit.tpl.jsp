@@ -90,10 +90,10 @@
                                        ng-model="tableColumn.isUnique">
                             </td>
                             <td class="form-group">
-                                <input type="number" class="form-control" ng-model="tableColumn.columnSize">
+                                <input type="number" class="form-control" ng-model="tableColumn.columnSize" ng-pattern="/^\d+$/" min="0">
                             </td>
                             <td class="form-group">
-                                <input type="number" class="form-control" ng-model="tableColumn.digits">
+                                <input type="number" class="form-control" ng-model="tableColumn.digits" ng-pattern="/^\d+$/" min="0">
                             </td>
                             <td class="form-group">
                                 <input type="text" class="form-control" ng-model="tableColumn.remark">

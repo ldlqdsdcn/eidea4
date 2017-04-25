@@ -59,8 +59,8 @@ public class RoleController {
     @RequiresPermissions(value = "add")
     public JsonResult<RoleBo> saveForCreated(@RequestBody RoleBo roleBo, HttpSession session) {
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
-        if (roleService.findExistClient(roleBo.getName())) {
-            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("client.msg.client_code"));
+        if (roleService.findExistRole(roleBo.getName())) {
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("role.error.name_exists"));
         }
         roleService.save(roleBo);
         return get(roleBo.getId(), session);
@@ -70,6 +70,17 @@ public class RoleController {
     @ResponseBody
     @RequiresPermissions(value = "update")
     public JsonResult<RoleBo> saveForUpdated(@RequestBody RoleBo roleBo, HttpSession session) {
+        UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
+        if (roleService.findExistRole(roleBo.getName())) {
+            RoleBo role = roleService.getRoleBo(roleBo.getId());
+            role.setIsactive(roleBo.getIsactive());
+            role.setRoleOrgAccessBoList(roleBo.getRoleOrgAccessBoList());
+            role.setModuleRoleBoList(roleBo.getModuleRoleBoList());
+            role.setRemark(roleBo.getRemark());
+            roleService.save(role);
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("role.other.value.save_success"));
+
+        }
         roleService.save(roleBo);
         return get(roleBo.getId(), session);
     }

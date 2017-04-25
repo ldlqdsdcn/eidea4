@@ -10,7 +10,7 @@ import com.googlecode.genericdao.search.Search;
 public interface RoleService {
     void save(RoleBo roleBo);
 
-    boolean findExistClient(String no);
+    boolean findExistRole(String no);
 
     RoleBo getRoleBo(Integer id);
 

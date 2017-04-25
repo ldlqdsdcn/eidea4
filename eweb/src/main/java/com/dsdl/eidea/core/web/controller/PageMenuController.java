@@ -94,7 +94,7 @@ public class PageMenuController {
             return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("pagemenu.primarykey.information"));
         } else {
             pageMenuBo = pageMenuService.getPageMenuBo(id);
-
+            pageMenuBo.setIsCheck("true");
         }
         return JsonResult.success(pageMenuBo);
 

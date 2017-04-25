@@ -20,6 +20,6 @@ public interface RoleService {
 
     RoleBo getInitRoleBo(RoleBo roleBo);
 
-    boolean getIsExit(Integer id);
+    boolean getHasUsers(Integer id);
 
 }

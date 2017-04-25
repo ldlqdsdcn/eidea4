@@ -147,7 +147,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public boolean getIsExit(Integer id) {
+    public boolean getHasUsers(Integer id) {
        RolePo rolePo= roleDao.find(id);
         List<UserRolePo> userRolePos=rolePo.getSysUserRoles();
         if (userRolePos.size()>0){

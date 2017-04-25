@@ -29,14 +29,14 @@ public class LanguagePo implements java.io.Serializable {
     private String remark;
     @Column(name = "isactive", nullable = false, length = 1)
     private String isactive;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "coreLanguageByLanguageCode")
-    private List<LanguageTrlPo> coreLanguageTrlsForLanguageCode = new ArrayList<>(
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "languageByLanguageCode")
+    private List<LanguageTrlPo> languageTrlsForLanguageCode = new ArrayList<>(
             0);
-    @OneToMany(cascade = {CascadeType.ALL, CascadeType.PERSIST}, fetch = FetchType.LAZY, mappedBy = "coreLanguage")
-    private Set<MessageTrlPo> coreMessageTrls = new HashSet<MessageTrlPo>(0);
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "coreLanguageByLang")
-    private Set<LanguageTrlPo> coreLanguageTrlsForLang = new HashSet<LanguageTrlPo>(
+    @OneToMany(cascade = {CascadeType.ALL, CascadeType.PERSIST}, fetch = FetchType.LAZY, mappedBy = "languagePo")
+    private Set<MessageTrlPo> messageTrls = new HashSet<MessageTrlPo>(0);
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "languageByLang")
+    private Set<LanguageTrlPo> languageTrlsForLang = new HashSet<LanguageTrlPo>(
             0);
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "coreLanguage")
-    private Set<LabelTrlPo> coreLabelTrls = new HashSet<LabelTrlPo>(0);
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "languagePo")
+    private Set<LabelTrlPo> labelTrls = new HashSet<LabelTrlPo>(0);
 }

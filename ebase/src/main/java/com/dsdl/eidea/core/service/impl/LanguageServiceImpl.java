@@ -36,8 +36,8 @@ public class LanguageServiceImpl implements LanguageService {
     private PropertyMap<LanguageTrlPo, LanguageTrlBo> langTrlMapper = new PropertyMap<LanguageTrlPo, LanguageTrlBo>() {
         @Override
         protected void configure() {
-            map().setLanguageCode(source.getCoreLanguageByLanguageCode().getCode());
-            map().setLang(source.getCoreLanguageByLang().getCode());
+            map().setLanguageCode(source.getLanguageByLanguageCode().getCode());
+            map().setLang(source.getLanguageByLang().getCode());
         }
     };
 
@@ -61,7 +61,7 @@ public class LanguageServiceImpl implements LanguageService {
         List<LanguageBo> languageBoList = new ArrayList<>();
         languagePoList.forEach(e -> {
             LanguageBo languageBo = modelMapper.map(e, LanguageBo.class);
-            List<LanguageTrlBo> languageTrlBoList = modelMapper.map(e.getCoreLanguageTrlsForLanguageCode(), new TypeToken<List<LanguageTrlBo>>() {
+            List<LanguageTrlBo> languageTrlBoList = modelMapper.map(e.getLanguageTrlsForLanguageCode(), new TypeToken<List<LanguageTrlBo>>() {
             }.getType());
             languageBo.setLanguageTrlBoList(languageTrlBoList);
             languageBoList.add(languageBo);
@@ -73,7 +73,7 @@ public class LanguageServiceImpl implements LanguageService {
     public LanguageBo getLanguageBo(String code) {
         LanguagePo languagePo = languageDao.find(code);
         if (languagePo != null) {
-            List<LanguageTrlBo> languageTrlBoList = modelMapper.map(languagePo.getCoreLanguageTrlsForLanguageCode().stream().filter(e -> e.getCoreLanguageByLang().getIsactive().equals("Y")).collect(Collectors.toList()), new TypeToken<List<LanguageTrlBo>>() {
+            List<LanguageTrlBo> languageTrlBoList = modelMapper.map(languagePo.getLanguageTrlsForLanguageCode().stream().filter(e -> e.getLanguageByLang().getIsactive().equals("Y")).collect(Collectors.toList()), new TypeToken<List<LanguageTrlBo>>() {
             }.getType());
             LanguageBo languageBo = modelMapper.map(languagePo, LanguageBo.class);
             languageBo.setLanguageTrlBoList(languageTrlBoList);
@@ -105,12 +105,12 @@ public class LanguageServiceImpl implements LanguageService {
             LanguageTrlPo languageTrlPo = new LanguageTrlPo();
             languageTrlPo.setId(languageTrlBo.getId());
             languageTrlPo.setName(languageTrlBo.getName());
-            languageTrlPo.setCoreLanguageByLanguageCode(languagePo);
+            languageTrlPo.setLanguageByLanguageCode(languagePo);
             LanguagePo lang = languageDao.find(languageTrlBo.getLang());
-            languageTrlPo.setCoreLanguageByLang(lang);
+            languageTrlPo.setLanguageByLang(lang);
             languageTrlPoList.add(languageTrlPo);
         }
-        languagePo.setCoreLanguageTrlsForLanguageCode(languageTrlPoList);
+        languagePo.setLanguageTrlsForLanguageCode(languageTrlPoList);
         return languageDao.saveForLog(languagePo);
     }
 

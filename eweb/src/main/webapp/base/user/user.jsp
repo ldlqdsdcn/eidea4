@@ -170,6 +170,11 @@
                 /*密码和确认密码不一致*/
                 return false;
             }
+            var reg = /^1[3|4|5|7|8][0-9]{9}$/;
+            if(!reg.test($scope.userBo.telephone)){
+                $scope.message = "<eidea:label key="telephone.confirm.error"/>";
+                return false;
+            }
             var roleIds = [];
             for (var i = 0; i < $scope.roleList.length; i++) {
                 if ($scope.roleList[i].roleDelFlag) {

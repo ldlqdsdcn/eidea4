@@ -17,11 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-import sun.plugin2.message.transport.Transport;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
-import java.util.Objects;
 
 @Controller
 @RequestMapping("/base/role")
@@ -73,8 +71,8 @@ public class RoleController {
     @ResponseBody
     @RequiresPermissions(value = "update")
     public JsonResult<RoleBo> saveForUpdated(@RequestBody RoleBo roleBo, HttpSession session) {
-        UserResource resource = (UserResource)session.getAttribute(WebConst.SESSION_RESOURCE);
-        if (roleService.findExistClient(roleBo.getName())){
+        UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
+        if (roleService.findExistClient(roleBo.getName())) {
             RoleBo role = roleService.getRoleBo(roleBo.getId());
             role.setId(roleBo.getId());
             role.setIsactive(roleBo.getIsactive());
@@ -82,7 +80,7 @@ public class RoleController {
             role.setModuleRoleBoList(roleBo.getModuleRoleBoList());
             role.setRemark(roleBo.getRemark());
             roleService.save(role);
-            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(),resource.getMessage("role.other.value.save_success"));
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("role.other.value.save_success"));
 
         }
         roleService.save(roleBo);

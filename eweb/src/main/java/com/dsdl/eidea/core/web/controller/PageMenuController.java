@@ -109,6 +109,18 @@ public class PageMenuController {
             UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
             return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("pagemenu.choose.information"));
         }
+        /**
+         * 查询子集引用
+         */
+        for(Integer id:ids){
+                Search search=new Search();
+                 search.addFilterEqual("parentMenuId",id);
+            List<PageMenuBo> pageMenuBos=pageMenuService.findPageMenu(search);
+            if (pageMenuBos.size()>0){
+                UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
+                return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("pagemenu.exit.information"));
+            }
+        }
         pageMenuService.deleteMenuById(ids);
         return list(session);
     }

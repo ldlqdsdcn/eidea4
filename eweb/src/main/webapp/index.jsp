@@ -15,11 +15,13 @@
 
     <link rel="stylesheet" href="<c:url value="/css/bootstrap/bootstrap.min.css"/>" type="text/css" media="all"/>
     <link rel="stylesheet" href="<c:url value="/css/bootstrap/bootstrap-theme.min.css"/>" type="text/css" media="all"/>
+    <link rel="stylesheet" href="<c:url value="/css/bootstrap/bootstrap.addtabs.css"/>" type="text/css" media="all"/>
     <link rel="stylesheet" href="<c:url value="/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css"/>" type="text/css" media="all"/>
     <script type='text/javascript' src='<c:url value="/js/jquery-3.1.1.min.js"/>'></script>
     <script type='text/javascript' src='<c:url value="/js/bootstrap/bootstrap.min.js"/>'></script>
     <script type='text/javascript' src='<c:url value="/js/bootbox.min.js"/>'></script>
     <script type='text/javascript' src='<c:url value="/js/bootstrap/datetimepicker/bootstrap-datetimepicker.min.js"/>'></script>
+    <script type='text/javascript' src='<c:url value="/js/bootstrap/bootstrap.addtabs.js"/>'></script>
     <script type='text/javascript' src="<c:url value="/js/angular/angular.min.js"/>"></script>
     <script type='text/javascript' src="<c:url value="/js/angular/angular-route.min.js"/>"></script>
     <script type='text/javascript' src="<c:url value="/js/angular/jcs-auto-validate.min.js"/>"></script>
@@ -186,9 +188,19 @@
         <!--top navigation-->
         <!--page content-->
         <div class="right_col" role="main">
-            <!--我是主要内容 start-->
-            <iframe id="content" name="content" src="<c:url value="/default.jsp"/>" width="100%" height="100%"  frameborder="0"></iframe>
-            <!--我是主要内容 end-->
+            <div id="tabs">
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active">
+                        <a href="#home" aria-controls="home" role="tab" data-toggle="tab">Home</a></li>
+                </ul>
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="home">
+                        <iframe src="<c:url value="/default.jsp"/>" width="100%" height="100%"  frameborder="0"></iframe>
+                    </div>
+                </div>
+            </div>
         </div>
         <!--page content-->
     </div>

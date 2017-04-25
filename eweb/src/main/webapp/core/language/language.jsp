@@ -81,11 +81,11 @@
                 message: "<eidea:message key="modile.deleteselect.check"/>",
                 buttons: {
                     confirm: {
-                        label: '<eidea:label key="common.button.checktrue"/>',
+                        label: '<i class="fa fa-check" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.checktrue"/>',
                         className: 'btn-success'
                     },
                     cancel: {
-                        label: '<eidea:label key="common.button.checkfalse"/>',
+                        label: '<i class="fa fa-close" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.checkfalse"/>',
                         className: 'btn-danger'
                     }
                 },

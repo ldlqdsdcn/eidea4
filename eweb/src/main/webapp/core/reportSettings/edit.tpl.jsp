@@ -19,8 +19,8 @@
                 </div>
                 <div class="form-group">
                     <label for="value"><%--信息--%><eidea:label key="label.message"/></label>
-                    <input type="text" class="form-control" id="value" placeholder="<eidea:message key="common.please.input"><eidea:param
-value="label.message" type="label"/></eidea:message>" ng-model="reportBo.value" required ng-minlength="2" ng-maxlength="45">
+                    <input type="text" class="form-control" id="value" placeholder="<eidea:message key="common.please.input">
+<eidea:param value="label.message" type="label"/></eidea:message>" ng-model="reportBo.value" required ng-minlength="2" ng-maxlength="45">
                 </div>
                 <div class="form-group">
                     <label for="init"><%--系统初始化--%><eidea:label key="reportSettings.init"/>

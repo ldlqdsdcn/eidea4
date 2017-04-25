@@ -98,8 +98,8 @@ public class RoleController {
             return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("pagemenu.choose.information"));
         }
         for(Integer id:ids){
-           boolean isExit= roleService.getHasUsers(id);
-            if (isExit) {
+           boolean isExist= roleService.getHasUsers(id);
+            if (isExist) {
                 return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("role.error.has_users"));
             }
         }

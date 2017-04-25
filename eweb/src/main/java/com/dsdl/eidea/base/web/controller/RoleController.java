@@ -74,7 +74,6 @@ public class RoleController {
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
         if (roleService.findExistClient(roleBo.getName())) {
             RoleBo role = roleService.getRoleBo(roleBo.getId());
-            role.setId(roleBo.getId());
             role.setIsactive(roleBo.getIsactive());
             role.setRoleOrgAccessBoList(roleBo.getRoleOrgAccessBoList());
             role.setModuleRoleBoList(roleBo.getModuleRoleBoList());

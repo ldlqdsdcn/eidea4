@@ -108,7 +108,6 @@ public class ReportSettingsController {
         }
         if("Y".equals(reportSettingsPo.getInit()))
         {
-            //TODO 需要用message替换掉
             return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(),userResource.getMessage("reportSettings.error.init.value"));
         }
         reportSettingsService.save(reportSettingsPo);

@@ -98,7 +98,6 @@ public class PageMenuServiceImpl implements PageMenuService {
            		if(pageMenuTrlBo.size()>0){
            			for(PageMenuTrlBo pm:pageMenuTrlBo){
            				if(lan.getCode().equals(pm.getLanguageCode())){
-                            pagemenu.setId(pm.getId());
            					pagemenu.setName(pm.getName());
            					pagemenu.setRemark(pm.getRemark());
            				}

@@ -124,7 +124,7 @@
         $scope.message= '';
         $scope.messageBo = {};
         $scope.canAdd = PrivilegeService.hasPrivilege('add');
-        $scope.canSave = false;
+        $scope.canSave = PrivilegeService.hasPrivilege("update");
         var url = "<c:url value="/core/reportSettings/create"/>";
         if ($routeParams.key != null) {
             url = "<c:url value="/core/reportSettings/get"/>" + "?key=" + $routeParams.key;

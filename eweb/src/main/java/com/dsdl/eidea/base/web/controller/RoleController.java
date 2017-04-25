@@ -17,9 +17,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import sun.plugin2.message.transport.Transport;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 @RequestMapping("/base/role")
@@ -51,7 +53,6 @@ public class RoleController {
     @RequiresPermissions(value = "add")
     public JsonResult<RoleBo> create() {
         RoleBo roleBo = roleService.getInitRoleBo(null);
-        roleBo.setIsactive("Y");
         return JsonResult.success(roleBo);
     }
 
@@ -59,6 +60,7 @@ public class RoleController {
     @ResponseBody
     @RequiresPermissions(value = "add")
     public JsonResult<RoleBo> saveForCreated(@RequestBody RoleBo roleBo, HttpSession session) {
+        roleBo.setIsactive("Y");
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
         if (roleService.findExistClient(roleBo.getName())) {
             return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("role.error.name_exists"));
@@ -73,7 +75,15 @@ public class RoleController {
     public JsonResult<RoleBo> saveForUpdated(@RequestBody RoleBo roleBo, HttpSession session) {
         UserResource resource = (UserResource)session.getAttribute(WebConst.SESSION_RESOURCE);
         if (roleService.findExistClient(roleBo.getName())){
-            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(),resource.getMessage("role.error.name_exists"));
+            RoleBo role = roleService.getRoleBo(roleBo.getId());
+            role.setId(roleBo.getId());
+            role.setIsactive(roleBo.getIsactive());
+            role.setRoleOrgAccessBoList(roleBo.getRoleOrgAccessBoList());
+            role.setModuleRoleBoList(roleBo.getModuleRoleBoList());
+            role.setRemark(roleBo.getRemark());
+            roleService.save(role);
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(),resource.getMessage("role.other.value.save_success"));
+
         }
         roleService.save(roleBo);
         return get(roleBo.getId(), session);

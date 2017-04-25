@@ -31,7 +31,7 @@
                 <div class="form-group">
                     <label for="isactive"><eidea:label key="base.whetherEffective"/><%--是否有效--%><input type="checkbox" class="form-control" id="isactive"
                                                      ng-true-value="'Y'" ng-false-value="'N'"
-                                                     ng-model="roleBo.isactive"></label>
+                                                     ng-model="roleBo.isactive" ng-checked="true"></label>
 
                 </div>
                 <div class="form-group">

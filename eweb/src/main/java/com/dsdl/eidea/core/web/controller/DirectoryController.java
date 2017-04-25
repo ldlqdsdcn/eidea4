@@ -66,7 +66,7 @@ public class DirectoryController {
     @RequiresPermissions(value = "add")
     public JsonResult<DirectoryBo> saveForCreated(@RequestBody DirectoryBo directoryBo, HttpSession session) {
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
-        if (directoryBo.isCreated()) {
+        if (directoryBo.isCreated()&&directoryBo.getId()!=null) {
             if (directoryService.findExistId(directoryBo.getId())) ;
             {
                 return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("pagemenu.connection.point"));

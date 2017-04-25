@@ -150,6 +150,10 @@ public class PageMenuController {
     @RequiresPermissions(value = "view")
     public JsonResult<List<PageMenuBo>> getListMenuType() {
         List<PageMenuBo> pageMenuBoList = pageMenuService.getListMenuType();
+        PageMenuBo pageMenuBo=new PageMenuBo();
+        pageMenuBo.setId(null);
+        pageMenuBo.setName("  --  ");
+        pageMenuBoList.add(0,pageMenuBo);
         return JsonResult.success(pageMenuBoList);
     }
 

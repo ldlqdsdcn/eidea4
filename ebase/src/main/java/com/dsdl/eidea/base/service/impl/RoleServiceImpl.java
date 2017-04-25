@@ -146,6 +146,16 @@ public class RoleServiceImpl implements RoleService {
         return initRoleBoByPo(null);
     }
 
+    @Override
+    public boolean getIsExit(Integer id) {
+       RolePo rolePo= roleDao.find(id);
+        List<UserRolePo> userRolePos=rolePo.getSysUserRoles();
+        if (userRolePos.size()>0){
+            return true;
+        }
+        return false;
+    }
+
     private RoleBo initRoleBoByPo(RolePo rolePo) {
         RoleBo roleBo = null;
         if (rolePo == null) {

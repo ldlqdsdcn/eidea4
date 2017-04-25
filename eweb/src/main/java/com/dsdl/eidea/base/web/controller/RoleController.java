@@ -1,5 +1,6 @@
 package com.dsdl.eidea.base.web.controller;
 
+import com.dsdl.eidea.base.entity.bo.ModuleRoleBo;
 import com.dsdl.eidea.base.entity.bo.RoleBo;
 import com.dsdl.eidea.base.service.RoleService;
 import com.dsdl.eidea.base.web.vo.UserResource;
@@ -95,6 +96,12 @@ public class RoleController {
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
         if (ids == null || ids.length == 0) {
             return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("pagemenu.choose.information"));
+        }
+        for(Integer id:ids){
+           boolean isExit= roleService.getIsExit(id);
+            if (isExit) {
+                return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("role.prompt.information"));
+            }
         }
         roleService.deletes(ids);
         return list(session);

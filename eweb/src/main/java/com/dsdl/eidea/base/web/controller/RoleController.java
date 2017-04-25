@@ -60,7 +60,7 @@ public class RoleController {
     public JsonResult<RoleBo> saveForCreated(@RequestBody RoleBo roleBo, HttpSession session) {
         roleBo.setIsactive("Y");
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
-        if (roleService.findExistClient(roleBo.getName())) {
+        if (roleService.findExistRole(roleBo.getName())) {
             return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("role.error.name_exists"));
         }
         roleService.save(roleBo);
@@ -72,7 +72,7 @@ public class RoleController {
     @RequiresPermissions(value = "update")
     public JsonResult<RoleBo> saveForUpdated(@RequestBody RoleBo roleBo, HttpSession session) {
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
-        if (roleService.findExistClient(roleBo.getName())) {
+        if (roleService.findExistRole(roleBo.getName())) {
             RoleBo role = roleService.getRoleBo(roleBo.getId());
             role.setIsactive(roleBo.getIsactive());
             role.setRoleOrgAccessBoList(roleBo.getRoleOrgAccessBoList());

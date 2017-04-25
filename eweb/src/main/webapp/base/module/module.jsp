@@ -13,8 +13,11 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <%@include file="/inc/inc_ang_js_css.jsp" %>
 </head>
-<body ng-app='myApp'>
-<div ng-view class="content"></div>
+<body>
+<div ng-view class="content" ng-app='myApp'></div>
+<jsp:include page="/common/searchPage">
+    <jsp:param name="uri" value="${uri}"/>
+</jsp:include>
 </body>
 
 <script type="text/javascript">

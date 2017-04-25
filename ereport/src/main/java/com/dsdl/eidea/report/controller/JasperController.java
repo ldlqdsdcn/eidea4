@@ -49,7 +49,7 @@ public class JasperController {
     @RequestMapping("/export")
     @ResponseBody
     public void exportReport(String token,HttpServletRequest request, String reportName, HttpServletResponse response) throws Exception {
-        if(authenticationManger.verifyUser(token))
+        if(!authenticationManger.verifyUser(token))
         {
             PrivilegesHelper.outNoPrivilegesView(response);
             return;
@@ -65,15 +65,14 @@ public class JasperController {
         }
         String sqlWhereParam= request.getParameter("sqlWhereParam");
         //对参数aes进行解密
-        sqlWhereParam= AesUtils.decrypt(sqlWhereParam, ReadPropertiesUtil.readValue("aeskey"));
-        if(sqlWhereParam!=null&&sqlWhereParam.trim().length()!=0&&!"null".equals(sqlWhereParam))
-        {
-            sqlWhereParam="where "+sqlWhereParam;
-            params.put("searchWhere",sqlWhereParam);
-        }
-        else
-        {
-            sqlWhereParam=null;
+        if(sqlWhereParam!=null) {
+            sqlWhereParam = AesUtils.decrypt(sqlWhereParam, ReadPropertiesUtil.readValue("aeskey"));
+            if (sqlWhereParam != null && sqlWhereParam.trim().length() != 0 && !"null".equals(sqlWhereParam)) {
+                sqlWhereParam = "where " + sqlWhereParam;
+                params.put("searchWhere", sqlWhereParam);
+            } else {
+                sqlWhereParam = null;
+            }
         }
         String tempFile =  reportSettingsRmi.getTemplateFilePath() + System.getProperty("file.separator") + reportName + ".jasper";
         InputStream jasperStream = new FileInputStream(tempFile);

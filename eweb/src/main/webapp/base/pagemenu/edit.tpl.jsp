@@ -12,8 +12,7 @@
 <div class="container-fluid" ng-controller="editCtrl">
     <div class="page-header">
         <ol class="breadcrumb">
-            <li ng-if="pageMenuBo.isCheck=='true'"><a href="javascript:;"><i class="icon-tasks"></i><eidea:label key="dymenu.label.editmenu"/></a></li>
-            <li ng-if="pageMenuBo.isCheck=='false'"><a href="javascript:;"><i class="icon-tasks"></i><eidea:label key="dymenu.label.newmenu"/></a></li>
+            <li><a href="javascript:;"><i class="icon-tasks"></i><eidea:label key="dymenus.title"/></a></li>
         </ol>
     </div>
     <div class="row-fluid">

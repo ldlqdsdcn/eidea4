@@ -12,19 +12,18 @@
                 ng-click="deleteRecord()" ng-show="canDel" title="<eidea:label key="common.button.delete"/>"><%--删除--%>
             <i class="fa fa-trash-o fa-1x" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.delete"/>
         </button>
-
-        <button type="button" class="btn  btn-primary btn-sm" title="复制">
-            <i class="fa fa-copy fa-1x" aria-hidden="true"></i>&nbsp;复制
+        <button type="button" class="btn  btn-primary btn-sm" title="<eidea:label key="common.button.copy"/>">
+            <i class="fa fa-copy fa-1x" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.copy"/>
         </button>
-        <button type="button" class="btn  btn-primary btn-sm" title="粘贴">
-            <i class="fa fa-paste fa-1x" aria-hidden="true"></i>&nbsp;粘贴
+        <button type="button" class="btn  btn-primary btn-sm" title="<eidea:label key="common.button.paste"/>">
+            <i class="fa fa-paste fa-1x" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.paste"/>
         </button>
-        <button type="button" class="btn  btn-primary btn-sm" title="审批">
-            <i class="fa fa-gavel fa-1x" aria-hidden="true"></i>&nbsp;审批
+        <button type="button" class="btn  btn-primary btn-sm" title="<eidea:label key="common.button.auditing"/>">
+            <i class="fa fa-gavel fa-1x" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.auditing"/>
         </button>
         <div class="btn-group">
-            <button type="button" class="btn btn-primary btn-sm" data-toggle="dropdown" title="导出">
-                <i class="fa fa-download fa-1x" aria-hidden="true"></i>&nbsp;导出
+            <button type="button" class="btn btn-primary btn-sm" data-toggle="dropdown" title="<eidea:label key="common.button.export"/>">
+                <i class="fa fa-download fa-1x" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.export"/>
                 <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" role="menu">
@@ -36,14 +35,14 @@
                 <li><a href="#"><i class="fa fa-file-archive-o fa-1x" aria-hidden="true"></i>&nbsp;rtf</a></li>
             </ul>
         </div>
-        <button type="button" class="btn  btn-primary btn-sm" title="打印">
-            <i class="fa fa-print fa-1x" aria-hidden="true"></i>&nbsp;打印
+        <button type="button" class="btn  btn-primary btn-sm" title="<eidea:label key="common.button.print"/>">
+            <i class="fa fa-print fa-1x" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.print"/>
         </button>
-        <button type="button" class="btn  btn-primary btn-sm" title="刷新">
-            <i class="fa fa-refresh fa-1x" aria-hidden="true"></i>&nbsp;刷新
+        <button type="button" class="btn  btn-primary btn-sm" title="<eidea:label key="common.button.refresh"/>">
+            <i class="fa fa-refresh fa-1x" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.refresh"/>
         </button>
-        <button type="button" class="btn  btn-primary btn-sm" title="帮助">
-            <i class="fa fa-question fa-1x" aria-hidden="true"></i>&nbsp;帮助
+        <button type="button" class="btn  btn-primary btn-sm" title="<eidea:label key="common.button.help"/>">
+            <i class="fa fa-question fa-1x" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.help"/>
         </button>
     </div>
     <div class="row-fluid">

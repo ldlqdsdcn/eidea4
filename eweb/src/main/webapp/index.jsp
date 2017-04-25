@@ -143,7 +143,7 @@
 
                         <li role="presentation" class="dropdown">
                             <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
-                                <i class="fa fa-envelope-o"></i>
+                                <i class="fa fa-volume-up la-ba"></i>
                                 <span class="badge bg-green"><eidea:label key="index.email_size"/></span>
                             </a>
                             <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
@@ -192,7 +192,7 @@
                 <!-- Nav tabs -->
                 <ul class="nav nav-tabs" role="tablist">
                     <li role="presentation" class="active">
-                        <a href="#home" aria-controls="home" role="tab" data-toggle="tab">Home</a></li>
+                        <a href="#home" aria-controls="home" role="tab" data-toggle="tab">主页</a></li>
                 </ul>
                 <!-- Tab panes -->
                 <div class="tab-content">

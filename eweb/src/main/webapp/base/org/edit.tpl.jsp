@@ -22,7 +22,7 @@
                     <div class="col-sm-10">
                         <input type="text" class="form-control" id="code" name="code" ng-model="orgBo.no"
                                placeholder="<eidea:message key="client.input.no"/>" required ng-minlength="2" ng-maxlength="10"
-                               ng-disabled="clientBo.id!=null" ng-pattern="/^[a-zA-z0-9]+$/">
+                               ng-disabled="clientBo.id!=null" >
                     </div>
 
                 </div>

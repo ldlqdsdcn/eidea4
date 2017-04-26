@@ -157,6 +157,12 @@
             bootbox.alert(response);
         });
         $scope.save = function () {
+            //验证编号格式
+            var reg=/^[a-zA-Z0-9]+$/;
+            if (!reg.test($scope.orgBo.no)){
+                $scope.message="<eidea:label key="client.msg.client_no_error"/>";
+                return false;
+            }
             if ($scope.editForm.$valid) {
                 var postUrl = '<c:url value="/base/org/saveForUpdated"/>';
                 if ($scope.orgBo.id == null) {

@@ -270,7 +270,7 @@
 
 .nav_menu {
   float: left;
-  background: #EDEDED;
+  background: #FFFFFF;
   border-bottom: 1px solid #D9DEE4;
   margin-bottom: 10px;
   width: 100%;
@@ -299,8 +299,8 @@
   padding: 10px 20px 0;
   margin-left: 230px; } */
 
-.nav-md .container.body .right_col{position:absolute;left:0;top:57px;right:0;bottom:0;margin-left: 230px;}
-.nav-sm .container.body .right_col{position:absolute;left:0;top:57px;right:0;bottom:0;padding-left:0;padding-top: 0;padding-right: 0;padding-bottom: 0 }
+.nav-md .container.body .right_col{position:absolute;left:0;top:57px;right:0;bottom:35px;margin-left: 230px;}
+.nav-sm .container.body .right_col{position:absolute;left:0;top:57px;right:0;bottom:35px;padding-left:0;padding-top: 0;padding-right: 0;padding-bottom: 0 }
 
 .nav_title {
   width: 230px;
@@ -424,7 +424,7 @@
 
 body {
   color: #73879C;
-  background: #2A3F54;
+  background: #EDEDED;
   font-family: "Helvetica Neue", Roboto, Arial, "Droid Sans", sans-serif;
   font-size: 13px;
   font-weight: 400;
@@ -1387,10 +1387,10 @@ ul.msg_list li a .message {
   font-size: 10px;
   font-weight: normal;
   line-height: 13px;
-  padding: 2px 6px;
+  padding: 2px 0px;
   position: absolute;
   right: 2px;
-  top: 8px; }
+  top: 20px; }
 
 ul.to_do {
   padding: 0; }
@@ -3981,3 +3981,6 @@ ul.notifications {
   border: 1px solid #e5e5e5; }
 
 /** /Dropzone.js **/
+.la-ba{margin-top:8px;}
+.right_col ul li a{height:30px;padding-top: 5px;}
+.gun_dong{overflow-y: hidden}

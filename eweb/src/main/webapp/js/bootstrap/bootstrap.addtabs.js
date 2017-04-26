@@ -224,8 +224,15 @@
         } else {
             a_target = target;
         }
-
-        var id = 'tab_' + opts.id;
+        var optsId=new StringBuffer();
+        $.each(opts.id.split(""),function (index,value) {
+            if(value == " "){
+                optsId.append("_");
+            }else {
+                optsId.append(value);
+            }
+        })
+        var id = 'tab_' + optsId;
         var tab_li = a_target;
 
         var tab_content = tab_li.next('.tab-content');

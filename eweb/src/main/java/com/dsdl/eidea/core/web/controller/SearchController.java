@@ -132,17 +132,6 @@ public class SearchController {
         if (searchBo.getId() == null) {
             return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("common.primary_key.isempty"));
         }
-        if (searchService.getSearchBoByUri(searchBo.getUri())!=null){
-            SearchBo search=searchService.getSearchBo(searchBo.getId());
-            search.setRemark(searchBo.getRemark());
-            search.setIsactive(searchBo.getIsactive());
-            search.setName(searchBo.getName());
-            search.setSearchColumnBoList(searchBo.getSearchColumnBoList());
-            search.setShowType(searchBo.getShowType());
-            search.setShowTypeStr(searchBo.getShowTypeStr());
-            searchService.saveSearchBo(search);
-            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(),resource.getMessage("search.other.parameter_save_success"));
-        }
         searchBo = searchService.saveSearchBo(searchBo);
         return get(searchBo.getId());
     }
@@ -157,6 +146,19 @@ public class SearchController {
         }
         searchService.deleteSearches(ids);
         return list(session);
+    }
+    @RequestMapping(value = "/getExistUrl", method=RequestMethod.POST)
+    @RequiresPermissions(value = "view")
+    @ResponseBody
+    public JsonResult<Boolean>getExistUrl(@RequestBody SearchBo searchBo,HttpSession session){
+        boolean flag = true;
+        UserResource userResource =(UserResource)session.getAttribute(WebConst.SESSION_RESOURCE);
+        if (searchBo.getUri()==null||searchBo.getUri().equals("")){
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(),userResource.getMessage("common.primary_key.isempty"));
+        }else {
+            flag=searchService.findExistSearch(searchBo);
+        }
+        return JsonResult.success(flag);
     }
 
     @RequestMapping(value = "/getSelectList", method = RequestMethod.GET)

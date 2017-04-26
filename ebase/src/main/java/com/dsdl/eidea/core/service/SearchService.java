@@ -20,6 +20,9 @@ public interface SearchService {
 
     SearchBo saveSearchBo(SearchBo searchBo);
 
+    boolean findExistUrl(String url);
+
+    boolean findExistSearch(SearchBo searchBo);
 
     void deleteSearches(Integer[] ids);
 

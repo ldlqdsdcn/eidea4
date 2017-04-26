@@ -49,6 +49,21 @@ public class ClientServiceImpl implements ClientService {
             return false;
         }
     }
+    @Override
+    public boolean findExistClientName(ClientBo clientBo){
+        Search search = new Search();
+        search.addFilterEqual("name",clientBo.getName());
+        List<ClientPo> clientPoList = clientDao.search(search);
+        if (clientPoList!=null&&clientPoList.size()>0){
+            if (clientPoList.get(0).getId().equals(clientBo.getId())){
+                return true;
+            }else {
+                return false;
+            }
+        }else {
+            return true;
+        }
+    }
 
     public ClientBo getClientBo(Integer id) {
         ClientPo clientPo = clientDao.find(id);

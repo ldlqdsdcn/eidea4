@@ -20,6 +20,8 @@ public interface ClientService {
 
     boolean findExistClientByName(String name);
 
+    boolean findExistClientName(ClientBo clientBo);
+
     ClientBo getClientBo(Integer id);
 
     void save(ClientBo clientBo);

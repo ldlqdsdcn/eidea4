@@ -300,7 +300,7 @@
   margin-left: 230px; } */
 
 .nav-md .container.body .right_col{position:absolute;left:0;top:57px;right:0;bottom:35px;margin-left: 230px;}
-.nav-sm .container.body .right_col{position:absolute;left:0;top:57px;right:0;bottom:0;padding-left:0;padding-top: 0;padding-right: 0;padding-bottom: 0 }
+.nav-sm .container.body .right_col{position:absolute;left:0;top:57px;right:0;bottom:35px;padding-left:0;padding-top: 0;padding-right: 0;padding-bottom: 0 }
 
 .nav_title {
   width: 230px;

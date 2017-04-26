@@ -1,5 +1,6 @@
 package com.dsdl.eidea.base.service.impl;
 
+import com.dsdl.eidea.base.entity.po.OrgPo;
 import com.dsdl.eidea.core.spring.annotation.DataAccess;
 import com.dsdl.eidea.base.entity.bo.ClientBo;
 import com.dsdl.eidea.base.entity.po.ClientPo;
@@ -12,6 +13,7 @@ import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by 刘大磊 on 2016/12/12 17:38 9:48.
@@ -59,5 +61,15 @@ public class ClientServiceImpl implements ClientService {
         search.addFilterEqual("isactive", "Y");
         return modelMapper.map(clientDao.search(search), new TypeToken<List<ClientBo>>() {
         }.getType());
+    }
+
+    @Override
+    public boolean getIsExist(Integer id) {
+        ClientPo clientPo=clientDao.find(id);
+        Set<OrgPo> orgPos=clientPo.getSysOrgs();
+        if (orgPos.size()>0){
+            return true;
+        }
+        return false;
     }
 }

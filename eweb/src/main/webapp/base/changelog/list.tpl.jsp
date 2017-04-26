@@ -45,7 +45,7 @@
                     {{model.sysUser}}
                 </td>
                  <td>
-                    {{model.inDate}}
+                    {{model.inDate|date:"yyyy-MM-dd HH:mm:ss"}}
                 </td>
                 <td>
                 	<a class="btn btn-primary btn-xs" href="#/edit?id={{model.id}}"><eidea:label key="common.button.view"/></a>

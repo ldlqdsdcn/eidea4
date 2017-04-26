@@ -12,15 +12,6 @@
                 ng-click="deleteRecord()" ng-show="canDel" title="<eidea:label key="common.button.delete"/>"><%--删除--%>
             <i class="fa fa-trash-o fa-1x" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.delete"/>
         </button>
-        <button type="button" class="btn  btn-primary btn-sm" title="<eidea:label key="common.button.copy"/>">
-            <i class="fa fa-copy fa-1x" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.copy"/>
-        </button>
-        <button type="button" class="btn  btn-primary btn-sm" title="<eidea:label key="common.button.paste"/>">
-            <i class="fa fa-paste fa-1x" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.paste"/>
-        </button>
-        <button type="button" class="btn  btn-primary btn-sm" title="<eidea:label key="common.button.auditing"/>">
-            <i class="fa fa-gavel fa-1x" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.auditing"/>
-        </button>
         <div class="btn-group">
             <button type="button" class="btn btn-primary btn-sm" data-toggle="dropdown" title="<eidea:label key="common.button.export"/>">
                 <i class="fa fa-download fa-1x" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.export"/>

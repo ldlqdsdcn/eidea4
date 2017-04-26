@@ -60,10 +60,10 @@ public class SearchServiceImpl implements SearchService {
         search.addFilterEqual("uri",searchBo.getUri());
         List<SearchPo> searchPoList = searchDao.search(search);
         if (searchPoList!=null&&searchPoList.size()>0){
-            if (searchPoList.get(0).getUri().equals(searchBo.getUri())){
-                return false;
-            }else {
+            if (searchPoList.get(0).getId().equals(searchBo.getId())){
                 return true;
+            }else {
+                return false;
             }
         }else {
             return true;

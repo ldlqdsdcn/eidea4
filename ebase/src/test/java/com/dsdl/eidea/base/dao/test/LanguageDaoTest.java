@@ -1,7 +1,6 @@
 package com.dsdl.eidea.base.dao.test;
 
 import com.dsdl.eidea.core.dao.CommonDao;
-import com.dsdl.eidea.core.entity.bo.LanguageBo;
 import com.dsdl.eidea.core.entity.po.LanguagePo;
 import com.dsdl.eidea.core.spring.annotation.DataAccess;
 import com.googlecode.genericdao.search.Search;

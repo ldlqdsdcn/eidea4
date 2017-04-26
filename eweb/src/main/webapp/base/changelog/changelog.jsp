@@ -92,7 +92,7 @@
         $scope.bodyList=$scope.changelogVo.bodyList;
    }
         $scope.showAll = function () {
-            var url = "<c:url value="/base/changelog/showAllChanges"/>?tableName=" + $scope.changelogVo.changelogBo.name;
+            var url = "<c:url value="/base/changelog/showAllChanges"/>?tableName=" + $scope.changelogVo.changelogBo.name+"&pk="+ $scope.changelogVo.changelogBo.pk;
             $http.get(url)
                     .success(function (response) {
                         if (response.success) {

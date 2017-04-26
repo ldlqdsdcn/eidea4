@@ -82,11 +82,11 @@
                 buttons: {
                     confirm: {
                         label: '<i class="fa fa-check" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.checktrue"/>',
-                        className: 'btn-success'
+                        className: 'btn-primary'
                     },
                     cancel: {
                         label: '<i class="fa fa-close" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.checkfalse"/>',
-                        className: 'btn-danger'
+                        className: 'btn-primary'
                     }
                 },
                 callback: function (result) {

@@ -40,7 +40,16 @@
                         $scope.updateList(response.data);
                     }
                     else {
-                        bootbox.alert(response.message);
+//                        bootbox.alert(response.message);
+                        bootbox.alert({
+                            buttons: {
+                                ok: {
+                                    label: '<i class="fa fa-close" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.closed"/>',
+                                    className: 'btn-primary'
+                                }
+                            },
+                            message: response.message,
+                        });
                     }
 
                 });
@@ -99,11 +108,29 @@
                         }
                         $http.post("<c:url value="/core/language/deletes"/>", ids).success(function (data) {
                             if (data.success) {
-                                bootbox.alert("<eidea:message key="module.deleted.success"/>");
+                                <%--bootbox.alert("<eidea:message key="module.deleted.success"/>");--%>
+                                bootbox.alert({
+                                    buttons: {
+                                        ok: {
+                                            label: '<i class="fa fa-close" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.closed"/>',
+                                            className: 'btn-primary'
+                                        }
+                                    },
+                                    message: '<eidea:message key="module.deleted.success"/>',
+                                });
                                 $scope.updateList(data.data);
                             }
                             else {
-                                bootbox.alert(data.message);
+//                                bootbox.alert(data.message);
+                                bootbox.alert({
+                                    buttons: {
+                                        ok: {
+                                            label: '<i class="fa fa-close" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.closed"/>',
+                                            className: 'btn-primary'
+                                        }
+                                    },
+                                    message: data.message,
+                                });
                             }
 
                         });
@@ -136,11 +163,29 @@
                         $scope.canSave=(PrivilegeService.hasPrivilege('add')&&$scope.languageBo.created)||PrivilegeService.hasPrivilege('update');
                     }
                     else {
-                        bootbox.alert(response.message);
+//                        bootbox.alert(response.message);
+                        bootbox.alert({
+                            buttons: {
+                                ok: {
+                                    label: '<i class="fa fa-close" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.closed"/>',
+                                    className: 'btn-primary'
+                                }
+                            },
+                            message: response.message,
+                        });
                     }
                 }).error(function (response) {
-            bootbox.alert(response);
-        });
+//                    bootbox.alert(response);
+                    bootbox.alert({
+                        buttons: {
+                            ok: {
+                                label: '<i class="fa fa-close" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.closed"/>',
+                                className: 'btn-primary'
+                            }
+                        },
+                        message: response,
+                    });
+                });
         $scope.save = function () {
             if ($scope.editForm.$valid) {
                 var postUrl = '<c:url value="/core/language/saveForUpdated"/>';
@@ -171,11 +216,29 @@
                             $scope.languageBo = response.data;
                         }
                         else {
-                            bootbox.alert(response.message);
+//                            bootbox.alert(response.message);
+                            bootbox.alert({
+                                buttons: {
+                                    ok: {
+                                        label: '<i class="fa fa-close" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.closed"/>',
+                                        className: 'btn-primary'
+                                    }
+                                },
+                                message: response.message,
+                            });
                         }
                     }).error(function (response) {
-                bootbox.alert(response);
-            });
+//                        bootbox.alert(response);
+                        bootbox.alert({
+                            buttons: {
+                                ok: {
+                                    label: '<i class="fa fa-close" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.closed"/>',
+                                    className: 'btn-primary'
+                                }
+                            },
+                            message: response,
+                        });
+                    });
         }
 
     });

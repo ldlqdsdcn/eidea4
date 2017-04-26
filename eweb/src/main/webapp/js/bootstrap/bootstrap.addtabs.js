@@ -41,7 +41,7 @@
 
         $.addtabs.add({
             'target': a_obj.target ? a_obj.target : target,
-            'id': a_obj.id ? a_obj.id : a_obj.addtab,
+            'id': a_obj.url,
             'title': a_obj.title ? a_obj.title : obj.html(),
             'content': settings.content ? settings.content : a_obj.content,
             'url': a_obj.url,
@@ -226,7 +226,7 @@
         }
         var optsId=new StringBuffer();
         $.each(opts.id.split(""),function (index,value) {
-            if(value == " "){
+            if(value == "/" || value == "."){
                 optsId.append("_");
             }else {
                 optsId.append(value);

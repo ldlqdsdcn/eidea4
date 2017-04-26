@@ -18,16 +18,16 @@
             <a href="#/list" class="btn btn-primary btn-sm" title="<eidea:label key="common.button.back"/>"><%--返回--%>
                 <i class="fa fa-mail-reply fa-1x" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.back"/></a>
             <button type="button" class="btn  btn-primary btn-sm" title="<eidea:label key="common.button.home.page"/>">
-                <i class="fa fa-step-backward fa-1x" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.home.page"/>
+                <i class="fa fa-step-backward fa-1x" aria-hidden="true"></i>&nbsp;<eidea:label key="common.label.firstpage"/>
             </button>
             <button type="button" class="btn  btn-primary btn-sm" title="<eidea:label key="common.button.previous.page"/>">
-                <i class="fa fa-caret-left fa-1x" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.previous.page"/>
+                <i class="fa fa-caret-left fa-1x" aria-hidden="true"></i>&nbsp;<eidea:label key="common.label.previouspage"/>
             </button>
             <button type="button" class="btn  btn-primary btn-sm" title="<eidea:label key="common.button.next.page"/>">
-                <i class="fa fa-caret-right fa-1x" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.next.page"/>
+                <i class="fa fa-caret-right fa-1x" aria-hidden="true"></i>&nbsp;<eidea:label key="common.label.nextpage"/>
             </button>
             <button type="button" class="btn  btn-primary btn-sm" title="<eidea:label key="common.button.last.page"/>">
-                <i class="fa fa-step-forward fa-1x" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.last.page"/>
+                <i class="fa fa-step-forward fa-1x" aria-hidden="true"></i>&nbsp;<eidea:label key="common.label.lastpage"/>
             </button>
             <button type="button" class="btn  btn-primary btn-sm" title="<eidea:label key="common.button.copy"/>">
                 <i class="fa fa-copy fa-1x" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.copy"/>

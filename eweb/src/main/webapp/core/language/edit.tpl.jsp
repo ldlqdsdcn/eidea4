@@ -27,7 +27,7 @@
                 <div class="form-group">
                     <label for="name"><%--name--%><eidea:label key="datadict.column.name"/></label>
                     <input type="text" class="form-control" id="name" placeholder="<eidea:message key="org.input.name"/>" ng-model="languageBo.name"
-                           required ng-minlength="2" ng-maxlength="100">
+                           required ng-minlength="2" ng-maxlength="100" ng-blur="findExistLanguageByName()">
                 </div>
                 <div class="form-group">
                     <label for="remark"><%--remark--%><eidea:label key="base.remarks"/></label>

@@ -125,4 +125,20 @@ public class LanguageController {
         languageService.deletes(codes);
         return list(session);
     }
+
+    @RequestMapping(value = "/findExistLanguge")
+    @ResponseBody
+    @RequiresPermissions(value = "view")
+    public JsonResult<Boolean> findExistLanguage(@RequestBody LanguageBo languageBo, HttpSession session) {
+        boolean flag = true;
+        UserResource userResource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
+        if (languageBo == null) {
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), userResource.getMessage("common.primary_key.isempty"));
+        } else {
+            flag = languageService.findExistLanguageByName(languageBo);
+        }
+        return JsonResult.success(flag);
+    }
+
 }
+

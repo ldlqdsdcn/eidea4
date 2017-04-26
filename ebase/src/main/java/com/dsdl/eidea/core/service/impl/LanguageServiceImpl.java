@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 public class LanguageServiceImpl implements LanguageService {
     private static final Logger logger = Logger.getLogger(LanguageServiceImpl.class);
     @DataAccess(entity = LanguagePo.class)
-    private CommonDao<LanguagePo,String> languageDao;
+    private CommonDao<LanguagePo, String> languageDao;
     private ModelMapper modelMapper = new ModelMapper();
     private PropertyMap<LanguagePo, LanguageBo> languageBoPropertyMap = new PropertyMap<LanguagePo, LanguageBo>() {
         @Override
@@ -54,6 +54,18 @@ public class LanguageServiceImpl implements LanguageService {
         List<LanguageBo> languageBoList = modelMapper.map(languagePoList, new TypeToken<List<LanguageBo>>() {
         }.getType());
         return languageBoList;
+    }
+
+    @Override
+    public boolean findExistLanguageByName(LanguageBo languageBo) {
+        Search search = new Search();
+        search.addFilterEqual("name", languageBo.getName());
+        List<LanguagePo> languagePoList = languageDao.search(search);
+        if (languagePoList != null && languagePoList.size() > 0) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     private List<LanguageBo> convertPoToBo(List<LanguagePo> languagePoList) {
@@ -144,6 +156,7 @@ public class LanguageServiceImpl implements LanguageService {
             return false;
         }
     }
+
     @Override
     public List<LanguageBo> getLanguageForActivated() {
         Search search = new Search();

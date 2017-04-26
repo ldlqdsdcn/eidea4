@@ -6,6 +6,7 @@ import com.dsdl.eidea.base.web.vo.UserResource;
 import com.dsdl.eidea.core.web.def.WebConst;
 import com.dsdl.eidea.core.web.result.JsonResult;
 import com.dsdl.eidea.core.web.result.def.ErrorCodes;
+import com.dsdl.eidea.core.web.util.SearchHelper;
 import com.dsdl.eidea.core.web.vo.PagingSettingResult;
 import com.googlecode.genericdao.search.Search;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -28,7 +29,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/base/module")
 public class ModuleController {
-
+    private static final String URI = "sys_module";
     @Autowired
     private ModuleService moduleService;
 
@@ -42,6 +43,7 @@ public class ModuleController {
     public ModelAndView getModuleToJsp() {
         ModelAndView modelAndView = new ModelAndView("/base/module/module");
         modelAndView.addObject("pagingSettingResult", PagingSettingResult.getDefault());
+        modelAndView.addObject(WebConst.PAGE_URI, URI);
         return modelAndView;
     }
 
@@ -54,8 +56,9 @@ public class ModuleController {
     @RequiresPermissions(value = "view")
     @RequestMapping(value = "/getModuleList", method = RequestMethod.POST)
     @ResponseBody
-    public JsonResult<List<ModuleBo>> getModuleList() {
-        List<ModuleBo> moduleList = moduleService.getModuleList(new Search());
+    public JsonResult<List<ModuleBo>> getModuleList(HttpSession session) {
+        Search search = SearchHelper.getSearchParam(URI, session);
+        List<ModuleBo> moduleList = moduleService.getModuleList(search);
         return JsonResult.success(moduleList);
     }
 
@@ -74,7 +77,7 @@ public class ModuleController {
             return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("pagemenu.primarykey.information"));
         }
         moduleService.deleteModuleList(ids);
-        return getModuleList();
+        return getModuleList(session);
     }
 
     /**

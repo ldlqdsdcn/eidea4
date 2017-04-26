@@ -52,7 +52,7 @@ public class MessageServiceImpl implements MessageService {
     private PropertyMap<MessageTrlPo, MessageTrlBo> messageTrlBoPropertyMap = new PropertyMap<MessageTrlPo, MessageTrlBo>() {
         @Override
         protected void configure() {
-            map().setLang(source.getCoreLanguage().getCode());
+            map().setLang(source.getLanguagePo().getCode());
         }
     };
 
@@ -106,8 +106,8 @@ public class MessageServiceImpl implements MessageService {
             MessageTrlPo messageTrlPo = new MessageTrlPo();
             messageTrlPo.setId(messageTrlBo.getId());
             messageTrlPo.setMsgtext(messageTrlBo.getMsgtext());
-            LanguagePo ss = languageDao.find(messageTrlBo.getLang());
-            messageTrlPo.setCoreLanguage(ss);
+            LanguagePo languagePo = languageDao.find(messageTrlBo.getLang());
+            messageTrlPo.setLanguagePo(languagePo);
             messageTrlPo.setCoreMessage(messagePo);
             messageTrlPoList.add(messageTrlPo);
             if (ActivateDef.ACTIVATED.getKey().equals(messagePo.getIsactive())) {

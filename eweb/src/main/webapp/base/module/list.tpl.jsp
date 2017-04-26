@@ -6,7 +6,9 @@
             <li><a href="javascript:;"><i class="icon icon-tasks"></i><eidea:label key="module.column.modulesetlist"/></a></li>
         </ol>
         <a href="#/edit" class="btn  btn-primary btn-sm" ng-show="canAdd"><eidea:label key="common.button.create"/></a>
-        <button type="button" class="btn  btn-primary btn-sm" id="search_but"><eidea:label key="common.button.search"/></button>
+        <button type="button" class="btn  btn-primary btn-sm" id="search_but" data-toggle="modal"
+                data-target="#searchModal"><%--查找--%><eidea:label key="common.button.search"/>
+        </button>
         <button type="button" class="btn  btn-primary btn-sm" ng-disabled="!canDelete()"
                 ng-click="deleteRecord()" ng-show="canDel"><eidea:label key="common.button.delete"/></button>
     </div>

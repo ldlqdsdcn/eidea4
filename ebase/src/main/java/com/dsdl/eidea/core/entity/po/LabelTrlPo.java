@@ -21,7 +21,7 @@ public class LabelTrlPo implements java.io.Serializable {
 	private Integer id;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "lang", nullable = false)
-	private LanguagePo coreLanguage;
+	private LanguagePo languagePo;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "_key", nullable = false)
 	private LabelPo coreLabel;

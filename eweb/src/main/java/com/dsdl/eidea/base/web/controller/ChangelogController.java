@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import java.io.Serializable;
 import java.util.*;
 
 
@@ -105,9 +106,10 @@ public class ChangelogController {
     @RequiresPermissions(value = "view")
     @RequestMapping(value = "/showAllChanges", method = RequestMethod.GET)
     @ResponseBody
-    public JsonResult<ChangelogVo> showTableChanges(String tableName) {
+    public JsonResult<ChangelogVo> showTableChanges(String tableName, String pk) {
         Search search = new Search();
         search.addFilterEqual("tablePo.tableName", tableName);
+        search.addFilterEqual("pk",pk);
         List<ChangelogBo> changelogBoList = changelogService.getChangelogList(search);
         List<TableColumnBo> tableColumnBoList = changelogService.getChangelogHeader(tableName);
         ChangelogVo changelogVo = buildChangeLogVo(tableColumnBoList, changelogBoList);

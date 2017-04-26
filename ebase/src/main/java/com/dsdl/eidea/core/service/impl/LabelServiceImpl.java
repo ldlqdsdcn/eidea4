@@ -41,7 +41,7 @@ public class LabelServiceImpl implements LabelService {
         modelMapper.addMappings(new PropertyMap<LabelTrlPo, LabelTrlBo>() {
             @Override
             protected void configure() {
-                map().setLang(source.getCoreLanguage().getCode());
+                map().setLang(source.getLanguagePo().getCode());
 
             }
         });
@@ -64,7 +64,7 @@ public class LabelServiceImpl implements LabelService {
             LabelTrlPo labelTrlPo = new LabelTrlPo();
             labelTrlPo.setId(e.getId());
             labelTrlPo.setMsgtext(e.getMsgtext());
-            labelTrlPo.setCoreLanguage(languageDao.find(e.getLang()));
+            labelTrlPo.setLanguagePo(languageDao.find(e.getLang()));
             labelTrlPo.setCoreLabel(labelPo);
             labelTrlPoList.add(labelTrlPo);
             if (ActivateDef.ACTIVATED.getKey().equals(labelPo.getIsactive())) {

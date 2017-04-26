@@ -41,12 +41,12 @@
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu" role="menu">
-                    <li><a href="#"><i class="fa fa-file-excel-o fa-1x" aria-hidden="true"></i>&nbsp;excel</a></li>
-                    <li><a href="#"><i class="fa fa-file-pdf-o fa-1x" aria-hidden="true"></i>&nbsp;pdf</a></li>
-                    <li><a href="#"><i class="fa fa-file-word-o fa-1x" aria-hidden="true"></i>&nbsp;word</a></li>
-                    <li><a href="#"><i class="fa fa-file-archive-o fa-1x" aria-hidden="true"></i>&nbsp;csv</a></li>
-                    <li><a href="#"><i class="fa fa-file-archive-o fa-1x" aria-hidden="true"></i>&nbsp;xml</a></li>
-                    <li><a href="#"><i class="fa fa-file-archive-o fa-1x" aria-hidden="true"></i>&nbsp;rtf</a></li>
+                    <li><a href="#" class="list-group-item"><i class="fa fa-file-archive-o fa-1x" aria-hidden="true"></i>&nbsp;csv</a></li>
+                    <li><a href="#" class="list-group-item"><i class="fa fa-file-excel-o fa-1x" aria-hidden="true"></i>&nbsp;excel</a></li>
+                    <li><a href="#" class="list-group-item"><i class="fa fa-file-pdf-o fa-1x" aria-hidden="true"></i>&nbsp;pdf</a></li>
+                    <li><a href="#" class="list-group-item"><i class="fa fa-file-archive-o fa-1x" aria-hidden="true"></i>&nbsp;rtf</a></li>
+                    <li><a href="#" class="list-group-item"><i class="fa fa-file-word-o fa-1x" aria-hidden="true"></i>&nbsp;word</a></li>
+                    <li><a href="#" class="list-group-item"><i class="fa fa-file-archive-o fa-1x" aria-hidden="true"></i>&nbsp;xml</a></li>
                 </ul>
             </div>
             <button type="button" class="btn  btn-primary btn-sm" title="<eidea:label key="common.button.print"/>">

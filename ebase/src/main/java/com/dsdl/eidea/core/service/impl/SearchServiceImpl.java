@@ -55,26 +55,15 @@ public class SearchServiceImpl implements SearchService {
         return searchBoList;
     }
     @Override
-    public boolean findExistUrl(String url){
-        Search search = new Search();
-        search.addFilterEqual("uri",url);
-        List<SearchPo> searchPos = searchDao.search(search);
-        if (searchPos.size()>0){
-            return true;
-        }else {
-            return false;
-        }
-    }
-    @Override
     public boolean findExistSearch(SearchBo searchBo){
         Search search = new Search();
         search.addFilterEqual("uri",searchBo.getUri());
         List<SearchPo> searchPoList = searchDao.search(search);
         if (searchPoList!=null&&searchPoList.size()>0){
             if (searchPoList.get(0).getUri().equals(searchBo.getUri())){
-                return true;
-            }else {
                 return false;
+            }else {
+                return true;
             }
         }else {
             return true;

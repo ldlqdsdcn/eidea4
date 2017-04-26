@@ -39,16 +39,6 @@ public class ClientServiceImpl implements ClientService {
         return false;
     }
 
-    public boolean findExistClientByName(String name) {
-        Search search = new Search();
-        search.addFilterEqual("name", name);
-        List<ClientPo> clientPoList = clientDao.search(search);
-        if (clientPoList.size() > 0) {
-            return true;
-        } else {
-            return false;
-        }
-    }
     @Override
     public boolean findExistClientName(ClientBo clientBo){
         Search search = new Search();

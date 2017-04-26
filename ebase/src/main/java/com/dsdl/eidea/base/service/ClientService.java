@@ -18,7 +18,6 @@ public interface ClientService {
      */
     boolean findExistClient(String no);
 
-    boolean findExistClientByName(String name);
 
     boolean findExistClientName(ClientBo clientBo);
 

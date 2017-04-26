@@ -165,13 +165,14 @@
             $http.post("<c:url value="/core/search/getExistUrl"/>", $scope.searchBo).success(function (data) {
                 if (data.success) {
                     if (data.data) {
+                        searchUrl = true;
+                        $scope.message = "";
+                    } else {
                         $scope.message = "<eidea:label key="search.error.url_exist"/>";
                         /*标识符已存在*/
                         searchUrl = false;
                         return false;
-                    } else {
-                        searchUrl = true;
-                        $scope.message = "";
+
 
                     }
                 } else {

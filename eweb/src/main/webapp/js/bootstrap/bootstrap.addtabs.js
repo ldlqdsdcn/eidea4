@@ -41,7 +41,7 @@
 
         $.addtabs.add({
             'target': a_obj.target ? a_obj.target : target,
-            'id': a_obj.id ? a_obj.id : a_obj.addtab,
+            'id': a_obj.url,
             'title': a_obj.title ? a_obj.title : obj.html(),
             'content': settings.content ? settings.content : a_obj.content,
             'url': a_obj.url,
@@ -224,8 +224,15 @@
         } else {
             a_target = target;
         }
-
-        var id = 'tab_' + opts.id;
+        var optsId=new StringBuffer();
+        $.each(opts.id.split(""),function (index,value) {
+            if(value == "/" || value == "."){
+                optsId.append("_");
+            }else {
+                optsId.append(value);
+            }
+        })
+        var id = 'tab_' + optsId;
         var tab_li = a_target;
 
         var tab_content = tab_li.next('.tab-content');

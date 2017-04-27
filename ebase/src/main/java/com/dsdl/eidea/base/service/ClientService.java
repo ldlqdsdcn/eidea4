@@ -26,4 +26,5 @@ public interface ClientService {
 
     List<ClientBo> getClientListForActivated();
 
+    boolean getHasRolesByClientId(Integer id);
 }

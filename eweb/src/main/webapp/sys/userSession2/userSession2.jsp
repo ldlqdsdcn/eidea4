@@ -24,7 +24,7 @@
                         .when('/edit', {templateUrl: '<c:url value="/sys/userSession2/edit.tpl.jsp"/>'})
                         .otherwise({redirectTo: '/list'});
             }]);
-app.controller('listCtrl', function ($scope, $http) {
+app.controller('listCtrl', function ($scope,$rootScope, $http) {
 $scope.modelList = [];
 $scope.delFlag = false;
 $scope.isLoading = true;
@@ -35,6 +35,7 @@ $scope.modelList = result.data;
 $scope.queryParams.totalRecords = result.totalRecords;
 $scope.queryParams.init = false;
 };
+
 $scope.selectAll = function () {
 for (var i = 0; i < $scope.modelList.length; i++) {
 $scope.modelList[i].delFlag=$scope.delFlag;
@@ -97,21 +98,27 @@ bootbox.alert(data.message);
 }
 });
 };
-
-
-
-
 //可现实分页item数量
 $scope.maxSize =${pagingSettingResult.pagingButtonSize};
-$scope.queryParams = {
-pageSize:${pagingSettingResult.perPageSize},//每页显示记录数
-pageNo: 1, //当前页
-totalRecords: 0,//记录数
-init: true
-};
+if($rootScope.listQueryParams!=null)
+{
+    $rootScope.queryParams=$scope.listQueryParams;
+}
+else
+{
+    $scope.queryParams = {
+        pageSize:${pagingSettingResult.perPageSize},//每页显示记录数
+        pageNo: 1, //当前页
+        totalRecords: 0,//记录数
+        init: true
+    };
+    $rootScope.listQueryParams=$scope.queryParams;
+}
+
 $scope.pageChanged();
+
 });
-    app.controller('editCtrl', function ($scope, $http, $routeParams) {
+    app.controller('editCtrl', function ($scope,$rootScope, $http, $routeParams) {
         /**
          * 日期时间选择控件
          * bootstrap-datetime 24小时时间是hh

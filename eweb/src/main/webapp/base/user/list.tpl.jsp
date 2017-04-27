@@ -26,7 +26,7 @@
                     <th><eidea:label key="operator.column.init"/></th>
                     <th><eidea:label key="linkman.column.email"/></th>
                     <th><eidea:label key="customer.column.telephone"/></th>
-                    <th><eidea:label key="base.whetherEffective"/></th>
+                    <th><eidea:label key="common.label.active"/></th>
                     <th><eidea:label key="common.button.edit"/><%--编辑--%></th>
                 </tr>
                 </thead>

@@ -36,6 +36,6 @@ public class LabelPo implements java.io.Serializable {
     private List<SearchColumnPo> coreSearchColumns = new ArrayList<>(
             0);
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "coreLabel")
-    private List<LabelTrlPo> coreLabelTrls = new ArrayList<>(0);
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "labelPo")
+    private List<LabelTrlPo> labelTrls = new ArrayList<>(0);
 }

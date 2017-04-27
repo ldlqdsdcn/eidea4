@@ -109,7 +109,7 @@ public class ClientController extends BaseController {
             return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), getMessage("client.msg.select_delete"));
         }
         for (Integer id:ids){
-            boolean isExist=clientService.getIsExist(id);
+            boolean isExist=clientService.getHasRolesByClientId(id);
             if (isExist){
                 return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), getMessage("client.decide.select_delete"));
             }

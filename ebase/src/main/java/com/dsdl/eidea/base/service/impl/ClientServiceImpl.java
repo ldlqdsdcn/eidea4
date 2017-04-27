@@ -64,7 +64,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public boolean getIsExist(Integer id) {
+    public boolean getHasRolesByClientId(Integer id) {
         ClientPo clientPo=clientDao.find(id);
         Set<OrgPo> orgPos=clientPo.getSysOrgs();
         if (orgPos.size()>0){

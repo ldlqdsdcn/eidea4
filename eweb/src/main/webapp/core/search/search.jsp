@@ -160,32 +160,7 @@
                 }).error(function (response) {
             bootbox.alert(response);
         });
-        var searchUrl = true;
-        $scope.getExistUrl = function () {
-            $http.post("<c:url value="/core/search/getExistUrl"/>", $scope.searchBo).success(function (data) {
-                if (data.success) {
-                    if (data.data) {
-                        searchUrl = true;
-                        $scope.message = "";
-                    } else {
-                        $scope.message = "<eidea:label key="search.error.url_exist"/>";
-                        /*标识符已存在*/
-                        searchUrl = false;
-                        return false;
-
-
-                    }
-                } else {
-                    bootbox.alert(data.message);
-                }
-            }).error(function (data) {
-                bootbox.alert(data);
-            })
-        }
         $scope.save = function () {
-            if (searchUrl == false){
-                return false;
-            }
             if ($scope.searchForm.$valid) {
                 var postUrl = '<c:url value="/core/search/saveForUpdated"/>';
                 if ($scope.searchBo.id == null) {

@@ -138,31 +138,7 @@
                 }).error(function (response) {
             bootbox.alert(response);
         })
-        //验证实体名称
-        var clientName=true;
-        $scope.findExistClientName=function () {
-            $http.post("<c:url value="/base/client/findExistClientName"/> ", $scope.clientBo).success(function (data) {
-                if (data.success) {
-                    if (data.data) {
-                        clientName = true;
-                        $scope.message = "";
-                    } else {
-                        $scope.message = "<eidea:label key="client.msg.client_name_exists"/>";
-                        /*实体名称已存在*/
-                        clientName = false;
-                        return false;
-                    }
-                } else {
-                    bootbox.alert(data.message);
-                }
-            }).error(function (data) {
-                bootbox.alert(data);
-            })
-        }
         $scope.save = function () {
-            if(clientName == false){
-                return false;
-            }
             var reg=/^[a-zA-Z0-9]+$/;
             if (!reg.test($scope.clientBo.no)){
                 $scope.message="<eidea:label key="client.msg.client_no_error"/>";

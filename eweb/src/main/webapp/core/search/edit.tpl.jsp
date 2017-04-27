@@ -24,7 +24,7 @@
                 </div>
                 <div class="form-group">
                     <label for="uri"><%--标识符--%><eidea:label key="base.identifier"/></label>
-                    <input type="text" class="form-control" id="uri" name="uri" placeholder="<eidea:message key="search.table.name"/>" ng-model="searchBo.uri" required ng-maxlength="100" >
+                    <input type="text" class="form-control" id="uri" placeholder="<eidea:message key="search.table.name"/>" ng-model="searchBo.uri" required ng-maxlength="100" >
                 </div>
                 <div class="form-group">
                     <label for="showType"><%--查询类型--%><eidea:label key="officeTestExam.select.selectTypeList"/></label>
@@ -109,11 +109,6 @@
                         <a href="#/edit"  class="btn btn-default btn-sm" ng-show="canAdd"><eidea:label key="common.button.create"/><%--新建--%></a>
                         <button type="submit" class="btn btn-default btn-sm" ng-show="canSave"><eidea:label key="common.button.save"/><%--保存--%></button>
                         <a href="#/list" class="btn btn-default btn-sm"><eidea:label key="common.button.back"/><%--返回--%></a>
-                    </p>
-                </div>
-                <div class="form-group">
-                    <p class="text-center" style="color: red"  >
-                        {{message}}
                     </p>
                 </div>
             </form>

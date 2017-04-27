@@ -85,7 +85,7 @@ public class ClientController extends BaseController {
     @ResponseBody
     public JsonResult<ClientBo> saveForCreate(@Validated @RequestBody ClientBo clientBo) {
         if (clientService.findExistClient(clientBo.getNo())) {
-            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), getMessage("client.error.client_name_exists"));
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), getMessage("client.msg.client_code_exists"));
         }
         if (clientService.findExistClientByName(clientBo.getName())){
             return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(),getMessage("client.error.client_name_exists"));

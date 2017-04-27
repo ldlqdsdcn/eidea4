@@ -33,10 +33,10 @@
                     {{model.username}}
                 </td>
                  <td>
-                    {{model.loginDate}}
+                    {{model.loginDate|date:"yyyy-MM-dd HH:mm:ss"}}
                 </td>
                 <td>
-                    {{model.logoutDate}}
+                    {{model.logoutDate|date:"yyyy-MM-dd HH:mm:ss"}}
                 </td>
                 <td>
                     {{model.remoteAddr}}

@@ -54,7 +54,6 @@ public class SearchServiceImpl implements SearchService {
         });
         return searchBoList;
     }
-
     public SearchBo getSearchBo(Integer id) {
         SearchPo searchPo = searchDao.find(id);
         SearchBo searchBo = convertPoToBo(searchPo);

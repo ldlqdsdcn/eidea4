@@ -120,8 +120,6 @@
         $scope.bigTotalItems = 0;
     });
     app.controller('editCtrl', function ($scope, $http, $routeParams) {
-        $scope.message = '';
-        $scope.clientBo = {};
         $scope.canAdd=PrivilegeService.hasPrivilege('add');
         var url = "<c:url value="/base/client/create"/>";
         if ($routeParams.id != null) {
@@ -140,6 +138,11 @@
             bootbox.alert(response);
         });
         $scope.save = function () {
+            var reg=/^[a-zA-Z0-9]+$/;
+            if (!reg.test($scope.clientBo.no)){
+                $scope.message="<eidea:label key="client.msg.client_no_error"/>";
+                return false;
+            }
             if ($scope.editForm.$valid) {
                 var postUrl = '<c:url value="/base/client/saveForUpdated"/>';
                 if ($scope.clientBo.id == null) {
@@ -163,8 +166,6 @@
             }
         }
         $scope.create = function () {
-            $scope.message = "";
-            $scope.clientBo = {};
             var url = "<c:url value="/base/client/create"/>";
             $http.get(url)
                     .success(function (response) {

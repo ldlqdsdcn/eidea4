@@ -31,7 +31,7 @@
                     <p class="text-right">
                         <button type="reset" ng-click="create()" class="btn btn-default btn-sm" ng-show="canAdd">
                             <eidea:label key="common.button.create"/><%--新建--%></button>
-                        <button type="submit" class="btn btn-default btn-sm" ng-show="canSave"ng-disabled="reportBo.init=='Y'"><eidea:label
+                        <button type="submit" class="btn btn-default btn-sm" ng-show="canSave"><eidea:label
                                 key="common.button.save"/><%--保存--%></button>
                         <a href="#/list" class="btn btn-default btn-sm"><eidea:label
                                 key="common.button.back"/><%--返回--%></a>

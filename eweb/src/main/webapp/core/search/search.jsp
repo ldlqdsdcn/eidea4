@@ -168,7 +168,6 @@
                 }
                 $http.post(postUrl, $scope.searchBo).success(function (data) {
                     if (data.success) {
-
                         bootbox.alert("<eidea:label key="base.save.success"/>");
                         console.log("id=" + data.data.id);
                         $scope.searchBo = data.data;

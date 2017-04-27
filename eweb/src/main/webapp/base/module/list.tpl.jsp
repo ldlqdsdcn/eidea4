@@ -7,7 +7,8 @@
         </ol>
         <a href="#/edit" class="btn  btn-primary btn-sm" ng-show="canAdd"><eidea:label key="common.button.create"/></a>
         <button type="button" class="btn  btn-primary btn-sm" id="search_but" data-toggle="modal"
-                data-target="#searchModal"><%--查找--%><eidea:label key="common.button.search"/>
+                data-target="#searchModal" title="<eidea:label key="common.button.search"/>"><%--查找--%>
+            <i class="fa fa-search fa-1x" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.search"/>
         </button>
         <button type="button" class="btn  btn-primary btn-sm" ng-disabled="!canDelete()"
                 ng-click="deleteRecord()" ng-show="canDel"><eidea:label key="common.button.delete"/></button>

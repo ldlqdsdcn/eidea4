@@ -121,7 +121,6 @@
     });
     app.controller('editCtrl', function ($scope, $http, $routeParams) {
         $scope.canAdd=PrivilegeService.hasPrivilege('add');
-        //实体编辑
         var url = "<c:url value="/base/client/create"/>";
         if ($routeParams.id != null) {
             url = "<c:url value="/base/client/get"/>" + "?id=" + $routeParams.id;
@@ -137,7 +136,7 @@
                     }
                 }).error(function (response) {
             bootbox.alert(response);
-        })
+        });
         $scope.save = function () {
             var reg=/^[a-zA-Z0-9]+$/;
             if (!reg.test($scope.clientBo.no)){

@@ -1,6 +1,6 @@
 <%--
 User: 刘大磊
-Date: 2017-04-26 15:34:17
+Date: 2017-04-26 15:54:01
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/inc/taglib.jsp" %>
@@ -28,6 +28,10 @@ Date: 2017-04-26 15:34:17
                     <label for="remark" ><%--备注--%><eidea:label key="base.datadictType.label.remark"/></label>
                             <input type="text" class="form-control" id="remark" placeholder="<eidea:message key="common.please.input"><eidea:param value="base.datadictType.label.remark" type="label"/></eidea:message>" ng-model="datadictTypePo.remark" >
 
+                </div>
+                <div class="form-group">
+                    <label for="isactive" ><%--是否有效--%><eidea:label key="base.datadictType.label.isactive"/></label>
+                            <input id="isactive" type="checkbox"  ng-true-value="'Y'" ng-false-value="'N'" ng-model="datadictTypePo.isactive">
                 </div>
 
 

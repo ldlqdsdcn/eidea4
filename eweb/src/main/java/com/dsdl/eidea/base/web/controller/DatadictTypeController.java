@@ -31,7 +31,7 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
-* Created by 刘大磊 on 2017-04-26 15:34:17.
+* Created by 刘大磊 on 2017-04-26 15:54:01.
 */ @Controller
 @RequestMapping("/base/datadictType")
 public class DatadictTypeController extends BaseController {

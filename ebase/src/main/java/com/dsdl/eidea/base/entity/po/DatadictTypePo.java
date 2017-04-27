@@ -13,7 +13,7 @@ import lombok.Setter;
 /**
 * table name base_datadict_type
 *            数据字典类型
-* Date:2017-04-26 15:34:16
+* Date:2017-04-26 15:54:01
 **/
 @Getter
 @Setter
@@ -38,4 +38,9 @@ public class DatadictTypePo implements java.io.Serializable {
     **/
     @Column(name = "[remark]",length =200 )
     private String remark;
+    /**
+    * 是否有效
+    **/
+    @Column(name = "[isactive]",length =1 )
+    private String isactive;
 }

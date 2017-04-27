@@ -15,6 +15,7 @@ import com.google.gson.JsonObject;
 import com.googlecode.genericdao.search.Search;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -126,9 +127,17 @@ public class TableController {
     @RequestMapping(value = "/getTableInfo", method = RequestMethod.GET)
     @ResponseBody
     @RequiresPermissions(value = "view")
-    public JsonResult<TableMetaDataBo> getTableInfo(String tableName) {
-        TableMetaDataBo tableMetaDataBo = tableService.getTableDescription(tableName);
-        return JsonResult.success(tableMetaDataBo);
+    public JsonResult<TableMetaDataBo> getTableInfo(String tableName,HttpSession session) {
+        UserResource userResource = (UserResource)session.getAttribute(WebConst.SESSION_RESOURCE);
+        if (tableName==null&&tableName.equals("")){
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(),userResource.getMessage("table.error.table_name.not_null"));
+        }
+        if (tableService.findExistTableByName(tableName)){
+            TableMetaDataBo tableMetaDataBo = tableService.getTableDescription(tableName);
+            return JsonResult.success(tableMetaDataBo);
+        }else {
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(),userResource.getMessage("table.name.already.exist"));
+        }
     }
 
     @RequestMapping(value = "/saveTableInfo", method = RequestMethod.POST)
@@ -143,4 +152,19 @@ public class TableController {
         }
         return JsonResult.success(tableInfo);
     }
+
+    @RequestMapping(value = "findExistTableName")
+    @ResponseBody
+    @RequiresPermissions(value = "view")
+    public JsonResult<Boolean> findExistTableName(@RequestBody TableBo tableBo, HttpSession session) {
+        boolean flag = true;
+        UserResource userResource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
+        if (tableBo == null) {
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), userResource.getMessage("table.name.already.exist"));
+        } else {
+            flag = tableService.findExistTableName(tableBo);
+        }
+        return JsonResult.success(flag);
+    }
+
 }

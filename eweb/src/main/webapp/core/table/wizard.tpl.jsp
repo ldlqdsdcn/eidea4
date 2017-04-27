@@ -142,5 +142,15 @@
                 </tbody>
             </table>
         </div>
+        <div class="form-group">
+            <p class="text-center" style="color: red">
+                {{message}}
+            </p>
+            <p>
+                        <span ng-repeat="error in errors track by $index">
+                            {{error.message}}
+                        </span>
+            </p>
+        </div>
     </form>
 </div>

@@ -189,23 +189,18 @@
                 });
         $scope.enter = function (ev) {
             if (ev.keyCode !== 13) return;
-            $http.get("<c:url value="/core/table/getTableInfo"/>?tableName=" + $scope.tableInfo.name)
-                    .success(function (response) {
+            $http.get("<c:url value="/core/table/getTableInfo"/>?tableName=" + $scope.tableInfo.name).success(function (response) {
                         if (response.success) {
                             $scope.tableInfo = response.data;
 
                         }
                         else {
-                            bootbox.alert(response.message, function () {
-                                $("#name").focus();
-                            });
-
-
+                            $scope.message="<eidea:label key="table.error.name_exists"/> ";
+                            alert(response.data);
+                            $scope.tableInfo=response.data;
+                            $("#name").focus();
                         }
-
-
                     });
-
         };
         $scope.submit = function () {
 

@@ -14,6 +14,10 @@ public interface TableService {
 
     List<TableBo> findList(ISearch search);
 
+    boolean findExistTableName(TableBo tableBo);
+
+    boolean findExistTableByName(String tableName);
+
     TableBo getTableBo(Integer id);
 
     TableBo saveTableBo(TableBo tableBo);

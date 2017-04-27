@@ -22,37 +22,37 @@
 
 <script type="text/javascript">
     var app = angular.module('myApp', ['ngRoute', 'ui.bootstrap', 'jcs-autoValidate'])
-            .config(['$routeProvider', function ($routeProvider) {
-                $routeProvider
-                        .when('/list', {templateUrl: '<c:url value="/core/language/list.tpl.jsp"/>'})
-                        .when('/edit', {templateUrl: '<c:url value="/core/language/edit.tpl.jsp"/>'})
-                        .otherwise({redirectTo: '/list'});
-            }]);
+        .config(['$routeProvider', function ($routeProvider) {
+            $routeProvider
+                .when('/list', {templateUrl: '<c:url value="/core/language/list.tpl.jsp"/>'})
+                .when('/edit', {templateUrl: '<c:url value="/core/language/edit.tpl.jsp"/>'})
+                .otherwise({redirectTo: '/list'});
+        }]);
     app.controller('listCtrl', function ($scope, $http) {
         $scope.allList = [];
         $scope.modelList = [];
         $scope.delFlag = false;
-        $scope.canDel=PrivilegeService.hasPrivilege('delete');
-        $scope.canAdd=PrivilegeService.hasPrivilege('add');
+        $scope.canDel = PrivilegeService.hasPrivilege('delete');
+        $scope.canAdd = PrivilegeService.hasPrivilege('add');
         $http.get("<c:url value="/core/language/list"/>")
-                .success(function (response) {
-                    if (response.success) {
-                        $scope.updateList(response.data);
-                    }
-                    else {
+            .success(function (response) {
+                if (response.success) {
+                    $scope.updateList(response.data);
+                }
+                else {
 //                        bootbox.alert(response.message);
-                        bootbox.alert({
-                            buttons: {
-                                ok: {
-                                    label: '<i class="fa fa-close" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.closed"/>',
-                                    className: 'btn-primary'
-                                }
-                            },
-                            message: response.message,
-                        });
-                    }
+                    bootbox.alert({
+                        buttons: {
+                            ok: {
+                                label: '<i class="fa fa-close" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.closed"/>',
+                                className: 'btn-primary'
+                            }
+                        },
+                        message: response.message,
+                    });
+                }
 
-                });
+            });
         $scope.updateList = function (data) {
             $scope.allList = data;
             $scope.bigTotalItems = $scope.allList.length;
@@ -150,32 +150,19 @@
     app.controller('editCtrl', function ($scope, $http, $routeParams) {
         $scope.message = '';
         $scope.languageBo = {};
-        $scope.canAdd=PrivilegeService.hasPrivilege('add');
-        $scope.canSave=false;
+        $scope.canAdd = PrivilegeService.hasPrivilege('add');
+        $scope.canSave = false;
         var url = "<c:url value="/core/language/create"/>";
         if ($routeParams.code != null) {
             url = "<c:url value="/core/language/get"/>" + "?code=" + $routeParams.code;
         }
         $http.get(url)
-                .success(function (response) {
-                    if (response.success) {
-                        $scope.languageBo = response.data;
-                        $scope.canSave=(PrivilegeService.hasPrivilege('add')&&$scope.languageBo.created)||PrivilegeService.hasPrivilege('update');
-                    }
-                    else {
-//                        bootbox.alert(response.message);
-                        bootbox.alert({
-                            buttons: {
-                                ok: {
-                                    label: '<i class="fa fa-close" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.closed"/>',
-                                    className: 'btn-primary'
-                                }
-                            },
-                            message: response.message,
-                        });
-                    }
-                }).error(function (response) {
-//                    bootbox.alert(response);
+            .success(function (response) {
+                if (response.success) {
+                    $scope.languageBo = response.data;
+                    $scope.canSave = (PrivilegeService.hasPrivilege('add') && $scope.languageBo.created) || PrivilegeService.hasPrivilege('update');
+                }
+                else {
                     bootbox.alert({
                         buttons: {
                             ok: {
@@ -183,10 +170,27 @@
                                 className: 'btn-primary'
                             }
                         },
-                        message: response,
+                        message: response.message,
                     });
-                });
+                }
+            }).error(function (response) {
+            bootbox.alert({
+                buttons: {
+                    ok: {
+                        label: '<i class="fa fa-close" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.closed"/>',
+                        className: 'btn-primary'
+                    }
+                },
+                message: response,
+            });
+        });
         $scope.save = function () {
+            var code = /^[a-z]{2}_[A-Z]{2}$/;
+            if (!code.test($scope.languageBo.code)) {
+                $scope.message = "<eidea:label key="language.code.pattern.error"/>";
+                return false;
+            }
+
             if ($scope.editForm.$valid) {
                 var postUrl = '<c:url value="/core/language/saveForUpdated"/>';
                 if ($scope.languageBo.created) {
@@ -211,24 +215,12 @@
             $scope.languageBo = {};
             var url = "<c:url value="/core/language/create"/>";
             $http.get(url)
-                    .success(function (response) {
-                        if (response.success) {
-                            $scope.languageBo = response.data;
-                        }
-                        else {
+                .success(function (response) {
+                    if (response.success) {
+                        $scope.languageBo = response.data;
+                    }
+                    else {
 //                            bootbox.alert(response.message);
-                            bootbox.alert({
-                                buttons: {
-                                    ok: {
-                                        label: '<i class="fa fa-close" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.closed"/>',
-                                        className: 'btn-primary'
-                                    }
-                                },
-                                message: response.message,
-                            });
-                        }
-                    }).error(function (response) {
-//                        bootbox.alert(response);
                         bootbox.alert({
                             buttons: {
                                 ok: {
@@ -236,9 +228,21 @@
                                     className: 'btn-primary'
                                 }
                             },
-                            message: response,
+                            message: response.message,
                         });
-                    });
+                    }
+                }).error(function (response) {
+//                        bootbox.alert(response);
+                bootbox.alert({
+                    buttons: {
+                        ok: {
+                            label: '<i class="fa fa-close" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.closed"/>',
+                            className: 'btn-primary'
+                        }
+                    },
+                    message: response,
+                });
+            });
         }
 
     });

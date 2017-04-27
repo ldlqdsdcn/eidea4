@@ -98,6 +98,9 @@ public class LanguageController {
         if (languageBo.getCode() == null || languageBo.getCode().isEmpty()) {
             return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("common.primary_key.isempty"));
         }
+        if (languageService.findExistLanguageByName(languageBo.getName())){
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(),resource.getMessage("language.error.name.exist"));
+        }
         languageService.save(languageBo);
         return get(languageBo.getCode());
     }
@@ -109,6 +112,9 @@ public class LanguageController {
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
         if (languageService.findExistLanguage(languageBo.getCode())) {
             return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("language.msg.code_exists"));
+        }
+        if (languageService.findExistLanguageByName(languageBo.getName())){
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(),resource.getMessage("language.error.name.exist"));
         }
         languageService.save(languageBo);
         return get(languageBo.getCode());
@@ -126,3 +132,4 @@ public class LanguageController {
         return list(session);
     }
 }
+

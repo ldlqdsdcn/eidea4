@@ -184,31 +184,7 @@
                 message: response,
             });
         });
-        //验证语言名称是否存在
-        var languageName = true;
-        $scope.findExistLanguageByName = function () {
-            $http.post("<c:url value="/core/language/findExistLanguge"/> ", $scope.languageBo).success(function (data) {
-                if (data.success) {
-                    if (data.data) {
-                        languageName = true;
-                        $scope.message = "";
-                    } else {
-                        $scope.message = "<eidea:label key="language.name.already.exist"/>";
-                        languageName = false;
-                        return false;
-                    }
-                } else {
-                    bootbox.alert(data.message);
-                }
-            }).error(function (data) {
-                bootbox.alert(data);
-            })
-        };
         $scope.save = function () {
-            if (languageName == false) {
-                return false;
-            }
-            //语言编码格式验证
             var code = /^[a-z]{2}_[A-Z]{2}$/;
             if (!code.test($scope.languageBo.code)) {
                 $scope.message = "<eidea:label key="language.code.pattern.error"/>";

@@ -98,6 +98,14 @@ public class LanguageController {
         if (languageBo.getCode() == null || languageBo.getCode().isEmpty()) {
             return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("common.primary_key.isempty"));
         }
+        if (languageService.findExistLanguageByName(languageBo.getName())){
+            LanguageBo language = languageService.getLanguageBo(languageBo.getCode());
+            language.setIsactive(languageBo.getIsactive());
+            language.setLanguageTrlBoList(languageBo.getLanguageTrlBoList());
+            language.setRemark(languageBo.getRemark());
+            languageService.save(language);
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(),resource.getMessage("language.other.patameter.save_success"));
+        }
         languageService.save(languageBo);
         return get(languageBo.getCode());
     }
@@ -109,6 +117,9 @@ public class LanguageController {
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
         if (languageService.findExistLanguage(languageBo.getCode())) {
             return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("language.msg.code_exists"));
+        }
+        if (languageService.findExistLanguageByName(languageBo.getName())){
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(),resource.getMessage("language.error.name.exist"));
         }
         languageService.save(languageBo);
         return get(languageBo.getCode());
@@ -125,20 +136,5 @@ public class LanguageController {
         languageService.deletes(codes);
         return list(session);
     }
-
-    @RequestMapping(value = "/findExistLanguge")
-    @ResponseBody
-    @RequiresPermissions(value = "view")
-    public JsonResult<Boolean> findExistLanguage(@RequestBody LanguageBo languageBo, HttpSession session) {
-        boolean flag = true;
-        UserResource userResource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
-        if (languageBo == null) {
-            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), userResource.getMessage("common.primary_key.isempty"));
-        } else {
-            flag = languageService.findExistLanguageByName(languageBo);
-        }
-        return JsonResult.success(flag);
-    }
-
 }
 

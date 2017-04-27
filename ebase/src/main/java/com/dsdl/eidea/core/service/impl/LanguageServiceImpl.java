@@ -57,14 +57,14 @@ public class LanguageServiceImpl implements LanguageService {
     }
 
     @Override
-    public boolean findExistLanguageByName(LanguageBo languageBo) {
+    public boolean findExistLanguageByName(String languageName) {
         Search search = new Search();
-        search.addFilterEqual("name", languageBo.getName());
+        search.addFilterEqual("name", languageName);
         List<LanguagePo> languagePoList = languageDao.search(search);
         if (languagePoList != null && languagePoList.size() > 0) {
-            return false;
-        } else {
             return true;
+        } else {
+            return false;
         }
     }
 

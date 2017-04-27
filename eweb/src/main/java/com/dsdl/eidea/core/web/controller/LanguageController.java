@@ -99,12 +99,7 @@ public class LanguageController {
             return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("common.primary_key.isempty"));
         }
         if (languageService.findExistLanguageByName(languageBo.getName())){
-            LanguageBo language = languageService.getLanguageBo(languageBo.getCode());
-            language.setIsactive(languageBo.getIsactive());
-            language.setLanguageTrlBoList(languageBo.getLanguageTrlBoList());
-            language.setRemark(languageBo.getRemark());
-            languageService.save(language);
-            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(),resource.getMessage("language.other.patameter.save_success"));
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(),resource.getMessage("language.error.name.exist"));
         }
         languageService.save(languageBo);
         return get(languageBo.getCode());

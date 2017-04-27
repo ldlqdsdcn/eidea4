@@ -17,6 +17,7 @@ import com.dsdl.eidea.core.web.vo.PagingSettingResult;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.googlecode.genericdao.search.Search;
+import netscape.security.UserTarget;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -114,7 +115,11 @@ public class SearchController {
     @RequestMapping(value = "/saveForCreated", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions(value = "add")
-    public JsonResult<SearchBo> saveForCreated(@RequestBody @Validated SearchBo searchBo) {
+    public JsonResult<SearchBo> saveForCreated(@RequestBody @Validated SearchBo searchBo,HttpSession session) {
+        UserResource userResource = (UserResource)session.getAttribute(WebConst.SESSION_RESOURCE);
+        if (searchService.getSearchBoByUri(searchBo.getUri())!=null){
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(),userResource.getMessage("search.error.url_exist"));
+        }
         searchBo = searchService.saveSearchBo(searchBo);
         return get(searchBo.getId());
     }
@@ -126,6 +131,9 @@ public class SearchController {
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
         if (searchBo.getId() == null) {
             return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("common.primary_key.isempty"));
+        }
+        if (searchService.getSearchBoByUri(searchBo.getUri())!=null){
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(),resource.getMessage("search.error.url_exist"));
         }
         searchBo = searchService.saveSearchBo(searchBo);
         return get(searchBo.getId());
@@ -142,7 +150,6 @@ public class SearchController {
         searchService.deleteSearches(ids);
         return list(session);
     }
-
     @RequestMapping(value = "/getSelectList", method = RequestMethod.GET)
     @ResponseBody
     @RequiresPermissions(value = "view")

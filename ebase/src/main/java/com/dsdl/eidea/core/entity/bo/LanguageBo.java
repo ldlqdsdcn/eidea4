@@ -27,6 +27,12 @@ public class LanguageBo {
     @NotBlank(message="client.error.isactive.not_null")
     @Length(min = 1,max = 1,message="client.error.isactive.length_error")
     private String isactive;
+    @NotBlank(message = "language.error.iso.not_null")
+    @Length(min=2,max = 2,message = "language.error.iso.length_error")
+    private String languageIso;
+    @NotBlank(message = "language.error.code.not_null")
+    @Length(min = 2,max = 2,message = "language.error.code.length_error")
+    private String countryCode;
     /**
      * 是否新建 默认为false
      */

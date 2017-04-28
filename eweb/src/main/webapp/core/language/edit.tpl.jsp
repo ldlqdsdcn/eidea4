@@ -116,13 +116,25 @@
                                required ng-minlength="2" ng-maxlength="100" >
                     </div>
                     <div class="form-group">
+                        <label for="languageIso"><%--语言码--%><eidea:label key="language.language.iso"/></label>
+                        <input type="text" class="form-control" id="languageIso"
+                               placeholder="<eidea:message key="language.input.iso"/>" ng-model="languageBo.languageIso"
+                               required ng-minlength="2" ng-maxlength="2"  ng-disabled="!languageBo.created">
+                    </div>
+                    <div class="form-group">
+                        <label for="countryCode"><%--区域码--%><eidea:label key="language.country.code"/></label>
+                        <input type="text" class="form-control" id="countryCode"
+                               placeholder="<eidea:message key="language.input.country_code"/>" ng-model="languageBo.countryCode"
+                               required ng-minlength="2" ng-maxlength="2" ng-disabled="!languageBo.created">
+                    </div>
+                    <div class="form-group">
                         <label for="remark"><%--remark--%><eidea:label key="base.remarks"/></label>
                         <input type="text" class="form-control" id="remark"
                                placeholder="<eidea:message key="org.input.remark"/>"
                                ng-model="languageBo.remark" ng-maxlength="500">
                     </div>
                     <div class="form-group">
-                        <label for="isactive"><%--是否有效--%><eidea:label key="base.whetherEffective"/><input
+                        <label for="isactive"><%--是否有效--%><eidea:label key="base.datadict.label.isactive"/><input
                                 type="checkbox" class="form-control" id="isactive"
                                 ng-true-value="'Y'" ng-false-value="'N'"
                                 ng-model="languageBo.isactive"></label>

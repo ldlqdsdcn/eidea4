@@ -17,7 +17,6 @@ import com.dsdl.eidea.core.web.vo.PagingSettingResult;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.googlecode.genericdao.search.Search;
-import netscape.security.UserTarget;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

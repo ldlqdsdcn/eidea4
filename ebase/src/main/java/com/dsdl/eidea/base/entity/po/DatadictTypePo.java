@@ -10,6 +10,8 @@ package com.dsdl.eidea.base.entity.po;
 import javax.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Length;
+
 /**
 * table name base_datadict_type
 *            数据字典类型
@@ -21,14 +23,19 @@ import lombok.Setter;
 public class DatadictTypePo implements java.io.Serializable {
     @Id
     @Column(name = "id",nullable = false,unique = true,length = 11)
+    @Length(min = 1,max = 11,message = "error.datadict.id.length")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column(name = "value",length =50,nullable = false,unique = true)
+    @Column(name = "value",length =20,nullable = false,unique = true)
+    @Length(min=1,max = 20,message = "error.datadict.datatype.length")
     private String value;
     @Column(name = "name",length =200,nullable = false)
+    @Length(min=1,max = 200,message = "error.datadict.name.length")
     private String name;
     @Column(name = "remark",length =200 )
+    @Length(max=200,message="client.error.remark.length_error")
     private String remark;
     @Column(name = "isactive",nullable = false,length = 1)
+    @Length(min = 1,max = 1,message = "isactive.length")
     private String isactive;
 }

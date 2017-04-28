@@ -115,10 +115,10 @@ public class SearchController {
     @RequestMapping(value = "/saveForCreated", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions(value = "add")
-    public JsonResult<SearchBo> saveForCreated(@RequestBody @Validated SearchBo searchBo,HttpSession session) {
-        UserResource userResource = (UserResource)session.getAttribute(WebConst.SESSION_RESOURCE);
-        if (searchService.getSearchBoByUri(searchBo.getUri())!=null){
-            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(),userResource.getMessage("search.error.url_exist"));
+    public JsonResult<SearchBo> saveForCreated(@RequestBody @Validated SearchBo searchBo, HttpSession session) {
+        UserResource userResource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
+        if (searchService.getSearchBoByUri(searchBo.getUri()) != null) {
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), userResource.getMessage("search.error.url_exist"));
         }
         searchBo = searchService.saveSearchBo(searchBo);
         return get(searchBo.getId());
@@ -132,8 +132,16 @@ public class SearchController {
         if (searchBo.getId() == null) {
             return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("common.primary_key.isempty"));
         }
+        if (searchService.getSearchBoByUri(searchBo.getUri()) != null) {
+            if (searchService.getSearchBoByUri(searchBo.getUri()).getId() == searchBo.getId()) {
+                searchBo = searchService.saveSearchBo(searchBo);
+            } else {
+                return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("search.error.url_exist"));
+            }
+        }else {
+            searchBo = searchService.saveSearchBo(searchBo);
 
-        searchBo = searchService.saveSearchBo(searchBo);
+        }
         return get(searchBo.getId());
     }
 
@@ -148,6 +156,7 @@ public class SearchController {
         searchService.deleteSearches(ids);
         return list(session);
     }
+
     @RequestMapping(value = "/getSelectList", method = RequestMethod.GET)
     @ResponseBody
     @RequiresPermissions(value = "view")

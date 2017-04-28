@@ -137,7 +137,30 @@
                 }).error(function (response) {
             bootbox.alert(response);
         });
+        var clientName=true;
+        $scope.findExistClientName=function () {
+            $http.post("<c:url value="/base/client/getExistClientName"/> ", $scope.clientBo).success(function (data) {
+                if (data.success) {
+                    if (data.data) {
+                        $scope.message = "<eidea:label key="client.msg.client_name_exists"/>";
+                        clientName = false;
+                        return false;
+                    } else {
+                        clientName = true;
+                        $scope.message = "";
+
+                    }
+                } else {
+                    bootbox.alert(data.message);
+                }
+            }).error(function (data) {
+                bootbox.alert(data);
+            })
+        };
         $scope.save = function () {
+            if(clientName==false){
+                return false;
+            }
             var reg=/^[a-zA-Z0-9]+$/;
             if (!reg.test($scope.clientBo.no)){
                 $scope.message="<eidea:label key="client.msg.client_no_error"/>";

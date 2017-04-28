@@ -102,9 +102,13 @@ public class ClientController extends BaseController {
         if (clientBo.getId() == null) {
             return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), getMessage("common.primary_key.isempty"));
         }
-        if (clientService.findExistClientByName(clientBo.getName())){
-            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(),getMessage("client.error.client_name_exists"));
-        }
+//        if (clientService.findExistClientByName(clientBo.getName())){
+//            ClientBo client = clientService.getClientBo(clientBo.getId());
+//            client.setIsactive(clientBo.getIsactive());
+//            client.setRemark(clientBo.getRemark());
+//            clientService.save(client);
+//            return get(client.getId());
+//        }
         clientService.save(clientBo);
         return get(clientBo.getId());
     }
@@ -124,5 +128,18 @@ public class ClientController extends BaseController {
         }
         clientService.deletes(ids);
         return list(session);
+    }
+    @RequiresPermissions(value = "view")
+    @RequestMapping(value = "getExistClientName",method = RequestMethod.POST)
+    @ResponseBody
+    public JsonResult<Boolean> getExistClientName(@RequestBody ClientBo clientBo,HttpSession session){
+        boolean flag=true;
+        UserResource userResource = (UserResource)session.getAttribute(WebConst.SESSION_RESOURCE);
+        if (clientBo.getName()==null||clientBo.getName().equals("")){
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), userResource.getMessage("logon.name.isnot.empty"));
+        }else {
+            flag = clientService.findExistClientByName(clientBo.getName());
+        }
+        return JsonResult.success(flag);
     }
 }

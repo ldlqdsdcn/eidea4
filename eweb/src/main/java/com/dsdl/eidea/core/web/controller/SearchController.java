@@ -132,9 +132,7 @@ public class SearchController {
         if (searchBo.getId() == null) {
             return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("common.primary_key.isempty"));
         }
-        if (searchService.getSearchBoByUri(searchBo.getUri())!=null){
-            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(),resource.getMessage("search.error.url_exist"));
-        }
+
         searchBo = searchService.saveSearchBo(searchBo);
         return get(searchBo.getId());
     }

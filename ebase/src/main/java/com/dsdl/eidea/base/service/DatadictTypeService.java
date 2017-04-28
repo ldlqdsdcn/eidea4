@@ -12,7 +12,7 @@ import com.googlecode.genericdao.search.Search;
 import java.util.List;
 
 /**
- * @author 刘大磊 2017-04-26 15:34:17
+ * @author 刘大磊 2017-04-26 15:54:01
  */
 public interface DatadictTypeService {
 	PaginationResult<DatadictTypePo> getDatadictTypeListByPaging(Search search,QueryParams queryParams);

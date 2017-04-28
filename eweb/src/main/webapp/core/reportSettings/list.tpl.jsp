@@ -22,7 +22,7 @@
                     <th><%--键值--%><eidea:label key="label.keyvalue"/></th>
                     <th><%--信息--%><eidea:label key="label.message"/></th>
                     <th><%--init--%><eidea:label key="reportSettings.init"/></th>
-                    <th><eidea:label key="common.button.edit"/><%--编辑--%></th>
+                    <th><%--编辑--%><eidea:label key="common.button.edit"/></th>
 
                 </tr>
                 </thead>

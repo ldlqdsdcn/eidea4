@@ -42,7 +42,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public boolean findExistClientByName(String clientName) {
+    public boolean findExistClientName(String clientName) {
         Search search = new Search();
         search.addFilterEqual("name", clientName);
         List<ClientPo> clientPoList = clientDao.search(search);
@@ -51,6 +51,14 @@ public class ClientServiceImpl implements ClientService {
         } else {
             return false;
         }
+    }
+    @Override
+    public ClientBo findExistClientByName(String clientName){
+        Search search = new Search();
+        search.addFilterEqual("name",clientName);
+        ClientPo clientPo = clientDao.searchUnique(search);
+        ClientBo clientBo = modelMapper.map(clientPo,ClientBo.class);
+        return clientBo;
     }
 
     public ClientBo getClientBo(Integer id) {

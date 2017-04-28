@@ -21,7 +21,7 @@ import com.dsdl.eidea.core.dao.CommonDao;
 import java.util.List;
 
 /**
- * @author 刘大磊 2017-04-26 15:34:17
+ * @author 刘大磊 2017-04-26 15:54:01
  */
 @Service("datadictTypeService")
 public class DatadictTypeServiceImpl implements DatadictTypeService {

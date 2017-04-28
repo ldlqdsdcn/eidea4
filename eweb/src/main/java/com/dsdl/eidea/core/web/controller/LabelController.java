@@ -12,6 +12,7 @@ import com.dsdl.eidea.core.web.result.def.ErrorCodes;
 import com.dsdl.eidea.core.web.util.SearchHelper;
 import com.dsdl.eidea.core.web.vo.PagingSettingResult;
 import com.googlecode.genericdao.search.Search;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,8 +30,8 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/core/label")
+@Slf4j
 public class LabelController {
-    private Logger logger = LoggerFactory.getLogger(LabelController.class);
     private static final String URI = "core_label";
     @Autowired
     private LabelService labelService;

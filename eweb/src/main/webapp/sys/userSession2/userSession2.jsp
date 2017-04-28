@@ -103,6 +103,7 @@ $scope.maxSize =${pagingSettingResult.pagingButtonSize};
 if($rootScope.listQueryParams!=null)
 {
     $rootScope.queryParams=$scope.listQueryParams;
+    $rootScope.queryParams.init=true;
 }
 else
 {

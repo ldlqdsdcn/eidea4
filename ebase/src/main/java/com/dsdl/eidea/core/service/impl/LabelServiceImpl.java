@@ -65,7 +65,7 @@ public class LabelServiceImpl implements LabelService {
             labelTrlPo.setId(e.getId());
             labelTrlPo.setMsgtext(e.getMsgtext());
             labelTrlPo.setLanguagePo(languageDao.find(e.getLang()));
-            labelTrlPo.setCoreLabel(labelPo);
+            labelTrlPo.setLabelPo(labelPo);
             labelTrlPoList.add(labelTrlPo);
             if (ActivateDef.ACTIVATED.getKey().equals(labelPo.getIsactive())) {
                 DbResourceBundle.updateLabel(labelBo.getKey(), e.getMsgtext(), e.getMsgtext(), e.getLang());
@@ -73,7 +73,7 @@ public class LabelServiceImpl implements LabelService {
                 DbResourceBundle.removeLabel(labelBo.getKey());
             }
         });
-        labelPo.setCoreLabelTrls(labelTrlPoList);
+        labelPo.setLabelTrls(labelTrlPoList);
         labelDao.save(labelPo);
     }
 
@@ -101,7 +101,7 @@ public class LabelServiceImpl implements LabelService {
         LabelPo labelPo = labelDao.find(key);
         if (labelPo != null) {
 
-            List<LabelTrlBo> labelTrlBoList = modelMapper.map(labelPo.getCoreLabelTrls(), new TypeToken<List<LabelTrlBo>>() {
+            List<LabelTrlBo> labelTrlBoList = modelMapper.map(labelPo.getLabelTrls(), new TypeToken<List<LabelTrlBo>>() {
             }.getType());
             LabelBo labelBo = modelMapper.map(labelPo, LabelBo.class);
             labelBo.setLabelTrlBoList(labelTrlBoList);
@@ -135,7 +135,7 @@ public class LabelServiceImpl implements LabelService {
         List<LabelBo> labelBoList = new ArrayList<>();
         labelPoList.forEach(e -> {
             LabelBo labelBo = modelMapper.map(e, LabelBo.class);
-            List<LabelTrlBo> labelTrlBoList = modelMapper.map(e.getCoreLabelTrls(), new TypeToken<List<LabelTrlBo>>() {
+            List<LabelTrlBo> labelTrlBoList = modelMapper.map(e.getLabelTrls(), new TypeToken<List<LabelTrlBo>>() {
             }.getType());
             labelBo.setLabelTrlBoList(labelTrlBoList);
             labelBoList.add(labelBo);

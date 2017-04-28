@@ -19,7 +19,9 @@ public interface ClientService {
     boolean findExistClient(String no);
 
 
-    boolean findExistClientByName(String clientName);
+    boolean findExistClientName(String clientName);
+
+    ClientBo findExistClientByName(String clientName);
 
     ClientBo getClientBo(Integer id);
 

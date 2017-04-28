@@ -29,6 +29,10 @@ public class LanguagePo implements java.io.Serializable {
     private String remark;
     @Column(name = "isactive", nullable = false, length = 1)
     private String isactive;
+    @Column(name = "language_iso",nullable = false,length = 2)
+    private String languageIso;
+    @Column(name = "country_code",nullable = false,length = 2)
+    private String countryCode;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "languageByLanguageCode")
     private List<LanguageTrlPo> languageTrlsForLanguageCode = new ArrayList<>(
             0);

@@ -46,8 +46,10 @@
                     <th><%--序号--%><eidea:label key="base.serialNumber"/></th>
                     <th><%--code--%><eidea:label key="language.column.code"/></th>
                     <th><%--name--%><eidea:label key="datadict.column.name"/></th>
+                    <th><%--语言码--%><eidea:label key="language.language.iso"/></th>
+                    <th><%--区域码--%><eidea:label key="language.country.code"/></th>
                     <th><%--remark--%><eidea:label key="base.remarks"/></th>
-                    <th><%--是否有效--%><eidea:label key="base.whetherEffective"/></th>
+                    <th><%--是否有效--%><eidea:label key="base.datadict.label.isactive"/></th>
                     <th><%--编辑--%><eidea:label key="common.button.edit"/></th>
                 </tr>
                 </thead>
@@ -63,6 +65,12 @@
                     </td>
                     <td>
                         {{model.name}}
+                    </td>
+                    <td>
+                        {{model.languageIso}}
+                    </td>
+                    <td>
+                        {{model.countryCode}}
                     </td>
                     <td>
                         {{model.remark}}

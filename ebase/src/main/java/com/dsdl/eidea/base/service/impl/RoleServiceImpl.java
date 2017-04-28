@@ -141,6 +141,14 @@ public class RoleServiceImpl implements RoleService {
         }
         return false;
     }
+    @Override
+    public RoleBo findExistRoleByName(String roleName){
+        Search search = new Search();
+        search.addFilterEqual("name",roleName);
+        RolePo rolePo = roleDao.searchUnique(search);
+        RoleBo roleBo = modelMapper.map(rolePo,RoleBo.class);
+        return roleBo;
+    }
 
     public RoleBo getInitRoleBo(RoleBo roleBo) {
         return initRoleBoByPo(null);

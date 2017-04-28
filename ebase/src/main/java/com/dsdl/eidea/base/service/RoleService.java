@@ -12,6 +12,8 @@ public interface RoleService {
 
     boolean findExistRole(String no);
 
+    RoleBo findExistRoleByName(String roleName);
+
     RoleBo getRoleBo(Integer id);
 
     List<RoleBo> getRoleList(ISearch search);

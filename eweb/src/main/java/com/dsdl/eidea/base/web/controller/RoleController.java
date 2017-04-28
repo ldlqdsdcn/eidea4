@@ -73,16 +73,14 @@ public class RoleController {
     public JsonResult<RoleBo> saveForUpdated(@RequestBody RoleBo roleBo, HttpSession session) {
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
         if (roleService.findExistRole(roleBo.getName())) {
-            RoleBo role = roleService.getRoleBo(roleBo.getId());
-            role.setIsactive(roleBo.getIsactive());
-            role.setRoleOrgAccessBoList(roleBo.getRoleOrgAccessBoList());
-            role.setModuleRoleBoList(roleBo.getModuleRoleBoList());
-            role.setRemark(roleBo.getRemark());
-            roleService.save(role);
-            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("role.other.value.save_success"));
-
+            if (roleService.findExistRoleByName(roleBo.getName()).getId() == roleBo.getId()) {
+                roleService.save(roleBo);
+            } else {
+                return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("role.error.name_exists"));
+            }
+        } else {
+            roleService.save(roleBo);
         }
-        roleService.save(roleBo);
         return get(roleBo.getId(), session);
     }
 
@@ -108,8 +106,8 @@ public class RoleController {
         if (ids == null || ids.length == 0) {
             return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("pagemenu.choose.information"));
         }
-        for(Integer id:ids){
-           boolean isExist= roleService.getHasUsers(id);
+        for (Integer id : ids) {
+            boolean isExist = roleService.getHasUsers(id);
             if (isExist) {
                 return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("role.error.has_users"));
             }

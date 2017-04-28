@@ -17,7 +17,7 @@ Date: 2017-04-26 15:34:17
                 <div class="form-group">
                     <label for="value" ><%--键值--%><eidea:label key="base.datadictType.label.value"/></label>
                             <input type="text" class="form-control" id="value" placeholder="<eidea:message key="common.please.input"><eidea:param value="base.datadictType.label.value" type="label"/></eidea:message>" ng-model="datadictTypePo.value"
-                                   required ng-minlength="2" ng-maxlength="50" ng-trim="true">
+                                   required ng-minlength="2" ng-maxlength="50" >
 
                 </div>
                 <div class="form-group">

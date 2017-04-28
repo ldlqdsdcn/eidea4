@@ -17,7 +17,7 @@ Date: 2017-04-26 15:34:59
                 <div class="form-group">
                     <label for="code" ><%--code--%><eidea:label key="base.datadict.label.code"/></label>
                             <input type="text" class="form-control" id="code" placeholder="<eidea:message key="common.please.input"><eidea:param value="base.datadict.label.code" type="label"/></eidea:message>"
-                                   ng-model="datadictPo.code" required ng-minlength="1" ng-maxlength="20" ng-trim="true" >
+                                   ng-model="datadictPo.code" required ng-minlength="1" ng-maxlength="20" >
 
                 </div>
                 <div class="form-group">

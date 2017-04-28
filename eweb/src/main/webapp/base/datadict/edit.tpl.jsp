@@ -16,12 +16,14 @@ Date: 2017-04-26 15:34:59
             <form role="form" name="editForm" novalidate  ng-submit="save()">
                 <div class="form-group">
                     <label for="code" ><%--code--%><eidea:label key="base.datadict.label.code"/></label>
-                            <input type="text" class="form-control" id="code" placeholder="<eidea:message key="common.please.input"><eidea:param value="base.datadict.label.code" type="label"/></eidea:message>" ng-model="datadictPo.code" >
+                            <input type="text" class="form-control" id="code" placeholder="<eidea:message key="common.please.input"><eidea:param value="base.datadict.label.code" type="label"/></eidea:message>"
+                                   ng-model="datadictPo.code" required ng-minlength="1" ng-maxlength="20" >
 
                 </div>
                 <div class="form-group">
                     <label for="msgtext" ><%--信息--%><eidea:label key="base.datadict.label.msgtext"/></label>
-                            <input type="text" class="form-control" id="msgtext" placeholder="<eidea:message key="common.please.input"><eidea:param value="base.datadict.label.msgtext" type="label"/></eidea:message>" ng-model="datadictPo.msgtext" >
+                            <input type="text" class="form-control" id="msgtext" placeholder="<eidea:message key="common.please.input"><eidea:param value="base.datadict.label.msgtext" type="label"/></eidea:message>"
+                                   ng-model="datadictPo.msgtext" required ng-minlength="2" ng-maxlength="200">
 
                 </div>
                 <div class="form-group">
@@ -30,12 +32,12 @@ Date: 2017-04-26 15:34:59
                 </div>
                 <div class="form-group">
                     <label for="dataType" ><%--dataType--%><eidea:label key="base.datadict.label.dataType"/></label>
-                            <input type="text" class="form-control" id="dataType" placeholder="<eidea:message key="common.please.input"><eidea:param value="base.datadict.label.dataType" type="label"/></eidea:message>" ng-model="datadictPo.dataType" >
-
-                </div>
+                            <select id="dataType" class="form-control" ng-model="datadictPo.dataType"
+                                    ng-options="datadictTypePo.value as datadictTypePo.value for datadictTypePo in datadictTypeList" required></select>
                 <div class="form-group">
                     <label for="remark" ><%--备注--%><eidea:label key="base.datadict.label.remark"/></label>
-                            <input type="text" class="form-control" id="remark" placeholder="<eidea:message key="common.please.input"><eidea:param value="base.datadict.label.remark" type="label"/></eidea:message>" ng-model="datadictPo.remark" >
+                            <input type="text" class="form-control" id="remark" placeholder="<eidea:message key="common.please.input"><eidea:param value="base.datadict.label.remark" type="label"/></eidea:message>"
+                                   ng-model="datadictPo.remark" ng-maxlength="200">
 
                 </div>
 

@@ -19,23 +19,16 @@ import lombok.Setter;
 @Setter
 @Entity(name = "base_datadict_type")
 public class DatadictTypePo implements java.io.Serializable {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "[id]")
     @Id
+    @Column(name = "id",nullable = false,unique = true,length = 11)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    /**
-    * 主键值
-    **/
-    @Column(name = "[value]",length =50 )
+    @Column(name = "value",length =50,nullable = false,unique = true)
     private String value;
-    /**
-    * 名称
-    **/
-    @Column(name = "[name]",length =200 )
+    @Column(name = "name",length =200,nullable = false)
     private String name;
-    /**
-    * 备注
-    **/
-    @Column(name = "[remark]",length =200 )
+    @Column(name = "remark",length =200 )
     private String remark;
+    @Column(name = "isactive",nullable = false,length = 1)
+    private String isactive;
 }

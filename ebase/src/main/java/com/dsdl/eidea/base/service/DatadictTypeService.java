@@ -19,4 +19,7 @@ public interface DatadictTypeService {
 	DatadictTypePo getDatadictType(Integer id);
 	void saveDatadictType(DatadictTypePo datadictType);
 	void deletes(Integer[] ids);
+	List<DatadictTypePo> getDatadictTypeList();
+	boolean findExistDatadictTypeValue(String value);
+	DatadictTypePo findExistDatadictTypeByValue(String value);
 }

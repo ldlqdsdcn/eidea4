@@ -16,21 +16,27 @@ Date: 2017-04-26 15:34:17
             <form role="form" name="editForm" novalidate  ng-submit="save()">
                 <div class="form-group">
                     <label for="value" ><%--键值--%><eidea:label key="base.datadictType.label.value"/></label>
-                            <input type="text" class="form-control" id="value" placeholder="<eidea:message key="common.please.input"><eidea:param value="base.datadictType.label.value" type="label"/></eidea:message>" ng-model="datadictTypePo.value" >
+                            <input type="text" class="form-control" id="value" placeholder="<eidea:message key="common.please.input"><eidea:param value="base.datadictType.label.value" type="label"/></eidea:message>" ng-model="datadictTypePo.value"
+                                   required ng-minlength="2" ng-maxlength="50">
 
                 </div>
                 <div class="form-group">
                     <label for="name" ><%--名称--%><eidea:label key="base.datadictType.label.name"/></label>
-                            <input type="text" class="form-control" id="name" placeholder="<eidea:message key="common.please.input"><eidea:param value="base.datadictType.label.name" type="label"/></eidea:message>" ng-model="datadictTypePo.name" >
+                            <input type="text" class="form-control" id="name" placeholder="<eidea:message key="common.please.input"><eidea:param value="base.datadictType.label.name" type="label"/></eidea:message>"
+                                   ng-model="datadictTypePo.name" required ng-minlength="2" ng-maxlength="200" >
 
                 </div>
                 <div class="form-group">
                     <label for="remark" ><%--备注--%><eidea:label key="base.datadictType.label.remark"/></label>
-                            <input type="text" class="form-control" id="remark" placeholder="<eidea:message key="common.please.input"><eidea:param value="base.datadictType.label.remark" type="label"/></eidea:message>" ng-model="datadictTypePo.remark" >
+                            <input type="text" class="form-control" id="remark" placeholder="<eidea:message key="common.please.input"><eidea:param value="base.datadictType.label.remark" type="label"/></eidea:message>"
+                                   ng-model="datadictTypePo.remark" ng-maxlength="200" >
 
                 </div>
+                <div class="form-group">
+                    <label for="isactive" ><%--是否有效--%><eidea:label key="base.datadictType.label.isactive"/>
+                    <input type="checkbox" class="form-control" id="isactive"  ng-model="datadictTypePo.isactive" ng-true-value="'Y'" ng-false-value="'N'" ></label>
 
-
+                </div>
                 <div class="form-group">
                     <p class="text-right">
                         <button type="reset" ng-click="create()"  class="btn btn-default btn-sm" ng-show="canAdd"><%--新建--%><eidea:label key="common.button.create"/></button>

@@ -17,7 +17,11 @@ public interface LanguageService {
 
     void deletes(String[] codes);
 
-    boolean findExistLanguageByName(String languageName);
+    boolean findExistLanguageName(String languageName);
+
+    LanguageBo findExistLanguageByName(String languageName);
+
+
 
     /**
      * 获取语言有效的语言列表

@@ -57,7 +57,7 @@ public class LanguageServiceImpl implements LanguageService {
     }
 
     @Override
-    public boolean findExistLanguageByName(String languageName) {
+    public boolean findExistLanguageName(String languageName) {
         Search search = new Search();
         search.addFilterEqual("name", languageName);
         List<LanguagePo> languagePoList = languageDao.search(search);
@@ -66,6 +66,14 @@ public class LanguageServiceImpl implements LanguageService {
         } else {
             return false;
         }
+    }
+    @Override
+    public LanguageBo findExistLanguageByName(String languageName){
+        Search search = new Search();
+        search.addFilterEqual("name",languageName);
+        LanguagePo languagePo = languageDao.searchUnique(search);
+        LanguageBo languageBo = modelMapper.map(languagePo,LanguageBo.class);
+        return languageBo;
     }
 
     private List<LanguageBo> convertPoToBo(List<LanguagePo> languagePoList) {

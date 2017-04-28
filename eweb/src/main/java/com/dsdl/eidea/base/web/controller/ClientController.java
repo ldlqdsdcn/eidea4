@@ -87,8 +87,8 @@ public class ClientController extends BaseController {
         if (clientService.findExistClient(clientBo.getNo())) {
             return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), getMessage("client.msg.client_code_exists"));
         }
-        if (clientService.findExistClientByName(clientBo.getName())){
-            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(),getMessage("client.error.client_name_exists"));
+        if (clientService.findExistClientName(clientBo.getName())) {
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), getMessage("client.error.client_name_exists"));
         }
         clientService.save(clientBo);
         return get(clientBo.getId());
@@ -102,10 +102,15 @@ public class ClientController extends BaseController {
         if (clientBo.getId() == null) {
             return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), getMessage("common.primary_key.isempty"));
         }
-        if (clientService.findExistClientByName(clientBo.getName())){
-            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(),getMessage("client.error.client_name_exists"));
+        if (clientService.findExistClientName(clientBo.getName())) {
+            if (clientService.findExistClientByName(clientBo.getName()).getId() == clientBo.getId()) {
+                clientService.save(clientBo);
+            } else {
+                return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), getMessage("client.error.client_name_exists"));
+            }
+        } else {
+            clientService.save(clientBo);
         }
-        clientService.save(clientBo);
         return get(clientBo.getId());
     }
 
@@ -116,9 +121,9 @@ public class ClientController extends BaseController {
         if (ids == null || ids.length == 0) {
             return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), getMessage("client.msg.select_delete"));
         }
-        for (Integer id:ids){
-            boolean isExist=clientService.getHasRolesByClientId(id);
-            if (isExist){
+        for (Integer id : ids) {
+            boolean isExist = clientService.getHasRolesByClientId(id);
+            if (isExist) {
                 return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), getMessage("client.decide.select_delete"));
             }
         }

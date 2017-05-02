@@ -8,12 +8,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/inc/taglib.jsp" %>
 <div class="container-fluid" ng-controller="editCtrl">
-    <div class="page-header">
-        <ol class="breadcrumb">
-            <li><a href="javascript:;"><i class="icon-tasks"></i><%-- 语言信息--%><eidea:label key="language.title"/></a>
-            </li>
-        </ol>
-    </div>
         <form role="form" name="editForm" novalidate ng-submit="save()">
 
             <div class="page-header button-css">
@@ -169,7 +163,8 @@
                             {{message}}
                         </p>
                     </div>
+                </div>
+            </div>
         </form>
 </div>
-</div>
-</div>
+<script type='text/javascript' src="<c:url value="/js/ondrag-start.js"/>"></script>

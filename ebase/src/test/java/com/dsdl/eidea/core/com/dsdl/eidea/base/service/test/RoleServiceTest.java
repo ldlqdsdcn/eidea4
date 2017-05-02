@@ -23,17 +23,17 @@ import com.googlecode.genericdao.search.Search;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:applicationContext.xml")
 public class RoleServiceTest {
-	    private Logger logger= Logger.getLogger(RoleServiceTest.class);
-	    @Autowired
-	    private RoleService roleService;
-	    @Test
-	    public void testgetLabelList(){
-		        Gson gson = new Gson();
-		        List<RoleBo> roleBoList = roleService.getRoleList(new Search());
-		        logger.debug(gson.toJson(roleBoList));
-		        Assert.assertTrue(roleBoList.size() > 0);
-	    }
-	    
+//	    private Logger logger= Logger.getLogger(RoleServiceTest.class);
+//	    @Autowired
+//	    private RoleService roleService;
+//	    @Test
+//	    public void testgetLabelList(){
+//		        Gson gson = new Gson();
+//		        List<RoleBo> roleBoList = roleService.getRoleList(new Search());
+//		        logger.debug(gson.toJson(roleBoList));
+//		        Assert.assertTrue(roleBoList.size() > 0);
+//	    }
+//
 	    
 	    
 }

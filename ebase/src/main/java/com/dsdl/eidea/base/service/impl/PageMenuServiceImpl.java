@@ -39,7 +39,6 @@ public class PageMenuServiceImpl implements PageMenuService {
     @Autowired
     private LanguageService languageService;
     private ModelMapper modelMapper = new ModelMapper();
-
     @Override
     public PaginationResult<PageMenuBo> findPageMenu(Search search, QueryParams queryParams) {
         search.setFirstResult(queryParams.getFirstResult());

@@ -41,7 +41,7 @@
 
         $.addtabs.add({
             'target': a_obj.target ? a_obj.target : target,
-            'id': a_obj.url,
+            'id': a_obj.pid,
             'title': a_obj.title ? a_obj.title : obj.html(),
             'content': settings.content ? settings.content : a_obj.content,
             'url': a_obj.url,
@@ -224,15 +224,7 @@
         } else {
             a_target = target;
         }
-        var optsId=new StringBuffer();
-        $.each(opts.id.split(""),function (index,value) {
-            if(value == "/" || value == "."){
-                optsId.append("_");
-            }else {
-                optsId.append(value);
-            }
-        })
-        var id = 'tab_' + optsId;
+        var id = 'tab_' + opts.id;
         var tab_li = a_target;
 
         var tab_content = tab_li.next('.tab-content');
@@ -252,7 +244,8 @@
                     'href': '#' + id,
                     'aria-controls': id,
                     'role': 'tab',
-                    'data-toggle': 'tab'
+                    'data-toggle': 'tab',
+                    'ondragstart':'return false'
                 }).html(opts.title)
                 );
 

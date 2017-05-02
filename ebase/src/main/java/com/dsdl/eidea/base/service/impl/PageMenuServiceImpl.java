@@ -254,6 +254,7 @@ public class PageMenuServiceImpl implements PageMenuService {
                 if (pageMenuBo.getParentMenuId() == menuId|| (menuId != null && menuId.equals(pageMenuBo.getParentMenuId()))) {
                     buffer.append("<li><a ");
                     if (pageMenuBo.getMenuType() == MenuTypeDef.HREF.getKey()) {
+                        buffer.append("data-pid='").append(pageMenuBo.getId()).append("'");
                         buffer.append("data-addtab='").append(pageMenuBo.getName()).append("' data-url='").append(contextPath).append(pageMenuBo.getUrl()).append("'");
                     }
                     buffer.append(">");

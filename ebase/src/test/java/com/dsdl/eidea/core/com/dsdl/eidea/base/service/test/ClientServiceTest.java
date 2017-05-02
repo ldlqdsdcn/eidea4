@@ -20,24 +20,24 @@ import java.util.List;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:applicationContext.xml")
 public class ClientServiceTest {
-    private final Logger logger = Logger.getLogger(OrgServiceTest.class);
-    @Autowired
-    private ClientService clientService;
-
-    @Test
-    public void testFindClient() {
-        Gson gson = new Gson();
-        List<ClientBo> clientBoList = clientService.getClientList(new Search());
-        logger.debug(gson.toJson(clientBoList));
-        Assert.assertTrue(clientBoList.size() > 0);
-    }
-    @Test
-    public void testGetClientById()
-    {
-        List<ClientBo> clientBoList = clientService.getClientList(new Search());
-        ClientBo clientBo=clientService.getClientBo(clientBoList.get(0).getId());
-        Gson gson=new Gson();
-        System.out.println(gson.toJson(clientBoList.get(0)));
-        Assert.assertNotNull(clientBo);
-    }
+//    private final Logger logger = Logger.getLogger(OrgServiceTest.class);
+//    @Autowired
+//    private ClientService clientService;
+//
+//    @Test
+//    public void testFindClient() {
+//        Gson gson = new Gson();
+//        List<ClientBo> clientBoList = clientService.getClientList(new Search());
+//        logger.debug(gson.toJson(clientBoList));
+//        Assert.assertTrue(clientBoList.size() > 0);
+//    }
+//    @Test
+//    public void testGetClientById()
+//    {
+//        List<ClientBo> clientBoList = clientService.getClientList(new Search());
+//        ClientBo clientBo=clientService.getClientBo(clientBoList.get(0).getId());
+//        Gson gson=new Gson();
+//        System.out.println(gson.toJson(clientBoList.get(0)));
+//        Assert.assertNotNull(clientBo);
+//    }
 }

@@ -5,6 +5,9 @@ import com.dsdl.eidea.base.entity.bo.ClientBo;
 import com.dsdl.eidea.base.entity.po.ClientPo;
 import com.dsdl.eidea.base.service.ClientService;
 import com.dsdl.eidea.base.web.vo.UserResource;
+import com.dsdl.eidea.core.dto.PaginationResult;
+import com.dsdl.eidea.core.params.DeleteParams;
+import com.dsdl.eidea.core.params.QueryParams;
 import com.dsdl.eidea.core.web.controller.BaseController;
 import com.dsdl.eidea.core.web.def.WebConst;
 import com.dsdl.eidea.core.web.result.JsonResult;
@@ -39,18 +42,17 @@ public class ClientController extends BaseController {
     @RequiresPermissions("view")
     public ModelAndView showList() {
         ModelAndView modelAndView = new ModelAndView("/base/client/client");
-        modelAndView.addObject(WebConst.PAGING_SETTINGS, PagingSettingResult.getDefault());
+        modelAndView.addObject(WebConst.PAGING_SETTINGS, PagingSettingResult.getDbPaging());
         modelAndView.addObject(WebConst.PAGE_URI, URI);
-
         return modelAndView;
     }
 
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    @RequestMapping(value = "/list", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions("view")
-    public JsonResult<List<ClientBo>> list(HttpSession session) {
+    public JsonResult<PaginationResult<ClientBo>> list(HttpSession session, @RequestBody QueryParams queryParams) {
         Search search = SearchHelper.getSearchParam(URI, session);
-        List<ClientBo> clientBoList = clientService.getClientList(search);
+        PaginationResult<ClientBo> clientBoList = clientService.getClientList(search,queryParams);
         return JsonResult.success(clientBoList);
     }
 
@@ -117,17 +119,17 @@ public class ClientController extends BaseController {
     @RequiresPermissions("delete")
     @RequestMapping(value = "/deletes", method = RequestMethod.POST)
     @ResponseBody
-    public JsonResult<List<ClientBo>> deletes(@RequestBody Integer[] ids, HttpSession session) {
-        if (ids == null || ids.length == 0) {
+    public JsonResult<PaginationResult<ClientBo>> deletes(@RequestBody DeleteParams<Integer> deleteParams, HttpSession session) {
+        if (deleteParams.getIds() == null || deleteParams.getIds().length == 0) {
             return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), getMessage("client.msg.select_delete"));
         }
-        for (Integer id : ids) {
+        for (Integer id : deleteParams.getIds()) {
             boolean isExist = clientService.getHasRolesByClientId(id);
             if (isExist) {
                 return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), getMessage("client.decide.select_delete"));
             }
         }
-        clientService.deletes(ids);
-        return list(session);
+        clientService.deletes(deleteParams.getIds());
+        return list(session,deleteParams.getQueryParams());
     }
 }

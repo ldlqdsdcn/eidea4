@@ -8,9 +8,12 @@
 package com.dsdl.eidea.base.entity.po;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
 
 /**
 * table name base_datadict_type
@@ -24,12 +27,15 @@ public class DatadictTypePo implements java.io.Serializable {
     @Id
     @Column(name = "id",nullable = false,unique = true,length = 11)
     @Length(min = 1,max = 11,message = "error.datadict.id.length")
+    @NotNull(message = "common.primary_key.isempty")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Column(name = "value",length =20,nullable = false,unique = true)
+    @NotBlank(message = "datadicttype.value.not.empty")
     @Length(min=1,max = 20,message = "error.datadict.datatype.length")
     private String value;
     @Column(name = "name",length =200,nullable = false)
+    @NotBlank(message = "client.error.name.not_null")
     @Length(min=1,max = 200,message = "error.datadict.name.length")
     private String name;
     @Column(name = "remark",length =200 )

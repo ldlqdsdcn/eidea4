@@ -15,9 +15,7 @@ public class ChangelogHelper {
     private static final Map<String, TableBo> LOG_MAP = new HashMap<>();
     public static void init(List<TableBo> tableBoList)
     {
-        logger.debug("--------------------->操作日志初始化");
         for (TableBo tableBo : tableBoList) {
-
             ChangelogHelper.put(tableBo.getPoClass(), tableBo);
         }
     }

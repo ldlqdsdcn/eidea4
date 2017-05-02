@@ -37,7 +37,7 @@ public class GenerateCodeMain implements CodeGenerationService {
         codeMain.messageService = applicationContext.getBean(MessageService.class);
         codeMain.languageService = applicationContext.getBean(LanguageService.class);
         codeMain.pageMenuService=applicationContext.getBean(PageMenuService.class);
-        GenModelDto genModelDto = new GenModelDto("common_file_relation", "FileRelation", "base", "文件关联关系");
+        GenModelDto genModelDto = new GenModelDto("core_field_validator", "FieldValidator", "base", "字段验证");
         genModelDto.setPagingByDb(true);
         genModelDto.setBasePackage("com.dsdl.eidea");
         List<GenModelDto> list = new ArrayList<>();
@@ -97,8 +97,8 @@ public class GenerateCodeMain implements CodeGenerationService {
             I18NGenerateStrategy i18NGenerateStrategy = new I18NGenerateStrategy(genModelDto, tableMetaDataBo, languageService, messageService, labelService);
             i18NGenerateStrategy.generateLabel();
             String model=StringUtil.lowerFirstChar(genModelDto.getModelName());
-            PagemenuGenerateStrategy pagemenuGenerateStrategy=new PagemenuGenerateStrategy("/"+genModelDto.getModule()+"/"+model+"/showList",tableMetaDataBo.getRemark(),languageService,pageMenuService);
-            pagemenuGenerateStrategy.generatePagemenu();
+//            PagemenuGenerateStrategy pagemenuGenerateStrategy=new PagemenuGenerateStrategy("/"+genModelDto.getModule()+"/"+model+"/showList",tableMetaDataBo.getRemark(),languageService,pageMenuService);
+//            pagemenuGenerateStrategy.generatePagemenu();
         }
 
     }

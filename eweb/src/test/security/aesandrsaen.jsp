@@ -12,9 +12,9 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>ContentEncrypt1</title>
     <script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
-    <script src="js/crypto-js.js"></script>
-    <script src="js/jsencrypt.js"></script>
-    <script src="js/AesAndRsaUtil.js"></script>
+    <script src="../../main/webapp/js/crypto-js.js"></script>
+    <script src="../../main/webapp/js/jsencrypt.js"></script>
+    <script src="../../main/webapp/js/security/AesAndRsaUtil.js"></script>
     <script type="text/javascript">
         var iv = CryptoJS.lib.WordArray.random(128/8).toString(CryptoJS.enc.Hex);//密钥偏移量，用于aes加密
         var key = CryptoJS.lib.WordArray.random(128/8).toString(CryptoJS.enc.Hex);;//用于生成初始key

@@ -13,15 +13,20 @@ import java.security.NoSuchProviderException;
 
 /**
  * Created by joseph on 2017/4/18.
- * AesUtil包主要解决的就是对传递的密文进行aes机密
+ * AesUtil主要解决的就是对传递的密文进行aes解密
  * 解密后的用utf8字符集
  */
 public class AesUtil {
 
     private final Cipher cipher;
-    //初始化
-    public AesUtil(){
 
+    /**
+     * 初始化Cipher，指定了加解密模式为CBC，填充方式为PKCS7Padding，provider为BC
+     * 由于java自带的aes加解密中的填充方式中没有PKCS7Padding
+     * 所以添加了BouncyCastle包
+     */
+
+    public AesUtil(){
         try {
             cipher = Cipher.getInstance("AES/CBC/PKCS7Padding" ,"BC");
         } catch (NoSuchAlgorithmException
@@ -31,8 +36,16 @@ public class AesUtil {
         }
     }
 
+    /**
+     * 利用密钥key和密钥偏移量iv对密文ciphertext进行解密
+     * 先将iv和key转换为我们需要的byte[]加解密
+     * 返回值为utf8的字符串
+     * @param key
+     * @param iv
+     * @param ciphertext
+     * @return
+     */
     public String aesDecode(String key , String iv, String ciphertext){
-        //先将iv和key转换为我们需要的byte[]，我们用的是16进制数组加解密
         byte[] keybytes = parseHexStr2Byte(key);
         byte[] ivbytes = parseHexStr2Byte(iv);
         SecretKey secretKey = new SecretKeySpec(keybytes,"AES");

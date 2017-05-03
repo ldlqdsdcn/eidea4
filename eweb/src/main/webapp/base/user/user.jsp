@@ -99,7 +99,7 @@
                         }
                         $scope.queryParams.init = true;
                         var param = {"queryParams": $scope.queryParams, "ids": ids};
-                        $http.post("<c:url value="/base/user/deletes"/>", param).success(function (data) {
+                        $http.post("<c:url value="/base/user/deleteUserList"/>", param).success(function (data) {
                             if (data.success) {
                                 $scope.updateList(data.data);
                                 bootbox.alert("<eidea:message key="module.deleted.success"/>");
@@ -241,13 +241,13 @@
                 bootbox.alert(data);
             })
         }
+        $scope.queryParams.init = true;
+        var param = {"queryParams": $scope.queryParams};
         //查询实体
         $scope.getClient = function (id) {
-            $http.post("<c:url value="/base/client/list"/>",$scope.queryParams).success(function (data) {
-                alert(1);
+            $http.post("<c:url value="/base/client/list"/>",param).success(function (data) {
                 if (data.success) {
-                    alert(2);
-                    $scope.clientList = data.data;
+                    $scope.clientList = data.data.data;
                     if (id == null) {
                         if (data.data[0] != null && data.data[0].id != null) {
                             $scope.userBo.clientId = data.data[0].id;
@@ -260,9 +260,9 @@
         }
         //查询组织
         $scope.getOrg = function (id) {
-            $http.post("<c:url value="/base/org/list"/>",$scope.queryParams).success(function (data) {
+            $http.post("<c:url value="/base/org/list"/>",param).success(function (data) {
                 if (data.success) {
-                    $scope.orgList = data.data;
+                    $scope.orgList = data.data.data;
                     if (id == null) {
                         if (data.data[0] != null && data.data[0].id != null) {
                             $scope.userBo.orgId = data.data[0].id;
@@ -279,7 +279,7 @@
         $scope.roleIds = [];
 
         $scope.getRole = function () {
-            $http.post("<c:url value="/base/role/list"/>",$scope.queryParams).success(function (data) {
+            $http.post("<c:url value="/base/role/list"/>",param).success(function (data) {
                 if (data.success) {
                     $scope.updateRoleList(data.data);
                 } else {
@@ -288,7 +288,7 @@
             });
         }
         $scope.updateRoleList = function (data) {
-            $scope.roleList = data;
+            $scope.roleList = data.data;
             for (var i = 0; i < $scope.roleList.length; i++) {
                 if ($scope.roleIds != null && $scope.roleList.length > 0) {
                     for (var j = 0; j < $scope.roleList.length; j++) {

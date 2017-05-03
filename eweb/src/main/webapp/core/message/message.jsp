@@ -24,6 +24,7 @@
     app.controller('listCtrl', function ($scope,$rootScope,$http) {
         $scope.modelList = [];
         $scope.delFlag = false;
+        $scope.isLoading=true;
         $scope.canDel = PrivilegeService.hasPrivilege('delete');
         $scope.canAdd = PrivilegeService.hasPrivilege('add');
         $http.post("<c:url value="/core/message/list"/>",$scope.queryParams)

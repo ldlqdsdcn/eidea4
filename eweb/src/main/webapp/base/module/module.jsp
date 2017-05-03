@@ -246,7 +246,6 @@
             $scope.menuPageChanged($scope.menuDelFlag);
         }
         //访问目录设置
-        $scope.queryParams.init = true;
         var param = {"queryParams": $scope.queryParams};
         $scope.selectDir=function () {
             $http.post("<c:url value="/base/directory/list"/>",param).success(function (data) {

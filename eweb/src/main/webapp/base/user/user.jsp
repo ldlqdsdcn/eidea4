@@ -232,7 +232,6 @@
                 bootbox.alert(data);
             })
         }
-        $scope.queryParams.init = true;
         var param = {"queryParams": $scope.queryParams};
         //查询实体
         $scope.getClient = function (id) {

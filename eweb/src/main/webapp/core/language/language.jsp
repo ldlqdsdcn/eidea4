@@ -32,8 +32,8 @@
         $scope.modelList = [];
         $scope.delFlag = false;
         $scope.isLoading=true;
-        $scope.canDel = PrivilegeService.hasPrivilege('delete');
-        $scope.canAdd = PrivilegeService.hasPrivilege('add');
+        $scope.canDel=PrivilegeService.hasPrivilege('delete');
+        $scope.canAdd=PrivilegeService.hasPrivilege('add');
         $http.post("<c:url value="/core/language/list"/>",$scope.queryParams)
             .success(function (response) {
                 $scope.isLoading=false;
@@ -105,7 +105,7 @@
                         var ids = [];
                         for (var i = 0; i < $scope.modelList.length; i++) {
                             if ($scope.modelList[i].delFlag) {
-                                ids.push($scope.modelList[i].code);
+                                ids.push($scope.modelList[i].id);
                             }
                         }
                         $scope.queryParams.init = true;

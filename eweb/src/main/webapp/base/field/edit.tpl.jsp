@@ -1,6 +1,6 @@
 <%--
 User: 刘大磊
-Date: 2017-05-02 15:47:35
+Date: 2017-05-03 16:49:55
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/inc/taglib.jsp" %>
@@ -14,6 +14,11 @@ Date: 2017-05-02 15:47:35
         <div class="span12">
             <br>
             <form role="form" name="editForm" novalidate  ng-submit="save()">
+                <div class="form-group">
+                    <label for="seqNo" ><%--seqNo--%><eidea:label key="base.field.label.seqNo"/></label>
+                            <input type="text" class="form-control" id="seqNo" placeholder="<eidea:message key="common.please.input"><eidea:param value="base.field.label.seqNo" type="label"/></eidea:message>" ng-model="fieldPo.seqNo" >
+
+                </div>
                 <div class="form-group">
                     <label for="name" ><%--名称--%><eidea:label key="base.field.label.name"/></label>
                             <input type="text" class="form-control" id="name" placeholder="<eidea:message key="common.please.input"><eidea:param value="base.field.label.name" type="label"/></eidea:message>" ng-model="fieldPo.name" >

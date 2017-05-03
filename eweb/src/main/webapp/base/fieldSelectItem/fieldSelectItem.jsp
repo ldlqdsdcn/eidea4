@@ -1,12 +1,12 @@
 <%--
   Created by 刘大磊.
-  Date: 2017-05-03 16:49:55
+  Date: 2017-05-03 17:51:03
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/inc/taglib.jsp" %>
 <html>
 <head>
-    <title><%--字段信息--%><eidea:label key="field.title"/></title>
+    <title><%--字段下拉选择--%><eidea:label key="fieldSelectItem.title"/></title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <%@include file="/inc/inc_ang_js_css.jsp" %>
 </head>
@@ -20,8 +20,8 @@
     var app = angular.module('myApp', ['ngRoute', 'ui.bootstrap', 'jcs-autoValidate'])
             .config(['$routeProvider', function ($routeProvider) {
                 $routeProvider
-                        .when('/list', {templateUrl: '<c:url value="/base/field/list.tpl.jsp"/>'})
-                        .when('/edit', {templateUrl: '<c:url value="/base/field/edit.tpl.jsp"/>'})
+                        .when('/list', {templateUrl: '<c:url value="/base/fieldSelectItem/list.tpl.jsp"/>'})
+                        .when('/edit', {templateUrl: '<c:url value="/base/fieldSelectItem/edit.tpl.jsp"/>'})
                         .otherwise({redirectTo: '/list'});
             }]);
 app.controller('listCtrl', function ($scope, $http) {
@@ -49,7 +49,7 @@ return true;
 return false;
 }
 $scope.pageChanged = function () {
-$http.post("<c:url value="/base/field/list"/>", $scope.queryParams)
+$http.post("<c:url value="/base/fieldSelectItem/list"/>", $scope.queryParams)
 .success(function (response) {
 $scope.isLoading = false;
 if (response.success) {
@@ -85,7 +85,7 @@ ids.push($scope.modelList[i].id);
 }
 $scope.queryParams.init=true;
 var param={"queryParams":$scope.queryParams,"ids":ids};
-$http.post("<c:url value="/base/field/deletes"/>", param).success(function (data) {
+$http.post("<c:url value="/base/fieldSelectItem/deletes"/>", param).success(function (data) {
 if (data.success) {
 $scope.updateList(data.data);
 bootbox.alert("<eidea:message key="module.deleted.success"/>");
@@ -140,17 +140,17 @@ $scope.pageChanged();
         });
 
         $scope.message = '';
-        $scope.fieldPo = {};
+        $scope.fieldSelectItemPo = {};
         $scope.canAdd=PrivilegeService.hasPrivilege('add');
-        var url = "<c:url value="/base/field/create"/>";
+        var url = "<c:url value="/base/fieldSelectItem/create"/>";
         if ($routeParams.id != null) {
-            url = "<c:url value="/base/field/get"/>" + "?id=" + $routeParams.id;
+            url = "<c:url value="/base/fieldSelectItem/get"/>" + "?id=" + $routeParams.id;
         }
         $http.get(url)
                 .success(function (response) {
                     if (response.success) {
-                        $scope.fieldPo = response.data;
-                        $scope.canSave=(PrivilegeService.hasPrivilege('add')&&$scope.fieldPo.id==null)||PrivilegeService.hasPrivilege('update');
+                        $scope.fieldSelectItemPo = response.data;
+                        $scope.canSave=(PrivilegeService.hasPrivilege('add')&&$scope.fieldSelectItemPo.id==null)||PrivilegeService.hasPrivilege('update');
                     }
                     else {
                         bootbox.alert(response.message);
@@ -160,14 +160,14 @@ $scope.pageChanged();
         });
         $scope.save = function () {
             if ($scope.editForm.$valid) {
-                var postUrl = '<c:url value="/base/field/saveForUpdated"/>';
-                if ($scope.fieldPo.id == null) {
-                    postUrl = '<c:url value="/base/field/saveForCreated"/>';
+                var postUrl = '<c:url value="/base/fieldSelectItem/saveForUpdated"/>';
+                if ($scope.fieldSelectItemPo.id == null) {
+                    postUrl = '<c:url value="/base/fieldSelectItem/saveForCreated"/>';
                 }
-                $http.post(postUrl, $scope.fieldPo).success(function (data) {
+                $http.post(postUrl, $scope.fieldSelectItemPo).success(function (data) {
                     if (data.success) {
                         $scope.message = "<eidea:label key="base.save.success"/>";
-                        $scope.fieldPo = data.data;
+                        $scope.fieldSelectItemPo = data.data;
                     }
                     else {
                         $scope.message = data.message;
@@ -180,13 +180,13 @@ $scope.pageChanged();
         }
         $scope.create = function () {
             $scope.message = "";
-            $scope.fieldPo = {};
-            var url = "<c:url value="/base/field/create"/>";
+            $scope.fieldSelectItemPo = {};
+            var url = "<c:url value="/base/fieldSelectItem/create"/>";
             $http.get(url)
                     .success(function (response) {
                         if (response.success) {
-                            $scope.fieldPo = response.data;
-                            $scope.canSave=(PrivilegeService.hasPrivilege('add')&&$scope.fieldPo.id==null)||PrivilegeService.hasPrivilege('update');
+                            $scope.fieldSelectItemPo = response.data;
+                            $scope.canSave=(PrivilegeService.hasPrivilege('add')&&$scope.fieldSelectItemPo.id==null)||PrivilegeService.hasPrivilege('update');
                         }
                         else {
                             bootbox.alert(response.message);

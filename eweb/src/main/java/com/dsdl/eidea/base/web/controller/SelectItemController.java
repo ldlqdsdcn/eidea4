@@ -6,8 +6,8 @@
 */
 package com.dsdl.eidea.base.web.controller;
 
-import com.dsdl.eidea.base.entity.po.FieldPo;
-import com.dsdl.eidea.base.service.FieldService;
+import com.dsdl.eidea.base.entity.po.SelectItemPo;
+import com.dsdl.eidea.base.service.SelectItemService;
 import com.dsdl.eidea.core.web.controller.BaseController;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import com.dsdl.eidea.core.web.def.WebConst;
@@ -31,17 +31,17 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
-* Created by 刘大磊 on 2017-05-03 16:49:55.
+* Created by 刘大磊 on 2017-05-03 17:49:28.
 */ @Controller
-@RequestMapping("/base/field")
-public class FieldController extends BaseController {
-private static final String URI = "field";
+@RequestMapping("/base/selectItem")
+public class SelectItemController extends BaseController {
+private static final String URI = "selectItem";
 @Autowired
-private FieldService fieldService;
+private SelectItemService selectItemService;
 @RequestMapping(value = "/showList", method = RequestMethod.GET)
 @RequiresPermissions("view")
 public ModelAndView showList() {
-ModelAndView modelAndView = new ModelAndView("/base/field/field");
+ModelAndView modelAndView = new ModelAndView("/base/selectItem/selectItem");
 modelAndView.addObject(WebConst.PAGING_SETTINGS, PagingSettingResult.getDbPaging());
 modelAndView.addObject(WebConst.PAGE_URI, URI);
 return modelAndView;
@@ -49,65 +49,65 @@ return modelAndView;
     @RequestMapping(value = "/list", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions("view")
-public JsonResult<PaginationResult<FieldPo>> list(HttpSession session,@RequestBody QueryParams queryParams) {
+public JsonResult<PaginationResult<SelectItemPo>> list(HttpSession session,@RequestBody QueryParams queryParams) {
     Search search = SearchHelper.getSearchParam(URI, session);
-    PaginationResult<FieldPo> paginationResult = fieldService.getFieldListByPaging(search, queryParams);
+    PaginationResult<SelectItemPo> paginationResult = selectItemService.getSelectItemListByPaging(search, queryParams);
     return JsonResult.success(paginationResult);
     }
     @RequiresPermissions("view")
     @RequestMapping(value = "/get", method = RequestMethod.GET)
     @ResponseBody
-    public JsonResult<FieldPo> get(Integer id) {
-        FieldPo fieldPo = null;
+    public JsonResult<SelectItemPo> get(Integer id) {
+        SelectItemPo selectItemPo = null;
         if (id == null) {
-        return JsonResult.fail(ErrorCodes.VALIDATE_PARAM_ERROR.getCode(),getMessage("common.errror.get_object",getLabel("field.title")));
+        return JsonResult.fail(ErrorCodes.VALIDATE_PARAM_ERROR.getCode(),getMessage("common.errror.get_object",getLabel("selectItem.title")));
         } else {
-        fieldPo = fieldService.getField(id);
+        selectItemPo = selectItemService.getSelectItem(id);
         }
-        return JsonResult.success(fieldPo);
+        return JsonResult.success(selectItemPo);
         }
 
         @RequiresPermissions("add")
         @RequestMapping(value = "/create", method = RequestMethod.GET)
         @ResponseBody
-        public JsonResult<FieldPo> create() {
-            FieldPo fieldPo = new FieldPo();
-            return JsonResult.success(fieldPo);
+        public JsonResult<SelectItemPo> create() {
+            SelectItemPo selectItemPo = new SelectItemPo();
+            return JsonResult.success(selectItemPo);
             }
 
     /**
-    * @param fieldPo
+    * @param selectItemPo
     * @return
     */
     @RequiresPermissions("add")
     @RequestMapping(value = "/saveForCreated", method = RequestMethod.POST)
     @ResponseBody
-    public JsonResult<FieldPo> saveForCreate(@Validated @RequestBody FieldPo fieldPo) {
-        fieldService.saveField(fieldPo);
-        return get(fieldPo.getId());
+    public JsonResult<SelectItemPo> saveForCreate(@Validated @RequestBody SelectItemPo selectItemPo) {
+        selectItemService.saveSelectItem(selectItemPo);
+        return get(selectItemPo.getId());
         }
 
         @RequiresPermissions("update")
         @RequestMapping(value = "/saveForUpdated", method = RequestMethod.POST)
         @ResponseBody
-        public JsonResult<FieldPo> saveForUpdate(@Validated @RequestBody FieldPo fieldPo) {
+        public JsonResult<SelectItemPo> saveForUpdate(@Validated @RequestBody SelectItemPo selectItemPo) {
 
-            if(fieldPo.getId() == null){
+            if(selectItemPo.getId() == null){
             return JsonResult.fail(ErrorCodes.VALIDATE_PARAM_ERROR.getCode(), getMessage("common.errror.pk.required"));
             }
-            fieldService.saveField(fieldPo);
-            return get(fieldPo.getId());
+            selectItemService.saveSelectItem(selectItemPo);
+            return get(selectItemPo.getId());
             }
 
     @RequiresPermissions("delete")
     @RequestMapping(value = "/deletes", method = RequestMethod.POST)
     @ResponseBody
 
-    public JsonResult<PaginationResult<FieldPo>> deletes(@RequestBody DeleteParams<Integer> deleteParams, HttpSession session) {
+    public JsonResult<PaginationResult<SelectItemPo>> deletes(@RequestBody DeleteParams<Integer> deleteParams, HttpSession session) {
     if (deleteParams.getIds() == null||deleteParams.getIds().length == 0)  {
-                return JsonResult.fail(ErrorCodes.VALIDATE_PARAM_ERROR.getCode(), getMessage("common.error.delete.failure",getMessage("field.title")));
+                return JsonResult.fail(ErrorCodes.VALIDATE_PARAM_ERROR.getCode(), getMessage("common.error.delete.failure",getMessage("selectItem.title")));
                 }
-            fieldService.deletes(deleteParams.getIds());
+            selectItemService.deletes(deleteParams.getIds());
                 return list(session,deleteParams.getQueryParams());
         }
 

@@ -8,13 +8,14 @@
 package com.dsdl.eidea.base.entity.po;
 
 import java.util.Date;
+import java.util.List;
 import javax.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 /**
 * table name core_field
-*            字段表
-* Date:2017-05-02 15:47:35
+*            字段信息
+* Date:2017-05-03 16:49:55
 **/
 @Getter
 @Setter
@@ -24,6 +25,11 @@ public class FieldPo implements java.io.Serializable {
     @Column(name = "[id]")
     @Id
     private Integer id;
+    /**
+    * 排序号
+    **/
+    @Column(name = "[seq_no]" )
+    private Integer seqNo;
     /**
     * 名称
     **/
@@ -79,4 +85,5 @@ public class FieldPo implements java.io.Serializable {
     **/
     @Column(name = "[input_type]" )
     private Integer inputType;
+
 }

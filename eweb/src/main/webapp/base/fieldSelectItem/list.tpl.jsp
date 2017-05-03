@@ -3,7 +3,7 @@
 <div  class="container-fluid" ng-controller="listCtrl">
     <div class="page-header" >
         <ol class="breadcrumb">
-            <li><a href="javascript:;"><i class="icon icon-tasks"></i><eidea:label key="field.title"/></a></li>
+            <li><a href="javascript:;"><i class="icon icon-tasks"></i><eidea:label key="fieldSelectItem.title"/></a></li>
         </ol>
         <a href="#/edit" class="btn  btn-primary btn-sm" ng-show="canAdd"><eidea:label key="common.button.create"/></a>
         <button type="button" class="btn  btn-primary btn-sm" id="search_but" data-toggle="modal"
@@ -18,18 +18,8 @@
                 <tr>
                     <th><input type="checkbox" name="selectAll" style="margin:0px;" ng-change="selectAll()"  ng-model="delFlag"></th>
                     <th><%--序号--%><eidea:label key="base.serialNumber"/></th>
-                    <th><%--seqNo--%><eidea:label key="base.field.label.seqNo"/></th>
-                    <th><%--名称--%><eidea:label key="base.field.label.name"/></th>
-                    <th><%--fieldName--%><eidea:label key="base.field.label.fieldName"/></th>
-                    <th><%--columnId--%><eidea:label key="base.field.label.columnId"/></th>
-                    <th><%--required--%><eidea:label key="base.field.label.required"/></th>
-                    <th><%--是否有效--%><eidea:label key="base.field.label.isactive"/></th>
-                    <th><%--创建时间--%><eidea:label key="base.field.label.created"/></th>
-                    <th><%--创建人--%><eidea:label key="base.field.label.createdby"/></th>
-                    <th><%--修改时间--%><eidea:label key="base.field.label.updated"/></th>
-                    <th><%--修改人--%><eidea:label key="base.field.label.updatedby"/></th>
-                    <th><%--description--%><eidea:label key="base.field.label.description"/></th>
-                    <th><%--inputType--%><eidea:label key="base.field.label.inputType"/></th>
+                    <th><%--fieldId--%><eidea:label key="base.fieldSelectItem.label.fieldId"/></th>
+                    <th><%--selectItemId--%><eidea:label key="base.fieldSelectItem.label.selectItemId"/></th>
                     <th><%--编辑--%><eidea:label key="common.button.edit"/></th>
                 </tr>
                 </thead>
@@ -41,40 +31,10 @@
                     </td>
                     <td>{{(queryParams.pageNo-1)*queryParams.pageSize+$index+1}}</td>
                     <td>
-                        {{model.seqNo}}
+                        {{model.fieldId}}
                     </td>
                     <td>
-                        {{model.name}}
-                    </td>
-                    <td>
-                        {{model.fieldName}}
-                    </td>
-                    <td>
-                        {{model.columnId}}
-                    </td>
-                    <td>
-                        {{model.required}}
-                    </td>
-                    <td>
-                        {{model.isactive}}
-                    </td>
-                    <td>
-                        {{model.created|date:"yyyy-MM-dd HH:mm:ss"}}
-                    </td>
-                    <td>
-                        {{model.createdby}}
-                    </td>
-                    <td>
-                        {{model.updated|date:"yyyy-MM-dd HH:mm:ss"}}
-                    </td>
-                    <td>
-                        {{model.updatedby}}
-                    </td>
-                    <td>
-                        {{model.description}}
-                    </td>
-                    <td>
-                        {{model.inputType}}
+                        {{model.selectItemId}}
                     </td>
                     <td>
                         <a class="btn btn-primary btn-xs" href="#/edit?id={{model.id}}"><eidea:label key="common.button.edit"/><%--编辑--%></a>

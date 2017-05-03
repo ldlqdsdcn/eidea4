@@ -5,18 +5,18 @@
 * email:ldlqdsd@126.com
 */
 package com.dsdl.eidea.base.service;
-import com.dsdl.eidea.base.entity.po.FieldPo;
+import com.dsdl.eidea.base.entity.po.SelectItemPo;
 import com.dsdl.eidea.core.dto.PaginationResult;
 import com.dsdl.eidea.core.params.QueryParams;
 import com.googlecode.genericdao.search.Search;
 import java.util.List;
 
 /**
- * @author 刘大磊 2017-05-03 16:49:55
+ * @author 刘大磊 2017-05-03 17:49:28
  */
-public interface FieldService {
-	PaginationResult<FieldPo> getFieldListByPaging(Search search,QueryParams queryParams);
-	FieldPo getField(Integer id);
-	void saveField(FieldPo field);
+public interface SelectItemService {
+	PaginationResult<SelectItemPo> getSelectItemListByPaging(Search search,QueryParams queryParams);
+	SelectItemPo getSelectItem(Integer id);
+	void saveSelectItem(SelectItemPo selectItem);
 	void deletes(Integer[] ids);
 }

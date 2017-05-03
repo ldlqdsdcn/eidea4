@@ -34,15 +34,6 @@
         $scope.isLoading=true;
         $scope.canDel=PrivilegeService.hasPrivilege('delete');
         $scope.canAdd=PrivilegeService.hasPrivilege('add');
-        //用户列表
-        $http.post("<c:url value="/base/user/getUserList"/>",$scope.queryParams).success(function (data) {
-            $scope.isLoading=false;
-            if (data.success) {
-                $scope.updateList(data.data);
-            } else {
-                bootbox.alert(data.message);
-            }
-        });
         $scope.updateList = function (result) {
             $scope.modelList = result.data;
             $scope.queryParams.totalRecords = result.totalRecords;

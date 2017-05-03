@@ -32,14 +32,6 @@
         $scope.delFlag = false;
         $scope.canDel=PrivilegeService.hasPrivilege('delete');
         $scope.canAdd=PrivilegeService.hasPrivilege('add');
-        //模块查询
-        $http.post("<c:url value="/base/module/getModuleList"/>",$scope.queryParams).success(function (data) {
-            if (data.success) {
-                $scope.updateList(data.data);
-            }else {
-                bootbox.alert(data.message);
-            }
-        });
         $scope.updateList = function (result) {
             $scope.modelList = result.data;
             $scope.queryParams.totalRecords = result.totalRecords;

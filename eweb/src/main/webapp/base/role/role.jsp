@@ -34,7 +34,7 @@
         $scope.isLoading=true;
         $scope.canDel=PrivilegeService.hasPrivilege('delete');
         $scope.canAdd=PrivilegeService.hasPrivilege('add');
-        $http.post("<c:url value="/base/role/list"/>",$rootScope.queryParams)
+        $http.post("<c:url value="/base/role/list"/>",$scope.queryParams)
                 .success(function (response) {
                     $scope.isLoading=false;
                     if (response.success) {

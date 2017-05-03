@@ -2,6 +2,8 @@ package com.dsdl.eidea.base.service;
 
 import com.dsdl.eidea.base.def.OperatorDef;
 import com.dsdl.eidea.base.entity.bo.*;
+import com.dsdl.eidea.core.dto.PaginationResult;
+import com.dsdl.eidea.core.params.QueryParams;
 import com.googlecode.genericdao.search.Search;
 
 import java.util.List;
@@ -16,7 +18,7 @@ public interface UserService {
      * @param search
      * @return
      */
-    List<UserBo> getUserList(Search search);
+    PaginationResult<UserBo> getUserList(Search search, QueryParams queryParams);
     /**
      * deleteUserList:用户批量删除
      * @param ids

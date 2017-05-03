@@ -43,15 +43,15 @@ public class UserServiceTest {
         }
 
     }
-    @Test
-    public void testGetUsers()
-    {
-
-        List<UserBo> userBoList= userService.getUserList(new Search());
-
-        Gson gson=new Gson();
-        System.out.println(gson.toJson(userBoList.get(0)));
-        List<UserSessionBo> userSessionBoList=userSessionService.getUserSessionList(new Search());
-        System.out.println(gson.toJson(userSessionBoList.get(0)));
-    }
+//    @Test
+//    public void testGetUsers()
+//    {
+//
+//        List<UserBo> userBoList= userService.getUserList(new Search());
+//
+//        Gson gson=new Gson();
+//        System.out.println(gson.toJson(userBoList.get(0)));
+//        List<UserSessionBo> userSessionBoList=userSessionService.getUserSessionList(new Search());
+//        System.out.println(gson.toJson(userSessionBoList.get(0)));
+//    }
 }

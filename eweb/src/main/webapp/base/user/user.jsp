@@ -28,37 +28,30 @@
                 .when('/edit', {templateUrl: '<c:url value="/base/user/edit.tpl.jsp"/>'})
                 .otherwise({redirectTo: '/list'});
     }]);
-    app.controller('listCtrl', function ($scope, $http) {
-        $scope.allList = [];
+    app.controller('listCtrl', function ($scope,$rootScope, $http) {
         $scope.modelList = [];
         $scope.delFlag = false;
+        $scope.isLoading=true;
         $scope.canDel=PrivilegeService.hasPrivilege('delete');
         $scope.canAdd=PrivilegeService.hasPrivilege('add');
         //用户列表
-        $http.post("<c:url value="/base/user/getUserList"/>").success(function (data) {
+        $http.post("<c:url value="/base/user/getUserList"/>",$scope.queryParams).success(function (data) {
+            $scope.isLoading=false;
             if (data.success) {
                 $scope.updateList(data.data);
             } else {
                 bootbox.alert(data.message);
             }
         });
-        $scope.updateList = function (data) {
-            $scope.allList = data;
-            $scope.bigTotalItems = $scope.allList.length;
-            $scope.modelList.length = 0;
-            $scope.pageChanged();
+        $scope.updateList = function (result) {
+            $scope.modelList = result.data;
+            $scope.queryParams.totalRecords = result.totalRecords;
+            $scope.queryParams.init = false;
         };
-        $scope.pageChanged = function (delF) {
-            var bgn = ($scope.bigCurrentPage - 1) * $scope.itemsPerPage;
-            var end = bgn + $scope.itemsPerPage;
-            $scope.modelList.length = 0;
-            if (delF == null) {
-                delF = false;
-            }
-            for (var i = bgn; i < end && i < $scope.allList.length; i++) {
-                var item = $scope.allList[i];
-                item.delFlag = delF;
-                $scope.modelList.push(item);
+
+        $scope.selectAll = function () {
+            for (var i = 0; i < $scope.modelList.length; i++) {
+                $scope.modelList[i].delFlag = $scope.delFlag;
             }
         }
         $scope.canDelete = function () {
@@ -69,20 +62,31 @@
             }
             return false;
         }
-        $scope.selectAll = function () {
-            $scope.pageChanged($scope.delFlag);
+        $scope.pageChanged = function () {
+            $http.post("<c:url value="/base/user/getUserList"/>", $scope.queryParams)
+                .success(function (response) {
+                    $scope.isLoading = false;
+                    if (response.success) {
+                        $scope.updateList(response.data);
+                    }
+                    else {
+                        bootbox.alert(response.message);
+                    }
+
+                });
         }
-        //用户批量删除
+
+//批量删除
         $scope.deleteRecord = function () {
             bootbox.confirm({
-                message: "<eidea:message key="modile.deleteselect.check"/>",
+                message: "<eidea:message key="common.warn.confirm.deletion"/>",
                 buttons: {
                     confirm: {
-                        label: '<eidea:label key="module.name.checktrue"/>',
+                        label: '<eidea:label key="common.button.yes"/>',
                         className: 'btn-success'
                     },
                     cancel: {
-                        label: '<eidea:label key="module.name.checkfalse"/>',
+                        label: '<eidea:label key="common.button.no"/>',
                         className: 'btn-danger'
                     }
                 }, callback: function (result) {
@@ -93,7 +97,9 @@
                                 ids.push($scope.modelList[i].id);
                             }
                         }
-                        $http.post("<c:url value="/base/user/deleteUserList"/>", ids).success(function (data) {
+                        $scope.queryParams.init = true;
+                        var param = {"queryParams": $scope.queryParams, "ids": ids};
+                        $http.post("<c:url value="/base/user/deletes"/>", param).success(function (data) {
                             if (data.success) {
                                 $scope.updateList(data.data);
                                 bootbox.alert("<eidea:message key="module.deleted.success"/>");
@@ -105,16 +111,26 @@
                 }
             });
         };
-        //可现实分页item数量
+//可现实分页item数量
         $scope.maxSize =${pagingSettingResult.pagingButtonSize};
-        //每页现实记录数
-        $scope.itemsPerPage =${pagingSettingResult.perPageSize};
-        //当前页
-        $scope.bigCurrentPage = 1;
-        //记录数
-        $scope.bigTotalItems = 0;
+        if ($rootScope.listQueryParams != null) {
+            $rootScope.queryParams = $scope.listQueryParams;
+            $rootScope.queryParams.init = true;
+        }
+        else {
+            $scope.queryParams = {
+                pageSize:${pagingSettingResult.perPageSize},//每页显示记录数
+                pageNo: 1, //当前页
+                totalRecords: 0,//记录数
+                init: true
+            };
+            $rootScope.listQueryParams = $scope.queryParams;
+        }
+
+        $scope.pageChanged();
+
     });
-    app.controller('editCtrl', function ($scope, $http, $routeParams) {
+    app.controller('editCtrl', function ($scope, $rootScope, $http, $routeParams) {
         $scope.canAdd=PrivilegeService.hasPrivilege('add');
         $scope.canSave=false;
         //用户编辑
@@ -227,8 +243,10 @@
         }
         //查询实体
         $scope.getClient = function (id) {
-            $http.get("<c:url value="/base/client/list"/>").success(function (data) {
+            $http.post("<c:url value="/base/client/list"/>",$scope.queryParams).success(function (data) {
+                alert(1);
                 if (data.success) {
+                    alert(2);
                     $scope.clientList = data.data;
                     if (id == null) {
                         if (data.data[0] != null && data.data[0].id != null) {
@@ -242,7 +260,7 @@
         }
         //查询组织
         $scope.getOrg = function (id) {
-            $http.get("<c:url value="/base/org/list"/>").success(function (data) {
+            $http.post("<c:url value="/base/org/list"/>",$scope.queryParams).success(function (data) {
                 if (data.success) {
                     $scope.orgList = data.data;
                     if (id == null) {
@@ -259,8 +277,9 @@
         $scope.roleDelFlag = false;
         $scope.roleList = [];
         $scope.roleIds = [];
+
         $scope.getRole = function () {
-            $http.get("<c:url value="/base/role/list"/>").success(function (data) {
+            $http.post("<c:url value="/base/role/list"/>",$scope.queryParams).success(function (data) {
                 if (data.success) {
                     $scope.updateRoleList(data.data);
                 } else {

@@ -22,7 +22,7 @@
             <a href="#tab-3" role="tab" data-toggle="tab">tab-3</a>
         </li>
         <li role="presentation">
-            <a href="javascript:void(0);" role="tab" class="tab-not-active">tab-4</a>
+            <a href="javascript:void(0);" role="tab" class="tab-disabled">tab-4</a>
         </li>
     </ul>
     <div class="tab-content vertical-tab-content">

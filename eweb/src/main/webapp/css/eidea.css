@@ -44,6 +44,6 @@
     color: #666;
 }
 
-.tab-not-active{
+.tab-disabled{
     background-color:#AAAAAA !important;cursor:not-allowed;
 }

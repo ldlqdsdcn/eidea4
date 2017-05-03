@@ -7,7 +7,6 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/inc/taglib.jsp" %>
-<jsp:include page="/common/common_left_tab_css.jsp"/>
 <div class="container-fluid" ng-controller="editCtrl">
     <ul class="nav nav-tab vertical-tab" role="tablist" id="vtab">
         <li role="presentation" class="active">
@@ -23,7 +22,7 @@
             <a href="#tab-3" role="tab" data-toggle="tab">tab-3</a>
         </li>
         <li role="presentation">
-            <a href="javascript:void(0);" role="tab" style="background-color: #AAAAAA;">tab-4</a>
+            <a href="javascript:void(0);" role="tab" class="tab-not-active">tab-4</a>
         </li>
     </ul>
     <div class="tab-content vertical-tab-content">

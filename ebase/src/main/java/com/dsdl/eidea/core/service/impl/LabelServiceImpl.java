@@ -1,5 +1,7 @@
 package com.dsdl.eidea.core.service.impl;
 
+import com.dsdl.eidea.core.dto.PaginationResult;
+import com.dsdl.eidea.core.params.QueryParams;
 import com.dsdl.eidea.core.spring.annotation.DataAccess;
 import com.dsdl.eidea.base.def.ActivateDef;
 import com.dsdl.eidea.base.entity.po.RolePo;
@@ -15,6 +17,7 @@ import com.dsdl.eidea.core.service.LabelService;
 import com.dsdl.eidea.core.service.LanguageService;
 import com.googlecode.genericdao.search.ISearch;
 import com.googlecode.genericdao.search.Search;
+import com.googlecode.genericdao.search.SearchResult;
 import org.apache.log4j.Logger;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
@@ -48,10 +51,21 @@ public class LabelServiceImpl implements LabelService {
     }
 
     @Override
-    public List<LabelBo> getLabelList(ISearch search) {
-        List<LabelPo> clientPoList = labelDao.search(search);
-        return modelMapper.map(clientPoList, new TypeToken<List<LabelBo>>() {
-        }.getType());
+    public PaginationResult<LabelBo> getLabelList(Search search, QueryParams queryParams) {
+        search.setFirstResult(queryParams.getFirstResult());
+        search.setMaxResults(queryParams.getPageSize());
+        PaginationResult<LabelBo> paginationResult = null;
+        if (queryParams.isInit()){
+            SearchResult<LabelPo> searchResult = labelDao.searchAndCount(search);
+            List<LabelBo> list = modelMapper.map(searchResult.getResult(),new TypeToken<List<LabelBo>>(){}.getType());
+            paginationResult = PaginationResult.pagination(list,searchResult.getTotalCount(),queryParams.getPageNo(),queryParams.getPageSize());
+        }else{
+            List<LabelPo> searchPoList = labelDao.search(search);
+            List<LabelBo> labelBoList = modelMapper.map(searchPoList,new TypeToken<List<LabelBo>>(){}.getType());
+            paginationResult = PaginationResult.pagination(labelBoList,queryParams.getTotalRecords(),queryParams.getPageNo(),queryParams.getPageSize());
+        }
+        return paginationResult;
+
     }
 
     @Override

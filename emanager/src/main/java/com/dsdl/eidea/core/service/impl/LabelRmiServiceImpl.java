@@ -1,5 +1,6 @@
 package com.dsdl.eidea.core.service.impl;
 
+import com.dsdl.eidea.core.params.QueryParams;
 import com.dsdl.eidea.core.service.LabelRmiService;
 import com.dsdl.eidea.core.service.LabelService;
 import com.googlecode.genericdao.search.Search;
@@ -18,7 +19,7 @@ public class LabelRmiServiceImpl implements LabelRmiService {
     private LabelService labelService;
     @Override
     public List<String> getAllLabelList() {
-        List<String> list=labelService.getLabelList(new Search()).stream().map(e->e.getMsgtext()).collect(Collectors.toList());
+        List<String> list=labelService.getLabelList(new Search(),new QueryParams()).getData().stream().map(e->e.getMsgtext()).collect(Collectors.toList());
         return list;
     }
 }

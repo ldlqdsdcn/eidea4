@@ -1,17 +1,18 @@
 package com.dsdl.eidea.core.service;
 
-import java.util.List;
-
+import com.dsdl.eidea.core.dto.PaginationResult;
 import com.dsdl.eidea.core.entity.bo.LabelBo;
-import com.dsdl.eidea.core.entity.bo.LanguageBo;
-import com.googlecode.genericdao.search.ISearch;
+import com.dsdl.eidea.core.params.QueryParams;
+import com.googlecode.genericdao.search.Search;
+
+import java.util.List;
 
 public interface LabelService {
     void save(LabelBo labelBo);
 
     boolean findExistClient(String no);
 
-    List<LabelBo> getLabelList(ISearch search);
+    PaginationResult<LabelBo> getLabelList(Search search, QueryParams queryParams);
 
     void deletes(String[] codes);
 

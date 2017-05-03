@@ -3,6 +3,9 @@ package com.dsdl.eidea.core.web.controller;
 import com.dsdl.eidea.base.entity.bo.DirectoryBo;
 import com.dsdl.eidea.base.service.DirectoryService;
 import com.dsdl.eidea.base.web.vo.UserResource;
+import com.dsdl.eidea.core.dto.PaginationResult;
+import com.dsdl.eidea.core.params.DeleteParams;
+import com.dsdl.eidea.core.params.QueryParams;
 import com.dsdl.eidea.core.web.def.WebConst;
 import com.dsdl.eidea.core.web.result.JsonResult;
 import com.dsdl.eidea.core.web.result.def.ErrorCodes;
@@ -35,30 +38,30 @@ public class DirectoryController {
     @RequiresPermissions(value = "view")
     public ModelAndView showList() {
         ModelAndView modelAndView = new ModelAndView("/base/directory/directory");
-        modelAndView.addObject("pagingSettingResult", PagingSettingResult.getDefault());
+        modelAndView.addObject(WebConst.PAGING_SETTINGS, PagingSettingResult.getDefault());
         modelAndView.addObject(WebConst.PAGE_URI, URI);
         return modelAndView;
     }
 
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    @RequestMapping(value = "/list", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions(value = "view")
-    public JsonResult<List<DirectoryBo>> list(HttpSession session) {
+    public JsonResult<PaginationResult<DirectoryBo>> list(HttpSession session, @RequestBody QueryParams queryParams) {
         Search search = SearchHelper.getSearchParam(URI, session);
-        List<DirectoryBo> directoryBoList = directoryService.findDirectory(search);
+        PaginationResult<DirectoryBo> directoryBoList = directoryService.findDirectory(search,queryParams);
         return JsonResult.success(directoryBoList);
     }
 
     @RequestMapping(value = "/deletes", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions(value = "delete")
-    public JsonResult<List<DirectoryBo>> deletes(@RequestBody Integer[] ids, HttpSession session) {
+    public JsonResult<PaginationResult<DirectoryBo>> deletes(@RequestBody DeleteParams<Integer> deleteParams, HttpSession session) {
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
-        if (ids == null) {
+        if (deleteParams.getIds() == null) {
             return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("pagemenu.choose.information"));
         }
-        directoryService.deleteDirectoryById(ids);
-        return list(session);
+        directoryService.deleteDirectoryById(deleteParams.getIds());
+        return list(session,deleteParams.getQueryParams());
     }
 
     @RequestMapping(value = "/saveForCreated", method = RequestMethod.POST)

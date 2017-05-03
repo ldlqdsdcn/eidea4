@@ -3,6 +3,7 @@ package com.dsdl.eidea.base.service.test;
 import com.dsdl.eidea.base.entity.bo.OrgBo;
 import com.dsdl.eidea.base.entity.po.OrgPo;
 import com.dsdl.eidea.base.service.OrgService;
+import com.dsdl.eidea.core.params.QueryParams;
 import com.googlecode.genericdao.search.Search;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,24 +21,24 @@ import java.util.List;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:applicationContext.xml")
 public class OrgServiceTest {
-//    @Autowired
-//    private OrgService orgService;
-//    @Test
-//    public void testGetOrg()
-//    {
-//        orgService.getOrgBo(1);
-//    }
-//    @Test
-//    public  void TestGetOrgInit()
-//    {
-//        OrgPo orgPo=orgService.getOrg(1);
-//        System.out.println(orgPo.getSysClient().getSysOrgs().size());
-//    }
-//    @Test
-//    public void testGetOrgs()
-//    {
-//       List<OrgBo> orgBoList= orgService.findOrgList(new Search());
-//        System.out.println(orgBoList.size());
-//    }
+    @Autowired
+    private OrgService orgService;
+    @Test
+    public void testGetOrg()
+    {
+        orgService.getOrgBo(1);
+    }
+    @Test
+    public  void TestGetOrgInit()
+    {
+        OrgPo orgPo=orgService.getOrg(1);
+        System.out.println(orgPo.getSysClient().getSysOrgs().size());
+    }
+    @Test
+    public void testGetOrgs()
+    {
+       List<OrgBo> orgBoList= orgService.findOrgList(new Search(),new QueryParams()).getData();
+        System.out.println(orgBoList.size());
+    }
 
 }

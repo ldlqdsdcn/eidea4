@@ -2,6 +2,7 @@ package com.dsdl.eidea.core.com.dsdl.eidea.base.service.test;
 
 import java.util.List;
 
+import com.dsdl.eidea.core.params.QueryParams;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Test;
@@ -23,17 +24,17 @@ import com.googlecode.genericdao.search.Search;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:applicationContext.xml")
 public class RoleServiceTest {
-//	    private Logger logger= Logger.getLogger(RoleServiceTest.class);
-//	    @Autowired
-//	    private RoleService roleService;
-//	    @Test
-//	    public void testgetLabelList(){
-//		        Gson gson = new Gson();
-//		        List<RoleBo> roleBoList = roleService.getRoleList(new Search());
-//		        logger.debug(gson.toJson(roleBoList));
-//		        Assert.assertTrue(roleBoList.size() > 0);
-//	    }
-//
+	    private Logger logger= Logger.getLogger(RoleServiceTest.class);
+	    @Autowired
+	    private RoleService roleService;
+	    @Test
+	    public void testgetLabelList(){
+		        Gson gson = new Gson();
+		        List<RoleBo> roleBoList = roleService.getRoleList(new Search(),new QueryParams()).getData();
+		        logger.debug(gson.toJson(roleBoList));
+		        Assert.assertTrue(roleBoList.size() > 0);
+	    }
+
 	    
 	    
 }

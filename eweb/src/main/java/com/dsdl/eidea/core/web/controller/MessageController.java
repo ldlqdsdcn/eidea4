@@ -1,9 +1,12 @@
 package com.dsdl.eidea.core.web.controller;
 
 import com.dsdl.eidea.base.web.vo.UserResource;
+import com.dsdl.eidea.core.dto.PaginationResult;
 import com.dsdl.eidea.core.entity.bo.LanguageBo;
 import com.dsdl.eidea.core.entity.bo.MessageBo;
 import com.dsdl.eidea.core.entity.bo.MessageTrlBo;
+import com.dsdl.eidea.core.params.DeleteParams;
+import com.dsdl.eidea.core.params.QueryParams;
 import com.dsdl.eidea.core.service.LanguageService;
 import com.dsdl.eidea.core.service.MessageService;
 import com.dsdl.eidea.core.web.def.WebConst;
@@ -42,30 +45,30 @@ public class MessageController {
     @RequiresPermissions(value = "view")
     public ModelAndView showList() {
         ModelAndView modelAndView = new ModelAndView("/core/message/message");
-        modelAndView.addObject("pagingSettingResult", PagingSettingResult.getDefault());
+        modelAndView.addObject(WebConst.PAGING_SETTINGS, PagingSettingResult.getDefault());
         modelAndView.addObject(WebConst.PAGE_URI, URI);
         return modelAndView;
     }
 
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    @RequestMapping(value = "/list", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions(value = "view")
-    public JsonResult<List<MessageBo>> list(HttpSession session) {
+    public JsonResult<PaginationResult<MessageBo>> list(HttpSession session, @RequestBody QueryParams queryParams) {
         Search search = SearchHelper.getSearchParam(URI, session);
-        List<MessageBo> messageBoList = messageService.findMessage(search);
+        PaginationResult<MessageBo> messageBoList = messageService.findMessage(search,queryParams);
         return JsonResult.success(messageBoList);
     }
 
     @RequestMapping(value = "/deletes", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions(value = "delete")
-    public JsonResult<List<MessageBo>> deletes(@RequestBody String[] keys, HttpSession session) {
+    public JsonResult<PaginationResult<MessageBo>> deletes(@RequestBody DeleteParams<String> deleteParams, HttpSession session) {
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
-        if (keys == null || keys.length == 0) {
+        if (deleteParams.getIds() == null || deleteParams.getIds().length == 0) {
             return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("pagemenu.choose.information"));
         }
-        messageService.deletes(keys);
-        return list(session);
+        messageService.deletes(deleteParams.getIds());
+        return list(session,deleteParams.getQueryParams());
     }
 
     @RequestMapping(value = "/get", method = RequestMethod.GET)

@@ -1,6 +1,8 @@
 package com.dsdl.eidea.core.service;
 
+import com.dsdl.eidea.core.dto.PaginationResult;
 import com.dsdl.eidea.core.entity.bo.MessageBo;
+import com.dsdl.eidea.core.params.QueryParams;
 import com.googlecode.genericdao.search.Search;
 import com.dsdl.eidea.core.i18n.DbResourceBundle;
 
@@ -10,7 +12,7 @@ import java.util.List;
  * Created by admin on 2016/12/16.
  */
 public interface MessageService {
-    List<MessageBo> findMessage(Search search);
+    PaginationResult<MessageBo> findMessage(Search search, QueryParams queryParams);
 
     MessageBo getMessageBo(String key);
 

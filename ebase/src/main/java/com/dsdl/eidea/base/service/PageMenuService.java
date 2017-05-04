@@ -11,7 +11,19 @@ import java.util.List;
  * Created by admin on 2016/12/13.
  */
 public interface PageMenuService {
-    //查询出所有的菜单
+    /**
+     * 查询出所有的菜单
+     * @param search
+     * @return
+     */
+    List<PageMenuBo> findPageMenu(Search search);
+
+    /**
+     * 列表界面分页查询
+     * @param search
+     * @param queryParams
+     * @return
+     */
     PaginationResult<PageMenuBo> findPageMenu(Search search, QueryParams queryParams);
     //根据id 删除菜单
     void deleteMenuById(Integer[] ids);

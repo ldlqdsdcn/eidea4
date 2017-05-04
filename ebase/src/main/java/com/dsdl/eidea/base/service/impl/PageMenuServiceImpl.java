@@ -40,6 +40,13 @@ public class PageMenuServiceImpl implements PageMenuService {
     private LanguageService languageService;
     private ModelMapper modelMapper = new ModelMapper();
     @Override
+    public List<PageMenuBo> findPageMenu(Search search) {
+        List<PageMenuPo> pageMenuPoList = pageMenuDao.search(search);
+        List<PageMenuBo> PageMenuBoList = modelMapper.map(pageMenuPoList, new TypeToken<List<PageMenuBo>>() {
+        }.getType());
+        return PageMenuBoList;
+    }
+    @Override
     public PaginationResult<PageMenuBo> findPageMenu(Search search, QueryParams queryParams) {
         search.setFirstResult(queryParams.getFirstResult());
         search.setMaxResults(queryParams.getPageSize());

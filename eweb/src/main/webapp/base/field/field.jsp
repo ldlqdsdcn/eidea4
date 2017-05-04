@@ -1,12 +1,12 @@
 <%--
   Created by 刘大磊.
-  Date: 2017-05-02 15:47:35
+  Date: 2017-05-03 16:49:55
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/inc/taglib.jsp" %>
 <html>
 <head>
-    <title><%--字段表--%><eidea:label key="field.title"/></title>
+    <title><%--字段信息--%><eidea:label key="field.title"/></title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <%@include file="/inc/inc_ang_js_css.jsp" %>
 </head>

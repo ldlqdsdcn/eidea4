@@ -31,11 +31,11 @@
                 </thead>
                 <tbody>
 
-                <tr ng-repeat="model in pageMenuBoList track by $index" ng-class-even="success">
+                <tr ng-repeat="model in modelList track by $index" ng-class-even="success">
                     <td>
                         <input type="checkbox" ng-model="model.delFlag">
                     </td>
-                    <td>{{(bigCurrentPage-1)*itemsPerPage+$index+1}}</td>
+                    <td>{{(queryParams.pageNo-1)*queryParams.pageSize+$index+1}}</td>
                     <td>{{model.seqNo}}</td>
                     <td>
                         <span ng-if="model.menuType == 1"><eidea:label key="dymenu.label.menufolde"/></span>
@@ -62,10 +62,10 @@
                 </tr>
                 </tbody>
             </table>
-            <ul uib-pagination boundary-links="true" total-items="bigTotalItems" ng-model="bigCurrentPage"
-            max-size="maxSize" first-text="<eidea:label key="common.label.firstpage"/>" previous-text="<eidea:label key="common.label.previouspage"/>" next-text="<eidea:label key="common.label.nextpage"/>" last-text="<eidea:label key="common.label.lastpage"/>"
-            class="pagination-sm" boundary-link-numbers="true" rotate="false" items-per-page="itemsPerPage"
-            ng-change="pageChanged()"></ul>
-        </div>
+            <ul uib-pagination boundary-links="true" total-items="queryParams.totalRecords" ng-model="queryParams.pageNo"
+                max-size="maxSize" first-text="<eidea:label key="common.label.firstpage"/>" previous-text="<eidea:label key="common.label.previouspage"/>" next-text="<eidea:label key="common.label.nextpage"/>" last-text="<eidea:label key="common.label.lastpage"/>"
+                class="pagination-sm" boundary-link-numbers="true" rotate="false" items-per-page="queryParams.pageSize"
+                ng-change="pageChanged()"></ul>
+            <div class="text-left ng-binding padding_total_banner"><eidea:message key="common.msg.result.prefix"/><span>{{queryParams.totalRecords}}</span><eidea:message key="common.msg.result.suffix"/></div>
     </div>
 </div>

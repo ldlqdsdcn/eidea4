@@ -12,7 +12,7 @@ import com.googlecode.genericdao.search.Search;
 import java.util.List;
 
 /**
- * @author 刘大磊 2017-05-02 15:47:35
+ * @author 刘大磊 2017-05-03 16:49:55
  */
 public interface FieldService {
 	PaginationResult<FieldPo> getFieldListByPaging(Search search,QueryParams queryParams);

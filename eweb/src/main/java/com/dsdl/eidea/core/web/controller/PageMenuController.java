@@ -4,7 +4,10 @@ import com.dsdl.eidea.base.entity.bo.PageMenuBo;
 import com.dsdl.eidea.base.entity.bo.PageMenuTrlBo;
 import com.dsdl.eidea.base.service.PageMenuService;
 import com.dsdl.eidea.base.web.vo.UserResource;
+import com.dsdl.eidea.core.dto.PaginationResult;
 import com.dsdl.eidea.core.entity.bo.LanguageBo;
+import com.dsdl.eidea.core.params.DeleteParams;
+import com.dsdl.eidea.core.params.QueryParams;
 import com.dsdl.eidea.core.service.LanguageService;
 import com.dsdl.eidea.core.web.def.WebConst;
 import com.dsdl.eidea.core.web.result.JsonResult;
@@ -43,7 +46,7 @@ public class PageMenuController {
     @RequiresPermissions(value = "view")
     public ModelAndView showList() {
         ModelAndView modelAndView = new ModelAndView("/base/pagemenu/pagemenu");
-        modelAndView.addObject("pagingSettingResult", PagingSettingResult.getDefault());
+        modelAndView.addObject(WebConst.PAGING_SETTINGS, PagingSettingResult.getDbPaging());
         modelAndView.addObject(WebConst.PAGE_URI, URI);
         return modelAndView;
     }
@@ -51,9 +54,9 @@ public class PageMenuController {
     @RequestMapping(value = "/list", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions(value = "view")
-    public JsonResult<List<PageMenuBo>> list(HttpSession session) {
+    public JsonResult<PaginationResult<PageMenuBo>> list(HttpSession session, @RequestBody QueryParams queryParams) {
         Search search = SearchHelper.getSearchParam(URI, session);
-        List<PageMenuBo> pageMenuBoList = pageMenuService.findPageMenu(search);
+        PaginationResult<PageMenuBo> pageMenuBoList = pageMenuService.findPageMenu(search,queryParams);
         return JsonResult.success(pageMenuBoList);
     }
 
@@ -104,25 +107,25 @@ public class PageMenuController {
     @RequestMapping(value = "/deletes", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions(value = "delete")
-    public JsonResult<List<PageMenuBo>> deletes(@RequestBody Integer[] ids, HttpSession session) {
-        if (ids == null) {
+    public JsonResult<PaginationResult<PageMenuBo>> deletes(@RequestBody DeleteParams<Integer> deleteParams, HttpSession session) {
+        if (deleteParams.getIds() == null||deleteParams.getIds().length==0) {
             UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
             return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("pagemenu.choose.information"));
         }
         /**
          * 查询子集引用
          */
-        for(Integer id:ids){
+        for(Integer id:deleteParams.getIds()){
                 Search search=new Search();
                  search.addFilterEqual("parentMenuId",id);
-            List<PageMenuBo> pageMenuBos=pageMenuService.findPageMenu(search);
-            if (pageMenuBos.size()>0){
+            PaginationResult<PageMenuBo> pageMenuBos=pageMenuService.findPageMenu(search,deleteParams.getQueryParams());
+            if (pageMenuBos.getData().size()>0){
                 UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
                 return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("pagemenu.exit.information"));
             }
         }
-        pageMenuService.deleteMenuById(ids);
-        return list(session);
+        pageMenuService.deleteMenuById(deleteParams.getIds());
+        return list(session,deleteParams.getQueryParams());
     }
 
     /**

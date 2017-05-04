@@ -1,6 +1,8 @@
 package com.dsdl.eidea.core.service;
 
+import com.dsdl.eidea.core.dto.PaginationResult;
 import com.dsdl.eidea.core.entity.po.ReportSettingsPo;
+import com.dsdl.eidea.core.params.QueryParams;
 import com.googlecode.genericdao.search.Search;
 
 import java.util.List;
@@ -9,7 +11,7 @@ import java.util.List;
  * Created by 车东明 on 2017/4/17.
  */
 public interface ReportSettingsService {
-    List<ReportSettingsPo> getReportSettingsList(Search search);
+    PaginationResult<ReportSettingsPo> getReportSettingsList(Search search, QueryParams queryParams);
 
     ReportSettingsPo getReportSettingsPo(String key);
 

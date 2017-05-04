@@ -18,6 +18,7 @@
                 <tr>
                     <th><input type="checkbox" name="selectAll" style="margin:0px;" ng-change="selectAll()"  ng-model="delFlag"></th>
                     <th><%--序号--%><eidea:label key="base.serialNumber"/></th>
+                    <th><%--seqNo--%><eidea:label key="base.field.label.seqNo"/></th>
                     <th><%--名称--%><eidea:label key="base.field.label.name"/></th>
                     <th><%--fieldName--%><eidea:label key="base.field.label.fieldName"/></th>
                     <th><%--columnId--%><eidea:label key="base.field.label.columnId"/></th>
@@ -39,6 +40,9 @@
                         <input type="checkbox" ng-model="model.delFlag">
                     </td>
                     <td>{{(queryParams.pageNo-1)*queryParams.pageSize+$index+1}}</td>
+                    <td>
+                        {{model.seqNo}}
+                    </td>
                     <td>
                         {{model.name}}
                     </td>

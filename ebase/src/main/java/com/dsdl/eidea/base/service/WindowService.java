@@ -5,6 +5,7 @@
 * email:ldlqdsd@126.com
 */
 package com.dsdl.eidea.base.service;
+import com.dsdl.eidea.base.entity.bo.WindowBo;
 import com.dsdl.eidea.base.entity.po.WindowPo;
 import com.dsdl.eidea.core.dto.PaginationResult;
 import com.dsdl.eidea.core.params.QueryParams;
@@ -19,4 +20,11 @@ public interface WindowService {
 	WindowPo getWindow(Integer id);
 	void saveWindow(WindowPo window);
 	void deletes(Integer[] ids);
+	/**
+	 * 获取窗体信息
+	 * @param id 窗体主键
+	 * @param lang 语言码
+	 * @return
+	 */
+	WindowBo getWindowBo(Integer id,String lang);
 }

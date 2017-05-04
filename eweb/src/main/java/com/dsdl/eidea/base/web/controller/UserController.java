@@ -3,6 +3,9 @@ package com.dsdl.eidea.base.web.controller;
 import com.dsdl.eidea.base.entity.bo.UserBo;
 import com.dsdl.eidea.base.service.UserService;
 import com.dsdl.eidea.base.web.vo.UserResource;
+import com.dsdl.eidea.core.dto.PaginationResult;
+import com.dsdl.eidea.core.params.DeleteParams;
+import com.dsdl.eidea.core.params.QueryParams;
 import com.dsdl.eidea.core.web.def.WebConst;
 import com.dsdl.eidea.core.web.result.JsonResult;
 import com.dsdl.eidea.core.web.result.def.ErrorCodes;
@@ -44,7 +47,7 @@ public class UserController {
     public ModelAndView getUserToJsp() {
         ModelAndView modelAndView = new ModelAndView("/base/user/user");
         modelAndView.addObject(WebConst.PAGE_URI, URI);
-        modelAndView.addObject("pagingSettingResult", PagingSettingResult.getDefault());
+        modelAndView.addObject(WebConst.PAGING_SETTINGS, PagingSettingResult.getDbPaging());
         return modelAndView;
     }
 
@@ -56,10 +59,10 @@ public class UserController {
     @RequestMapping(value = "/getUserList", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions(value = "view")
-    public JsonResult<List<UserBo>> getUserList(HttpServletRequest request) {
+    public JsonResult<PaginationResult<UserBo>> getUserList(HttpServletRequest request, @RequestBody QueryParams queryParams) {
         Search search = SearchHelper.getSearchParam(URI, request.getSession());
 //        search.addFilterIn("orgId",securityHelper.getAccessOrgList(request));
-        List<UserBo> userList = userService.getUserList(search);
+        PaginationResult<UserBo> userList = userService.getUserList(search,queryParams);
         return JsonResult.success(userList);
     }
 
@@ -67,15 +70,15 @@ public class UserController {
     /**
      * deleteUserList:用户批量删除
      *
-     * @param ids
+     * @param deleteParams
      * @return
      */
     @RequestMapping(value = "/deleteUserList", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions(value = "delete")
-    public JsonResult<List<UserBo>> deleteUserList(@RequestBody Integer[] ids, HttpServletRequest request) {
-        userService.deleteUserList(ids);
-        return getUserList(request);
+    public JsonResult<PaginationResult<UserBo>> deleteUserList(@RequestBody DeleteParams<Integer> deleteParams, HttpServletRequest request) {
+        userService.deleteUserList(deleteParams.getIds());
+        return getUserList(request,deleteParams.getQueryParams());
     }
 
     /**

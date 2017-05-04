@@ -31,7 +31,7 @@ public class OperatorController {
     @RequiresPermissions(value = "view")
     public ModelAndView showList() {
         ModelAndView modelAndView = new ModelAndView("/base/operator/operator");
-        modelAndView.addObject("pagingSettingResult", PagingSettingResult.getDefault());
+        modelAndView.addObject("pagingSettingResult", PagingSettingResult.getDbPaging());
         return modelAndView;
     }
     @RequestMapping(value = "/list", method = RequestMethod.GET)

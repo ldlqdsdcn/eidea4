@@ -1,7 +1,7 @@
 package com.dsdl.eidea.devs.strategy;
 
 import com.dsdl.eidea.core.def.JavaDataType;
-import com.dsdl.eidea.core.def.SearchPageFieldInputType;
+import com.dsdl.eidea.core.def.PageFieldInputType;
 import com.dsdl.eidea.core.entity.bo.ColumnMetaDataBo;
 import com.dsdl.eidea.core.entity.bo.TableMetaDataBo;
 import com.dsdl.eidea.core.service.TableService;
@@ -16,7 +16,6 @@ import com.dsdl.eidea.util.DateTimeHelper;
 import com.dsdl.eidea.util.StringUtil;
 import org.modelmapper.ModelMapper;
 
-import java.io.File;
 import java.util.*;
 
 /**
@@ -189,9 +188,9 @@ public class JspPageGenerateStrategy {
 
             if (columnInfo.getDataType() == JavaDataType.DATE.getKey()) {
                 if (columnInfo.getColumnName().toUpperCase().contains("TIME")) {
-                    jspModelProp.setInputType(SearchPageFieldInputType.DATETIMEPICKER.getKey());
+                    jspModelProp.setInputType(PageFieldInputType.DATETIMEPICKER.getKey());
                 } else {
-                    jspModelProp.setInputType(SearchPageFieldInputType.DATETIMEPICKER.getKey());
+                    jspModelProp.setInputType(PageFieldInputType.DATETIMEPICKER.getKey());
                 }
             } else {
                 jspModelProp.setInputType(IntelliKeyWord.getDecorator(jspModelProp.getProp()));

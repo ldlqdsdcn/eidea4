@@ -3,7 +3,7 @@ package com.dsdl.eidea.core.web.controller;
 import com.dsdl.eidea.base.web.vo.UserResource;
 import com.dsdl.eidea.core.def.RelOperDef;
 import com.dsdl.eidea.core.def.SearchDataTypeDef;
-import com.dsdl.eidea.core.def.SearchPageFieldInputType;
+import com.dsdl.eidea.core.def.PageFieldInputType;
 import com.dsdl.eidea.core.def.SearchPageType;
 import com.dsdl.eidea.core.dto.PaginationResult;
 import com.dsdl.eidea.core.entity.bo.KeyValue;
@@ -30,7 +30,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
@@ -183,7 +182,7 @@ public class SearchController {
         }
         listObject.add("relOper", jsonArray);
         jsonArray = new JsonArray();
-        for (SearchPageFieldInputType searchPageFieldInputType : SearchPageFieldInputType.values()) {
+        for (PageFieldInputType searchPageFieldInputType : PageFieldInputType.values()) {
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("key", searchPageFieldInputType.getKey());
             jsonObject.addProperty("desc", searchPageFieldInputType.getDesc());

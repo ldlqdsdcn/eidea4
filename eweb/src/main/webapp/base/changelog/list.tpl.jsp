@@ -25,7 +25,7 @@
             <tbody>
 
             <tr ng-repeat="model in modelList track by $index" ng-class-even="success">
-                <td>{{(bigCurrentPage-1)*itemsPerPage+$index+1}}</td>
+                <td>{{(queryParams.pageNo-1)*queryParams.pageSize+$index+1}}</td>
                 <td>
                     {{model.name}}
                 </td>
@@ -58,10 +58,11 @@
             </tr>
             </tbody>
         </table>
-        <ul uib-pagination boundary-links="true" total-items="bigTotalItems" ng-model="bigCurrentPage"
+        <ul uib-pagination boundary-links="true" total-items="queryParams.totalRecords" ng-model="queryParams.pageNo"
             max-size="maxSize" first-text="<eidea:label key="common.label.firstpage"/>" previous-text="<eidea:label key="common.label.previouspage"/>" next-text="<eidea:label key="common.label.nextpage"/>" last-text="<eidea:label key="common.label.lastpage"/>"
-            class="pagination-sm" boundary-link-numbers="true" rotate="false" items-per-page="itemsPerPage"
+            class="pagination-sm" boundary-link-numbers="true" rotate="false" items-per-page="queryParams.pageSize"
             ng-change="pageChanged()"></ul>
+        <div class="text-left ng-binding padding_total_banner"><eidea:message key="common.msg.result.prefix"/><span>{{queryParams.totalRecords}}</span><eidea:message key="common.msg.result.suffix"/></div>
     </div>
 </div>
 </div>

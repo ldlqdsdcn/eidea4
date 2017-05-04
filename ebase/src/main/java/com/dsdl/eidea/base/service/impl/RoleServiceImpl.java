@@ -1,5 +1,7 @@
 package com.dsdl.eidea.base.service.impl;
 
+import com.dsdl.eidea.core.dto.PaginationResult;
+import com.dsdl.eidea.core.params.QueryParams;
 import com.dsdl.eidea.core.spring.annotation.DataAccess;
 import com.dsdl.eidea.base.entity.bo.ModuleRoleBo;
 import com.dsdl.eidea.base.entity.bo.PrivilegeBo;
@@ -10,6 +12,7 @@ import com.dsdl.eidea.base.service.RoleService;
 import com.dsdl.eidea.core.dao.CommonDao;
 import com.googlecode.genericdao.search.ISearch;
 import com.googlecode.genericdao.search.Search;
+import com.googlecode.genericdao.search.SearchResult;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.modelmapper.TypeToken;
@@ -70,10 +73,20 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public List<RoleBo> getRoleList(ISearch search) {
-        List<RolePo> clientPoList = roleDao.search(search);
-        return modelMapper.map(clientPoList, new TypeToken<List<RoleBo>>() {
-        }.getType());
+    public PaginationResult<RoleBo> getRoleList(Search search, QueryParams queryParams) {
+        search.setFirstResult(queryParams.getFirstResult());
+        search.setMaxResults(queryParams.getPageSize());
+        PaginationResult<RoleBo> paginationResult = null;
+        if (queryParams.isInit()){
+            SearchResult<RolePo> searchResult = roleDao.searchAndCount(search);
+            List<RoleBo> list = modelMapper.map(searchResult.getResult(),new TypeToken<List<RoleBo>>(){}.getType());
+            paginationResult = PaginationResult.pagination(list,searchResult.getTotalCount(),queryParams.getPageNo(),queryParams.getPageSize());
+        }else{
+            List<RolePo> rolePoList = roleDao.search(search);
+            List<RoleBo> roleBoList = modelMapper.map(rolePoList,new TypeToken<List<RoleBo>>(){}.getType());
+            paginationResult = PaginationResult.pagination(roleBoList,queryParams.getTotalRecords(),queryParams.getPageNo(),queryParams.getPageSize());
+        }
+        return paginationResult;
     }
 
     @Override

@@ -1,6 +1,8 @@
 package com.dsdl.eidea.base.service.impl;
 
 import com.dsdl.eidea.base.entity.po.OrgPo;
+import com.dsdl.eidea.core.dto.PaginationResult;
+import com.dsdl.eidea.core.params.QueryParams;
 import com.dsdl.eidea.core.spring.annotation.DataAccess;
 import com.dsdl.eidea.base.entity.bo.ClientBo;
 import com.dsdl.eidea.base.entity.po.ClientPo;
@@ -8,6 +10,7 @@ import com.dsdl.eidea.base.service.ClientService;
 import com.dsdl.eidea.core.dao.CommonDao;
 import com.googlecode.genericdao.search.ISearch;
 import com.googlecode.genericdao.search.Search;
+import com.googlecode.genericdao.search.SearchResult;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
@@ -25,10 +28,21 @@ public class ClientServiceImpl implements ClientService {
     private final ModelMapper modelMapper = new ModelMapper();
 
     @Override
-    public List<ClientBo> getClientList(ISearch search) {
-        List<ClientPo> clientPoList = clientDao.search(search);
-        return modelMapper.map(clientPoList, new TypeToken<List<ClientBo>>() {
-        }.getType());
+    public PaginationResult<ClientBo> getClientList(Search search, QueryParams queryParams) {
+        search.setFirstResult(queryParams.getFirstResult());
+        search.setMaxResults(queryParams.getPageSize());
+        PaginationResult<ClientBo> paginationResult = null;
+        if (queryParams.isInit()){
+            SearchResult<ClientPo> searchResult =  clientDao.searchAndCount(search);
+            List<ClientBo> clientBoList = modelMapper.map(searchResult.getResult(),new TypeToken<List<ClientBo>>(){
+            }.getType());
+            paginationResult = PaginationResult.pagination(clientBoList,searchResult.getTotalCount(),queryParams.getPageNo(),queryParams.getPageSize());
+        } else {
+            List<ClientPo> clientPoList = clientDao.search(search);
+            List<ClientBo> clientBoList= modelMapper.map(clientPoList,new TypeToken<List<ClientBo>>(){}.getType());
+            paginationResult=PaginationResult.pagination(clientBoList,queryParams.getTotalRecords(),queryParams.getPageNo(),queryParams.getPageSize());
+        }
+        return paginationResult;
     }
 
     public boolean findExistClient(String no) {

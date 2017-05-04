@@ -1,6 +1,8 @@
 package com.dsdl.eidea.base.service;
 
 import com.dsdl.eidea.base.entity.bo.PageMenuBo;
+import com.dsdl.eidea.core.dto.PaginationResult;
+import com.dsdl.eidea.core.params.QueryParams;
 import com.googlecode.genericdao.search.Search;
 
 import java.util.List;
@@ -10,8 +12,7 @@ import java.util.List;
  */
 public interface PageMenuService {
     //查询出所有的菜单
-    List<PageMenuBo> findPageMenu(Search search);
-
+    PaginationResult<PageMenuBo> findPageMenu(Search search, QueryParams queryParams);
     //根据id 删除菜单
     void deleteMenuById(Integer[] ids);
 

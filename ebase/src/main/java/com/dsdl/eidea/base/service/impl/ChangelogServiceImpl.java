@@ -1,5 +1,7 @@
 package com.dsdl.eidea.base.service.impl;
 
+import com.dsdl.eidea.core.dto.PaginationResult;
+import com.dsdl.eidea.core.params.QueryParams;
 import com.dsdl.eidea.core.spring.annotation.DataAccess;
 import com.dsdl.eidea.base.entity.bo.ChangelogBo;
 import com.dsdl.eidea.base.entity.po.ChangelogPo;
@@ -10,8 +12,8 @@ import com.dsdl.eidea.core.dao.TableDao;
 import com.dsdl.eidea.core.entity.bo.TableColumnBo;
 import com.dsdl.eidea.core.entity.po.TableColumnPo;
 import com.dsdl.eidea.core.entity.po.TablePo;
-import com.googlecode.genericdao.search.ISearch;
 import com.googlecode.genericdao.search.Search;
+import com.googlecode.genericdao.search.SearchResult;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,17 +32,34 @@ public class ChangelogServiceImpl implements ChangelogService {
 	private TableDao tableDao;
 	private final ModelMapper modelMapper = new ModelMapper();
 	@Override
-	public List<ChangelogBo> getChangelogList(ISearch search) {
-		  List<ChangelogPo> changelogPoList = changelogDao.search(search);
-		  List<ChangelogBo> ChangelogBoList = new ArrayList<ChangelogBo>();
-		  for(ChangelogPo change:changelogPoList){
-			  ChangelogBo changelogBo= modelMapper.map(change, ChangelogBo.class);
-			  changelogBo.setTableName(change.getTablePo().getName());
-			  changelogBo.setSysUser(change.getUserPo().getName());
-			  changelogBo.setName(change.getTablePo().getTableName());
-			  ChangelogBoList.add(changelogBo);
-		  }
-	        return ChangelogBoList;
+	public PaginationResult<ChangelogBo> getChangelogList(Search search, QueryParams queryParams) {
+		search.setFirstResult(queryParams.getFirstResult());
+		search.setMaxResults(queryParams.getPageSize());
+		PaginationResult<ChangelogBo> paginationResult = null;
+		if (queryParams.isInit()){
+			SearchResult<ChangelogPo> searchResult = changelogDao.searchAndCount(search);
+			List<ChangelogBo> ChangelogBoList = new ArrayList<ChangelogBo>();
+			for(ChangelogPo change:searchResult.getResult()){
+				ChangelogBo changelogBo= modelMapper.map(change, ChangelogBo.class);
+				changelogBo.setTableName(change.getTablePo().getName());
+				changelogBo.setSysUser(change.getUserPo().getName());
+				changelogBo.setName(change.getTablePo().getTableName());
+				ChangelogBoList.add(changelogBo);
+			}
+			paginationResult = PaginationResult.pagination(ChangelogBoList,searchResult.getTotalCount(),queryParams.getPageNo(),queryParams.getPageSize());
+		}else{
+			List<ChangelogPo> changelogPoList = changelogDao.search(search);
+			List<ChangelogBo> ChangelogBoList = new ArrayList<ChangelogBo>();
+			for(ChangelogPo change:changelogPoList){
+				ChangelogBo changelogBo= modelMapper.map(change, ChangelogBo.class);
+				changelogBo.setTableName(change.getTablePo().getName());
+				changelogBo.setSysUser(change.getUserPo().getName());
+				changelogBo.setName(change.getTablePo().getTableName());
+				ChangelogBoList.add(changelogBo);
+			}
+			paginationResult = PaginationResult.pagination(ChangelogBoList,queryParams.getTotalRecords(),queryParams.getPageNo(),queryParams.getPageSize());
+		}
+		return paginationResult;
 	}
 	@Override
 	public ChangelogBo getChangelogBo(Integer id) {

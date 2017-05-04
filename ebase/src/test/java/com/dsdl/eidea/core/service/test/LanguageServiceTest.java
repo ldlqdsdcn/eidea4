@@ -2,6 +2,7 @@ package com.dsdl.eidea.core.service.test;
 
 import com.dsdl.eidea.core.entity.bo.LanguageBo;
 import com.dsdl.eidea.core.entity.bo.LanguageTrlBo;
+import com.dsdl.eidea.core.params.QueryParams;
 import com.dsdl.eidea.core.service.LanguageService;
 import com.googlecode.genericdao.search.Search;
 import org.apache.log4j.Logger;
@@ -29,7 +30,7 @@ public class LanguageServiceTest {
     public void testFindLanguage() {
         Search search=new Search();
         search.addFilterEqual("code","zh_CN");
-        List<LanguageBo> languageBoList = languageService.findLanguage(search);
+        List<LanguageBo> languageBoList = languageService.findLanguage(search, new QueryParams()).getData();
         languageBoList.forEach(e -> {
             System.out.println(e.getCode() + "----------" + e.getName());
            List<LanguageTrlBo> languageTrlBoList= e.getLanguageTrlBoList();
@@ -49,7 +50,7 @@ public class LanguageServiceTest {
       LanguageBo languageBo=  languageService.getLanguageBo("zh_CN");
         Search search=new Search();
         search.addFilterEqual("isactive","Y");
-        List<LanguageBo> languageBoListForActivated=languageService.findLanguage(search);
+        List<LanguageBo> languageBoListForActivated=languageService.findLanguage(search,new QueryParams()).getData();
         Assert.assertEquals(languageBo.getLanguageTrlBoList().size(),languageBoListForActivated.size());
     }
     @Test

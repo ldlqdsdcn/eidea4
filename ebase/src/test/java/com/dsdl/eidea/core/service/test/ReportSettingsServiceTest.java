@@ -1,8 +1,10 @@
 package com.dsdl.eidea.core.service.test;
 
 import com.dsdl.eidea.core.entity.po.ReportSettingsPo;
+import com.dsdl.eidea.core.params.QueryParams;
 import com.dsdl.eidea.core.service.ReportSettingsService;
 import com.google.gson.Gson;
+import com.googlecode.genericdao.search.Search;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +25,7 @@ public class ReportSettingsServiceTest {
     public void testSelectAllSettings()
     {
         Gson gson=new Gson();
-        List<ReportSettingsPo> reportSettingsPoList=reportSettingsService.getReportSettingsList(null);
+        List<ReportSettingsPo> reportSettingsPoList=reportSettingsService.getReportSettingsList(new Search(),new QueryParams()).getData();
         System.out.println(gson.toJson(reportSettingsPoList));
     }
 }

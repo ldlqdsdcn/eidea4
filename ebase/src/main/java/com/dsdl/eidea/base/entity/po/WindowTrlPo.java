@@ -8,8 +8,13 @@
 package com.dsdl.eidea.base.entity.po;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
+
 /**
 * table name core_window_trl
 *            窗体信息
@@ -20,32 +25,41 @@ import lombok.Setter;
 @Entity(name = "core_window_trl")
 public class WindowTrlPo implements java.io.Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "[id]")
+    @Column(name = "[id]",nullable = false,unique = true,length = 11)
+    @NotNull(message = "common.primary_key.isempty")
+    @Length(min = 1,max = 11,message = "error.datadict.id.length")
     @Id
     private Integer id;
     /**
     * 
     **/
-    @Column(name = "[window_id]" )
+    @Column(name = "[window_id]", nullable = false, length = 11)
+    @NotNull(message = "error.window.id.not_null")
+    @Length(min = 1, max = 11, message = "error.window.id.length")
     private Integer windowId;
     /**
     * 
     **/
-    @Column(name = "[lang]",length =10 )
+    @Column(name = "[lang]", length = 10,nullable = false)
+    @NotBlank(message = "error.lang.not.null")
+    @Length(min = 1,max = 10,message = "tab.error.lang.length")
     private String lang;
     /**
     * 
     **/
     @Column(name = "[name]",length =100 )
+    @Length(max = 100,message = "windowtrl.error.name.length")
     private String name;
     /**
     * 
     **/
-    @Column(name = "[description]",length =500 )
+    @Column(name = "[description]", length = 500)
+    @Length(max = 500, message = "tab.error.description.length")
     private String description;
     /**
     * 
     **/
-    @Column(name = "[help]",length =65535 )
+    @Column(name = "[help]", length = 500)
+    @Length(max = 500,message="tabtrl.error.help.length")
     private String help;
 }

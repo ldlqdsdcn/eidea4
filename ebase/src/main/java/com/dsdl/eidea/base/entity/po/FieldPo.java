@@ -9,8 +9,12 @@ package com.dsdl.eidea.base.entity.po;
 
 import java.util.Date;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Length;
+
 /**
 * table name core_field
 *            字段表
@@ -21,7 +25,9 @@ import lombok.Setter;
 @Entity(name = "core_field")
 public class FieldPo implements java.io.Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "[id]")
+    @Column(name = "[id]", nullable = false, unique = true, length = 11)
+    @NotNull(message = "common.primary_key.isempty")
+    @Length(min = 1, max = 11,message = "error.datadict.id.length")
     @Id
     private Integer id;
     /**

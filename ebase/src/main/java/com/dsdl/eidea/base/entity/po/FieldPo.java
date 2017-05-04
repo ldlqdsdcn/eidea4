@@ -8,14 +8,13 @@
 package com.dsdl.eidea.base.entity.po;
 
 import java.util.Date;
-import java.util.List;
 import javax.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 /**
 * table name core_field
 *            字段信息
-* Date:2017-05-03 16:49:55
+* Date:2017-05-04 13:22:23
 **/
 @Getter
 @Setter
@@ -81,9 +80,58 @@ public class FieldPo implements java.io.Serializable {
     @Column(name = "[description]",length =500 )
     private String description;
     /**
-    * 
+    * 输入类型
     **/
     @Column(name = "[input_type]" )
     private Integer inputType;
-
+    /**
+    * 是否显示
+    **/
+    @Column(name = "[is_displayed]",length =1 )
+    private String isDisplayed;
+    /**
+    * 显示逻辑
+    **/
+    @Column(name = "[displayedlogic]",length =2000 )
+    private String displayedlogic;
+    /**
+    * 显示宽度
+    **/
+    @Column(name = "[displaylength]" )
+    private Integer displaylength;
+    /**
+    * 是否只读
+    **/
+    @Column(name = "[isreadonly]",length =1 )
+    private String isreadonly;
+    /**
+    * 是否同行显示
+    **/
+    @Column(name = "[issameline]",length =1 )
+    private String issameline;
+    /**
+    * 是否加密
+    **/
+    @Column(name = "[isencrypted]",length =1 )
+    private String isencrypted;
+    /**
+    * 默认值
+    **/
+    @Column(name = "[defaultvalue]",length =2000 )
+    private String defaultvalue;
+    /**
+    * 是否在列表中显示
+    **/
+    @Column(name = "[isdisplaygrid]",length =1 )
+    private String isdisplaygrid;
+    /**
+    * 表格排序 如果没有则用seq_no
+    **/
+    @Column(name = "[seqnogrid]" )
+    private Integer seqnogrid;
+    /**
+    * 是否允许复制
+    **/
+    @Column(name = "[isallowcopy]",length =1 )
+    private String isallowcopy;
 }

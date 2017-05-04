@@ -30,6 +30,16 @@
                     <th><%--修改人--%><eidea:label key="base.field.label.updatedby"/></th>
                     <th><%--description--%><eidea:label key="base.field.label.description"/></th>
                     <th><%--inputType--%><eidea:label key="base.field.label.inputType"/></th>
+                    <th><%--isDisplayed--%><eidea:label key="base.field.label.isDisplayed"/></th>
+                    <th><%--displayedlogic--%><eidea:label key="base.field.label.displayedlogic"/></th>
+                    <th><%--displaylength--%><eidea:label key="base.field.label.displaylength"/></th>
+                    <th><%--isreadonly--%><eidea:label key="base.field.label.isreadonly"/></th>
+                    <th><%--issameline--%><eidea:label key="base.field.label.issameline"/></th>
+                    <th><%--isencrypted--%><eidea:label key="base.field.label.isencrypted"/></th>
+                    <th><%--defaultvalue--%><eidea:label key="base.field.label.defaultvalue"/></th>
+                    <th><%--isdisplaygrid--%><eidea:label key="base.field.label.isdisplaygrid"/></th>
+                    <th><%--seqnogrid--%><eidea:label key="base.field.label.seqnogrid"/></th>
+                    <th><%--isallowcopy--%><eidea:label key="base.field.label.isallowcopy"/></th>
                     <th><%--编辑--%><eidea:label key="common.button.edit"/></th>
                 </tr>
                 </thead>
@@ -75,6 +85,36 @@
                     </td>
                     <td>
                         {{model.inputType}}
+                    </td>
+                    <td>
+                        {{model.isDisplayed}}
+                    </td>
+                    <td>
+                        {{model.displayedlogic}}
+                    </td>
+                    <td>
+                        {{model.displaylength}}
+                    </td>
+                    <td>
+                        {{model.isreadonly}}
+                    </td>
+                    <td>
+                        {{model.issameline}}
+                    </td>
+                    <td>
+                        {{model.isencrypted}}
+                    </td>
+                    <td>
+                        {{model.defaultvalue}}
+                    </td>
+                    <td>
+                        {{model.isdisplaygrid}}
+                    </td>
+                    <td>
+                        {{model.seqnogrid}}
+                    </td>
+                    <td>
+                        {{model.isallowcopy}}
                     </td>
                     <td>
                         <a class="btn btn-primary btn-xs" href="#/edit?id={{model.id}}"><eidea:label key="common.button.edit"/><%--编辑--%></a>

@@ -1,6 +1,6 @@
 <%--
 User: 刘大磊
-Date: 2017-05-03 16:49:55
+Date: 2017-05-04 13:22:23
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/inc/taglib.jsp" %>
@@ -79,6 +79,56 @@ Date: 2017-05-03 16:49:55
                 <div class="form-group">
                     <label for="inputType" ><%--inputType--%><eidea:label key="base.field.label.inputType"/></label>
                             <input type="text" class="form-control" id="inputType" placeholder="<eidea:message key="common.please.input"><eidea:param value="base.field.label.inputType" type="label"/></eidea:message>" ng-model="fieldPo.inputType" >
+
+                </div>
+                <div class="form-group">
+                    <label for="isDisplayed" ><%--isDisplayed--%><eidea:label key="base.field.label.isDisplayed"/></label>
+                            <input type="text" class="form-control" id="isDisplayed" placeholder="<eidea:message key="common.please.input"><eidea:param value="base.field.label.isDisplayed" type="label"/></eidea:message>" ng-model="fieldPo.isDisplayed" >
+
+                </div>
+                <div class="form-group">
+                    <label for="displayedlogic" ><%--displayedlogic--%><eidea:label key="base.field.label.displayedlogic"/></label>
+                            <input type="text" class="form-control" id="displayedlogic" placeholder="<eidea:message key="common.please.input"><eidea:param value="base.field.label.displayedlogic" type="label"/></eidea:message>" ng-model="fieldPo.displayedlogic" >
+
+                </div>
+                <div class="form-group">
+                    <label for="displaylength" ><%--displaylength--%><eidea:label key="base.field.label.displaylength"/></label>
+                            <input type="text" class="form-control" id="displaylength" placeholder="<eidea:message key="common.please.input"><eidea:param value="base.field.label.displaylength" type="label"/></eidea:message>" ng-model="fieldPo.displaylength" >
+
+                </div>
+                <div class="form-group">
+                    <label for="isreadonly" ><%--isreadonly--%><eidea:label key="base.field.label.isreadonly"/></label>
+                            <input type="text" class="form-control" id="isreadonly" placeholder="<eidea:message key="common.please.input"><eidea:param value="base.field.label.isreadonly" type="label"/></eidea:message>" ng-model="fieldPo.isreadonly" >
+
+                </div>
+                <div class="form-group">
+                    <label for="issameline" ><%--issameline--%><eidea:label key="base.field.label.issameline"/></label>
+                            <input type="text" class="form-control" id="issameline" placeholder="<eidea:message key="common.please.input"><eidea:param value="base.field.label.issameline" type="label"/></eidea:message>" ng-model="fieldPo.issameline" >
+
+                </div>
+                <div class="form-group">
+                    <label for="isencrypted" ><%--isencrypted--%><eidea:label key="base.field.label.isencrypted"/></label>
+                            <input type="text" class="form-control" id="isencrypted" placeholder="<eidea:message key="common.please.input"><eidea:param value="base.field.label.isencrypted" type="label"/></eidea:message>" ng-model="fieldPo.isencrypted" >
+
+                </div>
+                <div class="form-group">
+                    <label for="defaultvalue" ><%--defaultvalue--%><eidea:label key="base.field.label.defaultvalue"/></label>
+                            <input type="text" class="form-control" id="defaultvalue" placeholder="<eidea:message key="common.please.input"><eidea:param value="base.field.label.defaultvalue" type="label"/></eidea:message>" ng-model="fieldPo.defaultvalue" >
+
+                </div>
+                <div class="form-group">
+                    <label for="isdisplaygrid" ><%--isdisplaygrid--%><eidea:label key="base.field.label.isdisplaygrid"/></label>
+                            <input type="text" class="form-control" id="isdisplaygrid" placeholder="<eidea:message key="common.please.input"><eidea:param value="base.field.label.isdisplaygrid" type="label"/></eidea:message>" ng-model="fieldPo.isdisplaygrid" >
+
+                </div>
+                <div class="form-group">
+                    <label for="seqnogrid" ><%--seqnogrid--%><eidea:label key="base.field.label.seqnogrid"/></label>
+                            <input type="text" class="form-control" id="seqnogrid" placeholder="<eidea:message key="common.please.input"><eidea:param value="base.field.label.seqnogrid" type="label"/></eidea:message>" ng-model="fieldPo.seqnogrid" >
+
+                </div>
+                <div class="form-group">
+                    <label for="isallowcopy" ><%--isallowcopy--%><eidea:label key="base.field.label.isallowcopy"/></label>
+                            <input type="text" class="form-control" id="isallowcopy" placeholder="<eidea:message key="common.please.input"><eidea:param value="base.field.label.isallowcopy" type="label"/></eidea:message>" ng-model="fieldPo.isallowcopy" >
 
                 </div>
 

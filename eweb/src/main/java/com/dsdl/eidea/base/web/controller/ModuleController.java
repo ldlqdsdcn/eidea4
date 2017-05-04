@@ -45,7 +45,7 @@ public class ModuleController {
     @RequestMapping(value = "/getModuleToJsp", method = RequestMethod.GET)
     public ModelAndView getModuleToJsp() {
         ModelAndView modelAndView = new ModelAndView("/base/module/module");
-        modelAndView.addObject(WebConst.PAGING_SETTINGS, PagingSettingResult.getDefault());
+        modelAndView.addObject(WebConst.PAGING_SETTINGS, PagingSettingResult.getDbPaging());
         modelAndView.addObject(WebConst.PAGE_URI, URI);
         return modelAndView;
     }

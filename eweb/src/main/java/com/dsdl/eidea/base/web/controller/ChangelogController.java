@@ -34,7 +34,7 @@ public class ChangelogController {
     @RequestMapping(value = "/showList", method = RequestMethod.GET)
     public ModelAndView showList() {
         ModelAndView modelAndView = new ModelAndView("/base/changelog/changelog");
-        modelAndView.addObject("pagingSettingResult", PagingSettingResult.getDefault());
+        modelAndView.addObject("pagingSettingResult", PagingSettingResult.getDbPaging());
         return modelAndView;
     }
 

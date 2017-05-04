@@ -47,7 +47,7 @@ public class UserController {
     public ModelAndView getUserToJsp() {
         ModelAndView modelAndView = new ModelAndView("/base/user/user");
         modelAndView.addObject(WebConst.PAGE_URI, URI);
-        modelAndView.addObject(WebConst.PAGING_SETTINGS, PagingSettingResult.getDefault());
+        modelAndView.addObject(WebConst.PAGING_SETTINGS, PagingSettingResult.getDbPaging());
         return modelAndView;
     }
 

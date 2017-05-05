@@ -168,7 +168,7 @@ public class PageMenuServiceImpl implements PageMenuService {
                     if (hasViewPrivilege(moduleRolePo)) {
                         List<ModuleMenuPo> moduleMenuPoList = moduleRolePo.getSysModule().getSysModuleMenus();
                         for (ModuleMenuPo moduleMenuPo : moduleMenuPoList) {
-                            PageMenuPo pageMenuPo = moduleMenuPo.getSysPageMenu();
+                            PageMenuPo pageMenuPo = moduleMenuPo.getPageMenuPo();
                             logger.debug("menu name=" + pageMenuPo.getName());
                             if (ActivateDef.ACTIVATED.getKey().equals(pageMenuPo.getIsactive())) {
 

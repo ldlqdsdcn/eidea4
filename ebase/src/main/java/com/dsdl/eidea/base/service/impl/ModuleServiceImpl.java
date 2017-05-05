@@ -78,7 +78,7 @@ public class ModuleServiceImpl implements ModuleService {
             for (Integer menuId:moduleBo.getMenuIds()){
                 ModuleMenuPo moduleMenuPo=new ModuleMenuPo();
                 PageMenuPo pageMenuPo=pageMenuDao.find(menuId);
-                moduleMenuPo.setSysPageMenu(pageMenuPo);
+                moduleMenuPo.setPageMenuPo(pageMenuPo);
                 moduleMenuPo.setSysModule(modulePo);
                 moduleMenuList.add(moduleMenuPo);
             }

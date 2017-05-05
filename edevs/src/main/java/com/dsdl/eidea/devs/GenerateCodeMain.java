@@ -37,7 +37,7 @@ public class GenerateCodeMain implements CodeGenerationService {
         codeMain.messageService = applicationContext.getBean(MessageService.class);
         codeMain.languageService = applicationContext.getBean(LanguageService.class);
         codeMain.pageMenuService=applicationContext.getBean(PageMenuService.class);
-        GenModelDto genModelDto = new GenModelDto("core_field_select_item", "FieldSelectItem", "base", "字段下拉选择");
+        GenModelDto genModelDto = new GenModelDto("core_field", "Field", "base", "字段信息");
         genModelDto.setPagingByDb(true);
         genModelDto.setBasePackage("com.dsdl.eidea");
         List<GenModelDto> list = new ArrayList<>();

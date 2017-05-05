@@ -48,6 +48,7 @@ public class PageMenuServiceImpl implements PageMenuService {
     }
     @Override
     public PaginationResult<PageMenuBo> findPageMenu(Search search, QueryParams queryParams) {
+        search.addSortAsc("seqNo");
         search.setFirstResult(queryParams.getFirstResult());
         search.setMaxResults(queryParams.getPageSize());
         PaginationResult<PageMenuBo> paginationResult = null;

@@ -146,7 +146,7 @@
         //保存
         $scope.save = function () {
             if ($scope.editForm.$valid) {
-
+                $scope.message = '';
                 var postUrl = '<c:url value="/base/pagemenu/saveForUpdated"/>';
                 if ($scope.pageMenuBo.id==null) {
                     postUrl = '<c:url value="/base/pagemenu/saveForCreated"/>';

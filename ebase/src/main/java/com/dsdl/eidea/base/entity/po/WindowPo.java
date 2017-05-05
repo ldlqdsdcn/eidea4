@@ -27,15 +27,15 @@ import org.hibernate.validator.constraints.NotBlank;
 public class WindowPo implements java.io.Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "[id]",nullable = false,unique = true,length = 11)
-    @NotNull(message = "common.primary_key.isempty")
-    @Length(min = 1,max = 11,message = "error.datadict.id.length")
+//    @NotNull(message = "common.primary_key.isempty")
+//    @Length(min = 1,max = 11,message = "error.datadict.id.length")
     @Id
     private Integer id;
     /**
     * 名称
     **/
     @Column(name = "[name]",length =50,nullable = false)
-    @Length(min = 1,max=11,message = "")
+    @Length(min = 1,max=50,message = "")
     @NotBlank(message = "search.msg.name_not_null")
     private String name;
     /**
@@ -55,7 +55,7 @@ public class WindowPo implements java.io.Serializable {
     * 用户
     **/
     @Column(name = "[client_id]",nullable = false,length = 11)
-    @Length(min = 1,max = 11,message="error.datadict.id.length")
+//    @Length(min = 1,max = 11,message="error.datadict.id.length")
     @NotNull(message = "error.client.id.not_null")
     private Integer clientId;
     /**
@@ -63,14 +63,14 @@ public class WindowPo implements java.io.Serializable {
     **/
     @Column(name = "[org_id]",nullable = false,length = 11)
     @NotNull(message = "error.org.id.not_null")
-    @Length(min = 1,max = 11,message = "error.datadict.id.length")
+//    @Length(min = 1,max = 11,message = "error.datadict.id.length")
     private Integer orgId;
     /**
     * 
     **/
     @Column(name = "[createdby]",nullable = false,length = 11)
     @NotNull(message = "error.createdby.not_null")
-    @Length(min = 1,max = 11,message = "error.datadict.id.length")
+//    @Length(min = 1,max = 11,message = "error.datadict.id.length")
     private Integer createdby;
     /**
     * 输入时间
@@ -86,8 +86,8 @@ public class WindowPo implements java.io.Serializable {
     * 
     **/
     @Column(name = "[updatedby]",nullable = false,length = 11)
-    @NotNull(message = "error.updatby.not_null")
-    @Length(min = 1,max = 11,message = "error.datadict.id.length")
+//    @NotNull(message = "error.updatby.not_null")
+//    @Length(min = 1,max = 11,message = "error.datadict.id.length")
     private Integer updatedby;
     /**
     * 

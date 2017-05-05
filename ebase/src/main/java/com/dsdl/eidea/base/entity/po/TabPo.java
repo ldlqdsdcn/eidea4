@@ -42,7 +42,7 @@ public class TabPo implements java.io.Serializable {
      **/
     @Column(name = "[name]", length = 200, nullable = false)
     @NotNull(message = "datadicttype.value.not.empty")
-    @Length(min = 1, max = 200, message = "error.datadicttype.name.length")
+    @Length(min = 2, max = 200, message = "error.datadicttype.name.length")
     private String name;
     /**
      * 等级

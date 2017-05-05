@@ -5,11 +5,6 @@ Date: 2017-05-02 15:43:14
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/inc/taglib.jsp" %>
 <div class="container-fluid" ng-controller="editCtrl">
-    <div class="page-header">
-        <ol class="breadcrumb">
-            <li><a href="javascript:;"><i class="icon-fire"></i><eidea:label key="tab.title"/></a></li>
-        </ol>
-    </div>
     <div class="row-fluid">
         <div class="span12">
             <br>
@@ -46,13 +41,13 @@ Date: 2017-05-02 15:43:14
                 </div>
                 <div class="form-group">
                     <label for="tableId" ><%--tableId--%><eidea:label key="base.tab.label.tableId"/></label>
-                            <input type="text" class="form-control" id="tableId" placeholder="<eidea:message key="common.please.input"><eidea:param value="base.tab.label.tableId" type="label"/></eidea:message>" ng-model="tabPo.tableId" >
-
+                            <%--<input type="text" class="form-control" id="tableId" placeholder="<eidea:message key="common.please.input"><eidea:param value="base.tab.label.tableId" type="label"/></eidea:message>" ng-model="tabPo.tableId" >--%>
+                    <select id="tableId" class="form-control"   ng-model="tabPo.tableId"  ng-options="tablePo.id as tablePo.name for tablePo in tablePoList" ng-blur="getTableColumnList(tabPo.tableId)"></select>
                 </div>
                 <div class="form-group">
                     <label for="tableColumnId" ><%--tableColumnId--%><eidea:label key="base.tab.label.tableColumnId"/></label>
-                            <input type="text" class="form-control" id="tableColumnId" placeholder="<eidea:message key="common.please.input"><eidea:param value="base.tab.label.tableColumnId" type="label"/></eidea:message>" ng-model="tabPo.tableColumnId" >
-
+                            <%--<input type="text" class="form-control" id="tableColumnId" placeholder="<eidea:message key="common.please.input"><eidea:param value="base.tab.label.tableColumnId" type="label"/></eidea:message>" ng-model="tabPo.tableColumnId" >--%>
+                    <select id="tableColumnId" class="form-control" ng-model="tabPo.tableColumnId" ng-options="tableColumn.id as tableColumn.name for tableColumn in tableColumnList" ></select>
                 </div>
                 <div class="form-group">
                     <label for="isactive" ><%--是否有效--%><eidea:label key="base.tab.label.isactive"/></label>
@@ -105,7 +100,7 @@ Date: 2017-05-02 15:43:14
                         </span>
                     </p>
                 </div>
-            </form>
+                                            </form>
         </div>
     </div>
 </div>

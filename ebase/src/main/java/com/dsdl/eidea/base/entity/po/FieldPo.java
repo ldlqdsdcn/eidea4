@@ -92,4 +92,5 @@ public class FieldPo implements java.io.Serializable {
     @Column(name = "[input_type]" )
     private Integer inputType;
 
+
 }

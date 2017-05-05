@@ -3,7 +3,7 @@
 .button-css{margin:10px 0 6px;}
 .vertical-tab {
     width: 8%;
-    height: 100%;
+    /*height: 115%;*/
     float: left;
     overflow: hidden;
     background-color: #EDEDED;
@@ -35,7 +35,7 @@
 .vertical-tab-content {
     float: left;
     width: 91%;
-    height: 100%;
+    /*height: auto;*/
     padding: 5px;
     margin-left: -1px;
     margin-bottom: 2px;

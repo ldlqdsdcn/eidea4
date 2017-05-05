@@ -150,6 +150,7 @@ $scope.pageChanged();
                 .success(function (response) {
                     if (response.success) {
                         $scope.tabPo = response.data;
+                        $scope.getTableList();
                         $scope.canSave=(PrivilegeService.hasPrivilege('add')&&$scope.tabPo.id==null)||PrivilegeService.hasPrivilege('update');
                     }
                     else {
@@ -186,6 +187,7 @@ $scope.pageChanged();
                     .success(function (response) {
                         if (response.success) {
                             $scope.tabPo = response.data;
+                            $scope.getTableList();
                             $scope.canSave=(PrivilegeService.hasPrivilege('add')&&$scope.tabPo.id==null)||PrivilegeService.hasPrivilege('update');
                         }
                         else {
@@ -194,8 +196,25 @@ $scope.pageChanged();
                     }).error(function (response) {
                 bootbox.alert(response);
             });
+        };
+        $scope.getTableList=function () {
+            $http.get("<c:url value="/base/tab/getTablePoList"/> ").success(function (data) {
+                if (data.success){
+                    $scope.tablePoList=data.data.data;
+                }
+            }).error(function(){
+                bootbox.alert(data.message);
+            })
         }
-
+        $scope.getTableColumnList=function (id) {
+            $http.post("<c:url value="/base/tab/getTableColumnList"/>",id).success(function (data) {
+                if (data.success){
+                    $scope.tableColumnList=data.data;
+                }
+            }).error(function (data) {
+                bootbox.alert(data.message);
+            })
+        }
     });
     app.run([
         'bootstrap3ElementModifier',

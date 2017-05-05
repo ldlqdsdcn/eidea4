@@ -7,7 +7,11 @@
 package com.dsdl.eidea.base.web.controller;
 
 import com.dsdl.eidea.base.entity.po.TabPo;
+import com.dsdl.eidea.base.service.ChangelogService;
 import com.dsdl.eidea.base.service.TabService;
+import com.dsdl.eidea.core.entity.bo.TableBo;
+import com.dsdl.eidea.core.entity.bo.TableColumnBo;
+import com.dsdl.eidea.core.service.TableService;
 import com.dsdl.eidea.core.web.controller.BaseController;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import com.dsdl.eidea.core.web.def.WebConst;
@@ -27,6 +31,8 @@ import org.springframework.web.servlet.ModelAndView;
 import com.dsdl.eidea.core.dto.PaginationResult;
 import com.dsdl.eidea.core.params.QueryParams;
 import com.dsdl.eidea.core.params.DeleteParams;
+
+import javax.persistence.Table;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
@@ -38,6 +44,10 @@ public class TabController extends BaseController {
 private static final String URI = "tab";
 @Autowired
 private TabService tabService;
+@Autowired
+private TableService tableService;
+@Autowired
+private ChangelogService changelogService;
 @RequestMapping(value = "/showList", method = RequestMethod.GET)
 @RequiresPermissions("view")
 public ModelAndView showList() {
@@ -111,5 +121,21 @@ public JsonResult<PaginationResult<TabPo>> list(HttpSession session,@RequestBody
                 return list(session,deleteParams.getQueryParams());
         }
 
+    @RequiresPermissions(value = "view")
+    @ResponseBody
+    @RequestMapping(value = "/getTablePoList",method = RequestMethod.GET)
+    public JsonResult<PaginationResult<TableBo>> getTablePoList(){
+        Search search = new Search();
+        search.addFilterEqual("isactive","Y");
+        PaginationResult<TableBo> paginationResult = tableService.findList(search,new QueryParams());
+        return JsonResult.success(paginationResult);
+    }
+    @RequestMapping(value = "/getTableColumnList",method = RequestMethod.POST)
+    @ResponseBody
+    @RequiresPermissions(value = "view")
+    public JsonResult<List<TableColumnBo>> getTableColumnList(@RequestBody Integer id){
+       List<TableColumnBo> tableColumnBoList = changelogService.getChangelogHeader(tableService.getTableBo(id).getTableName());
+       return JsonResult.success(tableColumnBoList);
+    }
 
 }

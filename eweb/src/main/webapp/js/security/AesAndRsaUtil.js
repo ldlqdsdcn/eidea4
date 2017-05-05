@@ -2,8 +2,9 @@
  * Created by joseph on 2017/4/17.
  * js只负责aes加密和对密钥的aes加密
  * java端负责对aes的解密和rsa的解密
+ * publickey是从.keystore文件中读取的并通过BASE64Encoder转化为字符串格式的
  */
-var publickey ="MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCTTCzKuBWRlna6ILcVpCTFN93H26h3fEvszY6RpKjTa0UhYa/yp6I87ST55z4F2IaTNiBZPajoRfsw19hLjiaK2jpV2+L8OA+LMXxpLZWVydZSdJv2e6o7a+WxK9SSc2HZZQJkNXguTdo3bXQ9knA28eI/p6MCjZh0BjKhNKSpoQIDAQAB";
+var publickey ="MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDOka9i0uG0uf+fnipsxi3+BCBd2CUfkNHSAn6pzCENx/a2xCxnw6Xcb4Y45GKpyktz0yhwBE4Z7kIFHvBFNIHIwFZCKPPlyl9u7VI+UK5/o/sQO/u1d6ktn1L4h41YdrlX78bTiI+am4GSYRgC0ylEDANJT1q13yXvG3/GmktFPwIDAQAB";
 //初始化
 var AesAndRsaUtil = function(iv, key) {
     this.iv = iv;

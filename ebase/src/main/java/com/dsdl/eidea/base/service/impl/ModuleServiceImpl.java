@@ -115,7 +115,7 @@ public class ModuleServiceImpl implements ModuleService {
             if(moduleMenuBoList != null && moduleMenuBoList.size() > 0){
                 Integer[] ids=new Integer[moduleMenuBoList.size()];
                 for(int i=0;i<moduleMenuBoList.size();i++){
-                    ids[i]=moduleMenuBoList.get(i).getSysPageMenuId();
+                    ids[i]=moduleMenuBoList.get(i).getPageMenuId();
                 }
                 moduleBo.setMenuIds(ids);
             }

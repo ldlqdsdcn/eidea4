@@ -197,9 +197,10 @@
                         }
                         else {
                             $scope.message="<eidea:label key="table.error.name_exists"/> ";
-                            alert(response.data);
-                            $scope.tableInfo=response.data;
+                            var info={"name":$scope.tableInfo.name};
+                            $scope.tableInfo=info;
                             $("#name").focus();
+
                         }
                     });
         };

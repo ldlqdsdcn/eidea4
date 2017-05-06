@@ -4,6 +4,7 @@ import com.dsdl.eidea.core.entity.bo.TableMetaDataBo;
 import com.dsdl.eidea.devs.model.GenModelDto;
 import com.dsdl.eidea.devs.util.FreeMarkerHelper;
 import com.dsdl.eidea.util.DateTimeHelper;
+import com.dsdl.eidea.util.StringUtil;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -22,7 +23,7 @@ public class ControllerGenerateStrategy {
         this.tableMetaDataBo=tableMetaDataBo;
     }
 
-  public void generateController()
+  public void generateController(String controllerModulePath)
   {
       Date date=new Date();
       Map<String,Object> root = new HashMap();
@@ -37,11 +38,13 @@ public class ControllerGenerateStrategy {
       root.put("datetime", datetime);
       root.put("lineList",model.getIncludeModelList());
       root.put("pkClass",tableMetaDataBo.getPkClass());
+      root.put("pkProperty", StringUtil.fieldToProperty(tableMetaDataBo.getPkColumn()));
+
       root.put("memPaging",!model.isPagingByDb());
       //gc.setTime(date);
       try
       {
-          FreeMarkerHelper.getInstance().outFile("controller/controller.ftl",root,this.model.getOutputPath().getAbsolutePath()+"/src/main/java/"+interfacepackage.replace(".", "/")+"/"+model.getModelName()+"Controller.java");
+          FreeMarkerHelper.getInstance().outFile("controller/controller.ftl",root,controllerModulePath+"/src/main/java/"+interfacepackage.replace(".", "/")+"/"+model.getModelName()+"Controller.java");
       }
       catch(Exception e)
       {

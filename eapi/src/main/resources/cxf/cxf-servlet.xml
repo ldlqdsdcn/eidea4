@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+      xmlns:jaxws="http://cxf.apache.org/jaxws"
+      xmlns:http-conf="http://cxf.apache.org/transports/http/configuration"      
+	  xsi:schemaLocation="
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://cxf.apache.org/jaxws 
+		http://cxf.apache.org/schemas/jaxws.xsd
+		http://cxf.apache.org/transports/http/configuration 
+		http://cxf.apache.org/schemas/configuration/http-conf.xsd">
+	 <http-conf:conduit name="*.http-conduit"><http-conf:client ConnectionTimeout="3600000" ReceiveTimeout="3600000"/></http-conf:conduit>
+	<import resource="classpath:META-INF/cxf/cxf.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+	<bean id="aegisBean"  
+        class="org.apache.cxf.aegis.databinding.AegisDatabinding" />   
+    <bean id="jaxws-and-aegis-service-factory"  
+        class="org.apache.cxf.jaxws.support.JaxWsServiceFactoryBean">   
+        <property name="dataBinding" ref="aegisBean" />   
+        
+    </bean> 
+    <!-- 服务器端超时设置 -->
+<http-conf:destination name="*.http-destination">
+	<http-conf:server ReceiveTimeout="300000"  />
+
+</http-conf:destination>
+<!-- 客户端超时设置 -->
+<http-conf:conduit name="*.http-conduit">
+<http-conf:client ConnectionTimeout="5000" ReceiveTimeout="300000"  />
+</http-conf:conduit>
+	<!--测试接口-->
+	<jaxws:server id="clientWs" serviceClass="com.dsdl.eidea.soap.ws.ClientWs" address="/clientWs">
+	  <jaxws:serviceBean >
+		  <bean class="com.dsdl.eidea.soap.ws.impl.ClientWsImpl"></bean>
+	  </jaxws:serviceBean>
+	  <jaxws:features>  
+        <bean class="com.dsdl.eidea.soap.cxf2.feature.DBLoggingFeature"/>
+    </jaxws:features>    		
+  	</jaxws:server>
+  	
+
+
+</beans>

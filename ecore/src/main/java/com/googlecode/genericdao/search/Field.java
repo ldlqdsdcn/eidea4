@@ -200,7 +200,7 @@ public class Field implements Serializable {
 			case OP_PROPERTY: parens = false; break;
 			case OP_SUM: sb.append("SUM("); break;
 			case OP_CUSTOM: sb.append("CUSTOM: "); parens = false; break;
-			default:  sb.append("**INVALID OPERATOR: (" + operator + ")** "); parens = false; break;
+			default:  sb.append("**INVALID  (" + operator + ")** "); parens = false; break;
 		}
 		
 		if (property == null) {

@@ -2,6 +2,7 @@ package com.dsdl.eidea.core.com.dsdl.eidea.base.service.test;
 
 import com.dsdl.eidea.base.entity.bo.ClientBo;
 import com.dsdl.eidea.base.service.ClientService;
+import com.dsdl.eidea.core.params.QueryParams;
 import com.google.gson.Gson;
 import com.googlecode.genericdao.search.Search;
 import org.apache.log4j.Logger;
@@ -27,14 +28,14 @@ public class ClientServiceTest {
     @Test
     public void testFindClient() {
         Gson gson = new Gson();
-        List<ClientBo> clientBoList = clientService.getClientList(new Search());
+        List<ClientBo> clientBoList = clientService.getClientList(new Search(),new QueryParams()).getData();
         logger.debug(gson.toJson(clientBoList));
         Assert.assertTrue(clientBoList.size() > 0);
     }
     @Test
     public void testGetClientById()
     {
-        List<ClientBo> clientBoList = clientService.getClientList(new Search());
+        List<ClientBo> clientBoList = clientService.getClientList(new Search(),new QueryParams()).getData();
         ClientBo clientBo=clientService.getClientBo(clientBoList.get(0).getId());
         Gson gson=new Gson();
         System.out.println(gson.toJson(clientBoList.get(0)));

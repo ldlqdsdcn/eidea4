@@ -2,21 +2,30 @@ package com.dsdl.eidea.devs.model;
 
 import lombok.Data;
 
-import java.io.File;
 import java.util.List;
 
 /**
- * Created by admin on 2016/8/26.
+ * Created by 刘大磊 on 2016/8/26.
+ * 代码生成工具，数据库表和po对象映射关系
  */
 @Data
 public class GenModelDto {
+    /**
+     * 表名
+     */
     private String tableName;
+    /**
+     * model类名
+     */
     private String modelName;
+    /**
+     * 模块
+     */
     private String module;
-    private String remark;
-    private String outputModule;
-
-    private File outputPath;
+    /**
+     * 类名称
+     */
+    private String name;
     /**
      * 是否数据库分页
      */
@@ -36,7 +45,7 @@ public class GenModelDto {
     /**
      * 基础包名
      */
-    private String basePackage;
+    private String basePackage="com.dsdl.eidea";
     private List<GenModelDto> includeModelList;
     public GenModelDto()
     {
@@ -47,26 +56,26 @@ public class GenModelDto {
      * @param tableName 表名
      * @param modelName 对应model 名
      * @param module 模块关键字
-     * @param remark 模块的名称
+     * @param name 模块的名称
      */
-    public GenModelDto(String tableName, String modelName, String module, String remark)
+    public GenModelDto(String tableName, String modelName, String module, String name)
     {
-      this(tableName,modelName,module,remark,null);
+      this(tableName,modelName,module,name,null);
     }
     /**
      *
      * @param tableName 表名
      * @param modelName 对应model 名
      * @param module 模块关键字
-     * @param remark 模块的名称
+     * @param name 类的名称
      * @param includeModelList 包含的模块
      */
-    private GenModelDto(String tableName, String modelName, String module, String remark, List<GenModelDto> includeModelList)
+    private GenModelDto(String tableName, String modelName, String module, String name, List<GenModelDto> includeModelList)
     {
         this.tableName=tableName;
         this.modelName=modelName;
         this.module=module;
-        this.remark=remark;
+        this.name=name;
         this.includeModelList=includeModelList;
         generateWeb=true;
         generateService=true;

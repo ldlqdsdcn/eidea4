@@ -1,10 +1,6 @@
 package com.dsdl.eidea.base.entity.bo;
 
 import com.dsdl.eidea.base.def.OperatorDef;
-import com.dsdl.eidea.base.entity.bo.DirectoryBo;
-import com.dsdl.eidea.base.entity.bo.ModuleRoleBo;
-import com.dsdl.eidea.base.entity.bo.PrivilegeBo;
-import com.dsdl.eidea.base.entity.bo.UserSessionBo;
 import lombok.Getter;
 
 import java.util.HashMap;
@@ -24,7 +20,7 @@ public class UserContent implements java.io.Serializable{
      * token 串
      */
     private String token;
-    public UserContent(Map<String, List<OperatorDef>> privileges, UserSessionBo userSessionBo, String token,List<Integer> orgIdList) {
+    public UserContent(Map<String, List<OperatorDef>> privileges, UserSessionBo userSessionBo, String token, List<Integer> orgIdList) {
         this.privileges = privileges;
         this.userSessionBo = userSessionBo;
         this.token = token;

@@ -21,26 +21,11 @@ public class MessageTrlPo implements java.io.Serializable {
 	private Integer id;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "lang", nullable = false)
-	private LanguagePo coreLanguage;
+	private LanguagePo languagePo;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "_key", nullable = false)
 	private MessagePo coreMessage;
 	@Column(name = "msgtext", nullable = false, length = 500)
 	private String msgtext;
-
-	// Constructors
-
-	/** default constructor */
-	public MessageTrlPo() {
-	}
-
-	/** full constructor */
-	public MessageTrlPo(Integer id, LanguagePo coreLanguage,
-			MessagePo coreMessage, String msgtext) {
-		this.id = id;
-		this.coreLanguage = coreLanguage;
-		this.coreMessage = coreMessage;
-		this.msgtext = msgtext;
-	}
 
 }

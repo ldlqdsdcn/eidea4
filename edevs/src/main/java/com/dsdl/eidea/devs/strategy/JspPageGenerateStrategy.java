@@ -1,7 +1,7 @@
 package com.dsdl.eidea.devs.strategy;
 
 import com.dsdl.eidea.core.def.JavaDataType;
-import com.dsdl.eidea.core.def.SearchPageFieldInputType;
+import com.dsdl.eidea.core.def.PageFieldInputType;
 import com.dsdl.eidea.core.entity.bo.ColumnMetaDataBo;
 import com.dsdl.eidea.core.entity.bo.TableMetaDataBo;
 import com.dsdl.eidea.core.service.TableService;
@@ -16,7 +16,6 @@ import com.dsdl.eidea.util.DateTimeHelper;
 import com.dsdl.eidea.util.StringUtil;
 import org.modelmapper.ModelMapper;
 
-import java.io.File;
 import java.util.*;
 
 /**
@@ -42,34 +41,34 @@ public class JspPageGenerateStrategy {
     /**
      * generate angular jsp
      */
-    public void generateJspPage() {
-        generateMainPage();
-        generateListPage();
-        generateFormPage();
+    public void generateJspPage(String outputModulePath) {
+        generateMainPage(outputModulePath);
+        generateListPage(outputModulePath);
+        generateFormPage(outputModulePath);
 
     }
 
     /**
      * 生成主页
      */
-    public void generateMainPage() {
+    public void generateMainPage(String outPath) {
         Map<String, Object> root = new HashMap();
         root.put("module", model.getModule());
         root.put("model", model.getModelName());
         root.put("user",user);
-        root.put("modelName", model.getRemark());
+        root.put("modelName", model.getName());
+        root.put("pkProp",StringUtil.fieldToProperty(tableMetaDataBo.getPkColumn()));
         root.put("datetime", DateTimeHelper.formatDateTime(new Date()));
+        root.put("pagingByDb",model.isPagingByDb());
         String lowerFirstModel = StringUtil.lowerFirstChar(model.getModelName());
-
-        File webPath = new File(this.model.getOutputPath().getParentFile(), "eweb");
-        FreeMarkerHelper.getInstance().outFile("jsp/model.ftl", root, webPath.getAbsolutePath() + "/src/main/webapp" + namespace + "/" + lowerFirstModel + "/" + lowerFirstModel + ".jsp");
+        FreeMarkerHelper.getInstance().outFile("jsp/model.ftl", root, outPath + "/src/main/webapp" + namespace + "/" + lowerFirstModel + "/" + lowerFirstModel + ".jsp");
     }
 
-    private void generateFormPage() {
+    private void generateFormPage(String outputModulePath) {
         List<JspModelProp> jspFormPropList = getOutPutList(StringUtil.lowerFirstChar(model.getModelName()), this.tableMetaDataBo);
         Map<String, Object> root = new HashMap();
         root.put("model", StringUtil.lowerFirstChar(model.getModelName()));
-        root.put("title", model.getRemark());
+        root.put("title", model.getName());
         root.put("namespace", namespace);
         root.put("user", user);
 
@@ -84,7 +83,7 @@ public class JspPageGenerateStrategy {
         if (genModelDtoList != null)
             for (GenModelDto genModelDto : genModelDtoList) {
                 FormLine formLine = new FormLine();
-                formLine.setLabel(genModelDto.getRemark());
+                formLine.setLabel(genModelDto.getName());
                 formLine.setModel(genModelDto.getModelName());
                 formLine.setTrl(genModelDto.isTrl());
                 TableMetaDataBo tableMetaDataDto = tableService.getTableDescription(genModelDto.getTableName());
@@ -96,15 +95,14 @@ public class JspPageGenerateStrategy {
             root.put("lineList", formLines);
         }
 
-        File webPath = new File(this.model.getOutputPath().getParentFile(), "eweb");
-        FreeMarkerHelper.getInstance().outFile("jsp/edit.ftl", root, webPath.getAbsolutePath() + "/src/main/webapp"  + namespace + "/" + StringUtil.lowerFirstChar(model.getModelName()) + "/edit.tpl.jsp");
+        FreeMarkerHelper.getInstance().outFile("jsp/edit.ftl", root, outputModulePath+ "/src/main/webapp"  + namespace + "/" + StringUtil.lowerFirstChar(model.getModelName()) + "/edit.tpl.jsp");
     }
 
-    public void generateListPage() {
+    public void generateListPage(String outputModulePath) {
         List<JspModelProp> jspListPropList = getOutPutList(StringUtil.lowerFirstChar(model.getModelName()), this.tableMetaDataBo);
         Map root = new HashMap();
         root.put("model", StringUtil.lowerFirstChar(model.getModelName()));
-        root.put("title", model.getRemark());
+        root.put("title", model.getName());
         root.put("namespace", namespace);
         root.put("module", model.getModule());
         root.put("user", user);
@@ -114,8 +112,7 @@ public class JspPageGenerateStrategy {
         String datetime = DateTimeHelper.formatDateTime(date);
         root.put("datetime", datetime);
         root.put("propertyList", jspListPropList);
-        File webPath = new File(this.model.getOutputPath().getParentFile(), "eweb");
-        FreeMarkerHelper.getInstance().outFile("jsp/list.ftl", root, webPath.getAbsolutePath() + "/src/main/webapp" + namespace + "/" + StringUtil.lowerFirstChar(model.getModelName()) + "/list.tpl.jsp");
+        FreeMarkerHelper.getInstance().outFile("jsp/list.ftl", root, outputModulePath + "/src/main/webapp" + namespace + "/" + StringUtil.lowerFirstChar(model.getModelName()) + "/list.tpl.jsp");
     }
 
     private List<JspModelProp> getOutPutList(String mode, TableMetaDataBo tableData) {
@@ -191,9 +188,9 @@ public class JspPageGenerateStrategy {
 
             if (columnInfo.getDataType() == JavaDataType.DATE.getKey()) {
                 if (columnInfo.getColumnName().toUpperCase().contains("TIME")) {
-                    jspModelProp.setInputType(SearchPageFieldInputType.DATETIMEPICKER.getKey());
+                    jspModelProp.setInputType(PageFieldInputType.DATETIMEPICKER.getKey());
                 } else {
-                    jspModelProp.setInputType(SearchPageFieldInputType.DATETIMEPICKER.getKey());
+                    jspModelProp.setInputType(PageFieldInputType.DATETIMEPICKER.getKey());
                 }
             } else {
                 jspModelProp.setInputType(IntelliKeyWord.getDecorator(jspModelProp.getProp()));

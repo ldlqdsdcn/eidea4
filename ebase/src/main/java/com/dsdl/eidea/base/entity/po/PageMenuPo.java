@@ -35,21 +35,13 @@ public class PageMenuPo implements java.io.Serializable {
     private Integer parentMenuId;
     @Column(name = "menu_type", length = 11)
     private Integer menuType;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "sysPageMenu")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "pageMenuPo")
     private Set<ModuleMenuPo> sysModuleMenus = new HashSet<ModuleMenuPo>(0);
     @Column(name = "icon", length = 100)
     private String icon;
     @Column(name = "seq_no", length = 11)
     private Integer seqNo;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "pageMenuPo")
-    private List<PageMenuTrlPo> pageMenuTrlPoList = new ArrayList<PageMenuTrlPo>(0);
-    // Constructors
-
-    /**
-     * default constructor
-     */
-    public PageMenuPo() {
-    }
-
+    private List<PageMenuTrlPo> pageMenuTrlPoList = new ArrayList<>(0);
 
 }

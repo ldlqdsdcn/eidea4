@@ -1,6 +1,8 @@
 package com.dsdl.eidea.core.service;
 
+import com.dsdl.eidea.core.dto.PaginationResult;
 import com.dsdl.eidea.core.entity.bo.LanguageBo;
+import com.dsdl.eidea.core.params.QueryParams;
 import com.googlecode.genericdao.search.Search;
 
 import java.util.List;
@@ -9,13 +11,19 @@ import java.util.List;
  * Created by 刘大磊 on 2016/12/8 16:14.
  */
 public interface LanguageService {
-    List<LanguageBo> findLanguage(Search search);
+    PaginationResult<LanguageBo> findLanguage(Search search, QueryParams queryParams);
 
     LanguageBo getLanguageBo(String code);
 
     boolean save(LanguageBo languageBo);
 
     void deletes(String[] codes);
+
+    boolean findExistLanguageName(String languageName);
+
+    LanguageBo findExistLanguageByName(String languageName);
+
+
 
     /**
      * 获取语言有效的语言列表

@@ -5,21 +5,19 @@ import com.dsdl.eidea.base.web.vo.UserResource;
 import com.dsdl.eidea.core.i18n.DbResourceBundle;
 import com.dsdl.eidea.core.service.MessageService;
 import com.dsdl.eidea.core.web.def.WebConst;
-import com.dsdl.eidea.util.StringUtil;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.tagext.BodyTagSupport;
+import java.text.MessageFormat;
 
 /**
  * Created by 刘大磊 on 2016/12/29 9:50.
  * 输出对应的 label消息
  */
-public class LabelTag extends BodyTagSupport {
+public class LabelTag extends BaseMessageSupport {
     private static final Logger logger = Logger.getLogger(LabelTag.class);
     private String key;
-    private String paramValue;
     private MessageService messageService= SpringContextHolder.getBean(MessageService.class);
     /* (non-Javadoc)
      * @see javax.servlet.jsp.tagext.BodyTagSupport#doEndTag()
@@ -36,9 +34,9 @@ public class LabelTag extends BodyTagSupport {
         }
         try {
             String keyValue = resource.getLabel(key);
-            if (StringUtil.isNotEmpty(paramValue)) {
-                Object[] paramArray = paramValue.split("#");
-                keyValue = String.format(keyValue, paramArray);
+            if (!params.isEmpty()) {
+                Object[] paramArray = params.toArray();
+                keyValue = MessageFormat.format(keyValue,paramArray);
             }
 
             pageContext.getOut().print(keyValue);
@@ -53,10 +51,6 @@ public class LabelTag extends BodyTagSupport {
      */
     public void setKey(String key) {
         this.key = key;
-    }
-    public void setParamValue(String paramValue) {
-
-        this.paramValue = paramValue;
     }
 
 }

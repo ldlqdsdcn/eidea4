@@ -27,44 +27,33 @@ public class PoGenerateCodeTest {
         GenModelDto genModelDto = TestData.getGenModel();
         TableMetaDataBo tableMetaDataBo = tableService.getTableDescription(genModelDto.getTableName());
         PoGenerateStrategy poGenerateStrategy = new PoGenerateStrategy(tableMetaDataBo, genModelDto);
-        poGenerateStrategy.generateModel();
+        poGenerateStrategy.generateModel("D:\\dsdl\\code\\eidea\\base");
 
     }
 
-    @Test
-    public void testGenerateDao() {
-        GenModelDto genModelDto = TestData.getGenModel();
-
-        TableMetaDataBo tableMetaDataBo = tableService.getTableDescription(genModelDto.getTableName());
-        DaoInterfaceGenerateStrategy daoInterfaceGenerateStrategy = new DaoInterfaceGenerateStrategy("core", new String[]{"Window"}, genModelDto, tableMetaDataBo);
-        daoInterfaceGenerateStrategy.generateDaoInterface();
-        daoInterfaceGenerateStrategy.generateDaoClass();
-    }
 
     @Test
     public void testGenerateService() {
         GenModelDto genModelDto = TestData.getGenModel();
         TableMetaDataBo tableMetaDataBo = tableService.getTableDescription(genModelDto.getTableName());
         ServiceGenerateStrategy serviceGenerateStrategy=new ServiceGenerateStrategy(genModelDto,tableMetaDataBo);
-        serviceGenerateStrategy.generateInterface();
-        serviceGenerateStrategy.generateServiceclass();
+        serviceGenerateStrategy.generateInterface("D:\\dsdl\\code\\eidea\\base");
+        serviceGenerateStrategy.generateServiceclass("D:\\dsdl\\code\\eidea\\base");
     }
     @Test
     public void testGenerateController()
     {
         GenModelDto genModelDto = TestData.getGenModel();
-        genModelDto.setOutputPath(new File("D:\\dsdl\\code\\eidea\\eweb"));
         TableMetaDataBo tableMetaDataBo = tableService.getTableDescription(genModelDto.getTableName());
         ControllerGenerateStrategy generateStrategy=new ControllerGenerateStrategy(genModelDto,tableMetaDataBo);
-        generateStrategy.generateController();
+        generateStrategy.generateController("D:\\dsdl\\code\\eidea\\eweb");
     }
     @Test
     public void testGenerateJsp()
     {
         GenModelDto genModelDto = TestData.getGenModel();
-        genModelDto.setOutputPath(new File("D:\\dsdl\\code\\eidea\\eweb"));
         TableMetaDataBo tableMetaDataBo = tableService.getTableDescription(genModelDto.getTableName());
         JspPageGenerateStrategy generateStrategy=new JspPageGenerateStrategy(genModelDto,tableMetaDataBo,tableService);
-        generateStrategy.generateJspPage();
+        generateStrategy.generateJspPage("D:\\dsdl\\code\\eidea\\eweb");
     }
 }

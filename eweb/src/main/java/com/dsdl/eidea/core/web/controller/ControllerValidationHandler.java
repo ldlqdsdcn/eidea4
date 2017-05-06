@@ -2,7 +2,7 @@ package com.dsdl.eidea.core.web.controller;
 
 import com.dsdl.eidea.base.web.vo.UserResource;
 import com.dsdl.eidea.core.web.def.WebConst;
-import com.dsdl.eidea.core.web.result.ApiResult;
+import com.dsdl.eidea.core.web.result.JsonResult;
 import com.dsdl.eidea.core.web.result.def.ErrorCodes;
 import com.dsdl.eidea.core.web.vo.ErrorDTO;
 import com.dsdl.eidea.util.StringUtil;
@@ -30,7 +30,7 @@ public class ControllerValidationHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public ApiResult<List<ErrorDTO>> processValidationError(MethodArgumentNotValidException ex) {
+    public JsonResult<List<ErrorDTO>> processValidationError(MethodArgumentNotValidException ex) {
         UserResource userResource=(UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
         BindingResult result = ex.getBindingResult();
         List<FieldError> fieldErrorList = result.getFieldErrors();
@@ -39,7 +39,7 @@ public class ControllerValidationHandler {
             errorDTOList.add(processFieldError(e,userResource));
         });
 
-        return ApiResult.fail(ErrorCodes.VALIDATE_PARAM_ERROR.getCode(), errorDTOList);
+        return JsonResult.fail(ErrorCodes.VALIDATE_PARAM_ERROR.getCode(), errorDTOList);
     }
 
     private ErrorDTO processFieldError(FieldError error,UserResource userResource) {

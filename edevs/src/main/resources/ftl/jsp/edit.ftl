@@ -16,17 +16,31 @@ Date: ${datetime}
             <form role="form" name="editForm" novalidate  ng-submit="save()">
                 <#list propertyList as prop>
                 <div class="form-group">
-                    <label for="name" class="col-sm-2 text-right"><%--${prop.label}--%><eidea:label key="${prop.propertyLabel}"/></label>
-                    <div class="col-sm-10">
-                        <#if prop.booleanTag>
-                            <input type="checkbox"  ng-true-value="'Y'" ng-false-value="'N'" ng-model="${model?uncap_first}.${prop.prop}">
+                    <label for="${prop.prop}" ><%--${prop.label}--%><eidea:label key="${prop.propertyLabel}"/></label>
+                       <#if prop.booleanTag>
+                            <input id="${prop.prop}" type="checkbox"  ng-true-value="'Y'" ng-false-value="'N'" ng-model="${model?uncap_first}Po.${prop.prop}">
                         <#else>
-                            <input type="text" class="form-control" id="${prop.prop}" placeholder="<eidea:message key="${prop.propertyLabel}"/>" ng-model="${model?uncap_first}.${prop.prop}" >
+                        <#if prop.inputType==3>
+                        <div class=" input-group date bootstrap-date">
+                            <input type="text" class="form-control" id="${prop.prop}" placeholder="<eidea:message key="common.please.input"><eidea:param value="${prop.propertyLabel}" type="label"/></eidea:message>" ng-model="${model?uncap_first}Po.${prop.prop}"
+                             uib-datepicker-popup="yyyy-MM-dd">
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                        </div>
+                            <#elseif  prop.inputType==4>
+                            <div class="input-group date bootstrap-datetime">
+                                <input type="text" class="form-control" id="${prop.prop}" placeholder="<eidea:message key="common.please.input"><eidea:param value="${prop.propertyLabel}" type="label"/></eidea:message>" ng-model="${model?uncap_first}Po.${prop.prop}"
+                                uib-datepicker-popup="yyyy-MM-dd HH:mm:ss">
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                            </div>
+                        <#else>
+                            <input type="text" class="form-control" id="${prop.prop}" placeholder="<eidea:message key="common.please.input"><eidea:param value="${prop.propertyLabel}" type="label"/></eidea:message>" ng-model="${model?uncap_first}Po.${prop.prop}" >
                         </#if>
 
-                    </div>
+                        </#if>
                 </div>
-                </#list>
+                    </#list>
+
+
                 <div class="form-group">
                     <p class="text-right">
                         <button type="reset" ng-click="create()"  class="btn btn-default btn-sm" ng-show="canAdd"><%--新建--%><eidea:label key="common.button.create"/></button>

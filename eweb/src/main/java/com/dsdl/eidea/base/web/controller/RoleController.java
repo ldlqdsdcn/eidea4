@@ -1,15 +1,19 @@
 package com.dsdl.eidea.base.web.controller;
 
-import java.util.List;
-
-import javax.servlet.http.HttpSession;
-
-import com.dsdl.eidea.base.def.OperatorDef;
-import com.dsdl.eidea.base.web.annotation.PrivilegesControl;
-import com.dsdl.eidea.base.web.def.ReturnType;
+import com.dsdl.eidea.base.entity.bo.ModuleRoleBo;
+import com.dsdl.eidea.base.entity.bo.RoleBo;
+import com.dsdl.eidea.base.service.RoleService;
 import com.dsdl.eidea.base.web.vo.UserResource;
+import com.dsdl.eidea.core.dto.PaginationResult;
+import com.dsdl.eidea.core.params.DeleteParams;
+import com.dsdl.eidea.core.params.QueryParams;
 import com.dsdl.eidea.core.web.def.WebConst;
+import com.dsdl.eidea.core.web.result.JsonResult;
+import com.dsdl.eidea.core.web.result.def.ErrorCodes;
 import com.dsdl.eidea.core.web.util.SearchHelper;
+import com.dsdl.eidea.core.web.vo.PagingSettingResult;
+import com.googlecode.genericdao.search.Search;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,13 +22,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.dsdl.eidea.base.entity.bo.ClientBo;
-import com.dsdl.eidea.base.entity.bo.RoleBo;
-import com.dsdl.eidea.base.service.RoleService;
-import com.dsdl.eidea.core.web.result.ApiResult;
-import com.dsdl.eidea.core.web.result.def.ErrorCodes;
-import com.dsdl.eidea.core.web.vo.PagingSettingResult;
-import com.googlecode.genericdao.search.Search;
+import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Controller
 @RequestMapping("/base/role")
@@ -34,72 +33,89 @@ public class RoleController {
     private RoleService roleService;
 
     @RequestMapping(value = "/showList", method = RequestMethod.GET)
-    @PrivilegesControl(operator = OperatorDef.VIEW, returnType = ReturnType.JSP)
+    @RequiresPermissions(value = "view")
     public ModelAndView showList() {
         ModelAndView modelAndView = new ModelAndView("/base/role/role");
-        modelAndView.addObject("pagingSettingResult", PagingSettingResult.getDefault());
+        modelAndView.addObject(WebConst.PAGING_SETTINGS, PagingSettingResult.getDbPaging());
         modelAndView.addObject(WebConst.PAGE_URI, URI);
         return modelAndView;
     }
 
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    @RequestMapping(value = "/list", method = RequestMethod.POST)
     @ResponseBody
-    public ApiResult<List<RoleBo>> list(HttpSession session) {
+    @RequiresPermissions(value = "view")
+    public JsonResult<PaginationResult<RoleBo>> list(HttpSession session, @RequestBody QueryParams queryParams) {
         Search search = SearchHelper.getSearchParam(URI, session);
-        List<RoleBo> roleBoList = roleService.getRoleList(search);
-        return ApiResult.success(roleBoList);
+        PaginationResult<RoleBo> roleBoList = roleService.getRoleList(search,queryParams);
+        return JsonResult.success(roleBoList);
     }
 
-    @PrivilegesControl(operator = OperatorDef.ADD)
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     @ResponseBody
-    public ApiResult<RoleBo> create() {
+    @RequiresPermissions(value = "add")
+    public JsonResult<RoleBo> create() {
         RoleBo roleBo = roleService.getInitRoleBo(null);
-        return ApiResult.success(roleBo);
+        return JsonResult.success(roleBo);
     }
 
     @RequestMapping(value = "/saveForCreated", method = RequestMethod.POST)
     @ResponseBody
-    @PrivilegesControl(operator = OperatorDef.ADD)
-    public ApiResult<RoleBo> saveForCreated(@RequestBody RoleBo roleBo,HttpSession session) {
-        UserResource resource=(UserResource)session.getAttribute(WebConst.SESSION_RESOURCE);
-        if (roleService.findExistClient(roleBo.getName())) {
-            return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("client.msg.client_code"));
+    @RequiresPermissions(value = "add")
+    public JsonResult<RoleBo> saveForCreated(@RequestBody RoleBo roleBo, HttpSession session) {
+        UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
+        if (roleService.findExistRole(roleBo.getName())) {
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("role.error.name_exists"));
         }
         roleService.save(roleBo);
-        return get(roleBo.getId(),session);
+        return get(roleBo.getId(), session);
     }
 
     @RequestMapping(value = "/saveForUpdated", method = RequestMethod.POST)
     @ResponseBody
-    @PrivilegesControl(operator = OperatorDef.UPDATE)
-    public ApiResult<RoleBo> saveForUpdated(@RequestBody RoleBo roleBo,HttpSession session) {
-        roleService.save(roleBo);
-        return get(roleBo.getId(),session);
+    @RequiresPermissions(value = "update")
+    public JsonResult<RoleBo> saveForUpdated(@RequestBody RoleBo roleBo, HttpSession session) {
+        UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
+        if (roleService.findExistRole(roleBo.getName())) {
+            if (roleService.findExistRoleByName(roleBo.getName()).getId() == roleBo.getId()) {
+                roleService.save(roleBo);
+            } else {
+                return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("role.error.name_exists"));
+            }
+        } else {
+            roleService.save(roleBo);
+        }
+        return get(roleBo.getId(), session);
     }
 
     @RequestMapping(value = "/get", method = RequestMethod.GET)
     @ResponseBody
-    public ApiResult<RoleBo> get(Integer id,HttpSession session) {
+    @RequiresPermissions(value = "view")
+    public JsonResult<RoleBo> get(Integer id, HttpSession session) {
         RoleBo roleBo = null;
-        UserResource resource=(UserResource)session.getAttribute(WebConst.SESSION_RESOURCE);
+        UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
         if (id == null) {
-            return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("client.msg.primary_key_validation"));
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("client.msg.primary_key_validation"));
         } else {
             roleBo = roleService.getRoleBo(id);
         }
-        return ApiResult.success(roleBo);
+        return JsonResult.success(roleBo);
     }
 
-    @PrivilegesControl(operator = OperatorDef.DELETE)
     @RequestMapping(value = "/deletes", method = RequestMethod.POST)
     @ResponseBody
-    public ApiResult<List<RoleBo>> deletes(@RequestBody Integer[] ids, HttpSession session) {
-        UserResource resource=(UserResource)session.getAttribute(WebConst.SESSION_RESOURCE);
-        if (ids == null || ids.length == 0) {
-            return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("pagemenu.choose.information"));
+    @RequiresPermissions(value = "delete")
+    public JsonResult<PaginationResult<RoleBo>> deletes(@RequestBody DeleteParams<Integer> deleteParams, HttpSession session) {
+        UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
+        if (deleteParams.getIds() == null || deleteParams.getIds().length == 0) {
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("pagemenu.choose.information"));
         }
-        roleService.deletes(ids);
-        return list(session);
+        for (Integer id : deleteParams.getIds()) {
+            boolean isExist = roleService.getHasUsers(id);
+            if (isExist) {
+                return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("role.error.has_users"));
+            }
+        }
+        roleService.deletes(deleteParams.getIds());
+        return list(session,deleteParams.getQueryParams());
     }
 }

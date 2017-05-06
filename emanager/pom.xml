@@ -13,6 +13,11 @@
     <dependencies>
         <dependency>
             <groupId>com.dsdl</groupId>
+            <artifactId>ecore</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.dsdl</groupId>
             <artifactId>ebase</artifactId>
             <version>1.0</version>
         </dependency>

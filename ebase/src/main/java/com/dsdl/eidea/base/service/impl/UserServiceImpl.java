@@ -1,5 +1,7 @@
 package com.dsdl.eidea.base.service.impl;
 
+import com.dsdl.eidea.core.dto.PaginationResult;
+import com.dsdl.eidea.core.params.QueryParams;
 import com.dsdl.eidea.core.spring.annotation.DataAccess;
 import com.dsdl.eidea.base.def.OperatorDef;
 import com.dsdl.eidea.base.entity.bo.UserBo;
@@ -11,6 +13,7 @@ import com.dsdl.eidea.base.service.UserService;
 import com.dsdl.eidea.base.util.JwtUtil;
 import com.dsdl.eidea.core.dao.CommonDao;
 import com.googlecode.genericdao.search.Search;
+import com.googlecode.genericdao.search.SearchResult;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.cache.annotation.Cacheable;
@@ -38,10 +41,20 @@ public class UserServiceImpl implements UserService {
     private ModelMapper modelMapper = new ModelMapper();
 
     @Override
-    public List<UserBo> getUserList(Search search) {
-        List<UserPo> userList = userDao.search(search);
-        return modelMapper.map(userList, new TypeToken<List<UserBo>>() {
-        }.getType());
+    public PaginationResult<UserBo> getUserList(Search search, QueryParams queryParams) {
+        search.setFirstResult(queryParams.getFirstResult());
+        search.setMaxResults(queryParams.getPageSize());
+        PaginationResult<UserBo> paginationResult = null;
+        if (queryParams.isInit()){
+            SearchResult<UserPo> searchResult = userDao.searchAndCount(search);
+            List<UserBo> list = modelMapper.map(searchResult.getResult(),new TypeToken<List<UserBo>>(){}.getType());
+            paginationResult = PaginationResult.pagination(list,searchResult.getTotalCount(),queryParams.getPageNo(),queryParams.getPageSize());
+        }else{
+            List<UserPo> userPoList = userDao.search(search);
+            List<UserBo> userBoList = modelMapper.map(userPoList,new TypeToken<List<UserBo>>(){}.getType());
+            paginationResult = PaginationResult.pagination(userBoList,queryParams.getTotalRecords(),queryParams.getPageNo(),queryParams.getPageSize());
+        }
+        return paginationResult;
     }
 
     @Override
@@ -265,5 +278,24 @@ public class UserServiceImpl implements UserService {
         List<Integer> orgIdList = getCanAccessOrgList(userSessionBo.getUserId());
         UserContent userContent = new UserContent(privilegesMap, userSessionBo, token, orgIdList);
         return userContent;
+    }
+    @Override
+    public UserBo getUserByUsername(String username) {
+        Search search = new Search();
+        search.addFilterEqual("username", username);
+        UserPo userPo=userDao.searchUnique(search);
+        UserBo userBo = modelMapper.map(userPo, UserBo.class);
+        if (userPo != null) {
+            List<UserRoleBo> userRoleBoList = modelMapper.map(userPo.getSysUserRoles(), new TypeToken<List<UserRoleBo>>() {
+            }.getType());
+            if (userRoleBoList != null && userRoleBoList.size() > 0) {
+                Integer[] ids = new Integer[userRoleBoList.size()];
+                for (int i = 0; i < userRoleBoList.size(); i++) {
+                    ids[i] = userRoleBoList.get(i).getSysRoleId();
+                }
+                userBo.setRoleIds(ids);
+            }
+        }
+        return userBo;
     }
 }

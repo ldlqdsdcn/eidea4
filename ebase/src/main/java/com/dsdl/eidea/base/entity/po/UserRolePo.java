@@ -25,17 +25,4 @@ public class UserRolePo implements java.io.Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "sys_role_id", nullable = false)
 	private RolePo sysRole;
-
-	// Constructors
-
-	/** default constructor */
-	public UserRolePo() {
-	}
-
-	/** full constructor */
-	public UserRolePo(Integer id, UserPo sysUser, RolePo sysRole) {
-		this.id = id;
-		this.sysUser = sysUser;
-		this.sysRole = sysRole;
-	}
 }

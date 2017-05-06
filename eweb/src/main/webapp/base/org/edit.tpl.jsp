@@ -8,8 +8,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/inc/taglib.jsp" %>
 <div class="container-fluid" ng-controller="editCtrl">
-    <div class="page-title">
-        <h3><%-- 组织设置--%><eidea:label key="org.title"/></h3>
+    <div class="page-header">
+        <ol class="breadcrumb">
+            <li><a href="javascript:;"><i class="icon-fire"></i><eidea:label key="org.title"/></a></li>
+        </ol>
     </div>
     <div class="row-fluid">
         <div class="span12">
@@ -34,7 +36,7 @@
                     <label for="remark" class="col-sm-2 text-right"><%--实体--%><eidea:label key="user.column.client"/></label>
                     <div class="col-sm-10">
                     <select class="form-control" id="client" ng-model="orgBo.client.id"
-                            ng-options="client.id as client.name for client in clientList"></select>
+                            ng-options="client.id as client.name for client in clientList" required></select>
                         </div>
                 </div>
                 <div class="form-group">

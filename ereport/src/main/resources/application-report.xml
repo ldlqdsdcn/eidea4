@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
+	   xmlns:task="http://www.springframework.org/schema/task"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+
+		 http://www.springframework.org/schema/context
+               http://www.springframework.org/schema/context/spring-context-4.0.xsd
+               http://www.springframework.org/schema/task
+               http://www.springframework.org/schema/task/spring-task-4.0.xsd ">
+	<!-- aop配置 日志 -->
+	<aop:aspectj-autoproxy/>
+	<!-- 采用注释的方式配置bean -->
+	<context:annotation-config />
+	<task:annotation-driven/>
+	<!-- 配置要扫描的包 -->
+
+	<context:component-scan base-package="com.dsdl"/>
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<!-- <property name="location" value="classpath:database.properties"></property> -->
+		<property name="locations">
+			<list>
+				<value>classpath:report_database.properties</value>
+			</list>
+		</property>
+	</bean>
+	<!-- Session工厂 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<!-- mybatis配置文件 -->
+		<property name="configLocation" value="classpath:mybatis-config.xml" />
+		<property name="mapperLocations" value="classpath*:com/dsdl/**/*Mapper.xml"/>
+	</bean>
+	<!-- 配置SqlSessionTemplate -->
+	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate" scope="prototype">
+		<constructor-arg index="0" ref="sqlSessionFactory" />
+	</bean>
+	<!-- 扫描mybatis映射接口类 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.dsdl.eidea.**.dao" />
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+	</bean>
+	<!--datasource-->
+	<import resource="classpath:spring-database.xml"/>
+</beans>

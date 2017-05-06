@@ -2,15 +2,25 @@
 
 package ${packagename};
 import ${modelpackage}.${modelname}Po;
+<#if paingByDb>
+import com.dsdl.eidea.core.dto.PaginationResult;
+import com.dsdl.eidea.core.params.QueryParams;
+import com.googlecode.genericdao.search.Search;
+<#else>
 import com.googlecode.genericdao.search.ISearch;
+</#if>
 import java.util.List;
 
 /**
  * @author 刘大磊 ${datetime}
  */
 public interface ${modelname}Service {
-	List<${modelname}Po> get${modelname}List(ISearch search);
-	${modelname}Po get${modelname}(${pkClass} id);
+<#if paingByDb>
+	PaginationResult<${modelname}Po> get${modelname}ListByPaging(Search search,QueryParams queryParams);
+<#else>
+    List<${modelname}Po> get${modelname}List(ISearch search);
+</#if>
+	${modelname}Po get${modelname}(${pkClass} ${pkName});
 	void save${modelname}(${modelname}Po ${modelname?uncap_first});
-	void deletes(${pkClass}[] ids);
+	void deletes(${pkClass}[] ${pkName}s);
 }

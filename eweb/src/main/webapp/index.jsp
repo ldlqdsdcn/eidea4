@@ -15,11 +15,13 @@
 
     <link rel="stylesheet" href="<c:url value="/css/bootstrap/bootstrap.min.css"/>" type="text/css" media="all"/>
     <link rel="stylesheet" href="<c:url value="/css/bootstrap/bootstrap-theme.min.css"/>" type="text/css" media="all"/>
+    <link rel="stylesheet" href="<c:url value="/css/bootstrap/bootstrap.addtabs.css"/>" type="text/css" media="all"/>
     <link rel="stylesheet" href="<c:url value="/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css"/>" type="text/css" media="all"/>
     <script type='text/javascript' src='<c:url value="/js/jquery-3.1.1.min.js"/>'></script>
     <script type='text/javascript' src='<c:url value="/js/bootstrap/bootstrap.min.js"/>'></script>
     <script type='text/javascript' src='<c:url value="/js/bootbox.min.js"/>'></script>
-    <script type='text/javascript' src='<c:url value="/js/bootstrap/bootstrap-datetimepicker.min.js"/>'></script>
+    <script type='text/javascript' src='<c:url value="/js/bootstrap/datetimepicker/bootstrap-datetimepicker.min.js"/>'></script>
+    <script type='text/javascript' src='<c:url value="/js/bootstrap/bootstrap.addtabs.js"/>'></script>
     <script type='text/javascript' src="<c:url value="/js/angular/angular.min.js"/>"></script>
     <script type='text/javascript' src="<c:url value="/js/angular/angular-route.min.js"/>"></script>
     <script type='text/javascript' src="<c:url value="/js/angular/jcs-auto-validate.min.js"/>"></script>
@@ -59,7 +61,7 @@
     </script>
 </head>
 <%UserBo user=(UserBo)session.getAttribute("loginUser"); %>
-<body class="nav-md">
+<body class="nav-md gun_dong">
 <div class="container body">
     <div class="main_container">
         <div class="col-md-3 left_col menu_fixed">
@@ -141,7 +143,7 @@
 
                         <li role="presentation" class="dropdown">
                             <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
-                                <i class="fa fa-envelope-o"></i>
+                                <i class="fa fa-volume-up la-ba"></i>
                                 <span class="badge bg-green"><eidea:label key="index.email_size"/></span>
                             </a>
                             <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
@@ -165,6 +167,17 @@
                                 </li>
                             </ul>
                         </li>
+                        <li ng-app="changeLanguageApp" ng-controller="changeLanguageCtrl">
+                            <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                {{defaultLanguageName}}
+                            </a>
+                            <ul class="dropdown-menu dropdown-usermenu pull-right">
+                                <li ng-repeat="language in languages">
+                                    <a ng-click="swithLanguage(language.code)">{{language.name}}</a>
+                                </li>
+                            </ul>
+
+                        </li>
                     </ul>
                 </nav>
             </div>
@@ -175,9 +188,19 @@
         <!--top navigation-->
         <!--page content-->
         <div class="right_col" role="main">
-            <!--我是主要内容 start-->
-            <iframe id="content" name="content" src="<c:url value="/default.jsp"/>" width="100%" height="100%"  frameborder="0"></iframe>
-            <!--我是主要内容 end-->
+            <div id="tabs">
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active">
+                        <a href="#home" aria-controls="home" role="tab" data-toggle="tab"><eidea:label key="common.button.home.page"/></a></li>
+                </ul>
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="home">
+                        <iframe src="<c:url value="/default.jsp"/>" width="100%" height="100%"  frameborder="0"></iframe>
+                    </div>
+                </div>
+            </div>
         </div>
         <!--page content-->
     </div>
@@ -185,6 +208,32 @@
 <script src='<c:url value="/js/custom.js"/>' type="text/javascript"></script>
 <script type="text/javascript">
     //$("#content").load("<c:url value="/core/language/showList"/>");
+    var app = angular.module('changeLanguageApp', ['ui.bootstrap', 'jcs-autoValidate']);
+    app.controller('changeLanguageCtrl',function ($scope,$http) {
+        //获取语言列表
+        $http.get("<c:url value="/languages"/>").success(function (data) {
+            if (data.success) {
+                $scope.languages = data.data;
+                var languageCode="<%=(request.getSession().getAttribute("language")==null)?request.getLocale().toString():request.getSession().getAttribute("language")%>";
+                $.each($scope.languages,function (index,value) {
+                    if(value.code == languageCode){
+                        $scope.defaultLanguageName=value.name;
+                    }
+                })
+            }else {
+                $scope.serverReturnMessage = data.message;
+            }
+        });
+        //切换语种
+        $scope.swithLanguage=function (languageCode) {
+            $.each($scope.languages,function (index,value) {
+                if(value.code == languageCode){
+                    $scope.defaultLanguageName=value.name;
+                }
+            })
+            window.parent.location.href = "<c:url value="/common/changeLanguageCode"/>?language="+languageCode;
+        }
+    });
 </script>
 </body>
 </html>

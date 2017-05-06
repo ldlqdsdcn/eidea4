@@ -1,5 +1,7 @@
 package com.dsdl.eidea.base.service.impl;
 
+import com.dsdl.eidea.core.dto.PaginationResult;
+import com.dsdl.eidea.core.params.QueryParams;
 import com.dsdl.eidea.core.spring.annotation.DataAccess;
 import com.dsdl.eidea.base.entity.bo.ModuleRoleBo;
 import com.dsdl.eidea.base.entity.bo.PrivilegeBo;
@@ -10,6 +12,7 @@ import com.dsdl.eidea.base.service.RoleService;
 import com.dsdl.eidea.core.dao.CommonDao;
 import com.googlecode.genericdao.search.ISearch;
 import com.googlecode.genericdao.search.Search;
+import com.googlecode.genericdao.search.SearchResult;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.modelmapper.TypeToken;
@@ -70,10 +73,20 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public List<RoleBo> getRoleList(ISearch search) {
-        List<RolePo> clientPoList = roleDao.search(search);
-        return modelMapper.map(clientPoList, new TypeToken<List<RoleBo>>() {
-        }.getType());
+    public PaginationResult<RoleBo> getRoleList(Search search, QueryParams queryParams) {
+        search.setFirstResult(queryParams.getFirstResult());
+        search.setMaxResults(queryParams.getPageSize());
+        PaginationResult<RoleBo> paginationResult = null;
+        if (queryParams.isInit()){
+            SearchResult<RolePo> searchResult = roleDao.searchAndCount(search);
+            List<RoleBo> list = modelMapper.map(searchResult.getResult(),new TypeToken<List<RoleBo>>(){}.getType());
+            paginationResult = PaginationResult.pagination(list,searchResult.getTotalCount(),queryParams.getPageNo(),queryParams.getPageSize());
+        }else{
+            List<RolePo> rolePoList = roleDao.search(search);
+            List<RoleBo> roleBoList = modelMapper.map(rolePoList,new TypeToken<List<RoleBo>>(){}.getType());
+            paginationResult = PaginationResult.pagination(roleBoList,queryParams.getTotalRecords(),queryParams.getPageNo(),queryParams.getPageSize());
+        }
+        return paginationResult;
     }
 
     @Override
@@ -132,7 +145,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public boolean findExistClient(String no) {
+    public boolean findExistRole(String no) {
         Search search = new Search();
         search.addFilterEqual("name", no);
         List<RolePo> clientPoList = roleDao.search(search);
@@ -141,9 +154,27 @@ public class RoleServiceImpl implements RoleService {
         }
         return false;
     }
+    @Override
+    public RoleBo findExistRoleByName(String roleName){
+        Search search = new Search();
+        search.addFilterEqual("name",roleName);
+        RolePo rolePo = roleDao.searchUnique(search);
+        RoleBo roleBo = modelMapper.map(rolePo,RoleBo.class);
+        return roleBo;
+    }
 
     public RoleBo getInitRoleBo(RoleBo roleBo) {
         return initRoleBoByPo(null);
+    }
+
+    @Override
+    public boolean getHasUsers(Integer id) {
+       RolePo rolePo= roleDao.find(id);
+        List<UserRolePo> userRolePos=rolePo.getSysUserRoles();
+        if (userRolePos.size()>0){
+            return true;
+        }
+        return false;
     }
 
     private RoleBo initRoleBoByPo(RolePo rolePo) {

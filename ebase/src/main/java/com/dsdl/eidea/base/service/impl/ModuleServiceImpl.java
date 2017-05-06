@@ -1,6 +1,8 @@
 package com.dsdl.eidea.base.service.impl;
 
 
+import com.dsdl.eidea.core.dto.PaginationResult;
+import com.dsdl.eidea.core.params.QueryParams;
 import com.dsdl.eidea.core.spring.annotation.DataAccess;
 import com.dsdl.eidea.base.entity.bo.ModuleBo;
 import com.dsdl.eidea.base.entity.bo.ModuleDirectoryBo;
@@ -9,6 +11,7 @@ import com.dsdl.eidea.base.entity.po.*;
 import com.dsdl.eidea.base.service.ModuleService;
 import com.dsdl.eidea.core.dao.CommonDao;
 import com.googlecode.genericdao.search.Search;
+import com.googlecode.genericdao.search.SearchResult;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
@@ -35,9 +38,20 @@ public class ModuleServiceImpl implements ModuleService {
     private ModelMapper modelMapper = new ModelMapper();
 
     @Override
-    public List<ModuleBo> getModuleList(Search search) {
-        List<ModulePo> modulePoList=moduleDao.search(search);
-        return modelMapper.map(modulePoList, new TypeToken<List<ModuleBo>>() {}.getType());
+    public PaginationResult<ModuleBo> getModuleList(Search search, QueryParams queryParams) {
+        search.setFirstResult(queryParams.getFirstResult());
+        search.setMaxResults(queryParams.getPageSize());
+        PaginationResult<ModuleBo> paginationResult = null;
+        if (queryParams.isInit()){
+            SearchResult<ModulePo> searchResult = moduleDao.searchAndCount(search);
+            List<ModuleBo> list = modelMapper.map(searchResult.getResult(),new TypeToken<List<ModuleBo>>(){}.getType());
+            paginationResult = PaginationResult.pagination(list,searchResult.getTotalCount(),queryParams.getPageNo(),queryParams.getPageSize());
+        }else{
+            List<ModulePo> languagePoList = moduleDao.search(search);
+            List<ModuleBo> languageBoList = modelMapper.map(languagePoList,new TypeToken<List<ModuleBo>>(){}.getType());
+            paginationResult = PaginationResult.pagination(languageBoList,queryParams.getTotalRecords(),queryParams.getPageNo(),queryParams.getPageSize());
+        }
+        return paginationResult;
     }
 
     @Override
@@ -64,7 +78,7 @@ public class ModuleServiceImpl implements ModuleService {
             for (Integer menuId:moduleBo.getMenuIds()){
                 ModuleMenuPo moduleMenuPo=new ModuleMenuPo();
                 PageMenuPo pageMenuPo=pageMenuDao.find(menuId);
-                moduleMenuPo.setSysPageMenu(pageMenuPo);
+                moduleMenuPo.setPageMenuPo(pageMenuPo);
                 moduleMenuPo.setSysModule(modulePo);
                 moduleMenuList.add(moduleMenuPo);
             }
@@ -101,7 +115,7 @@ public class ModuleServiceImpl implements ModuleService {
             if(moduleMenuBoList != null && moduleMenuBoList.size() > 0){
                 Integer[] ids=new Integer[moduleMenuBoList.size()];
                 for(int i=0;i<moduleMenuBoList.size();i++){
-                    ids[i]=moduleMenuBoList.get(i).getSysPageMenuId();
+                    ids[i]=moduleMenuBoList.get(i).getPageMenuId();
                 }
                 moduleBo.setMenuIds(ids);
             }

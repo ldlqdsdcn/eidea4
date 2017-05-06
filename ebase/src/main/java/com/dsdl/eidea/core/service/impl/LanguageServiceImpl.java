@@ -1,5 +1,7 @@
 package com.dsdl.eidea.core.service.impl;
 
+import com.dsdl.eidea.core.dto.PaginationResult;
+import com.dsdl.eidea.core.params.QueryParams;
 import com.dsdl.eidea.core.spring.annotation.DataAccess;
 import com.dsdl.eidea.core.dao.CommonDao;
 import com.dsdl.eidea.core.entity.bo.LanguageBo;
@@ -8,6 +10,7 @@ import com.dsdl.eidea.core.entity.po.LanguagePo;
 import com.dsdl.eidea.core.entity.po.LanguageTrlPo;
 import com.dsdl.eidea.core.service.LanguageService;
 import com.googlecode.genericdao.search.Search;
+import com.googlecode.genericdao.search.SearchResult;
 import org.apache.log4j.Logger;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
@@ -25,7 +28,7 @@ import java.util.stream.Collectors;
 public class LanguageServiceImpl implements LanguageService {
     private static final Logger logger = Logger.getLogger(LanguageServiceImpl.class);
     @DataAccess(entity = LanguagePo.class)
-    private CommonDao<LanguagePo,String> languageDao;
+    private CommonDao<LanguagePo, String> languageDao;
     private ModelMapper modelMapper = new ModelMapper();
     private PropertyMap<LanguagePo, LanguageBo> languageBoPropertyMap = new PropertyMap<LanguagePo, LanguageBo>() {
         @Override
@@ -36,8 +39,8 @@ public class LanguageServiceImpl implements LanguageService {
     private PropertyMap<LanguageTrlPo, LanguageTrlBo> langTrlMapper = new PropertyMap<LanguageTrlPo, LanguageTrlBo>() {
         @Override
         protected void configure() {
-            map().setLanguageCode(source.getCoreLanguageByLanguageCode().getCode());
-            map().setLang(source.getCoreLanguageByLang().getCode());
+            map().setLanguageCode(source.getLanguageByLanguageCode().getCode());
+            map().setLang(source.getLanguageByLang().getCode());
         }
     };
 
@@ -48,12 +51,40 @@ public class LanguageServiceImpl implements LanguageService {
     }
 
     @Override
-    public List<LanguageBo> findLanguage(Search search) {
-        List<LanguagePo> languagePoList = languageDao.search(search);
+    public PaginationResult<LanguageBo> findLanguage(Search search, QueryParams queryParams) {
+        search.setFirstResult(queryParams.getFirstResult());
+        search.setMaxResults(queryParams.getPageSize());
+        PaginationResult<LanguageBo> paginationResult = null;
+        if (queryParams.isInit()){
+            SearchResult<LanguagePo> searchResult = languageDao.searchAndCount(search);
+            List<LanguageBo> list = modelMapper.map(searchResult.getResult(),new TypeToken<List<LanguageBo>>(){}.getType());
+            paginationResult = PaginationResult.pagination(list,searchResult.getTotalCount(),queryParams.getPageNo(),queryParams.getPageSize());
+        }else{
+            List<LanguagePo> languagePoList = languageDao.search(search);
+            List<LanguageBo> languageBoList = modelMapper.map(languagePoList,new TypeToken<List<LanguageBo>>(){}.getType());
+            paginationResult = PaginationResult.pagination(languageBoList,queryParams.getTotalRecords(),queryParams.getPageNo(),queryParams.getPageSize());
+        }
+        return paginationResult;
+    }
 
-        List<LanguageBo> languageBoList = modelMapper.map(languagePoList, new TypeToken<List<LanguageBo>>() {
-        }.getType());
-        return languageBoList;
+    @Override
+    public boolean findExistLanguageName(String languageName) {
+        Search search = new Search();
+        search.addFilterEqual("name", languageName);
+        List<LanguagePo> languagePoList = languageDao.search(search);
+        if (languagePoList != null && languagePoList.size() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    @Override
+    public LanguageBo findExistLanguageByName(String languageName){
+        Search search = new Search();
+        search.addFilterEqual("name",languageName);
+        LanguagePo languagePo = languageDao.searchUnique(search);
+        LanguageBo languageBo = modelMapper.map(languagePo,LanguageBo.class);
+        return languageBo;
     }
 
     private List<LanguageBo> convertPoToBo(List<LanguagePo> languagePoList) {
@@ -61,7 +92,7 @@ public class LanguageServiceImpl implements LanguageService {
         List<LanguageBo> languageBoList = new ArrayList<>();
         languagePoList.forEach(e -> {
             LanguageBo languageBo = modelMapper.map(e, LanguageBo.class);
-            List<LanguageTrlBo> languageTrlBoList = modelMapper.map(e.getCoreLanguageTrlsForLanguageCode(), new TypeToken<List<LanguageTrlBo>>() {
+            List<LanguageTrlBo> languageTrlBoList = modelMapper.map(e.getLanguageTrlsForLanguageCode(), new TypeToken<List<LanguageTrlBo>>() {
             }.getType());
             languageBo.setLanguageTrlBoList(languageTrlBoList);
             languageBoList.add(languageBo);
@@ -73,7 +104,7 @@ public class LanguageServiceImpl implements LanguageService {
     public LanguageBo getLanguageBo(String code) {
         LanguagePo languagePo = languageDao.find(code);
         if (languagePo != null) {
-            List<LanguageTrlBo> languageTrlBoList = modelMapper.map(languagePo.getCoreLanguageTrlsForLanguageCode().stream().filter(e -> e.getCoreLanguageByLang().getIsactive().equals("Y")).collect(Collectors.toList()), new TypeToken<List<LanguageTrlBo>>() {
+            List<LanguageTrlBo> languageTrlBoList = modelMapper.map(languagePo.getLanguageTrlsForLanguageCode().stream().filter(e -> e.getLanguageByLang().getIsactive().equals("Y")).collect(Collectors.toList()), new TypeToken<List<LanguageTrlBo>>() {
             }.getType());
             LanguageBo languageBo = modelMapper.map(languagePo, LanguageBo.class);
             languageBo.setLanguageTrlBoList(languageTrlBoList);
@@ -105,12 +136,12 @@ public class LanguageServiceImpl implements LanguageService {
             LanguageTrlPo languageTrlPo = new LanguageTrlPo();
             languageTrlPo.setId(languageTrlBo.getId());
             languageTrlPo.setName(languageTrlBo.getName());
-            languageTrlPo.setCoreLanguageByLanguageCode(languagePo);
+            languageTrlPo.setLanguageByLanguageCode(languagePo);
             LanguagePo lang = languageDao.find(languageTrlBo.getLang());
-            languageTrlPo.setCoreLanguageByLang(lang);
+            languageTrlPo.setLanguageByLang(lang);
             languageTrlPoList.add(languageTrlPo);
         }
-        languagePo.setCoreLanguageTrlsForLanguageCode(languageTrlPoList);
+        languagePo.setLanguageTrlsForLanguageCode(languageTrlPoList);
         return languageDao.saveForLog(languagePo);
     }
 
@@ -144,6 +175,7 @@ public class LanguageServiceImpl implements LanguageService {
             return false;
         }
     }
+
     @Override
     public List<LanguageBo> getLanguageForActivated() {
         Search search = new Search();

@@ -11,6 +11,9 @@
         <module>eweb</module>
         <module>ecore</module>
         <module>eutil</module>
+        <module>ereport</module>
+        <module>eapi</module>
+        <module>ecomm</module>
     </modules>
     <groupId>com.dsdl</groupId>
     <artifactId>eidea</artifactId>
@@ -24,9 +27,9 @@
     </properties>
     <repositories>
         <repository>
-            <id>nexus</id>
-            <name>鼎商动力私服</name>
-            <url>http://139.129.98.64:8083/nexus/content/group/public</url>
+            <id>nexus-in</id>
+            <name>鼎商动力私服-wms团队私服</name>
+            <url>http://192.168.0.57:8181/nexus/content/groups/public</url>
         </repository>
         <repository>
             <id>spring-maven-release</id>
@@ -36,7 +39,7 @@
         <repository>
             <id>mvnrepository</id>
             <name>mvnrepository</name>
-            <url>http://www.mvnrepository.com</url>
+            <url>http://central.maven.org/maven2</url>
         </repository>
         <repository>
             <id>alibaba</id>
@@ -69,12 +72,7 @@
             <artifactId>log4j</artifactId>
             <version>1.2.17</version>
         </dependency>
-        <dependency>
-            <groupId>javax</groupId>
-            <artifactId>javaee-web-api</artifactId>
-            <version>7.0</version>
-            <scope>provided</scope>
-        </dependency>
+
         <dependency>
             <groupId>commons-beanutils</groupId>
             <artifactId>commons-beanutils</artifactId>
@@ -130,7 +128,11 @@
             <version>${spring.version}</version>
         </dependency>
         <!--spring mvc-->
-
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
@@ -152,14 +154,10 @@
             <version>${spring.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.mybatis</groupId>
-            <artifactId>mybatis</artifactId>
-            <version>3.2.8</version>
-        </dependency>
-        <dependency>
-            <groupId>org.mybatis</groupId>
-            <artifactId>mybatis-spring</artifactId>
-            <version>1.2.2</version>
+            <groupId>javax</groupId>
+            <artifactId>javaee-web-api</artifactId>
+            <version>7.0</version>
+            <scope>provided</scope>
         </dependency>
         <!-- lombok -->
         <dependency>
@@ -170,18 +168,6 @@
         </dependency>
         <!-- lombok -->
         <!--spring mvc-json -->
-        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
-            <version>2.8.3</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>2.8.3</version>
-        </dependency>
         <!--slf4j-->
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -193,31 +179,7 @@
             <artifactId>slf4j-log4j12</artifactId>
             <version>${slf4j.version}</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-core</artifactId>
-            <version>${hibernate.version}</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-ehcache -->
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-ehcache</artifactId>
-            <version>${hibernate.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-validator</artifactId>
-            <version>${hibernate.version}</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/net.sf.ehcache/ehcache -->
-        <dependency>
-            <groupId>net.sf.ehcache</groupId>
-            <artifactId>ehcache</artifactId>
-            <version>2.10.1</version>
-        </dependency>
-
-        <dependency>
+       <dependency>
             <groupId>org.modelmapper</groupId>
             <artifactId>modelmapper</artifactId>
             <version>0.7.5</version>
@@ -228,10 +190,28 @@
             <version>2.5</version>
         </dependency>
         <dependency>
-            <groupId>org.apache.activemq</groupId>
-            <artifactId>activemq-all</artifactId>
-            <version>5.14.3</version>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>2.8.2</version>
+            <scope>provided</scope>
         </dependency>
+        <!--shiro bgn-->
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-core</artifactId>
+            <version>1.2.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-web</artifactId>
+            <version>1.2.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-spring</artifactId>
+            <version>1.2.4</version>
+        </dependency>
+        <!--shiro end-->
     </dependencies>
     <build>
         <plugins>

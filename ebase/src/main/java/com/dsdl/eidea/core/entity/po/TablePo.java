@@ -42,44 +42,4 @@ public class TablePo implements java.io.Serializable {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tablePo")
     private List<TableColumnPo> coreTableColumns = new ArrayList<TableColumnPo>(
             0);
-
-    // Constructors
-
-    /**
-     * default constructor
-     */
-    public TablePo() {
-    }
-
-    /**
-     * minimal constructor
-     */
-    public TablePo(Integer id, String name, String tableName, String poClass,
-                   String outLog, String isactive) {
-        this.id = id;
-        this.name = name;
-        this.tableName = tableName;
-        this.poClass = poClass;
-        this.outLog = outLog;
-        this.isactive = isactive;
-    }
-
-    /**
-     * full constructor
-     */
-    public TablePo(Integer id, String name, String tableName, String poClass,
-                   String outLog, String buPk, String remark, String externJson,
-                   String isactive, List<TableColumnPo> coreTableColumns) {
-        this.id = id;
-        this.name = name;
-        this.tableName = tableName;
-        this.poClass = poClass;
-        this.outLog = outLog;
-        this.buPk = buPk;
-        this.remark = remark;
-        this.externJson = externJson;
-        this.isactive = isactive;
-        this.coreTableColumns = coreTableColumns;
-    }
-
 }

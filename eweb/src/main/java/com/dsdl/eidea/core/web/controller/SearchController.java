@@ -1,26 +1,26 @@
 package com.dsdl.eidea.core.web.controller;
 
-import com.dsdl.eidea.base.def.OperatorDef;
-import com.dsdl.eidea.base.web.annotation.PrivilegesControl;
-import com.dsdl.eidea.base.web.def.ReturnType;
 import com.dsdl.eidea.base.web.vo.UserResource;
 import com.dsdl.eidea.core.def.RelOperDef;
 import com.dsdl.eidea.core.def.SearchDataTypeDef;
-import com.dsdl.eidea.core.def.SearchPageFieldInputType;
+import com.dsdl.eidea.core.def.PageFieldInputType;
 import com.dsdl.eidea.core.def.SearchPageType;
+import com.dsdl.eidea.core.dto.PaginationResult;
 import com.dsdl.eidea.core.entity.bo.KeyValue;
 import com.dsdl.eidea.core.entity.bo.SearchBo;
 import com.dsdl.eidea.core.entity.bo.SearchColumnBo;
+import com.dsdl.eidea.core.params.DeleteParams;
+import com.dsdl.eidea.core.params.QueryParams;
 import com.dsdl.eidea.core.service.SearchService;
 import com.dsdl.eidea.core.web.def.WebConst;
-import com.dsdl.eidea.core.web.result.ApiResult;
+import com.dsdl.eidea.core.web.result.JsonResult;
 import com.dsdl.eidea.core.web.result.def.ErrorCodes;
 import com.dsdl.eidea.core.web.util.SearchHelper;
 import com.dsdl.eidea.core.web.vo.PagingSettingResult;
-import com.dsdl.eidea.util.StringUtil;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.googlecode.genericdao.search.Search;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
@@ -44,26 +44,28 @@ public class SearchController {
     @Autowired
     private SearchService searchService;
 
-    @PrivilegesControl(operator = OperatorDef.VIEW, returnType = ReturnType.JSP)
     @RequestMapping(value = "/showList", method = RequestMethod.GET)
+    @RequiresPermissions(value = "view")
     public ModelAndView showList() {
         ModelAndView modelAndView = new ModelAndView("/core/search/search");
-        modelAndView.addObject("pagingSettingResult", PagingSettingResult.getDefault());
+        modelAndView.addObject(WebConst.PAGING_SETTINGS, PagingSettingResult.getDbPaging());
         modelAndView.addObject(WebConst.PAGE_URI, URI);
         return modelAndView;
     }
 
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    @RequestMapping(value = "/list", method = RequestMethod.POST)
     @ResponseBody
-    public ApiResult<List<SearchBo>> list(HttpSession session) {
+    @RequiresPermissions(value = "view")
+    public JsonResult<PaginationResult<SearchBo>> list(HttpSession session, @RequestBody QueryParams queryParams) {
         Search search = SearchHelper.getSearchParam(URI, session);
-        List<SearchBo> searchBoList = searchService.findList(search);
-        return ApiResult.success(searchBoList);
+        PaginationResult<SearchBo> searchBoList = searchService.findList(search,queryParams);
+        return JsonResult.success(searchBoList);
     }
 
     @RequestMapping(value = "/get", method = RequestMethod.GET)
     @ResponseBody
-    public ApiResult<SearchBo> get(Integer id) {
+    @RequiresPermissions(value = "view")
+    public JsonResult<SearchBo> get(Integer id) {
         SearchBo searchBo = null;
         if (id == null) {
             searchBo = new SearchBo();
@@ -75,16 +77,16 @@ public class SearchController {
                 mapperRelOperator(searchColumnBo);
             }
         }
-        return ApiResult.success(searchBo);
+        return JsonResult.success(searchBo);
     }
 
-    @PrivilegesControl(operator = {OperatorDef.ADD, OperatorDef.UPDATE})
     @RequestMapping(value = "/addOneColumn", method = RequestMethod.GET)
     @ResponseBody
-    public ApiResult<SearchColumnBo> addNewColumn() {
+    @RequiresPermissions(value = "add")
+    public JsonResult<SearchColumnBo> addNewColumn() {
         SearchColumnBo searchColumnBo = new SearchColumnBo();
         mapperRelOperator(searchColumnBo);
-        return ApiResult.success(searchColumnBo);
+        return JsonResult.success(searchColumnBo);
     }
 
     private void mapperRelOperator(SearchColumnBo searchColumnBo) {
@@ -114,39 +116,53 @@ public class SearchController {
      */
     @RequestMapping(value = "/saveForCreated", method = RequestMethod.POST)
     @ResponseBody
-    @PrivilegesControl(operator = OperatorDef.ADD)
-    public ApiResult<SearchBo> saveForCreated(@RequestBody @Validated SearchBo searchBo) {
+    @RequiresPermissions(value = "add")
+    public JsonResult<SearchBo> saveForCreated(@RequestBody @Validated SearchBo searchBo, HttpSession session) {
+        UserResource userResource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
+        if (searchService.getSearchBoByUri(searchBo.getUri()) != null) {
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), userResource.getMessage("search.error.url_exist"));
+        }
         searchBo = searchService.saveSearchBo(searchBo);
         return get(searchBo.getId());
     }
 
     @RequestMapping(value = "/saveForUpdated", method = RequestMethod.POST)
     @ResponseBody
-    @PrivilegesControl(operator = OperatorDef.UPDATE)
-    public ApiResult<SearchBo> saveForUpdated(@RequestBody @Validated SearchBo searchBo,HttpSession session) {
-        UserResource resource=(UserResource)session.getAttribute(WebConst.SESSION_RESOURCE);
-        if(searchBo.getId()==null){
-            return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(),resource.getMessage("common.primary_key.isempty"));
+    @RequiresPermissions(value = "update")
+    public JsonResult<SearchBo> saveForUpdated(@RequestBody @Validated SearchBo searchBo, HttpSession session) {
+        UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
+        if (searchBo.getId() == null) {
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("common.primary_key.isempty"));
         }
-        searchBo = searchService.saveSearchBo(searchBo);
+        if (searchService.getSearchBoByUri(searchBo.getUri()) != null) {
+            if (searchService.getSearchBoByUri(searchBo.getUri()).getId() == searchBo.getId()) {
+                searchBo = searchService.saveSearchBo(searchBo);
+            } else {
+                return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("search.error.url_exist"));
+            }
+        }else {
+            searchBo = searchService.saveSearchBo(searchBo);
+
+        }
         return get(searchBo.getId());
     }
 
     @RequestMapping(value = "/deletes", method = RequestMethod.POST)
     @ResponseBody
-    @PrivilegesControl(operator = OperatorDef.DELETE)
-    public ApiResult<List<SearchBo>> deletes(@RequestBody Integer[] ids, HttpSession session) {
-        UserResource resource=(UserResource)session.getAttribute(WebConst.SESSION_RESOURCE);
-        if (ids == null || ids.length == 0) {
-            return ApiResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("pagemenu.choose.information"));
+    @RequiresPermissions(value = "delete")
+    public JsonResult<PaginationResult<SearchBo>> deletes(@RequestBody DeleteParams<Integer> deleteParams, HttpSession session) {
+        UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
+        if (deleteParams.getIds() == null || deleteParams.getIds().length == 0) {
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("pagemenu.choose.information"));
         }
-        searchService.deleteSearches(ids);
-        return list(session);
+        searchService.deleteSearches(deleteParams.getIds());
+        return list(session,deleteParams.getQueryParams());
     }
 
     @RequestMapping(value = "/getSelectList", method = RequestMethod.GET)
     @ResponseBody
-    public ApiResult<String> getSelectList() {
+    @RequiresPermissions(value = "view")
+    public JsonResult<String> getSelectList() {
         SearchPageType[] searchPageTypes = SearchPageType.values();
         JsonObject listObject = new JsonObject();
         JsonArray jsonArray = new JsonArray();
@@ -166,7 +182,7 @@ public class SearchController {
         }
         listObject.add("relOper", jsonArray);
         jsonArray = new JsonArray();
-        for (SearchPageFieldInputType searchPageFieldInputType : SearchPageFieldInputType.values()) {
+        for (PageFieldInputType searchPageFieldInputType : PageFieldInputType.values()) {
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("key", searchPageFieldInputType.getKey());
             jsonObject.addProperty("desc", searchPageFieldInputType.getDesc());
@@ -181,6 +197,6 @@ public class SearchController {
             jsonArray.add(jsonObject);
         }
         listObject.add("searchDataType", jsonArray);
-        return ApiResult.success(listObject.toString());
+        return JsonResult.success(listObject.toString());
     }
 }

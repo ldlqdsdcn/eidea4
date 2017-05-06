@@ -16,8 +16,7 @@
             <table  class="table table-hover table-striped table-condensed">
                 <thead>
                 <tr>
-                    <th><input type="checkbox" name="selectAll" style="margin:0px;" ng-change="selectAll()"
-                               ng-model="delFlag"></th>
+                    <th><input type="checkbox" name="selectAll" style="margin:0px;" ng-change="selectAll()"  ng-model="delFlag"></th>
                     <th><%--序号--%><eidea:label key="base.serialNumber"/></th>
                     <#list propertyList as prop>
                     <th><%--${prop.label}--%><eidea:label key="${prop.propertyLabel}"/></th>
@@ -31,10 +30,16 @@
                     <td>
                         <input type="checkbox" ng-model="model.delFlag">
                     </td>
-                    <td>{{(bigCurrentPage-1)*itemsPerPage+$index+1}}</td>
+                    <td>{{(queryParams.pageNo-1)*queryParams.pageSize+$index+1}}</td>
                     <#list propertyList as prop>
                     <td>
+                        <#if prop.inputType==3>
+                        ${r'{{'}model.${prop.prop}|date:"yyyy-MM-dd"${r'}}'}
+                        <#elseif prop.inputType==4>
+                        ${r'{{'}model.${prop.prop}|date:"yyyy-MM-dd HH:mm:ss"${r'}}'}
+                        <#else>
                         ${r'{{'}model.${prop.prop}${r'}}'}
+                        </#if>
                     </td>
                     </#list>
                     <td>
@@ -43,10 +48,11 @@
                 </tr>
                 </tbody>
             </table>
-            <ul uib-pagination boundary-links="true" total-items="bigTotalItems" ng-model="bigCurrentPage"
+            <ul uib-pagination boundary-links="true" total-items="queryParams.totalRecords" ng-model="queryParams.pageNo"
                 max-size="maxSize" first-text="<eidea:label key="common.label.firstpage"/>" previous-text="<eidea:label key="common.label.previouspage"/>" next-text="<eidea:label key="common.label.nextpage"/>" last-text="<eidea:label key="common.label.lastpage"/>"
-            class="pagination-sm" boundary-link-numbers="true" rotate="false" items-per-page="itemsPerPage"
+            class="pagination-sm" boundary-link-numbers="true" rotate="false" items-per-page="queryParams.pageSize"
             ng-change="pageChanged()"></ul>
+            <div class="text-left ng-binding padding_total_banner"><eidea:message key="common.msg.result.prefix"/><span>{{queryParams.totalRecords}}</span><eidea:message key="common.msg.result.suffix"/></div>
         </div>
     </div>
 </div>

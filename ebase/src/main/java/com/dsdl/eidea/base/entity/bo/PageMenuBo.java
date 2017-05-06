@@ -42,4 +42,5 @@ public class PageMenuBo {
     @Length(max=11,min=1,message="pagemenu.seqno.longcheck")
     private Integer seqNo;
     private List<PageMenuTrlBo> pageMenuTrlBo;
+    private String isCheck="false";
 }

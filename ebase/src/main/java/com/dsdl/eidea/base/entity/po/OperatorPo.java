@@ -15,29 +15,6 @@ import javax.persistence.*;
 @Getter
 @Setter
 public class OperatorPo implements java.io.Serializable {
-
-	public OperatorPo() {
-	}
-
-	/** minimal constructor */
-	public OperatorPo(Integer id, String no, String name, String isactive) {
-		this.id = id;
-		this.no = no;
-		this.name = name;
-		this.isactive = isactive;
-	}
-
-	/** full constructor */
-	public OperatorPo(Integer id, String no, String name, String isactive,
-			String remark, Set<PrivilegesPo> sysPrivilegeses) {
-		this.id = id;
-		this.no = no;
-		this.name = name;
-		this.isactive = isactive;
-		this.remark = remark;
-		this.sysPrivilegeses = sysPrivilegeses;
-	}
-
 	// Property accessors
 	@Id
 	@Column(name = "id", unique = true, nullable = false)

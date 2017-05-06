@@ -96,7 +96,42 @@ public class StringUtil {
 		}
 		return sb.toString();
 	}
-
+	public static String propertyToLabel(String property) {
+		if (null == property) {
+			return "";
+		}
+		char[] chars = property.toCharArray();
+		StringBuilder sb = new StringBuilder();
+		for (char c : chars) {
+			if (Character.isUpperCase(c)) {
+				sb.append(" ").append(Character.toLowerCase(c));
+			} else {
+				sb.append(c);
+			}
+		}
+		return sb.toString();
+	}
+	public static String fieldToLabel(String field) {
+		if (null == field) {
+			return "";
+		}
+		char[] chars = field.toCharArray();
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < chars.length; i++) {
+			char c = chars[i];
+			if (c == '_') {
+				int j = i + 1;
+				if (j < chars.length) {
+					sb.append(" ");
+					sb.append(chars[j]);
+					i++;
+				}
+			} else {
+				sb.append(c);
+			}
+		}
+		return sb.toString();
+	}
 	/**
 	 * 字段转换成对象属性 例如：user_name to userName
 	 * @param field

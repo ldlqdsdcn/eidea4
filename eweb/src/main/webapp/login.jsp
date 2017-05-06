@@ -65,7 +65,20 @@
 <script type="text/javascript">
     var app = angular.module('loginApp', ['ui.bootstrap', 'jcs-autoValidate']);
     app.controller('loginCtrl',function ($scope,$http) {
-        $scope.loginBo={};
+        <%
+            String userName="";
+            Cookie[] cookies=request.getCookies();
+            for(Cookie cookie:cookies)
+                {
+                    System.out.println(cookie.getName()+":"+cookie.getValue());
+                    if(cookie.getName().equals("userName"))
+                        {
+                            userName=cookie.getValue();
+                            break;
+                        }
+                }
+        %>
+        $scope.loginBo={"username":"<%=userName%>"};
         $scope.loginBo.code='<%= request.getSession().getAttribute(WebConst.SESSION_RESOURCE) ==null?request.getLocale().toString():((UserResource)request.getSession().getAttribute(WebConst.SESSION_RESOURCE)).getLocale()%>';
         $http.get("<c:url value="/languages"/>").success(function (data) {
             if (data.success) {
@@ -80,7 +93,7 @@
         $scope.submit = function () {
             $("#loginBtn").button('loading');
             if ($scope.loginForm.$valid) {
-                loginParam={username:$scope.loginBo.username,password:md5($scope.loginBo.password)};
+                loginParam={username:$scope.loginBo.username,password:md5($scope.loginBo.password),"code":$scope.loginBo.code};
                 $scope.serverReturnMessage = "";
                 $http.post("<c:url value="/login"/>", loginParam).success(function (data) {
                     if (data.success) {

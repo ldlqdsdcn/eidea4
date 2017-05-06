@@ -1,5 +1,7 @@
 package com.dsdl.eidea.core.service.impl;
 
+import com.dsdl.eidea.core.dto.PaginationResult;
+import com.dsdl.eidea.core.params.QueryParams;
 import com.dsdl.eidea.core.spring.annotation.DataAccess;
 import com.dsdl.eidea.base.def.ActivateDef;
 import com.dsdl.eidea.core.dao.CommonDao;
@@ -17,6 +19,7 @@ import com.dsdl.eidea.core.i18n.DbResourceBundle;
 import com.dsdl.eidea.core.service.LanguageService;
 import com.dsdl.eidea.core.service.MessageService;
 import com.googlecode.genericdao.search.Search;
+import com.googlecode.genericdao.search.SearchResult;
 import org.apache.log4j.Logger;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
@@ -52,7 +55,7 @@ public class MessageServiceImpl implements MessageService {
     private PropertyMap<MessageTrlPo, MessageTrlBo> messageTrlBoPropertyMap = new PropertyMap<MessageTrlPo, MessageTrlBo>() {
         @Override
         protected void configure() {
-            map().setLang(source.getCoreLanguage().getCode());
+            map().setLang(source.getLanguagePo().getCode());
         }
     };
 
@@ -63,13 +66,22 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public List<MessageBo> findMessage(Search search) {
-        List<MessagePo> messagePoList = messageDao.search(search);
-
-        List<MessageBo> messageBoList = modelMapper.map(messagePoList, new TypeToken<List<MessageBo>>() {
-        }.getType());
-        return messageBoList;
+    public PaginationResult<MessageBo> findMessage(Search search, QueryParams queryParams) {
+        search.setFirstResult(queryParams.getFirstResult());
+        search.setMaxResults(queryParams.getPageSize());
+        PaginationResult<MessageBo> paginationResult = null;
+        if (queryParams.isInit()){
+            SearchResult<MessagePo> searchResult = messageDao.searchAndCount(search);
+            List<MessageBo> list = modelMapper.map(searchResult.getResult(),new TypeToken<List<MessageBo>>(){}.getType());
+            paginationResult = PaginationResult.pagination(list,searchResult.getTotalCount(),queryParams.getPageNo(),queryParams.getPageSize());
+        }else{
+            List<MessagePo> messagePoList = messageDao.search(search);
+            List<MessageBo> messageBoList = modelMapper.map(messagePoList,new TypeToken<List<MessageBo>>(){}.getType());
+            paginationResult = PaginationResult.pagination(messageBoList,queryParams.getTotalRecords(),queryParams.getPageNo(),queryParams.getPageSize());
+        }
+        return paginationResult;
     }
+
 
     @Override
     public MessageBo getMessageBo(String key) {
@@ -106,8 +118,8 @@ public class MessageServiceImpl implements MessageService {
             MessageTrlPo messageTrlPo = new MessageTrlPo();
             messageTrlPo.setId(messageTrlBo.getId());
             messageTrlPo.setMsgtext(messageTrlBo.getMsgtext());
-            LanguagePo ss = languageDao.find(messageTrlBo.getLang());
-            messageTrlPo.setCoreLanguage(ss);
+            LanguagePo languagePo = languageDao.find(messageTrlBo.getLang());
+            messageTrlPo.setLanguagePo(languagePo);
             messageTrlPo.setCoreMessage(messagePo);
             messageTrlPoList.add(messageTrlPo);
             if (ActivateDef.ACTIVATED.getKey().equals(messagePo.getIsactive())) {

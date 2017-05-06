@@ -23,4 +23,11 @@ public class LocaleHelper {
         return Locale.SIMPLIFIED_CHINESE;
     }
 
+    public static String geLanguageCode(String localStr) {
+        if (StringUtil.isNotEmpty(localStr)) {
+            String[] languages = localStr.split("_");
+            return languages[POSITION_LANGUAGE];
+        }
+        return null;
+    }
 }

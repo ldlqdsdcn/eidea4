@@ -1,5 +1,7 @@
 package com.dsdl.eidea.common.web.controller;
 
+import com.dsdl.eidea.base.entity.bo.UserBo;
+import com.dsdl.eidea.base.service.PageMenuService;
 import com.dsdl.eidea.base.web.vo.UserResource;
 import com.dsdl.eidea.core.i18n.DbResourceBundle;
 import com.dsdl.eidea.core.service.MessageService;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.Locale;
 
 /**
@@ -20,7 +23,11 @@ import java.util.Locale;
 @Controller
 public class ChangedLanguageController {
     @Autowired
+    private HttpServletRequest request;
+    @Autowired
     private MessageService messageService;
+    @Autowired
+    private PageMenuService pageMenuService;
 
     @RequestMapping(value = "/common/changeLanguage", method = RequestMethod.GET)
     public ModelAndView changeLanguage(HttpServletRequest request, String language) {
@@ -31,7 +38,29 @@ public class ChangedLanguageController {
         DbResourceBundle dbResourceBundle = messageService.getResourceBundle(language);
         Locale locale = LocaleHelper.parseLocale(language);
         request.getSession().setAttribute(WebConst.SESSION_RESOURCE, new UserResource(locale, dbResourceBundle));
+        request.getSession().setAttribute("language",language);
         return modelAndView;
     }
 
+    /**
+     * changeLanguageCode:header切换语言
+     * @return
+     */
+    @RequestMapping(value = "/common/changeLanguageCode", method = RequestMethod.GET)
+    public ModelAndView changeLanguageCode(HttpServletRequest request, String language) {
+        HttpSession session = request.getSession();
+        ModelAndView modelAndView = new ModelAndView("/index");
+        if (language == null) {
+            language = request.getLocale().toString();
+        }
+        DbResourceBundle dbResourceBundle = messageService.getResourceBundle(language);
+        Locale locale = LocaleHelper.parseLocale(language);
+        request.getSession().setAttribute(WebConst.SESSION_RESOURCE, new UserResource(locale, dbResourceBundle));
+        request.getSession().setAttribute("language",language);
+        UserBo loginUser=(UserBo) session.getAttribute(WebConst.SESSION_LOGINUSER);
+        String contextPath = request.getServletContext().getContextPath();
+        String leftMenuStr = pageMenuService.getLeftMenuListByUserId(loginUser.getId(), contextPath,language);
+        session.setAttribute(WebConst.SESSION_LEFTMENU, leftMenuStr);
+        return modelAndView;
+    }
 }

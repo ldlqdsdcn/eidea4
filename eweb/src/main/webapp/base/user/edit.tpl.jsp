@@ -8,8 +8,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/inc/taglib.jsp" %>
 <div class="container-fluid" ng-controller="editCtrl">
-    <div class="page-title">
-        <h3> <%--用户信息--%><eidea:label key="menu.user"/></h3>
+    <div class="page-header">
+        <ol class="breadcrumb">
+            <li><a href="javascript:;"><i class="icon-fire"></i><eidea:label key="menu.user"/></a></li>
+        </ol>
     </div>
     <div class="row-fluid">
         <div class="span12">
@@ -54,7 +56,7 @@
                 <div class="form-group">
                     <label class="col-sm-2 text-right"><%--电话--%><eidea:label key="user.column.telephone"/></label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="telephone" placeholder="<%--请输入电话--%><eidea:message key="user.input.user.phone"/>" ng-model="userBo.telephone"
+                        <input type="tel" class="form-control" id="telephone" placeholder="<%--请输入电话--%><eidea:message key="user.input.user.phone"/>" ng-model="userBo.telephone"
                                ng-maxlength="45">
                     </div>
                 </div>

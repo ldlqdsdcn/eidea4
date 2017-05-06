@@ -2,6 +2,7 @@ package com.dsdl.eidea.core.com.dsdl.eidea.base.service.test;
 
 import java.util.List;
 
+import com.dsdl.eidea.core.params.QueryParams;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Test;
@@ -29,11 +30,11 @@ public class RoleServiceTest {
 	    @Test
 	    public void testgetLabelList(){
 		        Gson gson = new Gson();
-		        List<RoleBo> roleBoList = roleService.getRoleList(new Search());
+		        List<RoleBo> roleBoList = roleService.getRoleList(new Search(),new QueryParams()).getData();
 		        logger.debug(gson.toJson(roleBoList));
 		        Assert.assertTrue(roleBoList.size() > 0);
 	    }
-	    
+
 	    
 	    
 }

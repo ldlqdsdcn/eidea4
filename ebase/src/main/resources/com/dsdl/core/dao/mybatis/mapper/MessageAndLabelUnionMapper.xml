@@ -8,14 +8,14 @@
     </resultMap>
     <select id="selectLabelTrl" parameterType="java.lang.String" resultMap="msgResult">
         select core_label.`_key`,core_label.msgtext as default_value,trl.msgtext
-        from e_idea.core_label left JOIN
-        (select _key,msgtext,lang from e_idea.core_label_trl where lang=#{value,jdbcType=VARCHAR}) trl
+        from core_label left JOIN
+        (select _key,msgtext,lang from core_label_trl where lang=#{value,jdbcType=VARCHAR}) trl
         ON core_label.`_key` = trl.`_key` where isactive='Y'  ORDER BY  core_label._key
     </select>
     <select id="selectMessageTrl" parameterType="java.lang.String" resultMap="msgResult">
         select core_message.`_key`,core_message.msgtext as default_value,trl.msgtext
-      from e_idea.core_message left JOIN
-      (select _key,msgtext,lang from e_idea.core_message_trl where lang=#{value,jdbcType=VARCHAR}) trl
+      from core_message left JOIN
+      (select _key,msgtext,lang from core_message_trl where lang=#{value,jdbcType=VARCHAR}) trl
         ON core_message.`_key` = trl.`_key` where isactive='Y'  ORDER BY  core_message._key
     </select>
 </mapper>

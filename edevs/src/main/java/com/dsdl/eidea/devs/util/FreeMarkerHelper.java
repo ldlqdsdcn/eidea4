@@ -4,11 +4,9 @@ import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapper;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import org.springframework.util.ResourceUtils;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.util.Map;
 
 /**
@@ -18,10 +16,10 @@ public class FreeMarkerHelper {
     private String   genActionPath;
     private static FreeMarkerHelper freeMarkerHelper;
     private Configuration config = new Configuration();
-    private FreeMarkerHelper()
-    {
+    private FreeMarkerHelper() throws FileNotFoundException {
         File file=new File("");
-        File filepath = new File(file.getAbsolutePath()+"/src/main/resources/ftl");
+        File filepath = ResourceUtils.getFile("classpath:ftl");
+
         genActionPath=file.getAbsolutePath()+"/eweb/";
 
         try {
@@ -35,7 +33,11 @@ public class FreeMarkerHelper {
     {
         if(freeMarkerHelper==null)
         {
-            freeMarkerHelper=new FreeMarkerHelper();
+            try {
+                freeMarkerHelper=new FreeMarkerHelper();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
         }
         return freeMarkerHelper;
     }

@@ -37,17 +37,4 @@ public class SearchPo implements java.io.Serializable {
 	private List<SearchColumnPo> coreSearchColumns = new ArrayList<SearchColumnPo>(
 			0);
 
-	// Constructors
-
-	/** default constructor */
-	public SearchPo() {
-	}
-
-	/** minimal constructor */
-	public SearchPo(Integer id, String name, String uri) {
-		this.id = id;
-		this.name = name;
-		this.uri = uri;
-	}
-
 }

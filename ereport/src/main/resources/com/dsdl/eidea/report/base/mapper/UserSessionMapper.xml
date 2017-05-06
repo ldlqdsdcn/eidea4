@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dsdl.eidea.report.base.dao.UserSessionDao" >
+    <resultMap id="BaseResult" type="com.dsdl.eidea.report.base.model.UserSession">
+        <result column="id" property="id" jdbcType="INTEGER" />
+        <result column="session_id" property="sessionId" jdbcType="VARCHAR" />
+        <result column="login_date" property="loginDate" jdbcType="TIMESTAMP" />
+        <result column="remote_host" property="remoteHost" jdbcType="VARCHAR" />
+    </resultMap>
+    <select id="getUserSessionList" resultMap="BaseResult">
+        select id,session_id,login_date,remote_host from sys_user_session
+    </select>
+</mapper>

@@ -1,6 +1,8 @@
 package com.dsdl.eidea.base.service;
 
 import com.dsdl.eidea.base.entity.bo.ModuleBo;
+import com.dsdl.eidea.core.dto.PaginationResult;
+import com.dsdl.eidea.core.params.QueryParams;
 import com.googlecode.genericdao.search.Search;
 
 import java.util.List;
@@ -14,7 +16,7 @@ public interface ModuleService {
      * @param search
      * @return
      */
-    List<ModuleBo> getModuleList(Search search);
+    PaginationResult<ModuleBo> getModuleList(Search search, QueryParams queryParams);
 
     /**
      * deleteModuleList:批量删除
@@ -23,13 +25,13 @@ public interface ModuleService {
     void deleteModuleList(Integer[] ids);
 
     /**
-     * saveModule:保存
+     * save保存
      * @param moduleBo
      */
     void saveModule(ModuleBo moduleBo);
 
     /**
-     * getModule:根据id查询module对象
+     * get根据id查询module对象
      * @param id
      * @return
      */

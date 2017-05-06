@@ -701,7 +701,7 @@ public class Filter implements Serializable {
 				sb2.append(")");
 			}
 		default:
-			return "**INVALID OPERATOR: (" + operator + ") - VALUE: " + InternalUtil.paramDisplayString(value) + " **";
+			return "**INVALID  (" + operator + ") - VALUE: " + InternalUtil.paramDisplayString(value) + " **";
 		}
 	}
 

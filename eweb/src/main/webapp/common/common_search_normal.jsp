@@ -9,7 +9,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="com.dsdl.eidea.common.web.vo.SearchFormRow" %>
 <%@ page import="com.dsdl.eidea.common.web.vo.SearchColumnVo" %>
-<%@ page import="com.dsdl.eidea.core.def.SearchPageFieldInputType" %>
+<%@ page import="com.dsdl.eidea.core.def.PageFieldInputType" %>
 <%@ page import="com.dsdl.eidea.core.entity.bo.CommonSearchResult" %>
 <%@ include file="/inc/taglib.jsp"%>
 <!-- 模态框（Modal） -->
@@ -37,16 +37,33 @@
                             }
                             List<SearchColumnVo> searchColumnVoList= searchFormRow.getSearchColumnVoList();
                     %>
-                    <div class="row">
+
                         <%  for(SearchColumnVo searchColumnVo:searchColumnVoList)
                         {
                         %>
-                        <div class="form-group col-sm-6">
-                            <label class="control-label col-sm-4"><%=searchColumnVo.getColumnLabel()%></label>
-                            <div class="col-sm-8">
-                                <%if(searchColumnVo.getShowType()== SearchPageFieldInputType.INPUT.getKey()||searchColumnVo.getShowType()== SearchPageFieldInputType.DATEPICKER.getKey()||searchColumnVo.getShowType()== SearchPageFieldInputType.DATETIMEPICKER.getKey()){%>
+                        <div class="form-group">
+                            <label class="control-label"><%=searchColumnVo.getColumnLabel()%></label>
+
+                                <%if(searchColumnVo.getShowType()== PageFieldInputType.INPUT.getKey()){%>
                                 <input class="form-control" type="text" id="<%=searchColumnVo.getColumnId()%>" name="<%=searchColumnVo.getColumnName()%>" value="<%=searchColumnVo.getValue()==null?"":searchColumnVo.getValue()%>"/>
-                                <%} else if(searchColumnVo.getShowType()== SearchPageFieldInputType.SELECT.getKey()){%>
+                                <%}
+                                else if(searchColumnVo.getShowType()== PageFieldInputType.DATEPICKER.getKey()){
+                                %>
+                                <div class=" input-group date bootstrap-date-search">
+                                    <input class="form-control" type="date" id="<%=searchColumnVo.getColumnId()%>" name="<%=searchColumnVo.getColumnName()%>" value="<%=searchColumnVo.getValue()==null?"":searchColumnVo.getValue()%>"/>
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                </div>
+                                <%
+                                }
+                                else if(searchColumnVo.getShowType()== PageFieldInputType.DATETIMEPICKER.getKey()){
+                                %>
+                                <div class="input-group date bootstrap-datetime-search">
+                                    <input class="form-control" type="datetime" id="<%=searchColumnVo.getColumnId()%>" name="<%=searchColumnVo.getColumnName()%>" value="<%=searchColumnVo.getValue()==null?"":searchColumnVo.getValue()%>"/>
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                </div>
+                                <%
+                                }
+                                else if(searchColumnVo.getShowType()== PageFieldInputType.SELECT.getKey()){%>
                                 <select class="form-control" id="<%=searchColumnVo.getColumnId()%>" name="<%=searchColumnVo.getColumnId()%>">
                                     <option value="">-------</option>
                                     <%
@@ -59,10 +76,10 @@
                                 </select>
                                 <%}
                                 %>
-                            </div>
+
                         </div>
                         <% }%>
-                    </div>
+
                     <%}%>
 
                 </form>
@@ -76,35 +93,33 @@
             </div>
         </div><!-- /.modal-content -->
         <script type="text/javascript">
-            <%
-                for(SearchFormRow searchFormRow:searchFormRowList)
-                {
-                    if(searchFormRow==null)
-                        {
-                            continue;
-                        }
-                    List<SearchColumnVo> searchColumnVoList= searchFormRow.getSearchColumnVoList();
-                    for(SearchColumnVo searchColumnVo:searchColumnVoList)
-                {
-                  if(searchColumnVo.getShowType()== SearchPageFieldInputType.DATEPICKER.getKey()){
-                %>
-            $('#<%=searchColumnVo.getColumnId()%>').datetimepicker({
-                dayOfWeekStart : 1,
-                lang:'en',
-                timepicker:false,
-                format:"Y-m-d"
+            /**
+             * 日期时间选择控件
+             * bootstrap-datetime 24小时时间是hh
+             */
+            $('.bootstrap-datetime-search').datetimepicker({
+                language:  'zh-CN',
+                format: 'yyyy-mm-dd hh:ii:ss',
+                weekStart: 1,
+                todayBtn:  1,
+                autoclose: 1,
+                todayHighlight: 1,
+                startView: 2,
+                forceParse: 0,
+                showMeridian: 1,
+                clearBtn: true
+            });
+            /**
+             * 日期选择控件
+             */
+            $('.bootstrap-date-search').datepicker({
+                language:  'zh-CN',
+                format: 'yyyy-mm-dd',
+                autoclose: 1,
+                todayBtn:  1,
+                clearBtn:true
             });
 
-            <%} else if(searchColumnVo.getShowType()== SearchPageFieldInputType.DATETIMEPICKER.getKey()){%>
-
-            $('#<%=searchColumnVo.getColumnId()%>').datetimepicker({
-                dayOfWeekStart : 1,
-                lang:'en',
-                format:"Y-m-d H:i:s",step:10
-            });
-            <%}
-            }
-            }%>
             $("#searchBtn").click(function()
             {
                 var array=<%=request.getAttribute("searchColumnJson")%>;
@@ -116,7 +131,7 @@
                     oneColumn.value=$("#"+oneColumn.columnId).val();
                     if(oneColumn.dataType==2)
                     {
-                        if(!isInt( oneColumn.value))
+                        if(!eideaValidator.isInt( oneColumn.value))
                         {
                             bootbox.alert(oneColumn.columnName+"<eidea:message key="common.search.error.Integer.column_name"/>");
                             return false;
@@ -124,7 +139,7 @@
                     }
                     else if(oneColumn.dataType==3)
                     {
-                        if(!isFloat( oneColumn.value))
+                        if(!eideaValidator.isFloat( oneColumn.value))
                         {
                             bootbox.alert(oneColumn.columnName+"<eidea:message key="common.search.error.number.column_name"/>");
                             return false;

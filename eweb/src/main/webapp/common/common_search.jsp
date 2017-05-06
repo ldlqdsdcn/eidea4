@@ -33,10 +33,10 @@
             <input type="text" class="form-control" ng-model="currentColumn.value"  ng-show="currentColumn.showType==1">
             <select  class="form-control"  ng-model="currentColumn.value" ng-options="option.key as option.label for option in currentColumn.commonSearchResultList" ng-show="currentColumn.showType==2"></select>
             <input type="text"  ng-show="currentColumn.showType==3" class="form-control" id="value-date"  ng-model="currentColumn.value">
-            <input type="text" class="form-control" id="value-date-time" ng-show="currentColumn.showType==4"  ng-model="currentColumn.value">
+            <input type="text" class="form-control" id="value-date-time" ng-show="currentColumn.showType==4"  ng-model="currentColumn.value" >
           </div>
             <div class="form-group">
-            <button  type="submit" class="btn btn-primary" ng-click="submit()"  ng-disabled="currentColumn.value==null"><%--添加--%><eidea:label key="common.button.add"/></button>
+            <button  type="button" class="btn btn-primary" ng-click="submit()"  ng-disabled="currentColumn.value==null"><%--添加--%><eidea:label key="common.button.add"/></button>
           </div>
             <br>
           <div class="form-group" ng-show="searchColumnList!=null">
@@ -75,7 +75,7 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal"><%--关闭--%><eidea:label key="common.button.closed"/>
         </button>
-        <button type="button" class="btn btn-primary"  ng-click="search()">
+        <button type="button" class="btn btn-primary"  ng-click="search()" ng-keyup="doSearch($event)">
           <%--查找--%><eidea:label key="common.button.search"/>
         </button>
       </div>
@@ -84,23 +84,28 @@
 
 </div>
 <script type="text/javascript">
-    $.datetimepicker.setLocale('cn');
-
     var searchApp = angular.module('searchApp', []);
     console.log("search ...");
     searchApp.controller('searchCtrl', function ($scope, $http)  {
-        console.log("--------------->111");
-        $('#value-date').datetimepicker({
-            dayOfWeekStart : 1,
-            lang:'cn',
-            timepicker:false,
-            format:"Y-m-d"
+        $('#value-date').datepicker({
+          language:  'zh-CN',
+          format: 'yyyy-mm-dd',
+          autoclose: 1,
+          todayBtn:  1,
+          clearBtn:true
         });
-        $('#value-date-time').datetimepicker({
-            dayOfWeekStart : 1,
-            lang:'cn',
-            format:"Y-m-d H:i:s",step:10
-        });
+      $('#value-date-time').datetimepicker({
+        language:  'zh-CN',
+        format: 'yyyy-mm-dd hh:ii:ss',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        forceParse: 0,
+        showMeridian: 1,
+        clearBtn: true
+      });
         $scope.columnList=${searchColumnJson};
         console.log("columnList="+$scope.columnList);
         $scope.searchColumnList=${addedSearchColumnVoListJson};
@@ -121,7 +126,12 @@
             var index = $scope.searchColumnList.indexOf(x);
             $scope.searchColumnList.splice(index, 1);
         };
-
+      $scope.doSearch=function($event){
+        if($event.keyCode==13){//回车
+          alert("enter");
+          $scope.search();
+        }
+      }
         $scope.search=function()
         {
             console.log(JSON.stringify($scope.searchColumnList));

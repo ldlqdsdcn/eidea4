@@ -5,12 +5,14 @@
   Time: 8:46
   To change this template use File | Settings | File Templates.
 --%>
+
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/inc/taglib.jsp" %>
 <div class="container-fluid" ng-controller="editCtrl">
     <div class="page-header">
         <ol class="breadcrumb">
-            <li><a href="javascript:;"><i class="icon-tasks"></i><eidea:label key="dymenu.label.newmenu"/></a></li>
+            <li><a href="javascript:;"><i class="icon-tasks"></i><eidea:label key="dymenus.title"/></a></li>
         </ol>
     </div>
     <div class="row-fluid">
@@ -19,7 +21,7 @@
                 <div class="form-group">
                     <label class="col-sm-2 text-right"><eidea:label key="dymenuForm.label.sequence"/></label>
                     <div class="col-sm-10">
-                        <input type="number" class="form-control" id="seqNo" placeholder="<eidea:message key="login.input.order"/>" ng-model="pageMenuBo.seqNo" required ng-minlength="1" ng-maxlength="10">
+                        <input type="number" class="form-control" id="seqNo" placeholder="<eidea:message key="login.input.order"/>" ng-model="pageMenuBo.seqNo" required ng-minlength="1" ng-maxlength="10" min="0" ng-pattern="/^\d+$/">
                      </div>
                 </div>
                 <div class="form-group">

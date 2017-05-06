@@ -1,6 +1,7 @@
 package com.dsdl.eidea.core.service.test;
 
 import com.dsdl.eidea.core.entity.bo.SearchBo;
+import com.dsdl.eidea.core.params.QueryParams;
 import com.dsdl.eidea.core.service.SearchService;
 import com.google.gson.Gson;
 import com.googlecode.genericdao.search.Search;
@@ -24,7 +25,7 @@ public class SearchServiceTest {
     @Test
     public void testFindList()
     {
-        List<SearchBo> searchBoList=searchService.findList(new Search());
+        List<SearchBo> searchBoList=searchService.findList(new Search(),new QueryParams()).getData();
         Assert.assertTrue(searchBoList!=null);
     }
     @Test

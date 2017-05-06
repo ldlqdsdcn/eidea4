@@ -31,6 +31,10 @@
                     <input type="text" class="form-control" id="remark" placeholder="<%--请输入备注--%><eidea:message key="login.input.remark"/>" ng-model="directoryBo.remark"   ng-maxlength="500">
                 </div>
                 <div class="form-group">
+                    <label for="remark"><%--基础权限--%><eidea:label key="directory.access.repository"/></label>
+                    <input type="text" class="form-control" id="repository" placeholder="<%--请输入备注--%><eidea:message key="directory.repository"/>" ng-model="directoryBo.repository"   ng-maxlength="500">
+                </div>
+                <div class="form-group">
                     <label for="isactive"><%--是否有效--%><eidea:label key="base.whetherEffective"/><input type="checkbox" class="form-control" id="isactive"   ng-true-value="'Y'" ng-false-value="'N'" ng-model="directoryBo.isactive"  ></label>
 
                 </div>

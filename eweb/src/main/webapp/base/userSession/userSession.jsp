@@ -28,52 +28,38 @@
                         .otherwise({redirectTo: '/list'});
             }]);
     app.controller('listCtrl', function ($scope, $http) {
-        $scope.allList = [];
         $scope.modelList = [];
         $scope.delFlag = false;
-        $scope.isLoading=true;
-        $http.get("<c:url value="/base/userSession/list"/>")
-                .success(function (response) {
-                    $scope.isLoading=false;
-                    if (response.success) {
-                        $scope.updateList(response.data);
-                    }
-                    else {
-                        bootbox.alert(response.message);
-                    }
+        $scope.isLoading = true;
 
-                });
-        $scope.updateList = function (data) {
-            $scope.allList = data;
-            $scope.bigTotalItems = $scope.allList.length;
-            $scope.modelList.length = 0;
-            $scope.pageChanged();
+        $scope.updateList = function (result) {
+            $scope.modelList = result.data;
+            $scope.queryParams.totalRecords = result.totalRecords;
+            $scope.queryParams.init = false;
         };
-        $scope.pageChanged = function (delF) {
-            var bgn = ($scope.bigCurrentPage - 1) * $scope.itemsPerPage;
-            var end = bgn + $scope.itemsPerPage;
-            $scope.modelList.length = 0;
-            if (delF == null) {
-                delF = false;
-            }
-            for (var i = bgn; i < end && i < $scope.allList.length; i++) {
-                var item = $scope.allList[i];
-                item.delFlag = delF;
-                $scope.modelList.push(item);
+        $scope.pageChanged = function () {
+            $http.post("<c:url value="/base/userSession/listPaging"/>", $scope.queryParams)
+                    .success(function (response) {
+                        $scope.isLoading = false;
+                        if (response.success) {
+                            $scope.updateList(response.data);
+                        }
+                        else {
+                            bootbox.alert(response.message);
+                        }
 
-            }
+                    });
         }
-       
         //可现实分页item数量
         $scope.maxSize =${pagingSettingResult.pagingButtonSize};
-        //每页现实记录数
-        $scope.itemsPerPage =${pagingSettingResult.perPageSize};
-        //当前页
-        $scope.bigCurrentPage = 1;
-        //记录数
-        $scope.bigTotalItems = 0;
+        $scope.queryParams = {
+            pageSize:${pagingSettingResult.perPageSize},//每页显示记录数
+            pageNo: 1, //当前页
+            totalRecords: 0,//记录数
+            init: true
+        };
+        $scope.pageChanged();
     });
-   
     app.run([
         'bootstrap3ElementModifier',
         function (bootstrap3ElementModifier) {

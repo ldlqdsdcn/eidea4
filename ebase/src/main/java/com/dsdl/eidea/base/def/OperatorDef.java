@@ -10,7 +10,7 @@ import java.util.Map;
 public enum OperatorDef {
 
     ADD("add","添加"),UPDATE("update","修改"),DELETE("delete","删除"),VIEW("view","查看");
-    OperatorDef(String key,String desc)
+    OperatorDef(String key, String desc)
     {
         this.key=key;
         this.desc=desc;

@@ -4,12 +4,15 @@ import org.junit.Test;
 
 import java.text.ParseException;
 import java.util.Date;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * Created by 刘大磊 on 2017/1/5 9:22.
  */
 public class DateTimeHelperTest {
     public static class TestSimpleDateFormatThreadSafe extends Thread {
+        Set<String> hash=new TreeSet<>();
         @Override
         public void run() {
             while(true) {

@@ -1,0 +1,176 @@
+/**
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements. See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership. The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+package com.dsdl.eidea.soap.cxf2.interceptor;
+
+import com.dsdl.eidea.soap.dao.WslogDao;
+import com.dsdl.eidea.soap.dao.impl.WslogDaoForLog;
+import com.dsdl.eidea.soap.model.Wslog;
+import org.apache.cxf.common.injection.NoJSR250Annotations;
+import org.apache.cxf.common.logging.LogUtils;
+import org.apache.cxf.helpers.IOUtils;
+import org.apache.cxf.interceptor.AbstractLoggingInterceptor;
+import org.apache.cxf.interceptor.Fault;
+import org.apache.cxf.interceptor.LoggingMessage;
+import org.apache.cxf.io.CachedOutputStream;
+import org.apache.cxf.message.Message;
+import org.apache.cxf.phase.Phase;
+
+import java.io.InputStream;
+import java.io.PrintWriter;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+/**
+ * A simple logging handler which outputs the bytes of the message to the
+ * Logger.
+ */
+@NoJSR250Annotations
+public class LoggingInInterceptor extends AbstractLoggingInterceptor {
+    private static final Logger LOG = LogUtils.getLogger(LoggingInInterceptor.class);
+    WslogDao wslogDao=new WslogDaoForLog();
+    public LoggingInInterceptor() {
+        super(Phase.RECEIVE);
+    }
+    
+    public LoggingInInterceptor(String phase) {
+        super(phase);
+    }
+
+    public LoggingInInterceptor(String id, String phase) {
+        super(id, phase);
+    }
+
+    public LoggingInInterceptor(int lim) {
+        this();
+        limit = lim;
+    }
+    public LoggingInInterceptor(String id, int lim) {
+        this(id, Phase.RECEIVE);
+        limit = lim;
+    }
+
+    public LoggingInInterceptor(PrintWriter w) {
+        this();
+        this.writer = w;
+    }
+    public LoggingInInterceptor(String id, PrintWriter w) {
+        this(id, Phase.RECEIVE);
+        this.writer = w;
+    }
+    
+    public void handleMessage(Message message) throws Fault {
+        if (writer != null || getLogger().isLoggable(Level.INFO)) {
+            logging(message);
+        }
+    }
+
+    protected void logging(Message message) throws Fault {
+        if (message.containsKey(LoggingMessage.ID_KEY)) {
+            return;
+        }
+        String id = (String)message.getExchange().get(LoggingMessage.ID_KEY);
+        if (id == null) {
+            id = LoggingMessage.nextId();
+            message.getExchange().put(LoggingMessage.ID_KEY, id);
+        }
+        message.put(LoggingMessage.ID_KEY, id);
+        final LoggingMessage buffer 
+            = new LoggingMessage("Inbound Message\n----------------------------", id);
+
+        Integer responseCode = (Integer)message.get(Message.RESPONSE_CODE);
+        if (responseCode != null) {
+            buffer.getResponseCode().append(responseCode);
+        }
+
+        String encoding = (String)message.get(Message.ENCODING);
+
+        if (encoding != null) {
+            buffer.getEncoding().append(encoding);
+        }
+        String httpMethod = (String)message.get(Message.HTTP_REQUEST_METHOD);
+        if (httpMethod != null) {
+            buffer.getHttpMethod().append(httpMethod);
+        }
+        String ct = (String)message.get(Message.CONTENT_TYPE);
+        if (ct != null) {
+            buffer.getContentType().append(ct);
+        }
+        Object headers = message.get(Message.PROTOCOL_HEADERS);
+
+        if (headers != null) {
+            buffer.getHeader().append(headers);
+        }
+        String uri = (String)message.get(Message.REQUEST_URL);
+        if (uri != null) {
+            buffer.getAddress().append(uri);
+            String query = (String)message.get(Message.QUERY_STRING);
+            if (query != null) {
+                buffer.getAddress().append("?").append(query);
+            }
+        }
+        InputStream is = message.getContent(InputStream.class);
+        if (is != null) {
+            CachedOutputStream bos = new CachedOutputStream();
+            try {
+                IOUtils.copy(is, bos);
+
+                bos.flush();
+                is.close();
+
+                message.setContent(InputStream.class, bos.getInputStream());
+                if (bos.getTempFile() != null) {
+                    //large thing on disk...
+                    buffer.getMessage().append("\nMessage (saved to tmp file):\n");
+                    buffer.getMessage().append("Filename: " + bos.getTempFile().getAbsolutePath() + "\n");
+                }
+                if (bos.size() > limit) {
+                    buffer.getMessage().append("(message truncated to " + limit + " bytes)\n");
+                }
+                writePayload(buffer.getPayload(), bos, encoding, ct); 
+                    
+                bos.close();
+            } catch (Exception e) {
+                throw new Fault(e);
+            }
+        }
+            
+
+        Wslog wslog=new Wslog();
+        String address=buffer.getAddress()==null?null:buffer.getAddress().toString();
+        wslog.setAddress(address);
+        String contenttype=buffer.getContentType()==null?null:buffer.getContentType().toString();
+        wslog.setContenttype(contenttype);
+        String encoding1=buffer.getEncoding()==null?null:buffer.getEncoding().toString();
+        wslog.setEncoding(encoding1);
+        wslog.setHeader(buffer.getHeader()==null?null:buffer.getHeader().toString());
+        wslog.setHttpmethod(buffer.getHttpMethod()==null?null:buffer.getHttpMethod().toString());
+        wslog.setMessage(buffer.getMessage()==null?null:buffer.getMessage().toString());
+        wslog.setPayload(buffer.getPayload()==null?null:buffer.getPayload().toString());
+        wslog.setResponsecode(buffer.getResponseCode()==null?null:buffer.getResponseCode().toString());
+        wslog.setCreated(new Date());
+        wslog.setAction("I");
+        wslogDao.insertWslog(wslog);
+    }
+
+    @Override
+    protected Logger getLogger() {
+        return LOG;
+    }
+}

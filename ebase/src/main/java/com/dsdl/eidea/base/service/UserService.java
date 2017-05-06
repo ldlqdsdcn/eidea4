@@ -2,6 +2,8 @@ package com.dsdl.eidea.base.service;
 
 import com.dsdl.eidea.base.def.OperatorDef;
 import com.dsdl.eidea.base.entity.bo.*;
+import com.dsdl.eidea.core.dto.PaginationResult;
+import com.dsdl.eidea.core.params.QueryParams;
 import com.googlecode.genericdao.search.Search;
 
 import java.util.List;
@@ -16,7 +18,7 @@ public interface UserService {
      * @param search
      * @return
      */
-    List<UserBo> getUserList(Search search);
+    PaginationResult<UserBo> getUserList(Search search, QueryParams queryParams);
     /**
      * deleteUserList:用户批量删除
      * @param ids
@@ -24,13 +26,13 @@ public interface UserService {
     void deleteUserList(Integer[] ids);
 
     /**
-     * saveUser:用户保存
+     * save用户保存
      * @param userBo
      */
     void saveUser(UserBo userBo);
 
     /**
-     * getUser:查询用户
+     * get查询用户
      * @param id
      * @return
      */
@@ -79,4 +81,12 @@ public interface UserService {
      * @return
      */
     UserContent getUserContent(String token);
+
+
+    /**
+     * 根据用户名获取 用户
+     * @param username
+     * @return
+     */
+    UserBo getUserByUsername(String username);
 }

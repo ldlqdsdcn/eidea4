@@ -215,7 +215,6 @@
                     else {
                         bootbox.alert(data.message);
                     }
-
                 });
             }
 

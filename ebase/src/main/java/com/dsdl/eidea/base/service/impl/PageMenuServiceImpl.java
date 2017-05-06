@@ -7,6 +7,7 @@ import com.dsdl.eidea.base.entity.bo.PageMenuBo;
 import com.dsdl.eidea.base.entity.bo.PageMenuTrlBo;
 import com.dsdl.eidea.base.entity.po.*;
 import com.dsdl.eidea.base.service.PageMenuService;
+import com.dsdl.eidea.base.service.SettingsService;
 import com.dsdl.eidea.core.dao.CommonDao;
 import com.dsdl.eidea.core.dto.PaginationResult;
 import com.dsdl.eidea.core.entity.bo.LanguageBo;
@@ -38,6 +39,8 @@ public class PageMenuServiceImpl implements PageMenuService {
     private CommonDao<UserPo, Integer> userDao;
     @Autowired
     private LanguageService languageService;
+    @Autowired
+    private SettingsService settingsService;
     private ModelMapper modelMapper = new ModelMapper();
     @Override
     public List<PageMenuBo> findPageMenu(Search search) {
@@ -196,8 +199,6 @@ public class PageMenuServiceImpl implements PageMenuService {
     }
 
     private List<PageMenuPo> getForderMenu(PageMenuPo pageMenuPo, List<PageMenuPo> menuForderList) {
-
-
         if (pageMenuPo.getParentMenuId() != null) {
             PageMenuPo forderMenu = pageMenuDao.find(pageMenuPo.getParentMenuId());
             if (!menuForderList.contains(forderMenu)) {
@@ -205,18 +206,13 @@ public class PageMenuServiceImpl implements PageMenuService {
                 if (forderMenu.getParentMenuId() != null) {
                     getForderMenu(forderMenu, menuForderList);
                 }
-
             }
-
         }
-
         return menuForderList;
     }
 
     private String getLeftMenuList(List<PageMenuPo> pageMenuPoList, String contextPath, String languageCode) {
-
         List<PageMenuPo> menuForderList = new ArrayList<>();
-
         for (PageMenuPo pageMenuPo : pageMenuPoList) {
             getForderMenu(pageMenuPo, menuForderList);
         }
@@ -237,10 +233,9 @@ public class PageMenuServiceImpl implements PageMenuService {
                 }
             }
             pageMenuBoList.add(pageMenuBo);
-
         }
-//        List<PageMenuBo> pageMenuBoList = modelMapper.map(pageMenuPoList, new TypeToken<List<PageMenuBo>>() {
-//        }.getType());
+        //List<PageMenuBo> pageMenuBoList = modelMapper.map(pageMenuPoList, new TypeToken<List<PageMenuBo>>() {
+        //}.getType());
         logger.debug("pageMenuBoList.size=" + pageMenuBoList.size());
         return buildMenu(null, pageMenuBoList, contextPath);
 

@@ -139,7 +139,7 @@ public class TableController {
             TableMetaDataBo tableMetaDataBo = tableService.getTableDescription(tableName);
             return JsonResult.success(tableMetaDataBo);
         }else {
-            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(),userResource.getMessage("table.name.already.exist"));
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(),userResource.getMessage("table.error.name_not_exist"));
         }
     }
 

@@ -196,11 +196,11 @@
 
                         }
                         else {
-                            $scope.message="<eidea:label key="table.error.name_exists"/> ";
                             var info={"name":$scope.tableInfo.name};
                             $scope.tableInfo=info;
-                            $("#name").focus();
-
+                            bootbox.alert(response.message,function () {
+                                $("#name").focus();
+                            });
                         }
                     });
         };

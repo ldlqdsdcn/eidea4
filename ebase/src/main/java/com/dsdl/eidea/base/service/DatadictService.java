@@ -19,4 +19,6 @@ public interface DatadictService {
 	DatadictPo getDatadict(Integer id);
 	void saveDatadict(DatadictPo datadict);
 	void deletes(Integer[] ids);
+	boolean findExistCode(String code);
+	List<DatadictPo> findExistDatadictByCode(String code);
 }

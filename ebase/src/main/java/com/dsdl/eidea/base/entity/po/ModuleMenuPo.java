@@ -21,7 +21,7 @@ public class ModuleMenuPo implements java.io.Serializable {
 	private Integer id;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "sys_page_menu_id", nullable = false)
-	private PageMenuPo sysPageMenu;
+	private PageMenuPo pageMenuPo;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "sys_module_id", nullable = false)
 	private ModulePo sysModule;

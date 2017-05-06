@@ -1,7 +1,10 @@
 package com.dsdl.eidea.core.web.controller;
 
 import com.dsdl.eidea.base.web.vo.UserResource;
+import com.dsdl.eidea.core.dto.PaginationResult;
 import com.dsdl.eidea.core.entity.po.ReportSettingsPo;
+import com.dsdl.eidea.core.params.DeleteParams;
+import com.dsdl.eidea.core.params.QueryParams;
 import com.dsdl.eidea.core.service.ReportSettingsService;
 import com.dsdl.eidea.core.web.def.WebConst;
 import com.dsdl.eidea.core.web.result.JsonResult;
@@ -38,29 +41,29 @@ public class ReportSettingsController {
     @RequiresPermissions(value = "view")
     public ModelAndView showList() {
         ModelAndView modelAndView = new ModelAndView("/core/reportSettings/reportSettings");
-        modelAndView.addObject("pagingSettingResult", PagingSettingResult.getDefault());
+        modelAndView.addObject(WebConst.PAGING_SETTINGS, PagingSettingResult.getDbPaging());
         modelAndView.addObject(WebConst.PAGE_URI, URl);
         return modelAndView;
     }
 
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    @RequestMapping(value = "/list", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions(value = "view")
-    public JsonResult<List<ReportSettingsPo>> list(HttpSession session) {
+    public JsonResult<PaginationResult<ReportSettingsPo>> list(HttpSession session, @RequestBody QueryParams queryParams) {
         Search search = SearchHelper.getSearchParam(URl, session);
-        List<ReportSettingsPo> reportSettingsPoList = reportSettingsService.getReportSettingsList(search);
+        PaginationResult<ReportSettingsPo> reportSettingsPoList = reportSettingsService.getReportSettingsList(search,queryParams);
         return JsonResult.success(reportSettingsPoList);
     }
 
     @RequestMapping(value = "/deletes", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions(value = "delete")
-    public JsonResult<List<ReportSettingsPo>> deletes(@RequestBody String[] keys, HttpSession session) {
+    public JsonResult<PaginationResult<ReportSettingsPo>> deletes(@RequestBody DeleteParams<String> deleteParams, HttpSession session) {
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
-        if (keys == null || keys.length == 0) {
+        if (deleteParams.getIds() == null || deleteParams.getIds().length == 0) {
             return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("common.error.delete.key_empty.failure"));
         }
-        for(String key:keys)
+        for(String key:deleteParams.getIds())
         {
            ReportSettingsPo reportSettingsPo= reportSettingsService.getReportSettingsPo(key);
             if("Y".equals(reportSettingsPo.getInit()))
@@ -68,8 +71,8 @@ public class ReportSettingsController {
                 return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("不允许删除init为Y的报表属性记录"));
             }
         }
-        reportSettingsService.deletes(keys);
-        return list(session);
+        reportSettingsService.deletes(deleteParams.getIds());
+        return list(session,deleteParams.getQueryParams());
     }
 
     @RequestMapping(value = "/get", method = RequestMethod.GET)

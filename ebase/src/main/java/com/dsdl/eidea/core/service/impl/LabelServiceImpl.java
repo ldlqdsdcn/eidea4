@@ -1,5 +1,7 @@
 package com.dsdl.eidea.core.service.impl;
 
+import com.dsdl.eidea.core.dto.PaginationResult;
+import com.dsdl.eidea.core.params.QueryParams;
 import com.dsdl.eidea.core.spring.annotation.DataAccess;
 import com.dsdl.eidea.base.def.ActivateDef;
 import com.dsdl.eidea.base.entity.po.RolePo;
@@ -15,6 +17,7 @@ import com.dsdl.eidea.core.service.LabelService;
 import com.dsdl.eidea.core.service.LanguageService;
 import com.googlecode.genericdao.search.ISearch;
 import com.googlecode.genericdao.search.Search;
+import com.googlecode.genericdao.search.SearchResult;
 import org.apache.log4j.Logger;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
@@ -48,10 +51,21 @@ public class LabelServiceImpl implements LabelService {
     }
 
     @Override
-    public List<LabelBo> getLabelList(ISearch search) {
-        List<LabelPo> clientPoList = labelDao.search(search);
-        return modelMapper.map(clientPoList, new TypeToken<List<LabelBo>>() {
-        }.getType());
+    public PaginationResult<LabelBo> getLabelList(Search search, QueryParams queryParams) {
+        search.setFirstResult(queryParams.getFirstResult());
+        search.setMaxResults(queryParams.getPageSize());
+        PaginationResult<LabelBo> paginationResult = null;
+        if (queryParams.isInit()){
+            SearchResult<LabelPo> searchResult = labelDao.searchAndCount(search);
+            List<LabelBo> list = modelMapper.map(searchResult.getResult(),new TypeToken<List<LabelBo>>(){}.getType());
+            paginationResult = PaginationResult.pagination(list,searchResult.getTotalCount(),queryParams.getPageNo(),queryParams.getPageSize());
+        }else{
+            List<LabelPo> searchPoList = labelDao.search(search);
+            List<LabelBo> labelBoList = modelMapper.map(searchPoList,new TypeToken<List<LabelBo>>(){}.getType());
+            paginationResult = PaginationResult.pagination(labelBoList,queryParams.getTotalRecords(),queryParams.getPageNo(),queryParams.getPageSize());
+        }
+        return paginationResult;
+
     }
 
     @Override
@@ -65,7 +79,7 @@ public class LabelServiceImpl implements LabelService {
             labelTrlPo.setId(e.getId());
             labelTrlPo.setMsgtext(e.getMsgtext());
             labelTrlPo.setLanguagePo(languageDao.find(e.getLang()));
-            labelTrlPo.setCoreLabel(labelPo);
+            labelTrlPo.setLabelPo(labelPo);
             labelTrlPoList.add(labelTrlPo);
             if (ActivateDef.ACTIVATED.getKey().equals(labelPo.getIsactive())) {
                 DbResourceBundle.updateLabel(labelBo.getKey(), e.getMsgtext(), e.getMsgtext(), e.getLang());
@@ -73,7 +87,7 @@ public class LabelServiceImpl implements LabelService {
                 DbResourceBundle.removeLabel(labelBo.getKey());
             }
         });
-        labelPo.setCoreLabelTrls(labelTrlPoList);
+        labelPo.setLabelTrls(labelTrlPoList);
         labelDao.save(labelPo);
     }
 
@@ -101,7 +115,7 @@ public class LabelServiceImpl implements LabelService {
         LabelPo labelPo = labelDao.find(key);
         if (labelPo != null) {
 
-            List<LabelTrlBo> labelTrlBoList = modelMapper.map(labelPo.getCoreLabelTrls(), new TypeToken<List<LabelTrlBo>>() {
+            List<LabelTrlBo> labelTrlBoList = modelMapper.map(labelPo.getLabelTrls(), new TypeToken<List<LabelTrlBo>>() {
             }.getType());
             LabelBo labelBo = modelMapper.map(labelPo, LabelBo.class);
             labelBo.setLabelTrlBoList(labelTrlBoList);
@@ -135,7 +149,7 @@ public class LabelServiceImpl implements LabelService {
         List<LabelBo> labelBoList = new ArrayList<>();
         labelPoList.forEach(e -> {
             LabelBo labelBo = modelMapper.map(e, LabelBo.class);
-            List<LabelTrlBo> labelTrlBoList = modelMapper.map(e.getCoreLabelTrls(), new TypeToken<List<LabelTrlBo>>() {
+            List<LabelTrlBo> labelTrlBoList = modelMapper.map(e.getLabelTrls(), new TypeToken<List<LabelTrlBo>>() {
             }.getType());
             labelBo.setLabelTrlBoList(labelTrlBoList);
             labelBoList.add(labelBo);

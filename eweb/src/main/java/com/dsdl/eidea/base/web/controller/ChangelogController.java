@@ -3,7 +3,9 @@ package com.dsdl.eidea.base.web.controller;
 import com.dsdl.eidea.base.entity.bo.ChangelogBo;
 import com.dsdl.eidea.base.service.ChangelogService;
 import com.dsdl.eidea.base.web.vo.ChangelogVo;
+import com.dsdl.eidea.core.dto.PaginationResult;
 import com.dsdl.eidea.core.entity.bo.TableColumnBo;
+import com.dsdl.eidea.core.params.QueryParams;
 import com.dsdl.eidea.core.web.result.JsonResult;
 import com.dsdl.eidea.core.web.vo.PagingSettingResult;
 import com.google.gson.Gson;
@@ -11,6 +13,7 @@ import com.googlecode.genericdao.search.Search;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -31,15 +34,15 @@ public class ChangelogController {
     @RequestMapping(value = "/showList", method = RequestMethod.GET)
     public ModelAndView showList() {
         ModelAndView modelAndView = new ModelAndView("/base/changelog/changelog");
-        modelAndView.addObject("pagingSettingResult", PagingSettingResult.getDefault());
+        modelAndView.addObject("pagingSettingResult", PagingSettingResult.getDbPaging());
         return modelAndView;
     }
 
     @RequiresPermissions(value = "view")
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    @RequestMapping(value = "/list", method = RequestMethod.POST)
     @ResponseBody
-    public JsonResult<List<ChangelogBo>> list(HttpSession session) {
-        List<ChangelogBo> changelogBoList = changelogService.getChangelogList(new Search());
+    public JsonResult<PaginationResult<ChangelogBo>> list(HttpSession session, @RequestBody QueryParams queryParams) {
+        PaginationResult<ChangelogBo> changelogBoList = changelogService.getChangelogList(new Search(),queryParams);
         return JsonResult.success(changelogBoList);
     }
 
@@ -110,7 +113,7 @@ public class ChangelogController {
         Search search = new Search();
         search.addFilterEqual("tablePo.tableName", tableName);
         search.addFilterEqual("pk",pk);
-        List<ChangelogBo> changelogBoList = changelogService.getChangelogList(search);
+        List<ChangelogBo> changelogBoList = changelogService.getChangelogList(search,new QueryParams()).getData();
         List<TableColumnBo> tableColumnBoList = changelogService.getChangelogHeader(tableName);
         ChangelogVo changelogVo = buildChangeLogVo(tableColumnBoList, changelogBoList);
         return JsonResult.success(changelogVo);

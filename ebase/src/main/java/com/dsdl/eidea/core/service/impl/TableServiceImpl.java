@@ -1,5 +1,7 @@
 package com.dsdl.eidea.core.service.impl;
 
+import com.dsdl.eidea.core.dto.PaginationResult;
+import com.dsdl.eidea.core.params.QueryParams;
 import com.dsdl.eidea.core.spring.annotation.DataAccess;
 import com.dsdl.eidea.core.dao.CommonDao;
 import com.dsdl.eidea.core.dao.TableDao;
@@ -12,6 +14,7 @@ import com.dsdl.eidea.util.StringUtil;
 import com.google.gson.Gson;
 import com.googlecode.genericdao.search.ISearch;
 import com.googlecode.genericdao.search.Search;
+import com.googlecode.genericdao.search.SearchResult;
 import org.apache.log4j.Logger;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
@@ -85,17 +88,22 @@ public class TableServiceImpl implements TableService {
         return tableMetaDataDto;
     }
 
-    public List<TableBo> findList(ISearch search) {
-        List<TablePo> tablePoList = tableDao.search(search);
-        if (tablePoList == null || tablePoList.size() == 0) {
-            return new ArrayList<TableBo>();
+    public PaginationResult<TableBo> findList(Search search, QueryParams queryParams) {
+        search.setFirstResult(queryParams.getFirstResult());
+        search.setMaxResults(queryParams.getPageSize());
+        PaginationResult<TableBo> paginationResult = null;
+        if (queryParams.isInit()){
+            SearchResult<TablePo> searchResult = tableDao.searchAndCount(search);
+            List<TableBo> list = modelMapper.map(searchResult.getResult(),new TypeToken<List<TableBo>>(){}.getType());
+            paginationResult = PaginationResult.pagination(list,searchResult.getTotalCount(),queryParams.getPageNo(),queryParams.getPageSize());
+        }else{
+            List<TablePo> tablePoList = tableDao.search(search);
+            List<TableBo> tableBoList = modelMapper.map(tablePoList,new TypeToken<List<TableBo>>(){}.getType());
+            paginationResult = PaginationResult.pagination(tableBoList,queryParams.getTotalRecords(),queryParams.getPageNo(),queryParams.getPageSize());
         }
-        ModelMapper modelMapper = new ModelMapper();
-        Type listType = new TypeToken<List<TableBo>>() {
-        }.getType();
-        List<TableBo> tableBoList = modelMapper.map(tablePoList, listType);
-        return tableBoList;
+        return paginationResult;
     }
+
 
     @Override
     public boolean findExistTableName(TableBo tableBo) {

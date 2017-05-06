@@ -5,6 +5,7 @@ import com.dsdl.eidea.base.entity.bo.UserBo;
 import com.dsdl.eidea.base.entity.bo.UserSessionBo;
 import com.dsdl.eidea.base.service.UserService;
 import com.dsdl.eidea.base.service.UserSessionService;
+import com.dsdl.eidea.core.params.QueryParams;
 import com.google.gson.Gson;
 import com.googlecode.genericdao.search.Search;
 import org.junit.Test;
@@ -47,7 +48,7 @@ public class UserServiceTest {
     public void testGetUsers()
     {
 
-        List<UserBo> userBoList= userService.getUserList(new Search());
+        List<UserBo> userBoList= userService.getUserList(new Search(),new QueryParams()).getData();
 
         Gson gson=new Gson();
         System.out.println(gson.toJson(userBoList.get(0)));

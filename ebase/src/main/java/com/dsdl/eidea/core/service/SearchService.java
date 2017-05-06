@@ -1,10 +1,12 @@
 package com.dsdl.eidea.core.service;
 
+import com.dsdl.eidea.core.dto.PaginationResult;
 import com.dsdl.eidea.core.entity.bo.CommonSearchResult;
 import com.dsdl.eidea.core.entity.bo.SearchBo;
 import com.dsdl.eidea.core.entity.bo.SearchColumnBo;
 import com.dsdl.eidea.core.entity.bo.TableBo;
 import com.dsdl.eidea.core.entity.dto.SearchColumnDto;
+import com.dsdl.eidea.core.params.QueryParams;
 import com.googlecode.genericdao.search.ISearch;
 import com.googlecode.genericdao.search.Search;
 
@@ -14,7 +16,7 @@ import java.util.List;
  * Created by 刘大磊 on 2016/12/17 10:21.
  */
 public interface SearchService {
-    List<SearchBo> findList(ISearch search);
+    PaginationResult<SearchBo> findList(Search search, QueryParams queryParams);
 
     SearchBo getSearchBo(Integer id);
 

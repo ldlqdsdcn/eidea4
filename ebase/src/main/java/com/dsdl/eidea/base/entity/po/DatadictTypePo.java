@@ -8,8 +8,13 @@
 package com.dsdl.eidea.base.entity.po;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
+
 /**
 * table name base_datadict_type
 *            数据字典类型
@@ -19,23 +24,24 @@ import lombok.Setter;
 @Setter
 @Entity(name = "base_datadict_type")
 public class DatadictTypePo implements java.io.Serializable {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "[id]")
     @Id
+    @Column(name = "id",nullable = false,unique = true,length = 11)
+    @Length(min = 1,max = 11,message = "error.datadict.id.length")
+    @NotNull(message = "common.primary_key.isempty")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    /**
-    * 主键值
-    **/
-    @Column(name = "[value]",length =50 )
+    @Column(name = "value",length =20,nullable = false,unique = true)
+    @NotBlank(message = "datadicttype.value.not.empty")
+    @Length(min=1,max = 20,message = "error.datadict.datatype.length")
     private String value;
-    /**
-    * 名称
-    **/
-    @Column(name = "[name]",length =200 )
+    @Column(name = "name",length =200,nullable = false)
+    @NotBlank(message = "client.error.name.not_null")
+    @Length(min=1,max = 200,message = "error.datadict.name.length")
     private String name;
-    /**
-    * 备注
-    **/
-    @Column(name = "[remark]",length =200 )
+    @Column(name = "remark",length =200 )
+    @Length(max=200,message="client.error.remark.length_error")
     private String remark;
+    @Column(name = "isactive",nullable = false,length = 1)
+    @Length(min = 1,max = 1,message = "isactive.length")
+    private String isactive;
 }

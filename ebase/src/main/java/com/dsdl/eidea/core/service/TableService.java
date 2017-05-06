@@ -1,8 +1,11 @@
 package com.dsdl.eidea.core.service;
 
+import com.dsdl.eidea.core.dto.PaginationResult;
 import com.dsdl.eidea.core.entity.bo.TableBo;
 import com.dsdl.eidea.core.entity.bo.TableMetaDataBo;
+import com.dsdl.eidea.core.params.QueryParams;
 import com.googlecode.genericdao.search.ISearch;
+import com.googlecode.genericdao.search.Search;
 
 import java.util.List;
 
@@ -12,7 +15,7 @@ import java.util.List;
 public interface TableService {
     TableMetaDataBo getTableDescription(String tableName);
 
-    List<TableBo> findList(ISearch search);
+    PaginationResult<TableBo> findList(Search search, QueryParams queryParams);
 
     boolean findExistTableName(TableBo tableBo);
 

@@ -3,11 +3,14 @@ package com.dsdl.eidea.core.web.controller;
 import com.dsdl.eidea.base.web.vo.UserResource;
 import com.dsdl.eidea.core.def.RelOperDef;
 import com.dsdl.eidea.core.def.SearchDataTypeDef;
-import com.dsdl.eidea.core.def.SearchPageFieldInputType;
+import com.dsdl.eidea.core.def.PageFieldInputType;
 import com.dsdl.eidea.core.def.SearchPageType;
+import com.dsdl.eidea.core.dto.PaginationResult;
 import com.dsdl.eidea.core.entity.bo.KeyValue;
 import com.dsdl.eidea.core.entity.bo.SearchBo;
 import com.dsdl.eidea.core.entity.bo.SearchColumnBo;
+import com.dsdl.eidea.core.params.DeleteParams;
+import com.dsdl.eidea.core.params.QueryParams;
 import com.dsdl.eidea.core.service.SearchService;
 import com.dsdl.eidea.core.web.def.WebConst;
 import com.dsdl.eidea.core.web.result.JsonResult;
@@ -45,17 +48,17 @@ public class SearchController {
     @RequiresPermissions(value = "view")
     public ModelAndView showList() {
         ModelAndView modelAndView = new ModelAndView("/core/search/search");
-        modelAndView.addObject("pagingSettingResult", PagingSettingResult.getDefault());
+        modelAndView.addObject(WebConst.PAGING_SETTINGS, PagingSettingResult.getDbPaging());
         modelAndView.addObject(WebConst.PAGE_URI, URI);
         return modelAndView;
     }
 
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    @RequestMapping(value = "/list", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions(value = "view")
-    public JsonResult<List<SearchBo>> list(HttpSession session) {
+    public JsonResult<PaginationResult<SearchBo>> list(HttpSession session, @RequestBody QueryParams queryParams) {
         Search search = SearchHelper.getSearchParam(URI, session);
-        List<SearchBo> searchBoList = searchService.findList(search);
+        PaginationResult<SearchBo> searchBoList = searchService.findList(search,queryParams);
         return JsonResult.success(searchBoList);
     }
 
@@ -114,7 +117,11 @@ public class SearchController {
     @RequestMapping(value = "/saveForCreated", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions(value = "add")
-    public JsonResult<SearchBo> saveForCreated(@RequestBody @Validated SearchBo searchBo) {
+    public JsonResult<SearchBo> saveForCreated(@RequestBody @Validated SearchBo searchBo, HttpSession session) {
+        UserResource userResource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
+        if (searchService.getSearchBoByUri(searchBo.getUri()) != null) {
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), userResource.getMessage("search.error.url_exist"));
+        }
         searchBo = searchService.saveSearchBo(searchBo);
         return get(searchBo.getId());
     }
@@ -127,20 +134,29 @@ public class SearchController {
         if (searchBo.getId() == null) {
             return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("common.primary_key.isempty"));
         }
-        searchBo = searchService.saveSearchBo(searchBo);
+        if (searchService.getSearchBoByUri(searchBo.getUri()) != null) {
+            if (searchService.getSearchBoByUri(searchBo.getUri()).getId() == searchBo.getId()) {
+                searchBo = searchService.saveSearchBo(searchBo);
+            } else {
+                return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("search.error.url_exist"));
+            }
+        }else {
+            searchBo = searchService.saveSearchBo(searchBo);
+
+        }
         return get(searchBo.getId());
     }
 
     @RequestMapping(value = "/deletes", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions(value = "delete")
-    public JsonResult<List<SearchBo>> deletes(@RequestBody Integer[] ids, HttpSession session) {
+    public JsonResult<PaginationResult<SearchBo>> deletes(@RequestBody DeleteParams<Integer> deleteParams, HttpSession session) {
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
-        if (ids == null || ids.length == 0) {
+        if (deleteParams.getIds() == null || deleteParams.getIds().length == 0) {
             return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("pagemenu.choose.information"));
         }
-        searchService.deleteSearches(ids);
-        return list(session);
+        searchService.deleteSearches(deleteParams.getIds());
+        return list(session,deleteParams.getQueryParams());
     }
 
     @RequestMapping(value = "/getSelectList", method = RequestMethod.GET)
@@ -166,7 +182,7 @@ public class SearchController {
         }
         listObject.add("relOper", jsonArray);
         jsonArray = new JsonArray();
-        for (SearchPageFieldInputType searchPageFieldInputType : SearchPageFieldInputType.values()) {
+        for (PageFieldInputType searchPageFieldInputType : PageFieldInputType.values()) {
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("key", searchPageFieldInputType.getKey());
             jsonObject.addProperty("desc", searchPageFieldInputType.getDesc());

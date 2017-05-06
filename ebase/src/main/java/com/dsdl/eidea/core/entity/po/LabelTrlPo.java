@@ -24,7 +24,7 @@ public class LabelTrlPo implements java.io.Serializable {
 	private LanguagePo languagePo;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "_key", nullable = false)
-	private LabelPo coreLabel;
+	private LabelPo labelPo;
 	@Column(name = "msgtext", nullable = false, length = 500)
 	private String msgtext;
 }

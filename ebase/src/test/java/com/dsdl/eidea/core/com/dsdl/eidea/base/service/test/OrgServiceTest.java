@@ -15,15 +15,15 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:applicationContext.xml")
 public class OrgServiceTest {
-    private final Logger logger=Logger.getLogger(OrgServiceTest.class);
-    @Autowired
-    private OrgService orgService;
-    @Test
-    public void testSearchOrg()
-    {
-        logger.debug("first search");
-        orgService.findOrgList(new Search());
-        logger.debug("second search");
-        orgService.findOrgList(new Search());
-    }
+//        private final Logger logger=Logger.getLogger(OrgServiceTest.class);
+//        @Autowired
+//        private OrgService orgService;
+//        @Test
+//        public void testSearchOrg()
+//        {
+//            logger.debug("first search");
+//            orgService.findOrgList(new Search());
+//            logger.debug("second search");
+//            orgService.findOrgList(new Search());
+//        }
 }

@@ -6,6 +6,7 @@ import com.dsdl.eidea.core.dao.SearchDao;
 import com.dsdl.eidea.core.def.RelOperDef;
 import com.dsdl.eidea.core.def.SearchDataTypeDef;
 import com.dsdl.eidea.core.def.SearchPageType;
+import com.dsdl.eidea.core.dto.PaginationResult;
 import com.dsdl.eidea.core.entity.bo.CommonSearchParam;
 import com.dsdl.eidea.core.entity.bo.CommonSearchResult;
 import com.dsdl.eidea.core.entity.bo.SearchBo;
@@ -14,12 +15,14 @@ import com.dsdl.eidea.core.entity.dto.SearchColumnDto;
 import com.dsdl.eidea.core.entity.po.LabelPo;
 import com.dsdl.eidea.core.entity.po.SearchColumnPo;
 import com.dsdl.eidea.core.entity.po.SearchPo;
+import com.dsdl.eidea.core.params.QueryParams;
 import com.dsdl.eidea.core.service.SearchService;
 import com.dsdl.eidea.core.spring.annotation.DataAccess;
 import com.dsdl.eidea.util.DateTimeHelper;
 import com.dsdl.eidea.util.StringUtil;
 import com.googlecode.genericdao.search.ISearch;
 import com.googlecode.genericdao.search.Search;
+import com.googlecode.genericdao.search.SearchResult;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.modelmapper.TypeToken;
@@ -41,18 +44,23 @@ public class SearchServiceImpl implements SearchService {
     private CommonDao<LabelPo, String> labelDao;
     @Autowired
     private SearchColumnDao searchColumnDao;
+    private ModelMapper modelMapper = new ModelMapper();
 
     @Override
-    public List<SearchBo> findList(ISearch search) {
-        List<SearchPo> searchPoList = searchDao.search(search);
-        ModelMapper modelMapper = new ModelMapper();
-        List<SearchBo> searchBoList = new ArrayList<>();
-        searchPoList.forEach(e -> {
-            SearchBo searchBo = modelMapper.map(e, SearchBo.class);
-            searchBo.setShowTypeStr(SearchPageType.getSearchPageDesc(e.getShowType()));
-            searchBoList.add(searchBo);
-        });
-        return searchBoList;
+    public PaginationResult<SearchBo> findList(Search search, QueryParams queryParams) {
+        search.setFirstResult(queryParams.getFirstResult());
+        search.setMaxResults(queryParams.getPageSize());
+        PaginationResult<SearchBo> paginationResult = null;
+        if (queryParams.isInit()){
+            SearchResult<SearchPo> searchResult = searchDao.searchAndCount(search);
+            List<SearchBo> list = modelMapper.map(searchResult.getResult(),new TypeToken<List<SearchBo>>(){}.getType());
+            paginationResult = PaginationResult.pagination(list,searchResult.getTotalCount(),queryParams.getPageNo(),queryParams.getPageSize());
+        }else{
+            List<SearchPo> searchPoList = searchDao.search(search);
+            List<SearchBo> searchBoList = modelMapper.map(searchPoList,new TypeToken<List<SearchBo>>(){}.getType());
+            paginationResult = PaginationResult.pagination(searchBoList,queryParams.getTotalRecords(),queryParams.getPageNo(),queryParams.getPageSize());
+        }
+        return paginationResult;
     }
 
     public SearchBo getSearchBo(Integer id) {

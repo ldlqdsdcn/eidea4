@@ -20,11 +20,13 @@
 
                 <div class="form-group">
                     <label for="code"><%--no--%><eidea:label key="client.column.no"/></label>
-                    <input type="text" class="form-control" id="code" name="code" ng-model="clientBo.no" placeholder="<eidea:message key="client.input.no"/>" required ng-minlength="2" ng-maxlength="10" ng-disabled="clientBo.id!=null">
+                    <input type="text" class="form-control" id="code" name="code" ng-model="clientBo.no" placeholder="<eidea:message key="client.input.no"/>" required ng-minlength="2" ng-maxlength="10"
+                           ng-disabled="clientBo.id!=null" >
                 </div>
                 <div class="form-group">
                     <label for="name"><%--name--%><eidea:label key="datadict.column.name"/></label>
-                    <input type="text" class="form-control" id="name" placeholder="<eidea:message key="org.input.name"/>" ng-model="clientBo.name" required ng-minlength="2" ng-maxlength="100">
+                    <input type="text" class="form-control" id="name" name="name"  ng-model="clientBo.name"placeholder="<eidea:message key="org.input.name"/>"
+                           required ng-minlength="2" ng-maxlength="100">
                 </div>
                 <div class="form-group">
                     <label for="remark"><%--remark--%><eidea:label key="base.remarks"/></label>

@@ -3,9 +3,13 @@ package com.dsdl.eidea.base.web.controller;
 import com.dsdl.eidea.base.entity.bo.ModuleBo;
 import com.dsdl.eidea.base.service.ModuleService;
 import com.dsdl.eidea.base.web.vo.UserResource;
+import com.dsdl.eidea.core.dto.PaginationResult;
+import com.dsdl.eidea.core.params.DeleteParams;
+import com.dsdl.eidea.core.params.QueryParams;
 import com.dsdl.eidea.core.web.def.WebConst;
 import com.dsdl.eidea.core.web.result.JsonResult;
 import com.dsdl.eidea.core.web.result.def.ErrorCodes;
+import com.dsdl.eidea.core.web.util.SearchHelper;
 import com.dsdl.eidea.core.web.vo.PagingSettingResult;
 import com.googlecode.genericdao.search.Search;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -28,7 +32,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/base/module")
 public class ModuleController {
-
+    private static final String URI = "sys_module";
     @Autowired
     private ModuleService moduleService;
 
@@ -41,7 +45,8 @@ public class ModuleController {
     @RequestMapping(value = "/getModuleToJsp", method = RequestMethod.GET)
     public ModelAndView getModuleToJsp() {
         ModelAndView modelAndView = new ModelAndView("/base/module/module");
-        modelAndView.addObject("pagingSettingResult", PagingSettingResult.getDefault());
+        modelAndView.addObject(WebConst.PAGING_SETTINGS, PagingSettingResult.getDbPaging());
+        modelAndView.addObject(WebConst.PAGE_URI, URI);
         return modelAndView;
     }
 
@@ -54,8 +59,9 @@ public class ModuleController {
     @RequiresPermissions(value = "view")
     @RequestMapping(value = "/getModuleList", method = RequestMethod.POST)
     @ResponseBody
-    public JsonResult<List<ModuleBo>> getModuleList() {
-        List<ModuleBo> moduleList = moduleService.getModuleList(new Search());
+    public JsonResult<PaginationResult<ModuleBo>> getModuleList(HttpSession session, @RequestBody QueryParams queryParams) {
+        Search search = SearchHelper.getSearchParam(URI, session);
+        PaginationResult<ModuleBo> moduleList = moduleService.getModuleList(search,queryParams);
         return JsonResult.success(moduleList);
     }
 
@@ -68,13 +74,13 @@ public class ModuleController {
     @RequiresPermissions(value = "view")
     @RequestMapping(value = "/deleteModuleList", method = RequestMethod.POST)
     @ResponseBody
-    public JsonResult<List<ModuleBo>> deleteModuleList(@RequestBody Integer[] ids, HttpSession session) {
-        if (ids.length == 0) {
+    public JsonResult<PaginationResult<ModuleBo>> deleteModuleList(@RequestBody DeleteParams<Integer > deleteParams, HttpSession session) {
+        if (deleteParams.getIds().length == 0) {
             UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
             return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("pagemenu.primarykey.information"));
         }
-        moduleService.deleteModuleList(ids);
-        return getModuleList();
+        moduleService.deleteModuleList(deleteParams.getIds());
+        return getModuleList(session,deleteParams.getQueryParams());
     }
 
     /**

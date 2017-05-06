@@ -21,6 +21,7 @@
                     <th><%--键值--%><eidea:label key="base.datadictType.label.value"/></th>
                     <th><%--名称--%><eidea:label key="base.datadictType.label.name"/></th>
                     <th><%--备注--%><eidea:label key="base.datadictType.label.remark"/></th>
+                    <th><%--是否有效--%><eidea:label key="base.datadictType.label.isactive"/></th>
                     <th><%--编辑--%><eidea:label key="common.button.edit"/></th>
                 </tr>
                 </thead>
@@ -39,6 +40,9 @@
                     </td>
                     <td>
                         {{model.remark}}
+                    </td>
+                    <td>
+                        {{model.isactive}}
                     </td>
                     <td>
                         <a class="btn btn-primary btn-xs" href="#/edit?id={{model.id}}"><eidea:label key="common.button.edit"/><%--编辑--%></a>

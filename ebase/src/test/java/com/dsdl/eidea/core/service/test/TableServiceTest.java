@@ -10,6 +10,7 @@ import com.dsdl.eidea.core.entity.bo.TableMetaDataBo;
 import com.dsdl.eidea.core.entity.po.SearchColumnPo;
 import com.dsdl.eidea.core.entity.po.TableColumnPo;
 import com.dsdl.eidea.core.entity.po.TablePo;
+import com.dsdl.eidea.core.params.QueryParams;
 import com.dsdl.eidea.core.service.TableService;
 import com.google.gson.Gson;
 import com.googlecode.genericdao.search.Filter;
@@ -51,7 +52,7 @@ public class TableServiceTest {
         Search search=new Search(TablePo.class);
        // search.addField("tableName", Filter.OP_LIKE,"core_table");
         search.addFilter(Filter.like("tableName","core_table"));
-        List<TableBo> tableBoList=tableService.findList(search);
+        List<TableBo> tableBoList=tableService.findList(search,new QueryParams()).getData();
         logger.debug(tableBoList.size());
     }
     @Test

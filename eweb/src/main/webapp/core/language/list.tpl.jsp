@@ -46,8 +46,10 @@
                     <th><%--序号--%><eidea:label key="base.serialNumber"/></th>
                     <th><%--code--%><eidea:label key="language.column.code"/></th>
                     <th><%--name--%><eidea:label key="datadict.column.name"/></th>
+                    <th><%--语言码--%><eidea:label key="language.language.iso"/></th>
+                    <th><%--区域码--%><eidea:label key="language.country.code"/></th>
                     <th><%--remark--%><eidea:label key="base.remarks"/></th>
-                    <th><%--是否有效--%><eidea:label key="base.whetherEffective"/></th>
+                    <th><%--是否有效--%><eidea:label key="base.datadict.label.isactive"/></th>
                     <th><%--编辑--%><eidea:label key="common.button.edit"/></th>
                 </tr>
                 </thead>
@@ -57,12 +59,18 @@
                     <td>
                         <input type="checkbox" ng-model="model.delFlag">
                     </td>
-                    <td>{{(bigCurrentPage-1)*itemsPerPage+$index+1}}</td>
+                    <td>{{(queryParams.pageNo-1)*queryParams.pageSize+$index+1}}</td>
                     <td>
                         {{model.code}}
                     </td>
                     <td>
                         {{model.name}}
+                    </td>
+                    <td>
+                        {{model.languageIso}}
+                    </td>
+                    <td>
+                        {{model.countryCode}}
                     </td>
                     <td>
                         {{model.remark}}
@@ -78,10 +86,12 @@
                 </tr>
                 </tbody>
             </table>
-            <ul uib-pagination boundary-links="true" total-items="bigTotalItems" ng-model="bigCurrentPage"
+            <ul uib-pagination boundary-links="true" total-items="queryParams.totalRecords" ng-model="queryParams.pageNo"
                 max-size="maxSize" first-text="<eidea:label key="common.label.firstpage"/>" previous-text="<eidea:label key="common.label.previouspage"/>" next-text="<eidea:label key="common.label.nextpage"/>" last-text="<eidea:label key="common.label.lastpage"/>"
-                class="pagination-sm" boundary-link-numbers="true" rotate="false" items-per-page="itemsPerPage"
+                class="pagination-sm" boundary-link-numbers="true" rotate="false" items-per-page="queryParams.pageSize"
                 ng-change="pageChanged()"></ul>
+            <div class="text-left ng-binding padding_total_banner"><eidea:message key="common.msg.result.prefix"/><span>{{queryParams.totalRecords}}</span><eidea:message key="common.msg.result.suffix"/></div>
         </div>
     </div>
 </div>
+<script type='text/javascript' src="<c:url value="/js/ondrag-start.js"/>"></script>

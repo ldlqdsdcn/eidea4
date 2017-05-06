@@ -9,7 +9,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="com.dsdl.eidea.common.web.vo.SearchFormRow" %>
 <%@ page import="com.dsdl.eidea.common.web.vo.SearchColumnVo" %>
-<%@ page import="com.dsdl.eidea.core.def.SearchPageFieldInputType" %>
+<%@ page import="com.dsdl.eidea.core.def.PageFieldInputType" %>
 <%@ page import="com.dsdl.eidea.core.entity.bo.CommonSearchResult" %>
 <%@ include file="/inc/taglib.jsp"%>
 <!-- 模态框（Modal） -->
@@ -44,10 +44,10 @@
                         <div class="form-group">
                             <label class="control-label"><%=searchColumnVo.getColumnLabel()%></label>
 
-                                <%if(searchColumnVo.getShowType()== SearchPageFieldInputType.INPUT.getKey()){%>
+                                <%if(searchColumnVo.getShowType()== PageFieldInputType.INPUT.getKey()){%>
                                 <input class="form-control" type="text" id="<%=searchColumnVo.getColumnId()%>" name="<%=searchColumnVo.getColumnName()%>" value="<%=searchColumnVo.getValue()==null?"":searchColumnVo.getValue()%>"/>
                                 <%}
-                                else if(searchColumnVo.getShowType()== SearchPageFieldInputType.DATEPICKER.getKey()){
+                                else if(searchColumnVo.getShowType()== PageFieldInputType.DATEPICKER.getKey()){
                                 %>
                                 <div class=" input-group date bootstrap-date-search">
                                     <input class="form-control" type="date" id="<%=searchColumnVo.getColumnId()%>" name="<%=searchColumnVo.getColumnName()%>" value="<%=searchColumnVo.getValue()==null?"":searchColumnVo.getValue()%>"/>
@@ -55,7 +55,7 @@
                                 </div>
                                 <%
                                 }
-                                else if(searchColumnVo.getShowType()== SearchPageFieldInputType.DATETIMEPICKER.getKey()){
+                                else if(searchColumnVo.getShowType()== PageFieldInputType.DATETIMEPICKER.getKey()){
                                 %>
                                 <div class="input-group date bootstrap-datetime-search">
                                     <input class="form-control" type="datetime" id="<%=searchColumnVo.getColumnId()%>" name="<%=searchColumnVo.getColumnName()%>" value="<%=searchColumnVo.getValue()==null?"":searchColumnVo.getValue()%>"/>
@@ -63,7 +63,7 @@
                                 </div>
                                 <%
                                 }
-                                else if(searchColumnVo.getShowType()== SearchPageFieldInputType.SELECT.getKey()){%>
+                                else if(searchColumnVo.getShowType()== PageFieldInputType.SELECT.getKey()){%>
                                 <select class="form-control" id="<%=searchColumnVo.getColumnId()%>" name="<%=searchColumnVo.getColumnId()%>">
                                     <option value="">-------</option>
                                     <%

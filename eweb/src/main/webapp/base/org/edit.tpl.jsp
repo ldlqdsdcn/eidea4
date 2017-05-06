@@ -36,7 +36,7 @@
                     <label for="remark" class="col-sm-2 text-right"><%--实体--%><eidea:label key="user.column.client"/></label>
                     <div class="col-sm-10">
                     <select class="form-control" id="client" ng-model="orgBo.client.id"
-                            ng-options="client.id as client.name for client in clientList"></select>
+                            ng-options="client.id as client.name for client in clientList" required></select>
                         </div>
                 </div>
                 <div class="form-group">

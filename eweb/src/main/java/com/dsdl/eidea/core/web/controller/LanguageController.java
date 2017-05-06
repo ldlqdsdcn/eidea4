@@ -1,8 +1,11 @@
 package com.dsdl.eidea.core.web.controller;
 
 import com.dsdl.eidea.base.web.vo.UserResource;
+import com.dsdl.eidea.core.dto.PaginationResult;
 import com.dsdl.eidea.core.entity.bo.LanguageBo;
 import com.dsdl.eidea.core.entity.bo.LanguageTrlBo;
+import com.dsdl.eidea.core.params.DeleteParams;
+import com.dsdl.eidea.core.params.QueryParams;
 import com.dsdl.eidea.core.service.LanguageService;
 import com.dsdl.eidea.core.web.def.WebConst;
 import com.dsdl.eidea.core.web.result.JsonResult;
@@ -40,17 +43,17 @@ public class LanguageController {
     @RequiresPermissions("view")
     public ModelAndView showList() {
         ModelAndView modelAndView = new ModelAndView("/core/language/language");
-        modelAndView.addObject("pagingSettingResult", PagingSettingResult.getDefault());
+        modelAndView.addObject(WebConst.PAGING_SETTINGS, PagingSettingResult.getDbPaging());
         modelAndView.addObject(WebConst.PAGE_URI, URI);
         return modelAndView;
     }
 
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    @RequestMapping(value = "/list", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions(value = "view")
-    public JsonResult<List<LanguageBo>> list(HttpSession session) {
+    public JsonResult<PaginationResult<LanguageBo>> list(HttpSession session, @RequestBody QueryParams queryParams) {
         Search search = SearchHelper.getSearchParam(URI, session);
-        List<LanguageBo> languageBoList = languageService.findLanguage(search);
+        PaginationResult<LanguageBo> languageBoList = languageService.findLanguage(search,queryParams);
         return JsonResult.success(languageBoList);
     }
 
@@ -98,7 +101,15 @@ public class LanguageController {
         if (languageBo.getCode() == null || languageBo.getCode().isEmpty()) {
             return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("common.primary_key.isempty"));
         }
-        languageService.save(languageBo);
+        if (languageService.findExistLanguageName(languageBo.getName())) {
+            if (languageService.findExistLanguageByName(languageBo.getName()).getCode().equals(languageBo.getCode())) {
+                languageService.save(languageBo);
+            } else {
+                return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("language.error.name.exist"));
+            }
+        } else {
+            languageService.save(languageBo);
+        }
         return get(languageBo.getCode());
     }
 
@@ -110,6 +121,9 @@ public class LanguageController {
         if (languageService.findExistLanguage(languageBo.getCode())) {
             return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("language.msg.code_exists"));
         }
+        if (languageService.findExistLanguageName(languageBo.getName())) {
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("language.error.name.exist"));
+        }
         languageService.save(languageBo);
         return get(languageBo.getCode());
     }
@@ -117,12 +131,15 @@ public class LanguageController {
     @RequestMapping(value = "/deletes", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions(value = "delete")
-    public JsonResult<List<LanguageBo>> deletes(@RequestBody String[] codes, HttpSession session) {
+    public JsonResult<PaginationResult<LanguageBo>> deletes(@RequestBody DeleteParams<String> deleteParams, HttpSession session) {
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
-        if (codes == null || codes.length == 0) {
+        if (deleteParams.getIds() == null || deleteParams.getIds().length == 0) {
             return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("client.msg.select_delete"));
         }
-        languageService.deletes(codes);
-        return list(session);
+        languageService.deletes(deleteParams.getIds());
+        return list(session,deleteParams.getQueryParams());
     }
 }
+
+
+

@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.dsdl.eidea.base.entity.bo.RoleBo;
 import com.dsdl.eidea.base.entity.po.RolePo;
+import com.dsdl.eidea.core.dto.PaginationResult;
+import com.dsdl.eidea.core.params.QueryParams;
 import com.googlecode.genericdao.search.ISearch;
 import com.googlecode.genericdao.search.Search;
 
@@ -12,9 +14,11 @@ public interface RoleService {
 
     boolean findExistRole(String no);
 
+    RoleBo findExistRoleByName(String roleName);
+
     RoleBo getRoleBo(Integer id);
 
-    List<RoleBo> getRoleList(ISearch search);
+    PaginationResult<RoleBo> getRoleList(Search search, QueryParams queryParams);
 
     void deletes(Integer[] ids);
 

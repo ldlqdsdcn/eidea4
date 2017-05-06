@@ -25,7 +25,6 @@
                     <th><%--remoteAddr--%><eidea:label key="sys.userSession2.label.remoteAddr"/></th>
                     <th><%--remoteHost--%><eidea:label key="sys.userSession2.label.remoteHost"/></th>
                     <th><%--sysUserId--%><eidea:label key="sys.userSession2.label.sysUserId"/></th>
-                    <th><%--token--%><eidea:label key="sys.userSession2.label.token"/></th>
                     <th><%--编辑--%><eidea:label key="common.button.edit"/></th>
                 </tr>
                 </thead>
@@ -54,9 +53,7 @@
                     <td>
                         {{model.sysUserId}}
                     </td>
-                    <td>
-                        {{model.token}}
-                    </td>
+
                     <td>
                         <a class="btn btn-primary btn-xs" href="#/edit?id={{model.id}}"><eidea:label key="common.button.edit"/><%--编辑--%></a>
                     </td>

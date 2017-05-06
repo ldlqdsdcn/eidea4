@@ -3,6 +3,7 @@ package com.dsdl.eidea.base.service.test;
 import com.dsdl.eidea.base.entity.bo.OrgBo;
 import com.dsdl.eidea.base.entity.po.OrgPo;
 import com.dsdl.eidea.base.service.OrgService;
+import com.dsdl.eidea.core.params.QueryParams;
 import com.googlecode.genericdao.search.Search;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,7 +37,7 @@ public class OrgServiceTest {
     @Test
     public void testGetOrgs()
     {
-       List<OrgBo> orgBoList= orgService.findOrgList(new Search());
+       List<OrgBo> orgBoList= orgService.findOrgList(new Search(),new QueryParams()).getData();
         System.out.println(orgBoList.size());
     }
 

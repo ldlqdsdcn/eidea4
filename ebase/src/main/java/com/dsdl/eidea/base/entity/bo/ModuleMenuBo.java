@@ -10,6 +10,6 @@ import lombok.Setter;
 @Setter
 public class ModuleMenuBo {
     private Integer id;
-    private Integer sysPageMenuId;
+    private Integer pageMenuId;
     private Integer sysModuleId;
 }

@@ -1,7 +1,7 @@
 package com.dsdl.eidea.devs.strategy;
 
 import com.dsdl.eidea.core.def.JavaDataType;
-import com.dsdl.eidea.core.def.PageFieldInputType;
+import com.dsdl.eidea.core.def.FieldInputType;
 import com.dsdl.eidea.core.entity.bo.*;
 import com.dsdl.eidea.core.service.LabelService;
 import com.dsdl.eidea.core.service.LanguageService;
@@ -188,9 +188,9 @@ public class I18NGenerateStrategy {
 
             if (columnInfo.getDataType() == JavaDataType.DATE.getKey()) {
                 if (columnInfo.getColumnName().toUpperCase().contains("TIME")) {
-                    jspModelProp.setInputType(PageFieldInputType.DATETIMEPICKER.getKey());
+                    jspModelProp.setInputType(FieldInputType.DATETIMEPICKER.getKey());
                 } else {
-                    jspModelProp.setInputType(PageFieldInputType.DATETIMEPICKER.getKey());
+                    jspModelProp.setInputType(FieldInputType.DATETIMEPICKER.getKey());
                 }
             } else {
                 jspModelProp.setInputType(IntelliKeyWord.getDecorator(jspModelProp.getProp()));

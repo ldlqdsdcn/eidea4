@@ -104,23 +104,6 @@ public class TableServiceImpl implements TableService {
         return paginationResult;
     }
 
-
-    @Override
-    public boolean findExistTableName(TableBo tableBo) {
-        Search search = new Search();
-        search.addFilterEqual("name", tableBo.getName());
-        List<TablePo> tablePoList = tableDao.search(search);
-        if (tablePoList != null && tablePoList.size() > 0) {
-            if (tablePoList.get(0).getId().equals(tableBo.getId())) {
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            return true;
-        }
-    }
-
     @Override
     public boolean findExistTableByName(String tableName) {
         Search search = new Search();

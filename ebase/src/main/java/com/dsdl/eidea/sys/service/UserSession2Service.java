@@ -6,16 +6,14 @@
 */
 package com.dsdl.eidea.sys.service;
 import com.dsdl.eidea.sys.entity.po.UserSession2Po;
-import com.dsdl.eidea.core.dto.PaginationResult;
-import com.dsdl.eidea.core.params.QueryParams;
-import com.googlecode.genericdao.search.Search;
+import com.googlecode.genericdao.search.ISearch;
 import java.util.List;
 
 /**
- * @author 刘大磊 2017-04-22 08:37:34
+ * @author 刘大磊 2017-05-08 09:55:07
  */
 public interface UserSession2Service {
-	PaginationResult<UserSession2Po> getUserSession2ListByPaging(Search search,QueryParams queryParams);
+    List<UserSession2Po> getUserSession2List(ISearch search);
 	UserSession2Po getUserSession2(Integer id);
 	void saveUserSession2(UserSession2Po userSession2);
 	void deletes(Integer[] ids);

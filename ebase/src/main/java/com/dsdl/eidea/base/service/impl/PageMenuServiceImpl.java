@@ -41,6 +41,7 @@ public class PageMenuServiceImpl implements PageMenuService {
     private LanguageService languageService;
     @Autowired
     private SettingsService settingsService;
+
     private ModelMapper modelMapper = new ModelMapper();
     @Override
     public List<PageMenuBo> findPageMenu(Search search) {

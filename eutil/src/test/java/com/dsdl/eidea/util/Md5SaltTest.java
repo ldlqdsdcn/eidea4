@@ -1,5 +1,8 @@
 package com.dsdl.eidea.util;
 
+import lombok.extern.slf4j.Slf4j;
+import org.junit.Test;
+
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
@@ -8,8 +11,18 @@ import java.util.Map;
 /**
  * Created by 刘大磊 on 2017/1/18 12:52.
  */
+@Slf4j
 public class Md5SaltTest {
     private static Map users = new HashMap();
+
+    @Test
+    public void testMd5Salt() {
+        String password = Md5SaltTool.getEncryptedPwd("88888888");
+        System.out.println(password);
+        password = Md5SaltTool.getEncryptedPwd("88888888");
+        System.out.println(password);
+    }
+
 
     public static void main(String[] args)throws Exception{
         String userName = "zyg";

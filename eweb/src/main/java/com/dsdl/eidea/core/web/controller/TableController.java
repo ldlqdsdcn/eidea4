@@ -156,18 +156,4 @@ public class TableController {
         return JsonResult.success(tableInfo);
     }
 
-    @RequestMapping(value = "findExistTableName")
-    @ResponseBody
-    @RequiresPermissions(value = "view")
-    public JsonResult<Boolean> findExistTableName(@RequestBody TableBo tableBo, HttpSession session) {
-        boolean flag = true;
-        UserResource userResource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
-        if (tableBo == null) {
-            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), userResource.getMessage("table.name.already.exist"));
-        } else {
-            flag = tableService.findExistTableName(tableBo);
-        }
-        return JsonResult.success(flag);
-    }
-
 }

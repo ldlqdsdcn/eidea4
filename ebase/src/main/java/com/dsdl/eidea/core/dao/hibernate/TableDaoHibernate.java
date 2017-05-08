@@ -242,7 +242,7 @@ public class TableDaoHibernate extends BaseDaoHibernate<TablePo, Integer> implem
         comment = all.substring(index + 9);
         comment = comment.substring(0, comment.length() - 1);
         try {
-            comment = new String(comment.getBytes("utf-8"));
+            comment = new String(comment.getBytes("UTF-8"),"UTF-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }

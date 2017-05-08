@@ -17,6 +17,9 @@ public interface TableService {
 
     PaginationResult<TableBo> findList(Search search, QueryParams queryParams);
 
+
+    boolean findExistTableByName(String tableName);
+
     TableBo getTableBo(Integer id);
 
     TableBo saveTableBo(TableBo tableBo);

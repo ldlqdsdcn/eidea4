@@ -45,6 +45,11 @@ public class DatadictServiceImpl implements DatadictService {
     public DatadictPo getDatadict(Integer id) {
         return datadictDao.find(id);
     }
+    public List<DatadictPo>getDatadictListByValue(String value){
+        Search search = new Search();
+        search.addFilterEqual("dataType",value);
+        return datadictDao.search(search);
+    }
 
     public void saveDatadict(DatadictPo datadict) {
         datadictDao.save(datadict);

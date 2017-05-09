@@ -17,6 +17,7 @@ import java.util.List;
 public interface DatadictService {
 	PaginationResult<DatadictPo> getDatadictListByPaging(Search search,QueryParams queryParams);
 	DatadictPo getDatadict(Integer id);
+	List<DatadictPo> getDatadictListByValue(String value);
 	void saveDatadict(DatadictPo datadict);
 	void deletes(Integer[] ids);
 	boolean findExistCode(String code);

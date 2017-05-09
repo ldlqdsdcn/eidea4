@@ -4,7 +4,7 @@ Date: 2017-04-26 15:34:59
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/inc/taglib.jsp" %>
-<div class="container-fluid" ng-controller="editCtrl">
+<div class="container-fluid" ng-controller="editTypeCtrl">
     <div class="page-header">
         <ol class="breadcrumb">
             <li><a href="javascript:;"><i class="icon-fire"></i><eidea:label key="datadict.title"/></a></li>
@@ -58,6 +58,7 @@ Date: 2017-04-26 15:34:59
                             {{error.message}}
                         </span>
                     </p>
+                </div>
                 </div>
             </form>
         </div>

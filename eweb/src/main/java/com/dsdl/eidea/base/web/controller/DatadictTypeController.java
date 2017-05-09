@@ -6,7 +6,9 @@
  */
 package com.dsdl.eidea.base.web.controller;
 
+import com.dsdl.eidea.base.entity.po.DatadictPo;
 import com.dsdl.eidea.base.entity.po.DatadictTypePo;
+import com.dsdl.eidea.base.service.DatadictService;
 import com.dsdl.eidea.base.service.DatadictTypeService;
 import com.dsdl.eidea.core.web.controller.BaseController;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -40,6 +42,8 @@ public class DatadictTypeController extends BaseController {
     private static final String URI = "datadictType";
     @Autowired
     private DatadictTypeService datadictTypeService;
+    @Autowired
+    private DatadictService datadictService;
 
     @RequestMapping(value = "/showList", method = RequestMethod.GET)
     @RequiresPermissions("view")
@@ -125,6 +129,12 @@ public class DatadictTypeController extends BaseController {
         datadictTypeService.deletes(deleteParams.getIds());
         return list(session, deleteParams.getQueryParams());
     }
+    @RequiresPermissions(value = "view")
+    @ResponseBody
+    @RequestMapping(value = "/getDatadictList",method = RequestMethod.POST)
+    public JsonResult<List<DatadictPo>> getDatadictList(@RequestBody String dataType){
+        return JsonResult.success(datadictService.getDatadictListByValue(dataType));
 
+    }
 
 }

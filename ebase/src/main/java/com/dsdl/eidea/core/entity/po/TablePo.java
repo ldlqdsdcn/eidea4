@@ -39,6 +39,11 @@ public class TablePo implements java.io.Serializable {
     private String externJson;
     @Column(name = "isactive", nullable = false, length = 1)
     private String isactive;
+    /**
+     * entity类型，可以是 Hibernate Po 或者Database Table
+     */
+    @Column(name = "entity_type")
+    private int entityType;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tablePo")
     private List<TableColumnPo> coreTableColumns = new ArrayList<TableColumnPo>(
             0);

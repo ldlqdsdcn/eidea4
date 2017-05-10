@@ -44,4 +44,6 @@
     <import resource="classpath:spring/spring-hibernate.xml"/>
     <!--activemq-->
     <import resource="classpath:spring/spirng-jms.xml"/>
+    <!--activiti 工作流-->
+    <import resource="classpath:spring/activiti.cfg.xml"/>
 </beans>

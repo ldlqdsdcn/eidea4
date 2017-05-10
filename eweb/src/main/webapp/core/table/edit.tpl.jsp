@@ -8,9 +8,6 @@
 <%@ page contentType="text/html;charset=utf-8" language="java" %>
 <%@ include file="/inc/taglib.jsp" %>
 <div class="container-fluid" ng-controller="editCtrl">
-    <ol class="breadcrumb">
-        <li><a href="javascript:;"><i class="icon-orders"></i><%-- 表信息--%><eidea:label key="table.title"/></a></li>
-    </ol>
     <div class="box mar15">
         <div class="box-body no-padding">
             <br>

@@ -37,6 +37,7 @@ public class TableBo implements java.io.Serializable{
     @NotBlank(message="client.error.isactive.not_null")
     @Length(min = 1,max = 1,message="client.error.isactive.length_error")
     private String isactive;
+    private int entityType;
     @NotNull(message = "entity.information.not.empty")
     private List<TableColumnBo> tableColumnBoList;
 

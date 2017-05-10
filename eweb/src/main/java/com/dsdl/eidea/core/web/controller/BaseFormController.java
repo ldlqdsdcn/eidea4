@@ -7,7 +7,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * Created by 刘大磊 on 2017/4/28 14:09.
  * 一个模块的基类
  */
-public abstract class BaseRepositoryController<T> extends BaseController {
+public abstract class BaseFormController<T> extends BaseController {
+    /**
+     * 导出报表
+     * @param type
+     * 导出范围只导出当前页
+     */
     @RequestMapping("/export")
     public void export(String type)
     {

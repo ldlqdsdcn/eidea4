@@ -8,13 +8,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/inc/taglib.jsp" %>
 <div class="container-fluid" ng-controller="editCtrl">
-    <div class="page-header">
-        <ol class="breadcrumb">
-            <li><a href="javascript:;"><i class="icon-tasks"></i><eidea:label key="dymenus.title"/></a></li>
-        </ol>
-    </div>
     <div class="x_content">
-        <div class="from-group">
+
             <form role="form" name="editForm" novalidate  ng-submit="save()" class="form-horizontal form-label-left input_mask">
                 <table class="table table-borderless" >
                     <tr>
@@ -79,6 +74,6 @@
                     </p>
                 </div>
             </form>
-        </div>
+
     </div>
 </div>

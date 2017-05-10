@@ -2,9 +2,6 @@
 <%@ include file="/inc/taglib.jsp" %>
 <div  class="container-fluid" ng-controller="listCtrl">
     <div class="page-header" >
-        <ol class="breadcrumb">
-            <li><a href="javascript:;"><i class="icon icon-tasks"></i><eidea:label key="table.title"/></a></li>
-        </ol>
         <a href="#/wizard" class="btn  btn-primary btn-sm" ng-show="canAdd"><%--新建向导--%><eidea:label key="common.button.create_wizard"/></a>
         <a href="#/edit" class="btn  btn-primary btn-sm" ng-show="canAdd"><eidea:label key="common.button.create"/></a>
         <button type="button" class="btn  btn-primary btn-sm" id="search_but" data-toggle="modal"
@@ -69,29 +66,3 @@
         </div>
     </div>
 </div>
-<%--
-<!-- 模态框（Modal） -->
-<div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                    &times;
-                </button>
-                <h4 class="modal-title" id="myModalLabel">
-                    查询
-                </h4>
-            </div>
-            <div class="modal-body">
-                在这里添加一些文本
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">关闭
-                </button>
-                <button type="button" class="btn btn-primary">
-                    查找
-                </button>
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal -->
-</div>--%>

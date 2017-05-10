@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <bean id="processEngineConfiguration" class="org.activiti.engine.impl.cfg.StandaloneProcessEngineConfiguration">
+        <property name="dataSource" ref="dataSourceCore" />
+        <property name="databaseType" value="mysql"/>
+        <!--databaseSchemaUpdate设置为true， Activiti会自动将数据库表升级到新版本， 当发现依赖和数据库表版本不通过时  -->
+        <property name="databaseSchemaUpdate" value="true"/>
+    </bean>
+    <!--   当在spring的配置中配置ActivitiRule时候，测试bean将自动被注入：-->
+    <bean id="activitiRule" class="org.activiti.engine.test.ActivitiRule">
+        <property name="processEngine" ref="processEngine" />
+    </bean>
+
+    <bean id="processEngine" class="org.activiti.spring.ProcessEngineFactoryBean">
+        <property name="processEngineConfiguration" ref="processEngineConfiguration" />
+    </bean>
+
+    <bean id="repositoryService" factory-bean="processEngine" factory-method="getRepositoryService" />
+    <!-- 工作流运行服务 -->
+    <bean id="runtimeService" factory-bean="processEngine" factory-method="getRuntimeService" />
+    <!--  工作流任务服务-->
+    <bean id="taskService" factory-bean="processEngine" factory-method="getTaskService" />
+    <!--  工作流历史数据服务-->
+    <bean id="historyService" factory-bean="processEngine" factory-method="getHistoryService" />
+    <!--  工作流管理服务-->
+    <bean id="managementService" factory-bean="processEngine" factory-method="getManagementService" />
+    <!-- 工作流唯一服务 -->
+    <bean id="IdentityService" factory-bean="processEngine" factory-method="getIdentityService" />
+</beans>

@@ -1,8 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/inc/taglib.jsp" %>
-<div  class="container-fluid" ng-controller="editCtrl">
+<div  class="container-fluid" ng-controller="listCtrl">
     <div class="page-header" >
-        <a href="#/typeeidt" class="btn  btn-primary btn-sm" ng-show="canAdd"><eidea:label key="common.button.create"/></a>
+        <a href="#/edit" class="btn  btn-primary btn-sm" ng-show="canAdd"><eidea:label key="common.button.create"/></a>
         <button type="button" class="btn  btn-primary btn-sm" id="search_but" data-toggle="modal"
                 data-target="#searchModal"><eidea:label key="common.button.search"/></button>
         <button type="button" class="btn  btn-primary btn-sm" ng-disabled="!canDelete()"
@@ -46,7 +46,7 @@
                         {{model.remark}}
                     </td>
                     <td>
-                        <a class="btn btn-primary btn-xs" href="#/typeeidt?id={{model.id}}"><eidea:label key="common.button.edit"/><%--编辑--%></a>
+                        <a class="btn btn-primary btn-xs" href="#/edit?id={{model.id}}"><eidea:label key="common.button.edit"/><%--编辑--%></a>
                     </td>
                 </tr>
                 </tbody>

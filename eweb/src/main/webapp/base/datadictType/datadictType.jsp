@@ -22,11 +22,8 @@
             $routeProvider
                 .when('/list', {templateUrl: '<c:url value="/base/datadictType/list.tpl.jsp"/>'})
                 .when('/edit', {templateUrl: '<c:url value="/base/datadictType/edit.tpl.jsp"/>'})
-                .when('/typelist',{templateUrl:'<c:url value="/base/datadict/list.tpl.jsp"/> '})
-                .when('/typeeidt',{templateUrl:'<c:url value="/base/datadict/edit.tpl.jsp"/>'})
                 .otherwise({redirectTo: '/list'});
         }]);
-
     app.controller('listCtrl', function ($scope, $http) {
         $scope.modelList = [];
         $scope.delFlag = false;
@@ -112,7 +109,7 @@
         };
         $scope.pageChanged();
     });
-    app.controller('editCtrl', function ($scope, $http, $routeParams) {
+        app.controller('editCtrl', function ($scope,$http, $routeParams) {
         /**
          * 日期时间选择控件
          * bootstrap-datetime 24小时时间是hh
@@ -198,73 +195,8 @@
                 bootbox.alert(response);
             });
         }
-        $scope.getDatadictTypeList=function() {
-            $http.post("<c:url value="/base/datadictType/getDatadictList"/> ",$scope.datadictTypePo.value).success(function (data) {
-                if (data.success){
-                    $scope.modelList=data.data;
-                    $scope.maxSize=$scope.modelList.length;
-                    $scope.queryParams={
-                        pageSize:${pagingSettingResult.perPageSize},//每页显示的记录数
-                        pageNo: 1, //当前页
-                        totalRecords: $scope.modelList.length,//记录数
-                        init:false
-                    };
-                }
-            }).error(function (data) {
-                bootbox.alert(data.message)
-            })
-        };
-        $scope.canDel = PrivilegeService.hasPrivilege('delete');
-        $scope.selectAll = function () {
-            for (var i = 0; i < $scope.modelList.length; i++) {
-                $scope.modelList[i].delFlag = $scope.delFlag;
-            }
-        }
-        $scope.canDelete = function () {
-            for (var i = 0; i < $scope.modelList.length; i++) {
-                if ($scope.modelList[i].delFlag) {
-                    return true;
-                }
-            }
-            return false;
-        }
-        $scope.deleteRecord = function () {
-            bootbox.confirm({
-                message: "<eidea:message key="common.warn.confirm.deletion"/>",
-                buttons: {
-                    confirm: {
-                        label: '<eidea:label key="common.button.yes"/>',
-                        className: 'btn-success'
-                    },
-                    cancel: {
-                        label: '<eidea:label key="common.button.no"/>',
-                        className: 'btn-danger'
-                    }
-                }, callback: function (result) {
-                    if (result) {
-                        var ids = [];
-                        for (var i = 0; i < $scope.modelList.length; i++) {
-                            if ($scope.modelList[i].delFlag) {
-                                ids.push($scope.modelList[i].id);
-                            }
-                        }
-                        $scope.queryParams.init = true;
-                        var param = {"queryParams": $scope.queryParams, "ids": ids};
-                        $http.post("<c:url value="/base/datadict/deletes"/>", param).success(function (data) {
-                            if (data.success) {
-                                $scope.getDatadictTypeList();
-                                bootbox.alert("<eidea:message key="module.deleted.success"/>");
-                            } else {
-                                bootbox.alert(data.message);
-                            }
-                        });
-                    }
-                }
-            });
-        }
-
     });
-    <jsp:include page="../datadict/datadict.jsp"/>
+
     app.run([
         'bootstrap3ElementModifier',
         function (bootstrap3ElementModifier) {

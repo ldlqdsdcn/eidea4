@@ -9,6 +9,10 @@
             title="<eidea:label key="common.button.save"/>"><%--保存--%>
         <i class="fa fa-save fa-1x" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.save"/>
     </button>
+    <button type="button" class="btn  btn-primary btn-sm" ng-disabled="!canDelete()"
+            ng-click="deleteRecord()" ng-show="canDel" title="<eidea:label key="common.button.delete"/>"><%--删除--%>
+        <i class="fa fa-trash-o fa-1x" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.delete"/>
+    </button>
     <a href="#/list" class="btn btn-primary btn-sm"
        title="<eidea:label key="common.button.back"/>"><%--返回--%>
         <i class="fa fa-mail-reply fa-1x" aria-hidden="true"></i>&nbsp;<eidea:label

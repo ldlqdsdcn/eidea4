@@ -49,45 +49,43 @@
             }
             return false;
         }
-        if($routeParams.id==null) {
-            $scope.pageChanged = function () {
-                $http.post("<c:url value="/base/datadictType/list"/>", $scope.queryParams)
-                    .success(function (response) {
-                        $scope.isLoading = false;
-                        if (response.success) {
-                            $scope.updateList(response.data);
-                        }
-                        else {
-                            bootbox.alert(response.message);
-                        }
-                    });
-            }
-        }else {
-            $scope.pageChanged = function () {
-                var url = "";
-                if ($routeParams.id != null) {
-                    url = "<c:url value="/base/datadictType/get"/>" + "?id=" + $routeParams.id;
+            if ($routeParams.id == null) {
+                $scope.pageChanged = function () {
+                    $http.post("<c:url value="/base/datadictType/list"/>", $scope.queryParams)
+                        .success(function (response) {
+                            $scope.isLoading = false;
+                            if (response.success) {
+                                $scope.updateList(response.data);
+                            }
+                            else {
+                                bootbox.alert(response.message);
+                            }
+                        });
                 }
-                $http.get(url).success(function (response) {
-                    if (response.success) {
-                        $scope.datadictTypePo = response.data;
-                        $http.post("<c:url value="/base/datadict/detaillist"/>", $scope.datadictTypePo.value)
-                            .success(function (response) {
-                                $scope.isLoading = false;
-                                if (response.success) {
-                                    $scope.updateList(response.data);
-                                }
-                                else {
-                                    bootbox.alert(response.message);
-                                }
+            } else {
+                $scope.pageChanged = function () {
+                    var url = "<c:url value="/base/datadictType/get"/>" + "?id=" + $routeParams.id;
+                    $http.get(url).success(function (response) {
+                        if (response.success) {
+                            $http.post("<c:url value="/base/datadict/detaillist"/>", response.data.value)
+                                .success(function (response) {
+                                    $scope.isLoading = false;
+                                    if (response.success) {
+                                        $scope.updateList(response.data);
+                                    }
+                                    else {
+                                        bootbox.alert(response.message);
+                                    }
 
-                            });
-                    }
-                }).error(function (response) {
-                    bootbox.alert(response);
-                });
+                                });
+                        }
+                    }).error(function (response) {
+                        bootbox.alert(response);
+                    });
+                }
             }
-        }
+
+
 
 //批量删除
         $scope.deleteRecord = function () {
@@ -112,7 +110,13 @@
                         }
                         $scope.queryParams.init = true;
                         var param = {"queryParams": $scope.queryParams, "ids": ids};
-                        $http.post("<c:url value="/base/datadictType/deletes"/>", param).success(function (data) {
+
+                        if ($routeParams.id == null) {
+                            url = "<c:url value="/base/datadictType/deletes"/>";
+                        } else {
+                            url = "<c:url value="/base/datadict/deletes"/>";
+                        }
+                        $http.post(url, param).success(function (data) {
                             if (data.success) {
                                 $scope.updateList(data.data);
                                 bootbox.alert("<eidea:message key="module.deleted.success"/>");
@@ -205,6 +209,7 @@
             $rootScope.show = false;
         }
     });
+    //编辑Item
     app.controller('editDetailCtrl', function ($scope, $http, $routeParams) {
         $scope.message = '';
         $scope.datadictPo = {};

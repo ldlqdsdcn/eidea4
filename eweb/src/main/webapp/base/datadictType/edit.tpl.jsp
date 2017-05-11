@@ -9,12 +9,12 @@ Date: 2017-04-26 15:34:17
     <div ng-controller="tabCtrl">
         <uib-tabset class="nav nav-tab vertical-tab" vertical="true" active="active">
             <uib-tab heading="<ediea:label key="datadict.title"/>" select="showDatadict()"></uib-tab>
-            <uib-tab heading="<ediea:label key="datadict.detail"/>" select="showDetail()" ></uib-tab>
+            <uib-tab heading="<ediea:label key="datadict.detail"/>" select="showDetail()" disable="datadictTypePo.value==null" ></uib-tab>
         </uib-tabset>
     </div>
     <div class="tab-content vertical-tab-content" >
 
-        <div class="row-fluid" ng-controller="listCtrl">
+        <div class="row-fluid" >
             <div class="span12">
                 <br>
                 <form role="form" name="editForm" novalidate ng-submit="save()"ng-show="show">
@@ -63,7 +63,7 @@ Date: 2017-04-26 15:34:17
                         </p>
                     </div>
                 </form>
-                <div ng-show="!show">
+                <div ng-show="!show" ng-controller="listCtrl">
                     <jsp:include page="../../common/common_edit_button.jsp"></jsp:include>
                     <table class="table table-hover table-striped table-condensed">
                         <thead>

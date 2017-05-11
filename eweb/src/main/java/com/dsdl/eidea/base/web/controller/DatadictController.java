@@ -65,7 +65,7 @@ public class DatadictController extends BaseController {
     @RequestMapping(value = "/detaillist", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions("view")
-    public JsonResult<PaginationResult<DatadictPo>> list(HttpSession session,@RequestBody String dataType) {
+    public JsonResult<PaginationResult<DatadictPo>> detailList(HttpSession session,@RequestBody String dataType) {
         Search search = SearchHelper.getSearchParam(URI, session);
         PaginationResult<DatadictPo> paginationResult = datadictService.getDatadictListByDatadictType(search,dataType);
         return JsonResult.success(paginationResult);

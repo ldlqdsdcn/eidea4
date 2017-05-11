@@ -64,7 +64,13 @@ Date: 2017-04-26 15:34:17
                     </div>
                 </form>
                 <div ng-show="!show" ng-controller="listCtrl">
-                    <jsp:include page="../../common/common_edit_button.jsp"></jsp:include>
+                    <div >
+                        <a href="#/editDetail" class="btn  btn-primary btn-sm" ng-show="canAdd"><eidea:label key="common.button.create"/></a>
+                        <button type="button" class="btn  btn-primary btn-sm" id="search_but" data-toggle="modal"
+                                data-target="#searchModal"><eidea:label key="common.button.search"/></button>
+                        <button type="button" class="btn  btn-primary btn-sm" ng-disabled="!canDelete()"
+                                ng-click="deleteRecord()" ng-show="canDel" ><eidea:label key="common.button.delete"/></button>
+                    </div>
                     <table class="table table-hover table-striped table-condensed">
                         <thead>
                         <tr>

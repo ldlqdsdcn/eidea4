@@ -42,7 +42,7 @@ Date: 2017-04-26 15:34:59
                     <p class="text-right">
                         <button type="reset" ng-click="create()"  class="btn btn-default btn-sm" ng-show="canAdd"><%--新建--%><eidea:label key="common.button.create"/></button>
                         <button type="submit" class="btn btn-default btn-sm" ng-show="canSave"><%--保存--%><eidea:label key="common.button.save"/></button>
-                        <a href="#/edit?datadictTypo.id" class="btn btn-default btn-sm"><%--返回--%><eidea:label key="common.button.back"/></a>
+                        <a href="#/list" class="btn btn-default btn-sm"><%--返回--%><eidea:label key="common.button.back"/></a>
                     </p>
                 </div>
                 <div class="form-group">

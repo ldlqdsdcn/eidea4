@@ -21,7 +21,7 @@
         .config(['$routeProvider', function ($routeProvider) {
             $routeProvider
                 .when('/list', {templateUrl: '<c:url value="/base/datadict/list.tpl.jsp"/>'})
-                .when('/edit', {templateUrl: '<c:url value="/base/datadict/edit.tpl.jsp"/>'})
+                .when('/editDetail', {templateUrl: '<c:url value="/base/datadict/edit.tpl.jsp"/>'})
                 .otherwise({redirectTo: '/list'});
         }]);
     app.controller('listTypeCtrl', function ($scope, $http) {
@@ -109,7 +109,7 @@
         };
         $scope.pageChanged();
     });
-    app.controller('editCtrl', function ($scope, $http, $routeParams) {
+    app.controller('editDetailCtrl', function ($scope, $http, $routeParams) {
         /**
          * 日期时间选择控件
          * bootstrap-datetime 24小时时间是hh

@@ -69,6 +69,9 @@
 .up-buttons {
     float: left;
 }
+.drop-box.dragover {
+    border: 5px dashed blue;
+}
 .preview {
     clear: both;
     display:inline;

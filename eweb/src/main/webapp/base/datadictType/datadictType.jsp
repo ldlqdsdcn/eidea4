@@ -24,7 +24,7 @@
                 .when('/edit', {templateUrl: '<c:url value="/base/datadictType/edit.tpl.jsp"/>'})
                 .otherwise({redirectTo: '/list'});
         }]);
-    app.controller('listCtrl', function ($scope, $http) {
+    app.controller('listCtrl', function ($scope,$rootScope,$http,$routeParams) {
         $scope.modelList = [];
         $scope.delFlag = false;
         $scope.isLoading = true;
@@ -48,18 +48,34 @@
             }
             return false;
         }
+        var url ="";
+        $rootScope.id=$routeParams.id;
         $scope.pageChanged = function () {
-            $http.post("<c:url value="/base/datadictType/list"/>",$scope.queryParams)
-                .success(function (response) {
-                    $scope.isLoading = false;
-                    if (response.success) {
-                        $scope.updateList(response.data);
-                    }
-                    else {
-                        bootbox.alert(response.message);
-                    }
+            if ($rootScope.id==null) {
+                $http.post("<c:url value="/base/datadictType/list"/>", $scope.queryParams)
+                    .success(function (response) {
+                        $scope.isLoading = false;
+                        if (response.success) {
+                            $scope.updateList(response.data);
+                        }
+                        else {
+                            bootbox.alert(response.message);
+                        }
 
-                });
+                    });
+            }else {
+                $http.post("<c:url value="/base/datadict/detaillist"/>", $rootScope.dataType)
+                    .success(function (response) {
+                        $scope.isLoading = false;
+                        if (response.success) {
+                            $scope.updateList(response.data);
+                        }
+                        else {
+                            bootbox.alert(response.message);
+                        }
+
+                    });
+            }
         }
 
 //批量删除
@@ -109,7 +125,7 @@
         };
         $scope.pageChanged();
     });
-        app.controller('editCtrl', function ($scope,$http, $routeParams) {
+        app.controller('editCtrl', function ($scope,$rootScope,$http, $routeParams) {
         /**
          * 日期时间选择控件
          * bootstrap-datetime 24小时时间是hh
@@ -136,18 +152,20 @@
             todayBtn: 1,
             clearBtn: true
         });
+        $rootScope.show=true;
         $scope.message = '';
         $scope.datadictTypePo = {};
         $scope.canAdd = PrivilegeService.hasPrivilege('add');
         var url = "<c:url value="/base/datadictType/create"/>";
         if ($routeParams.id != null) {
             url = "<c:url value="/base/datadictType/get"/>" + "?id=" + $routeParams.id;
+            $rootScope.id=$routeParams.id;
         }
         $http.get(url)
             .success(function (response) {
                 if (response.success) {
                     $scope.datadictTypePo = response.data;
-                    $scope.getDatadictTypeList();
+                    $rootScope.dataType=$scope.datadictTypePo.value;
                     $scope.canSave = (PrivilegeService.hasPrivilege('add') && $scope.datadictTypePo.id == null) || PrivilegeService.hasPrivilege('update');
                 }
                 else {
@@ -185,7 +203,7 @@
                 .success(function (response) {
                     if (response.success) {
                         $scope.datadictTypePo = response.data;
-                        $scope.getDatadictTypeList();
+
                         $scope.canSave = (PrivilegeService.hasPrivilege('add') && $scope.datadictTypePo.id == null) || PrivilegeService.hasPrivilege('update');
                     }
                     else {
@@ -196,6 +214,15 @@
             });
         }
     });
+    app.controller('tabCtrl',function ($scope,$rootScope,$http) {
+        $scope.showDatadict=function () {
+            $rootScope.show=true;
+        }
+        $scope.showDetail=function () {
+            $rootScope.show=false;
+
+        }
+    })
 
     app.run([
         'bootstrap3ElementModifier',

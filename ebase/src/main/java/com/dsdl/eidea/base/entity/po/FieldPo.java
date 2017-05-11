@@ -130,8 +130,18 @@ public class FieldPo implements java.io.Serializable {
     @Column(name = "[seqnogrid]" )
     private Integer seqnogrid;
     /**
+     * 是否允许打印
+     */
+    @Column(name = "[isprinted]",length = 255,nullable = false)
+    private String isprinted;
+    /**
     * 是否允许复制
     **/
     @Column(name = "[isallowcopy]",length =1 )
     private String isallowcopy;
+    /**
+     * 是否导出报表
+     */
+    @Column(name = "[isreport]",length=1,nullable = false)
+    private String isreport;
 }

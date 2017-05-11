@@ -129,12 +129,4 @@ public class DatadictTypeController extends BaseController {
         datadictTypeService.deletes(deleteParams.getIds());
         return list(session, deleteParams.getQueryParams());
     }
-    @RequiresPermissions(value = "view")
-    @ResponseBody
-    @RequestMapping(value = "/getDatadictList",method = RequestMethod.POST)
-    public JsonResult<List<DatadictPo>> getDatadictList(@RequestBody String dataType){
-        return JsonResult.success(datadictService.getDatadictListByValue(dataType));
-
-    }
-
 }

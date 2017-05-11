@@ -24,7 +24,7 @@
                 .when('/editDetail', {templateUrl: '<c:url value="/base/datadict/edit.tpl.jsp"/>'})
                 .otherwise({redirectTo: '/list'});
         }]);
-    app.controller('listTypeCtrl', function ($scope, $http) {
+    app.controller('listCtrl', function ($scope, $http) {
         $scope.modelList = [];
         $scope.delFlag = false;
         $scope.isLoading = true;

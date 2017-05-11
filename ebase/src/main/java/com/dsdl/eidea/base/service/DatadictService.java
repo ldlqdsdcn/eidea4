@@ -18,7 +18,6 @@ public interface DatadictService {
 	PaginationResult<DatadictPo> getDatadictListByPaging(Search search,QueryParams queryParams);
 	PaginationResult<DatadictPo> getDatadictListByDatadictType(Search search,String datadcitType);
 	DatadictPo getDatadict(Integer id);
-	List<DatadictPo> getDatadictListByValue(String value);
 	void saveDatadict(DatadictPo datadict);
 	void deletes(Integer[] ids);
 	boolean findExistCode(String code);

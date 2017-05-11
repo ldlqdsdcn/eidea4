@@ -9,7 +9,7 @@ Date: 2017-04-26 15:34:17
     <div ng-controller="tabCtrl">
         <uib-tabset class="nav nav-tab vertical-tab" vertical="true" active="active">
             <uib-tab heading="<ediea:label key="datadict.title"/>" select="showDatadict()"></uib-tab>
-            <uib-tab heading="<ediea:label key="datadict.detail"/>" select="showDetail()"></uib-tab>
+            <uib-tab heading="<ediea:label key="datadict.detail"/>" select="showDetail()" ></uib-tab>
         </uib-tabset>
     </div>
     <div class="tab-content vertical-tab-content" >
@@ -57,9 +57,9 @@ Date: 2017-04-26 15:34:17
                             {{message}}
                         </p>
                         <p>
-    <span ng-repeat="error in errors track by $index">
-    {{error.message}}
-    </span>
+                        <span ng-repeat="error in errors track by $index">
+                        {{error.message}}
+                        </span>
                         </p>
                     </div>
                 </form>

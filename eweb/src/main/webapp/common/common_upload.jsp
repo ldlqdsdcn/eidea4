@@ -13,23 +13,24 @@
                 </h4>
             </div>
             <div class="modal-body">
-                <form role="form" name="editForm" novalidate ng-submit="save()">
+                <form role="form" name="editForm">
                     <button type="button" class="btn  btn-primary btn-sm" ng-click="attachmentUpload()" title="<eidea:label key="common.button.upload"/>">
                         <i class="fa fa-upload fa-1x" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.upload"/>
-                    </button>
+                    </button></br>
                     <div class="row-fluid">
                         <div class="span12">
                             <div class="form-group">
                                 <label for="fileKeyword">附件关键字</label>
                                 <input type="text" id="fileKeyword" class="form-control" ng-model="commonFileBo.fileKeyword"
-                                       placeholder="附件关键字" required ng-minlength="2"
-                                       ng-maxlength="100">
+                                       placeholder="附件关键字" ng-maxlength="255">
                             </div>
                             <div class="form-group">
                                 <label for="fileAbstract">附件简要</label>
                                 <input type="text" id="fileAbstract" class="form-control" ng-model="commonFileBo.fileAbstract"
-                                       placeholder="附件简要" required ng-minlength="2"
-                                       ng-maxlength="100">
+                                       placeholder="附件简要" ng-maxlength="255">
+                            </div>
+                            <div class="form-group">
+                                <label>附件名称：{{files[0].name}}</label>
                             </div>
                             <div class="form-group">
                                 <div class="up-buttons">
@@ -48,15 +49,12 @@
                                          ngf-max-files="maxFiles"
                                          ngf-ignore-invalid="ignoreInvalid"
                                          ngf-run-all-validations="runAllValidations"
-                                         ngf-allow-dir="allowDir" class="drop-box" ngf-drop-available="dropAvailable"
+                                         ngf-allow-dir="allowDir" class="drop-box" ngf-drop-available="dropAvailable" aria-required="true"
                                     >附件上传
                                     </div>
                                 </div>
                                 <div class="preview">
-                                    {{files[0].name}}
                                     <img ngf-src="!files[0].$error && files[0]">
-                                    <%--<audio controls ngf-src="!files[0].$error && files[0]"></audio>
-                                    <video controls ngf-src="!files[0].$error && files[0]"></video>--%>
                                 </div>
                             </div>
                         </div>

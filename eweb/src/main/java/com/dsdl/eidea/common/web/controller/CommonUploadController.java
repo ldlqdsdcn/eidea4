@@ -60,6 +60,7 @@ public class CommonUploadController {
             for(DirectoryBo directoryBo:directoryBoList.getData()){
                 if(directoryBo.getDirectory().equals(commonFileBo.getDirectoryUrl())){
                     moduleDirectoryBoList=moduleDirectoryService.getModuleDirectoryList(directoryBo.getId());
+                    break;
                 }
             }
             Search moduleSearch=new Search();

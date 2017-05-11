@@ -14,7 +14,6 @@
 <script type='text/javascript' src='<c:url value="/js/bootbox.min.js"/>'></script>
 <script type='text/javascript' src="<c:url value="/js/angular/angular.min.js"/>"></script>
 <script type='text/javascript' src="<c:url value="/js/angular/angular-route.min.js"/>"></script>
-<script type='text/javascript' src="<c:url value="/js/angular/angular-ui-route.min.js"/> "></script>
 <script type='text/javascript' src="<c:url value="/js/angular/jcs-auto-validate.min.js"/>"></script>
 <script type='text/javascript' src="<c:url value="/js/angular/ui-bootstrap-tpls-2.2.0.min.js"/>"></script>
 <script type='text/javascript' src="<c:url value="/js/angular/i18n/angular-locale_zh-cn.js"/>"></script>

@@ -25,7 +25,7 @@
                 .when('/editDetail', {templateUrl: '<c:url value="/base/datadict/edit.tpl.jsp"/>'})
                 .otherwise({redirectTo: '/list'});
         }]);
-    app.controller('listCtrl', function ($scope, $http) {
+    app.controller('listCtrl', function ($scope, $http,$routeParams) {
         $scope.modelList = [];
         $scope.delFlag = false;
         $scope.isLoading = true;
@@ -49,17 +49,44 @@
             }
             return false;
         }
-        $scope.pageChanged = function () {
-            $http.post("<c:url value="/base/datadictType/list"/>", $scope.queryParams)
-                .success(function (response) {
-                    $scope.isLoading = false;
+        if($routeParams.id==null) {
+            $scope.pageChanged = function () {
+                $http.post("<c:url value="/base/datadictType/list"/>", $scope.queryParams)
+                    .success(function (response) {
+                        $scope.isLoading = false;
+                        if (response.success) {
+                            $scope.updateList(response.data);
+                        }
+                        else {
+                            bootbox.alert(response.message);
+                        }
+                    });
+            }
+        }else {
+            $scope.pageChanged = function () {
+                var url = "";
+                if ($routeParams.id != null) {
+                    url = "<c:url value="/base/datadictType/get"/>" + "?id=" + $routeParams.id;
+                }
+                $http.get(url).success(function (response) {
                     if (response.success) {
-                        $scope.updateList(response.data);
+                        $scope.datadictTypePo = response.data;
+                        $http.post("<c:url value="/base/datadict/detaillist"/>", $scope.datadictTypePo.value)
+                            .success(function (response) {
+                                $scope.isLoading = false;
+                                if (response.success) {
+                                    $scope.updateList(response.data);
+                                }
+                                else {
+                                    bootbox.alert(response.message);
+                                }
+
+                            });
                     }
-                    else {
-                        bootbox.alert(response.message);
-                    }
+                }).error(function (response) {
+                    bootbox.alert(response);
                 });
+            }
         }
 
 //批量删除
@@ -110,32 +137,6 @@
         $scope.pageChanged();
     });
     app.controller('editCtrl', function ($scope, $rootScope, $http, $routeParams) {
-        /**
-         * 日期时间选择控件
-         * bootstrap-datetime 24小时时间是hh
-         */
-        $('.bootstrap-datetime').datetimepicker({
-            language: 'zh-CN',
-            format: 'yyyy-mm-dd hh:ii:ss',
-            weekStart: 1,
-            todayBtn: 1,
-            autoclose: 1,
-            todayHighlight: 1,
-            startView: 2,
-            forceParse: 0,
-            showMeridian: 1,
-            clearBtn: true
-        });
-        /**
-         * 日期选择控件
-         */
-        $('.bootstrap-date').datepicker({
-            language: 'zh-CN',
-            format: 'yyyy-mm-dd',
-            autoclose: 1,
-            todayBtn: 1,
-            clearBtn: true
-        });
         $rootScope.show = true;
         $scope.message = '';
         $scope.datadictTypePo = {};
@@ -148,7 +149,6 @@
             .success(function (response) {
                 if (response.success) {
                     $scope.datadictTypePo = response.data;
-                    $scope.getDatadictTypeList();
                     $scope.canSave = (PrivilegeService.hasPrivilege('add') && $scope.datadictTypePo.id == null) || PrivilegeService.hasPrivilege('update');
                 }
                 else {
@@ -186,7 +186,7 @@
                 .success(function (response) {
                     if (response.success) {
                         $scope.datadictTypePo = response.data;
-                        $scope.getDatadictTypeList();
+                        $rootScope.dataType = $scope.datadictTypePo.value;
                         $scope.canSave = (PrivilegeService.hasPrivilege('add') && $scope.datadictTypePo.id == null) || PrivilegeService.hasPrivilege('update');
                     }
                     else {
@@ -195,16 +195,6 @@
                 }).error(function (response) {
                 bootbox.alert(response);
             });
-        }
-        $scope.getDatadictTypeList = function () {
-            $http.post("<c:url value="/base/datadict/detaillist"/> ", $scope.datadictTypePo.value).success(function (data) {
-                if (data.success) {
-                    $scope.modelList = data.data.data;
-
-                }
-            }).error(function (data) {
-                bootbox.alert(data.message);
-            })
         }
     });
     app.controller('tabCtrl', function ($scope, $rootScope) {

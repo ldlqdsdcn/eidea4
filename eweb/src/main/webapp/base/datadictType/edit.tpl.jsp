@@ -14,7 +14,7 @@ Date: 2017-04-26 15:34:17
     </div>
     <div class="tab-content vertical-tab-content" >
 
-        <div class="row-fluid">
+        <div class="row-fluid" ng-controller="listCtrl">
             <div class="span12">
                 <br>
                 <form role="form" name="editForm" novalidate ng-submit="save()"ng-show="show">

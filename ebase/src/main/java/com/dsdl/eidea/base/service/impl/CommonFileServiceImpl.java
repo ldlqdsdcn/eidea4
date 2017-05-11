@@ -6,6 +6,9 @@
 */
 package com.dsdl.eidea.base.service.impl;
 
+import com.dsdl.eidea.base.entity.bo.CommonFileBo;
+import com.dsdl.eidea.base.entity.po.FileRelationPo;
+import com.dsdl.eidea.base.entity.po.FileSettingPo;
 import com.dsdl.eidea.core.spring.annotation.DataAccess;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +19,8 @@ import com.dsdl.eidea.core.params.QueryParams;
 import com.googlecode.genericdao.search.SearchResult;
 import com.googlecode.genericdao.search.Search;
 import com.dsdl.eidea.core.dao.CommonDao;
+
+import java.util.Date;
 import java.util.List;
 /**
  * @author 刘大磊 2017-05-02 13:09:39
@@ -24,6 +29,9 @@ import java.util.List;
 public class CommonFileServiceImpl  implements	CommonFileService {
 	@DataAccess(entity =CommonFilePo.class)
 	private CommonDao<CommonFilePo,Integer> commonFileDao;
+	@DataAccess(entity =FileRelationPo.class)
+	private CommonDao<FileRelationPo,Integer> commonFileRelationDao;
+
 	public PaginationResult<CommonFilePo> getCommonFileListByPaging(Search search,QueryParams queryParams)
     {
 		search.setFirstResult(queryParams.getFirstResult());
@@ -52,5 +60,39 @@ public class CommonFileServiceImpl  implements	CommonFileService {
     public void deletes(Integer[] ids)
 	{
 		commonFileDao.removeByIds(ids);
+	}
+
+	@Override
+	public void saveAttachmentUpload(CommonFileBo commonFileBo) {
+		CommonFilePo commonFilePo=new CommonFilePo();
+		commonFilePo.setFileKeyword(commonFileBo.getFileKeyword());
+		commonFilePo.setFileAbstract(commonFileBo.getFileAbstract());
+		commonFilePo.setFilename(commonFileBo.getFileName());
+		commonFilePo.setExtension(commonFileBo.getExtension());
+		commonFilePo.setPath(commonFileBo.getPath());
+		commonFilePo.setFileSize(commonFileBo.getFileSize());
+		commonFilePo.setFileCreated(commonFileBo.getFileCreated());
+		commonFilePo.setFileIsreadonly(commonFileBo.getFileIsreadonly());
+		commonFilePo.setFileIshidden(commonFileBo.getFileIshidden());
+		commonFilePo.setCreated(commonFileBo.getCreated());
+		commonFilePo.setCommonFileSettingId(commonFileBo.getCommonFileSettingId());
+		commonFileDao.save(commonFilePo);
+		FileRelationPo fileRelationPo=new FileRelationPo();
+		fileRelationPo.setTableName(commonFileBo.getUri());
+		fileRelationPo.setFileId(commonFilePo.getId());
+		fileRelationPo.setTableId(Integer.parseInt(commonFileBo.getTableId()));
+		fileRelationPo.setCreated(commonFileBo.getCreated());
+		commonFileRelationDao.save(fileRelationPo);
+	}
+
+	@Override
+	public void deleteAttachment(CommonFileBo commonFileBo) {
+		Search search=new Search();
+		search.addFilterEqual("fileId",commonFileBo.getId());
+		List<FileRelationPo> FileRelationPoList=commonFileRelationDao.search(search);
+		FileRelationPoList.forEach(fileRelationPo -> {
+			commonFileRelationDao.removeById(fileRelationPo.getId());
+		});
+		commonFileDao.removeById(commonFileBo.getId());
 	}
 }

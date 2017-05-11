@@ -5,6 +5,7 @@
 * email:ldlqdsd@126.com
 */
 package com.dsdl.eidea.base.service;
+import com.dsdl.eidea.base.entity.bo.CommonFileBo;
 import com.dsdl.eidea.base.entity.po.CommonFilePo;
 import com.dsdl.eidea.core.dto.PaginationResult;
 import com.dsdl.eidea.core.params.QueryParams;
@@ -19,4 +20,6 @@ public interface CommonFileService {
 	CommonFilePo getCommonFile(Integer id);
 	void saveCommonFile(CommonFilePo commonFile);
 	void deletes(Integer[] ids);
+	void saveAttachmentUpload(CommonFileBo commonFileBo);
+	void deleteAttachment(CommonFileBo commonFileBo);
 }

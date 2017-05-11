@@ -21,13 +21,14 @@
 </body>
 
 <script type="text/javascript">
-    var app = angular.module('myApp', ['ngRoute', 'ui.bootstrap', 'jcs-autoValidate'])
+    var app = angular.module('myApp', ['ngFileUpload','ngRoute', 'ui.bootstrap', 'jcs-autoValidate'])
         .config(['$routeProvider', function ($routeProvider) {
             $routeProvider
                 .when('/list', {templateUrl: '<c:url value="/core/language/list.tpl.jsp"/>'})
                 .when('/edit', {templateUrl: '<c:url value="/core/language/edit.tpl.jsp"/>'})
                 .otherwise({redirectTo: '/list'});
         }]);
+    var version = '11.1.3';
     app.controller('listCtrl', function ($scope,$rootScope,$http) {
         $scope.modelList = [];
         $scope.delFlag = false;
@@ -137,7 +138,7 @@
         $scope.pageChanged();
 
     });
-    app.controller('editCtrl', function ($scope,$rootScope,$http, $routeParams) {
+    app.controller('editCtrl', function ($scope,$rootScope,$http, $routeParams, $timeout, Upload) {
         $scope.message = '';
         $scope.languageBo = {};
         $scope.canAdd = PrivilegeService.hasPrivilege('add');
@@ -245,6 +246,65 @@
             });
         }
 
+        //附件上传
+        $scope.showAttachment=function () {
+            $("#attachmentModal").modal('show');
+            $scope.tableId=$scope.languageBo.code;
+            $http.post("<c:url value="/common/attachmentUpload"/>").success(function (data) {
+                if (data.success) {
+                    $scope.attachmentList = data.data;
+                }else {
+                    $scope.message = data.message;
+                }
+            });
+        }
+        $scope.$watch('files', function (files) {
+            $scope.formUpload = false;
+            if (files != null) {
+                if (!angular.isArray(files)) {
+                    $timeout(function () {
+                        $scope.files = files = [files];
+                    });
+                    return;
+                }
+            }
+        });
+        $scope.attachmentUpload=function () {
+            for (var i = 0; i < $scope.files.length; i++) {
+                $scope.errorMsg = null;
+                (function (f) {
+                    $scope.upload(f, true);
+                })($scope.files[i])
+                ;
+            }
+        }
+        $scope.upload = function (file) {
+            file.upload =Upload.upload({
+                //服务端接收
+                url: "<c:url value="/common/attachmentUpload"/>",
+                data: {'fileKeyword': $scope.commonFileBo.fileKeyword,"fileAbstract":$scope.commonFileBo.fileAbstract,
+                    "directoryUrl":"/core","tableId":1,"uri":"${uri}"},
+                //上传的文件
+                file: file
+            }).success(function (data, status, headers, config) {
+                //上传成功
+                alert("附件上传成功");
+                $scope.attachmentList = data.data;
+            }).error(function (data, status, headers, config) {
+                //上传失败
+                console.log('error status: ' + status);
+            });
+        };
+        $scope.attachmentDelete=function (id) {
+            $http.post("<c:url value="/common/attachmentDelete"/>",{"id":id}).success(function (data) {
+                if (data.success) {
+                    alert("附件删除成功");
+                    $scope.attachmentList = data.data;
+                }else {
+                    $scope.message = data.message;
+                }
+            });
+        }
     });
     app.run([
         'bootstrap3ElementModifier',

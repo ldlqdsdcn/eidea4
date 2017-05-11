@@ -66,8 +66,7 @@
     <button type="button" class="btn  btn-primary btn-sm" title="<eidea:label key="common.button.print"/>">
         <i class="fa fa-print fa-1x" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.print"/>
     </button>
-    <button type="button" class="btn  btn-primary btn-sm"
-            title="<eidea:label key="common.button.attachment"/>">
+    <button type="button" class="btn  btn-primary btn-sm" ng-click="showAttachment()" title="<eidea:label key="common.button.attachment"/>">
         <i class="fa fa-ils fa-1x" aria-hidden="true"></i>&nbsp;<eidea:label
             key="common.button.attachment"/>
     </button>

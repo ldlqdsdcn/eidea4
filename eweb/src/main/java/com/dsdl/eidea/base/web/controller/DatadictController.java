@@ -156,8 +156,9 @@ public class DatadictController extends BaseController {
         if (deleteParams.getIds() == null || deleteParams.getIds().length == 0) {
             return JsonResult.fail(ErrorCodes.VALIDATE_PARAM_ERROR.getCode(), getMessage("common.error.delete.failure", getMessage("datadict.title")));
         }
+        String dataType= datadictService.getDatadict(deleteParams.getIds()[0]).getDataType();
         datadictService.deletes(deleteParams.getIds());
-        return list(session, deleteParams.getQueryParams());
+        return detailList(session,dataType);
     }
 
     @RequiresPermissions(value = "view")

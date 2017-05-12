@@ -112,16 +112,12 @@ public class CommonUploadController {
     @RequestMapping("/attachmentDownload")
     public void attachmentDownload(HttpServletResponse response,CommonFileBo commonFileBo)throws Exception{
         CommonFilePo commonFilePo=commonFileService.getCommonFile(commonFileBo.getId());
-        // 下载本地文件
         String fileName = commonFilePo.getFilename();
-        // 读到流中
         InputStream fis=new FileInputStream(commonFilePo.getPath());
-        BufferedInputStream bis=new BufferedInputStream(fis);//放到缓冲流里面
-        // 设置输出的格式
+        BufferedInputStream bis=new BufferedInputStream(fis);
         response.reset();
         response.setContentType("application/x-download");
         response.addHeader("Content-Disposition", "attachment; filename=" + new String(fileName.getBytes("utf-8"),"iso8859-1"));
-        // 循环取出流中的数据
         byte[] b = new byte[fileName.length()];
         int len;
         try {
@@ -135,7 +131,6 @@ public class CommonUploadController {
             fis.close();
         }
     }
-
     public PaginationResult<CommonFilePo> list(){
         return commonFileService.getCommonFileListByPaging(new Search(), new QueryParams());
     }

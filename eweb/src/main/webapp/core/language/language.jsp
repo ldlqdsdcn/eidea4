@@ -270,6 +270,17 @@
             }
         });
         $scope.attachmentUpload=function () {
+            if($scope.files==null){
+                bootbox.alert({
+                    buttons: {
+                        ok: {
+                            label: '<i class="fa fa-close" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.closed"/>',
+                            className: 'btn-primary'
+                        }
+                    },
+                    message: '<eidea:message key="common.upload.select.attachment"/>',
+                });return;
+            }
             for (var i = 0; i < $scope.files.length; i++) {
                 $scope.errorMsg = null;
                 (function (f) {
@@ -282,13 +293,21 @@
             file.upload =Upload.upload({
                 //服务端接收
                 url: "<c:url value="/common/attachmentUpload"/>",
-                data: {'fileKeyword': $scope.commonFileBo.fileKeyword,"fileAbstract":$scope.commonFileBo.fileAbstract,
+                data: {'fileKeyword':$scope.commonFileBo==null?null:$scope.commonFileBo.fileKeyword,"fileAbstract":$scope.commonFileBo==null?null:$scope.commonFileBo.fileAbstract,
                     "directoryUrl":"/core","tableId":1,"uri":"${uri}"},
                 //上传的文件
                 file: file
             }).success(function (data, status, headers, config) {
                 //上传成功
-                alert("附件上传成功");
+                bootbox.alert({
+                    buttons: {
+                        ok: {
+                            label: '<i class="fa fa-close" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.closed"/>',
+                            className: 'btn-primary'
+                        }
+                    },
+                    message: '<eidea:message key="common.upload.success"/>',
+                });
                 $scope.attachmentList = data.data;
             }).error(function (data, status, headers, config) {
                 //上传失败
@@ -296,12 +315,36 @@
             });
         };
         $scope.attachmentDelete=function (id) {
-            $http.post("<c:url value="/common/attachmentDelete"/>",{"id":id}).success(function (data) {
-                if (data.success) {
-                    alert("附件删除成功");
-                    $scope.attachmentList = data.data;
-                }else {
-                    $scope.message = data.message;
+            bootbox.confirm({
+                message: "<eidea:message key="common.warn.confirm.deletion"/>",
+                buttons: {
+                    confirm: {
+                        label: '<eidea:label key="common.button.yes"/>',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: '<eidea:label key="common.button.no"/>',
+                        className: 'btn-danger'
+                    }
+                }, callback: function (result) {
+                    if (result) {
+                        $http.post("<c:url value="/common/attachmentDelete"/>",{"id":id}).success(function (data) {
+                            if (data.success) {
+                                bootbox.alert({
+                                    buttons: {
+                                        ok: {
+                                            label: '<i class="fa fa-close" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.closed"/>',
+                                            className: 'btn-primary'
+                                        }
+                                    },
+                                    message: '<eidea:message key="common.upload.delete.success"/>',
+                                });
+                                $scope.attachmentList = data.data;
+                            }else {
+                                $scope.message = data.message;
+                            }
+                        });
+                    }
                 }
             });
         }

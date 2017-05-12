@@ -20,37 +20,23 @@
                     <div class="row-fluid">
                         <div class="span12">
                             <div class="form-group">
-                                <label for="fileKeyword">附件关键字</label>
+                                <label for="fileKeyword"><%--附件关键字--%><eidea:label key="common.upload.fileKeyword"/></label>
                                 <input type="text" id="fileKeyword" class="form-control" ng-model="commonFileBo.fileKeyword"
-                                       placeholder="附件关键字" ng-maxlength="255">
+                                       placeholder="<eidea:label key="common.upload.fileKeyword"/>" ng-maxlength="255">
                             </div>
                             <div class="form-group">
-                                <label for="fileAbstract">附件简要</label>
+                                <label for="fileAbstract"><%--附件简要--%><eidea:label key="common.upload.fileAbstract"/></label>
                                 <input type="text" id="fileAbstract" class="form-control" ng-model="commonFileBo.fileAbstract"
-                                       placeholder="附件简要" ng-maxlength="255">
+                                       placeholder="<eidea:label key="common.upload.fileAbstract"/>" ng-maxlength="255">
                             </div>
                             <div class="form-group">
-                                <label>附件名称：{{files[0].name}}</label>
+                                <label><%--附件名称--%><eidea:label key="common.upload.attachment.name"/>：{{files[0].name}}</label>
                             </div>
                             <div class="form-group">
                                 <div class="up-buttons">
-                                    <div ngf-drop ngf-select ng-model="files" ngf-model-invalid="invalidFiles"
-                                         ngf-model-options="modelOptionsObj"
-                                         ngf-multiple="multiple" ngf-pattern="pattern" ngf-accept="acceptSelect"
-                                         ng-disabled="disabled" ngf-capture="capture"
-                                         ngf-drag-over-class="dragOverClassObj"
-                                         ngf-validate="validateObj"
-                                         ngf-resize="resizeObj"
-                                         ngf-resize-if="resizeIfFn($file, $width, $height)"
-                                         ngf-dimensions="dimensionsFn($file, $width, $height)"
-                                         ngf-duration="durationFn($file, $duration)"
-                                         ngf-keep="keepDistinct ? 'distinct' : keep"
-                                         ngf-fix-orientation="orientation"
-                                         ngf-max-files="maxFiles"
-                                         ngf-ignore-invalid="ignoreInvalid"
-                                         ngf-run-all-validations="runAllValidations"
-                                         ngf-allow-dir="allowDir" class="drop-box" ngf-drop-available="dropAvailable" aria-required="true"
-                                    >附件上传
+                                    <div ngf-drop ngf-select ng-model="files" ngf-multiple="multiple"
+                                         ngf-pattern="pattern" ngf-accept="acceptSelect" class="drop-box">
+                                        <%--附件上传--%><eidea:label key="common.upload.attachment"/>
                                     </div>
                                 </div>
                                 <div class="preview">
@@ -62,10 +48,10 @@
                 </form>
                 <table class="table table-hover table-striped table-condensed">
                     <thead>
-                        <th>序号</th>
-                        <th>附件名称</th>
-                        <th>上传时间</th>
-                        <th>操作</th>
+                        <th><%--序号--%><eidea:label key="base.serialNumber"/></th>
+                        <th><%--附件名称--%><eidea:label key="common.upload.attachment.name"/></th>
+                        <th><%--上传时间--%><eidea:label key="common.upload.date"/></th>
+                        <th><%--操作--%><eidea:label key="common.upload.operation"/></th>
                     </thead>
                     <tbody>
                     <tr ng-repeat="attachment in attachmentList track by $index" ng-class-even="success">

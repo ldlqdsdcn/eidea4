@@ -6,11 +6,11 @@ import lombok.Setter;
 import java.util.Date;
 
 /**
- * Created by admin on 2017/5/4.
+ * Created by Bobo on 2017/5/4.
  */
 @Getter
 @Setter
-public class CommonFileBo {
+public class CommonFileBo extends CommonUploadBo{
     private Integer id;
     private String fileName;
     private String fileType;
@@ -28,7 +28,4 @@ public class CommonFileBo {
     private Integer fileMode;
     private String fileBlob;
 
-    private String uri;
-    private String directoryUrl;
-    private String tableId;
 }

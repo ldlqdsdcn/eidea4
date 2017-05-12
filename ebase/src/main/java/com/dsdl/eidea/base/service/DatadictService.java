@@ -16,6 +16,7 @@ import java.util.List;
  */
 public interface DatadictService {
 	PaginationResult<DatadictPo> getDatadictListByPaging(Search search,QueryParams queryParams);
+	PaginationResult<DatadictPo> getDatadictListByDatadictType(Search search,String datadcitType);
 	DatadictPo getDatadict(Integer id);
 	void saveDatadict(DatadictPo datadict);
 	void deletes(Integer[] ids);

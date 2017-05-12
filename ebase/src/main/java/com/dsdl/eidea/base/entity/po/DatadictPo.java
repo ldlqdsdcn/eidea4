@@ -26,8 +26,6 @@ import org.hibernate.validator.constraints.NotBlank;
 public class DatadictPo implements java.io.Serializable {
     @Id
     @Column(name = "id",nullable = false,unique = true,length = 11)
-    @Length(min = 1,max = 11,message = "error.datadict.id.length")
-    @NotNull(message = "common.primary_key.isempty")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Column(name = "code",length =20,nullable = false)
@@ -38,7 +36,7 @@ public class DatadictPo implements java.io.Serializable {
     @NotBlank(message = "datadict.msgtext.not.empty")
     @Length(min=1,max = 20,message = "error.datadict.msgtext.length")
     private String msgtext;
-    @Column(name = "isactive",length =1,nullable = false)
+    @Column(name = "isactive",length =1)
     @Length(min=1,max=1,message = "isactive.length")
     private String isactive;
     @Column(name = "data_type",length =20,nullable = false)

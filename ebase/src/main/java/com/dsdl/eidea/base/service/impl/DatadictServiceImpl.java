@@ -41,6 +41,21 @@ public class DatadictServiceImpl implements DatadictService {
         }
         return paginationResult;
     }
+    public PaginationResult<DatadictPo> getDatadictListByDatadictType(Search search,String datadictType) {
+        QueryParams queryParams=new QueryParams();
+        search.setFirstResult(queryParams.getFirstResult());
+        search.setMaxResults(queryParams.getPageSize());
+        search.addFilterEqual("dataType",datadictType);
+        PaginationResult<DatadictPo> paginationResult = null;
+        if (queryParams.isInit()) {
+            SearchResult<DatadictPo> searchResult = datadictDao.searchAndCount(search);
+            paginationResult = PaginationResult.pagination(searchResult.getResult(), searchResult.getTotalCount(), queryParams.getPageNo(), queryParams.getPageSize());
+        } else {
+            List<DatadictPo> datadictPoList = datadictDao.search(search);
+            paginationResult = PaginationResult.pagination(datadictPoList, queryParams.getTotalRecords(), queryParams.getPageNo(), queryParams.getPageSize());
+        }
+        return paginationResult;
+    }
 
     public DatadictPo getDatadict(Integer id) {
         return datadictDao.find(id);

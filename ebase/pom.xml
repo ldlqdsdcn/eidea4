@@ -111,9 +111,29 @@
             <groupId>org.activiti</groupId>
             <artifactId>activiti-spring</artifactId>
             <version>5.19.0</version>
+            <exclusions>
+            <exclusion>
+                <artifactId>commons-dbcp</artifactId>
+                <groupId>commons-dbcp</groupId>
+            </exclusion>
+            </exclusions>
         </dependency>
-
-
+        <dependency>
+            <groupId>org.activiti</groupId>
+            <artifactId>activiti-diagram-rest</artifactId>
+            <version>5.19.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.activiti</groupId>
+            <artifactId>activiti-json-converter</artifactId>
+            <version>5.19.0</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>commons-collections</artifactId>
+                    <groupId>commons-collections</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
         <!--mybatis paging end-->
     </dependencies>
     <build>

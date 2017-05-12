@@ -169,7 +169,7 @@ Date: 2017-05-04 13:22:23
                 </div>
                 <div class="form-group">
                     <label for="isprinted"><%--isprinted--%><eidea:label key="base.field.label.isprinted"/></label>
-                    <input type="checkbox" id="isprinted" ng-true-value="'Y'" ng-false-value="N"
+                    <input type="checkbox" id="isprinted" ng-true-value="'Y'" ng-false-value="'N'"
                            ng-model="fieldPo.isprinted">
 
                 </div>
@@ -183,7 +183,7 @@ Date: 2017-05-04 13:22:23
                 </div>
                 <div class="form-group">
                     <label for="isreport"><%--isreport--%><eidea:label key="base.field.label.isreport"/></label>
-                    <input type="checkbox" id="isreport" ng-true-value="'Y'" ng-false-value="N"
+                    <input type="checkbox" id="isreport" ng-true-value="'Y'" ng-false-value="'N'"
                            ng-model="fieldPo.isreport">
 
                 </div>

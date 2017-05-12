@@ -151,6 +151,7 @@ $scope.pageChanged();
                     if (response.success) {
                         $scope.tabPo = response.data;
                         $scope.getTableList();
+                        $scope.getTableColumnList($scope.tabPo.tableId);
                         $scope.canSave=(PrivilegeService.hasPrivilege('add')&&$scope.tabPo.id==null)||PrivilegeService.hasPrivilege('update');
                     }
                     else {

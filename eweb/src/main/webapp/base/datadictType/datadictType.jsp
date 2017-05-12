@@ -190,7 +190,6 @@
                 .success(function (response) {
                     if (response.success) {
                         $scope.datadictTypePo = response.data;
-                        $rootScope.dataType = $scope.datadictTypePo.value;
                         $scope.canSave = (PrivilegeService.hasPrivilege('add') && $scope.datadictTypePo.id == null) || PrivilegeService.hasPrivilege('update');
                     }
                     else {

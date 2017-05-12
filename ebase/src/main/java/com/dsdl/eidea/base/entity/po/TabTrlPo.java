@@ -26,15 +26,12 @@ import org.hibernate.validator.constraints.NotBlank;
 public class TabTrlPo implements java.io.Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "[id]", nullable = false, unique = true, length = 11)
-    @NotNull(message = "common.primary_key.isempty")
-    @Length(min = 1, max = 11,message = "error.datadict.id.length")
     @Id
     private Integer id;
     /**
      * 语言 code
      **/
     @NotNull(message = "error.tab.id.not.null")
-    @Length(min = 1, max = 11,message = "error.datadict.id.length")
     @Column(name = "[tab_id]", nullable = false, length = 11)
     private Integer tabId;
     /**

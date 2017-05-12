@@ -6,31 +6,12 @@ Date: 2017-05-02 15:41:30
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/inc/taglib.jsp" %>
 <div class="container-fluid" ng-controller="editCtrl">
-    <ul class="nav nav-tab vertical-tab" role="tablist" id="vtab">
-        <li role="presentation" class="active">
-            <a href="#tab-home" role="tab" data-toggle="tab"><eidea:label key="window.title"/></a>
-        </li>
-        <li role="presentation">
-            <a href="#tab-1" role="tab" data-toggle="tab"><ediea:label key="windowTrl.title"/></a>
-        </li>
-        <li role="presentation">
-            <a href="#tab-2" role="tab" data-toggle="tab"><ediea:label key="tab.title"/></a>
-        </li>
-        <li role="presentation">
-            <a href="#tab-3" role="tab" data-toggle="tab"><ediea:label key="tabTrl.title"/></a>
-        </li>
-        <li role="presentation">
-            <a href="#tab-4" role="tab" data-toggle="tab"><ediea:label key="field.title"/></a>
-        </li>
-        <li role="presentation">
-            <a href="#tab-5" role="tab" data-toggle="tab"><ediea:label key="fieldTrl.title"/></a>
-        </li>
-        <li role="presentation">
-            <a href="#tab-6" role="tab" data-toggle="tab"><ediea:label key="fieldValidator.title"/></a>
-        </li>
-    </ul>
+    <uib-tabset class="nav nav-tab vertical-tab" vertical="true" active="active">
+        <uib-tab index="0" heading="<ediea:label key="window.title"/>"></uib-tab>
+        <uib-tab index="1" heading="<ediea:label key="windowTrl.title"/>"></uib-tab>
+    </uib-tabset>
+
     <div class="tab-content vertical-tab-content">
-        <div role="tabpanel" class="tab-pane active" id="tab-home">
             <form role="form" name="editForm" novalidate ng-submit="save()">
                 <jsp:include page="/common/common_edit_button.jsp"/>
                 <div class="row-fluid">
@@ -143,12 +124,6 @@ Date: 2017-05-02 15:41:30
                 </div>
             </form>
         </div>
-        <div role="tabpanel" class="tab-pane" id="tab-1"><jsp:include page="../windowTrl/edit.tpl.jsp"/></div>
-        <div role="tabpanel" class="tab-pane" id="tab-2"><jsp:include page="../tab/edit.tpl.jsp"/></div>
-        <div role="tabpanel" class="tab-pane" id="tab-3"><jsp:include page="../tabTrl/edit.tpl.jsp"/></div>
-        <div role="tabpanel" class="tab-pane" id="tab-4"><jsp:include page="../field/edit.tpl.jsp"/></div>
-        <div role="tabpanel" class="tab-pane" id="tab-5"><jsp:include page="../fieldTrl/edit.tpl.jsp"/></div>
-        <div role="tabpanel" class="tab-pane" id="tab-6"><jsp:include page="../fieldValidator/edit.tpl.jsp"/></div>
-    </div>
+
 </div>
 <script type='text/javascript' src="<c:url value="/js/ondrag-start.js"/>"></script>

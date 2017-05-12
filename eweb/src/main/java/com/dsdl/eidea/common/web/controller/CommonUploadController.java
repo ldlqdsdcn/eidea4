@@ -105,7 +105,12 @@ public class CommonUploadController {
     @RequestMapping(value="/attachmentDelete", method = RequestMethod.POST)
     @ResponseBody
     public JsonResult<List<CommonFilePo>> attachmentDelete(@RequestBody CommonFileBo commonFileBo){
+        CommonFilePo commonFilePo=commonFileService.getCommonFile(commonFileBo.getId());
         commonFileService.deleteAttachment(commonFileBo);
+        File oldFile = new File(commonFilePo.getPath());
+        if (oldFile.exists()) {
+            oldFile.delete();
+        }
         return JsonResult.success(list().getData());
     }
 

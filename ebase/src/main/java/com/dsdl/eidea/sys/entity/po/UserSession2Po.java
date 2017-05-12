@@ -13,8 +13,8 @@ import lombok.Getter;
 import lombok.Setter;
 /**
 * table name sys_user_session2
-*            用户会话记录
-* Date:2017-04-22 08:37:33
+*            用户Session
+* Date:2017-05-08 09:55:07
 **/
 @Getter
 @Setter

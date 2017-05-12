@@ -16,8 +16,7 @@
             <table  class="table table-hover table-striped table-condensed">
                 <thead>
                 <tr>
-                    <th><input type="checkbox" name="selectAll" style="margin:0px;" ng-change="selectAll()"
-                               ng-model="delFlag"></th>
+                    <th><input type="checkbox" name="selectAll" style="margin:0px;" ng-change="selectAll()"  ng-model="delFlag"></th>
                     <th><%--序号--%><eidea:label key="base.serialNumber"/></th>
                     <th><%--sessionId--%><eidea:label key="sys.userSession2.label.sessionId"/></th>
                     <th><%--loginDate--%><eidea:label key="sys.userSession2.label.loginDate"/></th>
@@ -25,6 +24,7 @@
                     <th><%--remoteAddr--%><eidea:label key="sys.userSession2.label.remoteAddr"/></th>
                     <th><%--remoteHost--%><eidea:label key="sys.userSession2.label.remoteHost"/></th>
                     <th><%--sysUserId--%><eidea:label key="sys.userSession2.label.sysUserId"/></th>
+                    <th><%--token--%><eidea:label key="sys.userSession2.label.token"/></th>
                     <th><%--编辑--%><eidea:label key="common.button.edit"/></th>
                 </tr>
                 </thead>
@@ -53,7 +53,9 @@
                     <td>
                         {{model.sysUserId}}
                     </td>
-
+                    <td>
+                        {{model.token}}
+                    </td>
                     <td>
                         <a class="btn btn-primary btn-xs" href="#/edit?id={{model.id}}"><eidea:label key="common.button.edit"/><%--编辑--%></a>
                     </td>

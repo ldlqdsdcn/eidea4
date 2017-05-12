@@ -37,8 +37,8 @@ public class GenerateCodeMain implements CodeGenerationService {
         codeMain.messageService = applicationContext.getBean(MessageService.class);
         codeMain.languageService = applicationContext.getBean(LanguageService.class);
         codeMain.pageMenuService=applicationContext.getBean(PageMenuService.class);
-        GenModelDto genModelDto = new GenModelDto("core_field", "Field", "base", "字段信息");
-        genModelDto.setPagingByDb(true);
+        GenModelDto genModelDto = new GenModelDto("sys_user_session2", "UserSession2", "sys", "用户Session");
+        genModelDto.setPagingByDb(false);
         genModelDto.setBasePackage("com.dsdl.eidea");
         List<GenModelDto> list = new ArrayList<>();
         list.add(genModelDto);
@@ -77,7 +77,9 @@ public class GenerateCodeMain implements CodeGenerationService {
             PoGenerateStrategy poGenerateStrategy = new PoGenerateStrategy(tableMetaDataBo, genModelDto);
             poGenerateStrategy.generateModel(genSettings.getOutputPath());
             System.out.println("生成Po类完成");
-
+            /**
+             *
+             */
             ServiceGenerateStrategy serviceGenerateStrategy = new ServiceGenerateStrategy(genModelDto, tableMetaDataBo);
             serviceGenerateStrategy.generateInterface(genSettings.getOutputPath());
             serviceGenerateStrategy.generateServiceclass(genSettings.getOutputPath());
@@ -97,8 +99,8 @@ public class GenerateCodeMain implements CodeGenerationService {
             I18NGenerateStrategy i18NGenerateStrategy = new I18NGenerateStrategy(genModelDto, tableMetaDataBo, languageService, messageService, labelService);
             i18NGenerateStrategy.generateLabel();
             String model=StringUtil.lowerFirstChar(genModelDto.getModelName());
-//            PagemenuGenerateStrategy pagemenuGenerateStrategy=new PagemenuGenerateStrategy("/"+genModelDto.getModule()+"/"+model+"/showList",tableMetaDataBo.getRemark(),languageService,pageMenuService);
-//            pagemenuGenerateStrategy.generatePagemenu();
+            PagemenuGenerateStrategy pagemenuGenerateStrategy=new PagemenuGenerateStrategy("/"+genModelDto.getModule()+"/"+model+"/showList",tableMetaDataBo.getRemark(),languageService,pageMenuService);
+            pagemenuGenerateStrategy.generatePagemenu();
         }
 
     }

@@ -4,7 +4,7 @@ import com.dsdl.eidea.common.web.vo.SearchColumnVo;
 import com.dsdl.eidea.common.web.vo.SearchConditionParam;
 import com.dsdl.eidea.common.web.vo.SearchFormRow;
 import com.dsdl.eidea.core.def.RelOperDef;
-import com.dsdl.eidea.core.def.PageFieldInputType;
+import com.dsdl.eidea.core.def.FieldInputType;
 import com.dsdl.eidea.core.def.SearchPageType;
 import com.dsdl.eidea.core.entity.bo.CommonSearchResult;
 import com.dsdl.eidea.core.entity.bo.SearchBo;
@@ -76,7 +76,7 @@ public class CommonSearchController {
             }
             searchColumnVo.setOpearType(relOpearArray.get(0));
             searchColumnVo.setRelOpearList(relOpearArray);
-            if (PageFieldInputType.SELECT.getKey() == searchColumn.getShowType()) {
+            if (FieldInputType.SELECT.getKey() == searchColumn.getShowType()) {
                 List<CommonSearchResult> commonSearchResultList = searchService.getCommonSearchListByColumnId(searchColumn.getId());
                 searchColumnVo.setCommonSearchResultList(commonSearchResultList);
             }

@@ -24,14 +24,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-import com.dsdl.eidea.core.dto.PaginationResult;
-import com.dsdl.eidea.core.params.QueryParams;
-import com.dsdl.eidea.core.params.DeleteParams;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
-* Created by 刘大磊 on 2017-04-22 08:37:34.
+* Created by 刘大磊 on 2017-05-08 09:55:07.
 */ @Controller
 @RequestMapping("/sys/userSession2")
 public class UserSession2Controller extends BaseController {
@@ -42,17 +39,17 @@ private UserSession2Service userSession2Service;
 @RequiresPermissions("view")
 public ModelAndView showList() {
 ModelAndView modelAndView = new ModelAndView("/sys/userSession2/userSession2");
-modelAndView.addObject(WebConst.PAGING_SETTINGS, PagingSettingResult.getDbPaging());
+modelAndView.addObject(WebConst.PAGING_SETTINGS, PagingSettingResult.getDefault());
 modelAndView.addObject(WebConst.PAGE_URI, URI);
 return modelAndView;
 }
-    @RequestMapping(value = "/list", method = RequestMethod.POST)
-    @ResponseBody
-    @RequiresPermissions("view")
-public JsonResult<PaginationResult<UserSession2Po>> list(HttpSession session,@RequestBody QueryParams queryParams) {
+@RequestMapping(value = "/list", method = RequestMethod.GET)
+@ResponseBody
+@RequiresPermissions("view")
+public JsonResult<List<UserSession2Po>> list(HttpSession session) {
     Search search = SearchHelper.getSearchParam(URI, session);
-    PaginationResult<UserSession2Po> paginationResult = userSession2Service.getUserSession2ListByPaging(search, queryParams);
-    return JsonResult.success(paginationResult);
+    List<UserSession2Po> userSession2List = userSession2Service.getUserSession2List(search);
+        return JsonResult.success(userSession2List);
     }
     @RequiresPermissions("view")
     @RequestMapping(value = "/get", method = RequestMethod.GET)
@@ -102,14 +99,12 @@ public JsonResult<PaginationResult<UserSession2Po>> list(HttpSession session,@Re
     @RequiresPermissions("delete")
     @RequestMapping(value = "/deletes", method = RequestMethod.POST)
     @ResponseBody
-
-    public JsonResult<PaginationResult<UserSession2Po>> deletes(@RequestBody DeleteParams<Integer> deleteParams, HttpSession session) {
-    if (deleteParams.getIds() == null||deleteParams.getIds().length == 0)  {
-                return JsonResult.fail(ErrorCodes.VALIDATE_PARAM_ERROR.getCode(), getMessage("common.error.delete.failure",getMessage("userSession2.title")));
-                }
-            userSession2Service.deletes(deleteParams.getIds());
-                return list(session,deleteParams.getQueryParams());
+    public JsonResult<List<UserSession2Po>> deletes(@RequestBody Integer[] ids, HttpSession session) {
+        if (ids == null || ids.length == 0) {
+        return JsonResult.fail(ErrorCodes.VALIDATE_PARAM_ERROR.getCode(), getMessage("common.error.delete.failure",getMessage("userSession2.title")));
         }
-
+        userSession2Service.deletes(ids);
+        return list(session);
+        }
 
 }

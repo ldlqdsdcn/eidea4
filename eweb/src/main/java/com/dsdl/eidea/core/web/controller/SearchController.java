@@ -3,7 +3,7 @@ package com.dsdl.eidea.core.web.controller;
 import com.dsdl.eidea.base.web.vo.UserResource;
 import com.dsdl.eidea.core.def.RelOperDef;
 import com.dsdl.eidea.core.def.SearchDataTypeDef;
-import com.dsdl.eidea.core.def.PageFieldInputType;
+import com.dsdl.eidea.core.def.FieldInputType;
 import com.dsdl.eidea.core.def.SearchPageType;
 import com.dsdl.eidea.core.dto.PaginationResult;
 import com.dsdl.eidea.core.entity.bo.KeyValue;
@@ -182,7 +182,7 @@ public class SearchController {
         }
         listObject.add("relOper", jsonArray);
         jsonArray = new JsonArray();
-        for (PageFieldInputType searchPageFieldInputType : PageFieldInputType.values()) {
+        for (FieldInputType searchPageFieldInputType : FieldInputType.values()) {
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("key", searchPageFieldInputType.getKey());
             jsonObject.addProperty("desc", searchPageFieldInputType.getDesc());

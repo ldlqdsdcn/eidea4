@@ -1,6 +1,8 @@
 package com.dsdl.eidea.core.web.controller;
 
+import com.dsdl.eidea.base.entity.bo.SelectItemBo;
 import com.dsdl.eidea.base.web.vo.UserResource;
+import com.dsdl.eidea.core.def.EntityType;
 import com.dsdl.eidea.core.def.JavaDataType;
 import com.dsdl.eidea.core.dto.PaginationResult;
 import com.dsdl.eidea.core.entity.bo.TableBo;
@@ -18,6 +20,7 @@ import com.google.gson.JsonObject;
 import com.googlecode.genericdao.search.Search;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +29,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -54,7 +58,7 @@ public class TableController {
     @ResponseBody
     public JsonResult<PaginationResult<TableBo>> list(HttpSession session, @RequestBody QueryParams queryParams) {
         Search search = SearchHelper.getSearchParam(URI, session);
-        PaginationResult<TableBo> tablePoList = tableService.findList(search,queryParams);
+        PaginationResult<TableBo> tablePoList = tableService.findList(search, queryParams);
         return JsonResult.success(tablePoList);
     }
 
@@ -72,6 +76,21 @@ public class TableController {
 
         }
         return JsonResult.success(tableBo);
+    }
+
+    @RequestMapping(value = "/getEntityBoList", method = RequestMethod.GET)
+    @ResponseBody
+    @RequiresPermissions(value = "view")
+    public List<SelectItemBo> getEntityBoList() {
+        List<SelectItemBo> selectItemBoList = new ArrayList<>();
+        EntityType[] entityTypeList = EntityType.values();
+        for (EntityType entityType : entityTypeList) {
+            SelectItemBo selectItemBo = new SelectItemBo();
+            selectItemBo.setKey(entityType.getKey());
+            selectItemBo.setValue(entityType.getDesc());
+            selectItemBoList.add(selectItemBo);
+        }
+        return selectItemBoList;
     }
 
     /**
@@ -107,7 +126,7 @@ public class TableController {
             return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("client.msg.select_delete"));
         }
         tableService.deleteTables(deleteParams.getIds());
-        return list(session,deleteParams.getQueryParams());
+        return list(session, deleteParams.getQueryParams());
     }
 
     @RequestMapping(value = "/getJavaTypeList", method = RequestMethod.GET)
@@ -129,9 +148,17 @@ public class TableController {
     @RequestMapping(value = "/getTableInfo", method = RequestMethod.GET)
     @ResponseBody
     @RequiresPermissions(value = "view")
-    public JsonResult<TableMetaDataBo> getTableInfo(String tableName) {
-        TableMetaDataBo tableMetaDataBo = tableService.getTableDescription(tableName);
-        return JsonResult.success(tableMetaDataBo);
+    public JsonResult<TableMetaDataBo> getTableInfo(String tableName, HttpSession session) {
+        UserResource userResource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
+        if (tableName == null && tableName.equals("")) {
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), userResource.getMessage("table.error.table_name.not_null"));
+        }
+        if (tableService.findExistTableByName(tableName)) {
+            TableMetaDataBo tableMetaDataBo = tableService.getTableDescription(tableName);
+            return JsonResult.success(tableMetaDataBo);
+        } else {
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), userResource.getMessage("table.error.name_not_exist"));
+        }
     }
 
     @RequestMapping(value = "/saveTableInfo", method = RequestMethod.POST)
@@ -146,4 +173,5 @@ public class TableController {
         }
         return JsonResult.success(tableInfo);
     }
+
 }

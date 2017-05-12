@@ -37,7 +37,7 @@ public class TableServiceImpl implements TableService {
     @Autowired
     private TableDao tableDao;
     @DataAccess(entity = TableColumnPo.class)
-    private CommonDao<TableColumnPo,Integer> tableColumnDao;
+    private CommonDao<TableColumnPo, Integer> tableColumnDao;
     ModelMapper modelMapper;
 
     public TableServiceImpl() {
@@ -104,6 +104,17 @@ public class TableServiceImpl implements TableService {
         return paginationResult;
     }
 
+    @Override
+    public boolean findExistTableByName(String tableName) {
+        Search search = new Search();
+        search.addFilterEqual("tableName", tableName);
+        List<TablePo> tablePoList = tableDao.search(search);
+        if (tablePoList!=null&&tablePoList.size() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     @Override
     public TableBo getTableBo(Integer id) {

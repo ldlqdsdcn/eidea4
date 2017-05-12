@@ -1,4 +1,4 @@
-app.controller('listCtrl', function ($scope, $http) {
+app.controller('listCtrl', function ($scope,$rootScope, $http) {
 $scope.modelList = [];
 $scope.delFlag = false;
 $scope.isLoading = true;
@@ -77,11 +77,18 @@ bootbox.alert(data.message);
 
 //可现实分页item数量
 $scope.maxSize =${r'${pagingSettingResult.pagingButtonSize}'};
+if ($rootScope.listQueryParams != null) {
+$rootScope.queryParams = $scope.listQueryParams;
+$rootScope.queryParams.init = true;
+}
+else {
 $scope.queryParams = {
 pageSize:${r'${pagingSettingResult.perPageSize}'},//每页显示记录数
 pageNo: 1, //当前页
 totalRecords: 0,//记录数
 init: true
 };
+$rootScope.listQueryParams = $scope.queryParams;
+}
 $scope.pageChanged();
 });

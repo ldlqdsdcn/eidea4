@@ -58,7 +58,12 @@
               </div>
             </form>
           </section>
+            <h3><eidea:message key="support.browser"/></h3>
+            <div class="row">
+                chrome56+  firefox53+  safari5+ opera43+
+            </div>
         </div>
+
       </div>
     </div>
 </body>

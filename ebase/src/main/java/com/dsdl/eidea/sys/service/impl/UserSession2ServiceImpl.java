@@ -11,34 +11,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.dsdl.eidea.sys.entity.po.UserSession2Po;
 import com.dsdl.eidea.sys.service.UserSession2Service;
-import com.dsdl.eidea.core.dto.PaginationResult;
-import com.dsdl.eidea.core.params.QueryParams;
-import com.googlecode.genericdao.search.SearchResult;
-import com.googlecode.genericdao.search.Search;
+import com.googlecode.genericdao.search.ISearch;
 import com.dsdl.eidea.core.dao.CommonDao;
 import java.util.List;
 /**
- * @author 刘大磊 2017-04-22 08:37:34
+ * @author 刘大磊 2017-05-08 09:55:07
  */
 @Service("userSession2Service")
 public class UserSession2ServiceImpl  implements	UserSession2Service {
 	@DataAccess(entity =UserSession2Po.class)
 	private CommonDao<UserSession2Po,Integer> userSession2Dao;
-	public PaginationResult<UserSession2Po> getUserSession2ListByPaging(Search search,QueryParams queryParams)
+	public List<UserSession2Po> getUserSession2List(ISearch search)
     {
-		search.setFirstResult(queryParams.getFirstResult());
-		search.setMaxResults(queryParams.getPageSize());
-		PaginationResult<UserSession2Po> paginationResult = null;
-		if (queryParams.isInit()) {
-		SearchResult<UserSession2Po> searchResult = userSession2Dao.searchAndCount(search);
-		paginationResult = PaginationResult.pagination(searchResult.getResult(), searchResult.getTotalCount(), queryParams.getPageNo(), queryParams.getPageSize());
-		}
-		else
-		{
-		List<UserSession2Po> userSession2PoList = userSession2Dao.search(search);
-		paginationResult = PaginationResult.pagination(userSession2PoList, queryParams.getTotalRecords(), queryParams.getPageNo(), queryParams.getPageSize());
-		}
-    	return paginationResult;
+    	return userSession2Dao.search(search);
     }
 
     public UserSession2Po getUserSession2(Integer id)

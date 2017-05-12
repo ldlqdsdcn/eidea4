@@ -54,17 +54,15 @@ Date: 2017-05-02 15:43:14
                 </div>
                 <div class="form-group">
                     <label for="tableId"><%--tableId--%><eidea:label key="base.tab.label.tableId"/></label>
-                    <%--<input type="text" class="form-control" id="tableId" placeholder="<eidea:message key="common.please.input"><eidea:param value="base.tab.label.tableId" type="label"/></eidea:message>" ng-model="tabPo.tableId" >--%>
                     <select id="tableId" class="form-control" ng-model="tabPo.tableId"
                             ng-options="tablePo.id as tablePo.name for tablePo in tablePoList"
-                            ng-blur="getTableColumnList(tabPo.tableId)"></select>
+                            ng-blur="getTableColumnList(tabPo.tableId)" required></select>
                 </div>
                 <div class="form-group">
                     <label for="tableColumnId"><%--tableColumnId--%><eidea:label
                             key="base.tab.label.tableColumnId"/></label>
-                    <%--<input type="text" class="form-control" id="tableColumnId" placeholder="<eidea:message key="common.please.input"><eidea:param value="base.tab.label.tableColumnId" type="label"/></eidea:message>" ng-model="tabPo.tableColumnId" >--%>
                     <select id="tableColumnId" class="form-control" ng-model="tabPo.tableColumnId"
-                            ng-options="tableColumn.id as tableColumn.name for tableColumn in tableColumnList"></select>
+                            ng-options="tableColumn.id as tableColumn.name for tableColumn in tableColumnList" required></select>
                 </div>
                 <div class="form-group">
                     <label for="isactive"><%--是否有效--%><eidea:label key="base.tab.label.isactive"/></label>
@@ -77,7 +75,7 @@ Date: 2017-05-02 15:43:14
                         <input type="text" class="form-control" id="created"
                                placeholder="<eidea:message key="common.please.input"><eidea:param value="base.tab.label.created" type="label"/></eidea:message>"
                                ng-model="tabPo.created"
-                               uib-datepicker-popup="yyyy-MM-dd HH:mm:ss">
+                               uib-datepicker-popup="yyyy-MM-dd HH:mm:ss" required>
                         <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                     </div>
 
@@ -86,7 +84,7 @@ Date: 2017-05-02 15:43:14
                     <label for="createdby"><%--创建人--%><eidea:label key="base.tab.label.createdby"/></label>
                     <input type="text" class="form-control" id="createdby"
                            placeholder="<eidea:message key="common.please.input"><eidea:param value="base.tab.label.createdby" type="label"/></eidea:message>"
-                           ng-model="tabPo.createdby">
+                           ng-model="tabPo.createdby" required ng-minLength="1" ng-maxLength="11">
 
                 </div>
                 <div class="form-group">
@@ -95,8 +93,8 @@ Date: 2017-05-02 15:43:14
                         <input type="text" class="form-control" id="updated"
                                placeholder="<eidea:message key="common.please.input"><eidea:param value="base.tab.label.updated" type="label"/></eidea:message>"
                                ng-model="tabPo.updated"
-                               uib-datepicker-popup="yyyy-MM-dd HH:mm:ss">
-                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                               uib-datepicker-popup="yyyy-MM-dd HH:mm:ss" required>
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar" ></span></span>
                     </div>
 
                 </div>
@@ -104,7 +102,7 @@ Date: 2017-05-02 15:43:14
                     <label for="updatedby"><%--修改人--%><eidea:label key="base.tab.label.updatedby"/></label>
                     <input type="text" class="form-control" id="updatedby"
                            placeholder="<eidea:message key="common.please.input"><eidea:param value="base.tab.label.updatedby" type="label"/></eidea:message>"
-                           ng-model="tabPo.updatedby">
+                           ng-model="tabPo.updatedby" ng-minLength="1" ng-maxLength="11" required>
 
                 </div>
 

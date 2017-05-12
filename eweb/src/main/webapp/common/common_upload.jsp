@@ -13,8 +13,8 @@
                 </h4>
             </div>
             <div class="modal-body">
-                <form role="form" name="editForm">
-                    <button type="button" class="btn  btn-primary btn-sm" ng-click="attachmentUpload()" title="<eidea:label key="common.button.upload"/>">
+                <form role="form" name="editForm" novalidate ng-submit="attachmentUpload()">
+                    <button type="submit" class="btn  btn-primary btn-sm" title="<eidea:label key="common.button.upload"/>">
                         <i class="fa fa-upload fa-1x" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.upload"/>
                     </button></br>
                     <div class="row-fluid">
@@ -34,7 +34,7 @@
                             </div>
                             <div class="form-group">
                                 <div class="up-buttons">
-                                    <div ngf-drop ngf-select ng-model="files" ngf-multiple="multiple"
+                                    <div ngf-drop ngf-select ng-model="files" ngf-multiple="multiple" ngf-max-size="20MB"
                                          ngf-pattern="pattern" ngf-accept="acceptSelect" class="drop-box">
                                         <%--附件上传--%><eidea:label key="common.upload.attachment"/>
                                     </div>

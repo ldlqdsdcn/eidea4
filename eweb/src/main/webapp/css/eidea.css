@@ -76,7 +76,7 @@
     clear: both;
     display:inline;
 }
-.preview img, .preview audio, .preview video {
+.preview img {
     max-width: 300px;
     max-height: 130px;
     float: left;

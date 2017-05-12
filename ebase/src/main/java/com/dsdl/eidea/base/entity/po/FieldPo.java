@@ -149,7 +149,6 @@ public class FieldPo implements java.io.Serializable {
     * 表格排序 如果没有则用seq_no
     **/
     @Column(name = "[seqnogrid]",length = 11)
-    @Length(max = 11,message = "error.seqnogrid.length")
     private Integer seqnogrid;
     /**
      * 是否允许打印

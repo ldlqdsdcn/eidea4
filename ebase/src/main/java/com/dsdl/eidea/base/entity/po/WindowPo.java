@@ -33,7 +33,7 @@ public class WindowPo implements java.io.Serializable {
     * 名称
     **/
     @Column(name = "[name]",length =50,nullable = false)
-    @Length(min = 1,max=50,message = "")
+    @Length(min = 2,max=50,message = "table.error.name.length_error")
     @NotBlank(message = "search.msg.name_not_null")
     private String name;
     /**

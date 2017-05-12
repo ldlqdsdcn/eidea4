@@ -40,7 +40,7 @@ Date: 2017-05-02 15:41:30
                             <label for="name"><%--名称--%><eidea:label key="base.window.label.name"/></label>
                             <input type="text" class="form-control" id="name"
                                    placeholder="<eidea:message key="common.please.input"><eidea:param value="base.window.label.name" type="label"/></eidea:message>"
-                                   ng-model="windowPo.name" required ng-minlength="1" ng-maxlength="50">
+                                   ng-model="windowPo.name" required ng-minlength="2" ng-maxlength="50">
 
                         </div>
                         <div class="form-group">

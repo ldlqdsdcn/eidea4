@@ -46,7 +46,7 @@ public class FieldPo implements java.io.Serializable {
     * 字段名
     **/
     @Column(name = "[field_name]",length =200,nullable = false)
-    @Length(min = 1,max = 200,message = "error.field.name.length")
+    @Length(min = 2,max = 200,message = "error.field.name.length")
     @NotBlank(message = "error.field.name.not.null")
     private String fieldName;
     /**
@@ -108,7 +108,7 @@ public class FieldPo implements java.io.Serializable {
     * 显示逻辑
     **/
     @Column(name = "[displayedlogic]",length =2000)
-    @Length(max = 2000,message = "")
+    @Length(max = 2000,message = "error.displayedlogic.length")
     private String displayedlogic;
     /**
     * 显示宽度

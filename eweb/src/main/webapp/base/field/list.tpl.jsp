@@ -39,7 +39,9 @@
                     <th><%--defaultvalue--%><eidea:label key="base.field.label.defaultvalue"/></th>
                     <th><%--isdisplaygrid--%><eidea:label key="base.field.label.isdisplaygrid"/></th>
                     <th><%--seqnogrid--%><eidea:label key="base.field.label.seqnogrid"/></th>
+                    <th><%--isprinted--%><eidea:label key="base.field.label.isprinted"/></th>
                     <th><%--isallowcopy--%><eidea:label key="base.field.label.isallowcopy"/></th>
+                    <th><%--isreport--%><eidea:label key="base.field.label.isreport"/></th>
                     <th><%--编辑--%><eidea:label key="common.button.edit"/></th>
                 </tr>
                 </thead>
@@ -114,7 +116,13 @@
                         {{model.seqnogrid}}
                     </td>
                     <td>
+                        {{model.isprinted}}
+                    </td>
+                    <td>
                         {{model.isallowcopy}}
+                    </td>
+                    <td>
+                        {{model.isreport}}
                     </td>
                     <td>
                         <a class="btn btn-primary btn-xs" href="#/edit?id={{model.id}}"><eidea:label key="common.button.edit"/><%--编辑--%></a>

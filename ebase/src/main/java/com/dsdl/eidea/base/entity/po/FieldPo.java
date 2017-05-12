@@ -47,7 +47,7 @@ public class FieldPo implements java.io.Serializable {
     **/
     @Column(name = "[field_name]",length =200,nullable = false)
     @Length(min = 2,max = 200,message = "error.field.name.length")
-    @NotBlank(message = "error.field.name.not.null")
+    @NotBlank(message = "error.field.name.not.null" )
     private String fieldName;
     /**
     * 列id

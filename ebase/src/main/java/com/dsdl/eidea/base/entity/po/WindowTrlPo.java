@@ -26,8 +26,6 @@ import org.hibernate.validator.constraints.NotBlank;
 public class WindowTrlPo implements java.io.Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "[id]",nullable = false,unique = true,length = 11)
-    @NotNull(message = "common.primary_key.isempty")
-    @Length(min = 1,max = 11,message = "error.datadict.id.length")
     @Id
     private Integer id;
     /**
@@ -35,7 +33,6 @@ public class WindowTrlPo implements java.io.Serializable {
     **/
     @Column(name = "[window_id]", nullable = false, length = 11)
     @NotNull(message = "error.window.id.not_null")
-    @Length(min = 1, max = 11, message = "error.window.id.length")
     private Integer windowId;
     /**
     * 

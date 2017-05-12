@@ -85,7 +85,7 @@ Date: 2017-05-02 15:41:30
                                 <input type="text" class="form-control" id="created"
                                        placeholder="<eidea:message key="common.please.input"><eidea:param value="base.window.label.created" type="label"/></eidea:message>"
                                        ng-model="windowPo.created"
-                                       uib-datepicker-popup="yyyy-MM-dd HH:mm:ss" ng-disabled="windowPo.id!=null">
+                                       uib-datepicker-popup="yyyy-MM-dd HH:mm:ss" ng-disabled="windowPo.id!=null" required>
                                 <span class="input-group-addon"><span
                                         class="glyphicon glyphicon-calendar"></span></span>
                             </div>
@@ -97,7 +97,7 @@ Date: 2017-05-02 15:41:30
                                 <input type="text" class="form-control" id="updated"
                                        placeholder="<eidea:message key="common.please.input"><eidea:param value="base.window.label.updated" type="label"/></eidea:message>"
                                        ng-model="windowPo.updated"
-                                       uib-datepicker-popup="yyyy-MM-dd HH:mm:ss" ng-disabled="windowPo.id==null">
+                                       uib-datepicker-popup="yyyy-MM-dd HH:mm:ss" ng-disabled="windowPo.id==null" required>
                                 <span class="input-group-addon"><span
                                         class="glyphicon glyphicon-calendar"></span></span>
                             </div>

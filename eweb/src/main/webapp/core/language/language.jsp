@@ -250,6 +250,7 @@
         $scope.showAttachment=function () {
             $("#attachmentModal").modal('show');
             $scope.tableId=$scope.languageBo.code;
+            $scope.tableId=1;
             $http.post("<c:url value="/common/attachmentUpload"/>").success(function (data) {
                 if (data.success) {
                     $scope.attachmentList = data.data;
@@ -294,7 +295,7 @@
                 //服务端接收
                 url: "<c:url value="/common/attachmentUpload"/>",
                 data: {'fileKeyword':$scope.commonFileBo==null?null:$scope.commonFileBo.fileKeyword,"fileAbstract":$scope.commonFileBo==null?null:$scope.commonFileBo.fileAbstract,
-                    "directoryUrl":"/core","tableId":1,"uri":"${uri}"},
+                    "directoryUrl":"/core","tableId":$scope.tableId,"uri":"${uri}"},
                 //上传的文件
                 file: file
             }).success(function (data, status, headers, config) {

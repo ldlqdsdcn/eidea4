@@ -26,16 +26,13 @@ import java.util.Date;
 public class TabPo implements java.io.Serializable {
     @Id
     @Column(name = "id", nullable = false, unique = true, length = 11)
-    @NotNull(message = "common.primary_key.isempty")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Length(min = 1, max = 11, message = "error.datadict.id.length")
     private Integer id;
     /**
      * 窗体id
      **/
     @Column(name = "window_id", nullable = false, length = 11)
     @NotNull(message = "error.window.id.not_null")
-    @Length(min = 1, max = 11, message = "error.window.id.length")
     private Integer windowId;
     /**
      * tab名
@@ -49,14 +46,12 @@ public class TabPo implements java.io.Serializable {
      **/
     @Column(name = "[level]", nullable = false, length = 11)
     @NotNull(message = "error.level.not.null")
-    @Length(min = 1, max = 11, message = "tab.error.level.length")
     private Integer level;
     /**
      * 编号
      **/
     @Column(name = "[sortno]", nullable = false, length = 11)
     @NotNull(message = "error.sortno.not.null")
-    @Length(min = 1, max = 11, message = "tab.error.sortno.length")
     private Integer sortno;
     /**
      * 描述
@@ -68,20 +63,17 @@ public class TabPo implements java.io.Serializable {
      * 是否包含在另一个tab里
      **/
     @Column(name = "[included_tab_id]", length = 11)
-    @Length(max = 11, message = "tab.error.includedtabld.length")
     private Integer includedTabId;
     /**
      * 表id
      **/
     @Column(name = "[table_id]", nullable = false, length = 11)
     @NotNull(message = "error.table.id.not.null")
-    @Length(min = 1, max = 11, message = "tab.error.table.id.length")
     private Integer tableId;
     /**
      * 关联列
      **/
     @Column(name = "[table_column_id]", nullable = false, length = 11)
-    @Length(min = 1, max = 11, message = "tab.error.tablecolumn.id.length")
     @NotNull(message = "error.tablecolumn.id.not.null")
     private Integer tableColumnId;
     /**
@@ -100,7 +92,6 @@ public class TabPo implements java.io.Serializable {
      **/
     @Column(name = "[createdby]", length = 11, nullable = false)
     @NotNull(message = "error.createdby.not_null")
-    @Length(min = 1, max = 11, message = "error.datadict.id.length")
     private Integer createdby;
     /**
      * 修改时间
@@ -112,6 +103,5 @@ public class TabPo implements java.io.Serializable {
      **/
     @Column(name = "[updatedby]", length = 11, nullable = false)
     @NotNull(message = "error.updatby.not_null")
-    @Length(min = 1, max = 11, message = "error.datadict.id.length")
     private Integer updatedby;
 }

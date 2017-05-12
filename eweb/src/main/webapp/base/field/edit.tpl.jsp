@@ -39,7 +39,7 @@ Date: 2017-05-04 13:22:23
                     <label for="columnId"><%--columnId--%><eidea:label key="base.field.label.columnId"/></label>
                     <input type="text" class="form-control" id="columnId"
                            placeholder="<eidea:message key="common.please.input"><eidea:param value="base.field.label.columnId" type="label"/></eidea:message>"
-                           ng-model="fieldPo.columnId">
+                           ng-model="fieldPo.columnId" ng-maxLength="11">
 
                 </div>
                 <div class="form-group">

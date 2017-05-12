@@ -8,14 +8,17 @@ package com.dsdl.eidea.base.web.controller;
 
 import com.dsdl.eidea.base.entity.po.DatadictTypePo;
 import com.dsdl.eidea.base.service.DatadictTypeService;
+import com.dsdl.eidea.core.dto.PaginationResult;
+import com.dsdl.eidea.core.params.DeleteParams;
+import com.dsdl.eidea.core.params.QueryParams;
 import com.dsdl.eidea.core.web.controller.BaseController;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import com.dsdl.eidea.core.web.def.WebConst;
 import com.dsdl.eidea.core.web.result.JsonResult;
 import com.dsdl.eidea.core.web.result.def.ErrorCodes;
 import com.dsdl.eidea.core.web.util.SearchHelper;
 import com.dsdl.eidea.core.web.vo.PagingSettingResult;
 import com.googlecode.genericdao.search.Search;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
@@ -24,12 +27,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-import com.dsdl.eidea.core.dto.PaginationResult;
-import com.dsdl.eidea.core.params.QueryParams;
-import com.dsdl.eidea.core.params.DeleteParams;
 
 import javax.servlet.http.HttpSession;
-import java.util.List;
 
 /**
  * Created by 刘大磊 on 2017-04-26 15:34:17.
@@ -125,6 +124,4 @@ public class DatadictTypeController extends BaseController {
         datadictTypeService.deletes(deleteParams.getIds());
         return list(session, deleteParams.getQueryParams());
     }
-
-
 }

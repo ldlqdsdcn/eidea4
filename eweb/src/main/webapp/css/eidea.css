@@ -58,3 +58,30 @@
     vertical-align: top;
     border-top: 0px !important;
 }
+.drop-box {
+    background: #F8F8F8;
+    border: 5px dashed #DDD;
+    width: 170px;
+    text-align: center;
+    padding: 50px 10px;
+    margin-left: 10px;
+}
+.up-buttons {
+    float: left;
+}
+.drop-box.dragover {
+    border: 5px dashed blue;
+}
+.preview {
+    clear: both;
+    display:inline;
+}
+.preview img {
+    max-width: 300px;
+    max-height: 130px;
+    float: left;
+    margin-left:50px;
+}
+.btn-hg{
+    margin-top: 5px;
+}

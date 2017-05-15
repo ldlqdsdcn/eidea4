@@ -132,6 +132,9 @@
         $http.post(url).success(function (data) {
             if (data.success) {
                 $scope.userBo = data.data;
+                if ($routeParams.id == null) {
+                    $scope.userBo.init='N';
+                }
                 $scope.roleIds = data.data.roleIds;
                 $scope.repassword = data.data.password;
                 $scope.getRole();

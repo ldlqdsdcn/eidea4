@@ -29,7 +29,7 @@
 				/doLogin=anon
 				/common/frameLogin.jsp=anon
 	            /error/*.jsp=anon
-	            /**=authc
+	            /**=anon
 	        </value>
 	    </property>
 	</bean>  

@@ -12,7 +12,9 @@
     <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
         <property name="securityManager" ref="securityManager"/>
     </bean>
-
+    <!-- 配置多个 扫描不同的包 controller -->
+<!--    <context:component-scan base-package="org.activiti.rest.diagram"/>
+    <context:component-scan base-package="org.activiti.rest.editor"/>-->
     <!-- 开启controller注解支持，spring mvc的配置文件应该仅扫描@controller注解的类 -->
     <context:component-scan base-package="com.**.controller"
                             use-default-filters="false">

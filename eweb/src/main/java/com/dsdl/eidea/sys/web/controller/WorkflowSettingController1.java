@@ -17,7 +17,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("/sys/workflow")
-public class WorkflowSettingController {
+public class WorkflowSettingController1 {
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public ModelAndView list() {

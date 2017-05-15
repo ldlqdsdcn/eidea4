@@ -1,5 +1,8 @@
 package com.dsdl.eidea.sys.web.controller;
 
+import com.dsdl.eidea.core.web.def.WebConst;
+import com.dsdl.eidea.core.web.result.JsonResult;
+import com.dsdl.eidea.core.web.vo.PagingSettingResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.extern.slf4j.Slf4j;
@@ -7,26 +10,41 @@ import org.activiti.editor.constants.ModelDataJsonConstants;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.repository.Model;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
+import javax.json.Json;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 /**
  * Created by 刘大磊 on 2017/5/15 8:59.
  */
 @Controller
 @Slf4j
+@RequestMapping("/sys/model")
 public class WorkflowModelController {
     @Autowired
     private RepositoryService repositoryService;
-    @RequestMapping("/sys/model/create")
+    @RequestMapping("showList")
+    @RequiresPermissions("view")
+    public ModelAndView showList()
+    {
+        ModelAndView modelAndView = new ModelAndView("/sys/workflow/model");
+        modelAndView.addObject(WebConst.PAGING_SETTINGS, PagingSettingResult.getDefault());
+        return modelAndView;
+    }
+
+    @RequestMapping("/create")
     public void create(@RequestParam("name")String name, @RequestParam("key")String key,
                        @RequestParam("description")String description, HttpServletRequest request, HttpServletResponse response)
     {
@@ -63,5 +81,15 @@ public class WorkflowModelController {
 
 
     }
-
+    /**
+     * 模型列表
+     * 查看已经部署的模型
+     */
+    @RequestMapping(value = "/list")
+    @ResponseBody
+    @RequiresPermissions("view")
+    public JsonResult<List<Model>> modelList() {
+        List<Model> list = repositoryService.createModelQuery().list();
+                return JsonResult.success(list);
+    }
 }

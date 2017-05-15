@@ -145,6 +145,7 @@
                 return false;
             }
             if ($scope.editForm.$valid) {
+                $scope.message="";
                 var postUrl = '<c:url value="/base/client/saveForUpdated"/>';
                 if ($scope.clientBo.id == null) {
                     postUrl = '<c:url value="/base/client/saveForCreated"/>';

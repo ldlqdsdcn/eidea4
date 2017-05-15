@@ -163,6 +163,7 @@
         });
         $scope.save = function () {
             if ($scope.editForm.$valid) {
+                $scope.message="";
                 var postUrl = '<c:url value="/base/datadictType/saveForUpdated"/>';
                 if ($scope.datadictTypePo.id == null) {
                     postUrl = '<c:url value="/base/datadictType/saveForCreated"/>';

@@ -160,6 +160,7 @@ $scope.pageChanged();
         });
         $scope.save = function () {
             if ($scope.editForm.$valid) {
+                $scope.message = '';
                 var postUrl = '<c:url value="/base/fileSetting/saveForUpdated"/>';
                 if ($scope.fileSettingPo.id == null) {
                     postUrl = '<c:url value="/base/fileSetting/saveForCreated"/>';

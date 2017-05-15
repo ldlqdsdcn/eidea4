@@ -173,6 +173,7 @@ $scope.pageChanged();
         });
         $scope.save = function () {
             if ($scope.editForm.$valid) {
+                $scope.message="";
                 var postUrl = '<c:url value="/sys/userSession2/saveForUpdated"/>';
                 if ($scope.userSession2Po.id == null) {
                     postUrl = '<c:url value="/sys/userSession2/saveForCreated"/>';

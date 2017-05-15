@@ -18,7 +18,7 @@
 	    <property name="unauthorizedUrl" value="/error/noprivileges.jsp"/>
 	    <!-- Shiro连接约束配置,即过滤链的定义 -->  
 	    <property name="filterChainDefinitions">  
-	        <value>  
+	        <value>
 	             /js/**=anon
 				/fonts/**=anon
 				/css/**=anon

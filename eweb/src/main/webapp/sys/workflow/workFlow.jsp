@@ -24,7 +24,6 @@
                         .when('/edit', {templateUrl: '<c:url value="/sys/workFlow/edit.tpl.jsp"/>'})
                         .otherwise({redirectTo: '/edit'});
             }]);
-    var version = '11.1.3';
     app.controller('editCtrl', function ($scope,$rootScope,$http, $routeParams, $timeout, Upload) {
         //工作流上传
         $scope.$watch('files', function (files) {

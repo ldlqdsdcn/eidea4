@@ -16,7 +16,7 @@
             <table  class="table table-hover table-striped table-condensed">
                 <thead>
                 <tr>
-                    <th><input type="checkbox" name="selectAll" style="margin:0px;" ng-change="selectAll()"  ng-model="delFlag"></th>
+
                     <th><%--序号--%><eidea:label key="base.serialNumber"/></th>
                     <th>ID</th>
                     <th>KEY</th>
@@ -31,10 +31,7 @@
                 <tbody>
 
                 <tr ng-repeat="model in modelList track by $index" ng-class-even="success">
-                    <td>
-                        <input type="checkbox" ng-model="model.delFlag">
-                    </td>
-                    <td>{{(queryParams.pageNo-1)*queryParams.pageSize+$index+1}}</td>
+                        <td>{{(queryParams.pageNo-1)*queryParams.pageSize+$index+1}}</td>
                     <td>
                         {{model.id}}
                     </td>

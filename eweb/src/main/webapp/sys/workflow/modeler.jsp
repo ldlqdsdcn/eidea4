@@ -40,8 +40,8 @@
 <div class="navbar navbar-fixed-top navbar-inverse" role="navigation" id="main-header">
     <div class="navbar-header">
         <a href="" ng-click="backToLanding()" class="navbar-brand"
-           title="{{'GENERAL.MAIN-TITLE' | translate}}"><span
-                class="sr-only">{{'GENERAL.MAIN-TITLE' | translate}}</span></a>
+           title="Eidea Workflow"><span
+                class="sr-only">Eidea 工作流</span></a>
     </div>
 </div>
 

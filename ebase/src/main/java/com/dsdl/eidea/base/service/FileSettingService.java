@@ -19,4 +19,5 @@ public interface FileSettingService {
 	FileSettingPo getFileSetting(Integer id);
 	void saveFileSetting(FileSettingPo fileSetting);
 	void deletes(Integer[] ids);
+	List<FileSettingPo> getFileSettingList(Search search);
 }

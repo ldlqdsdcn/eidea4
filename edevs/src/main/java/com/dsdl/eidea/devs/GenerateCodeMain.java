@@ -37,7 +37,7 @@ public class GenerateCodeMain implements CodeGenerationService {
         codeMain.messageService = applicationContext.getBean(MessageService.class);
         codeMain.languageService = applicationContext.getBean(LanguageService.class);
         codeMain.pageMenuService=applicationContext.getBean(PageMenuService.class);
-        GenModelDto genModelDto = new GenModelDto("sys_user_session2", "UserSession2", "sys", "用户Session");
+        GenModelDto genModelDto = new GenModelDto("test_leave", "Leave", "test", "用户Session");
         genModelDto.setPagingByDb(false);
         genModelDto.setBasePackage("com.dsdl.eidea");
         List<GenModelDto> list = new ArrayList<>();

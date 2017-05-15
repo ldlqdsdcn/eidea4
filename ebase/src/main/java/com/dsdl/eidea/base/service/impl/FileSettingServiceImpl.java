@@ -53,4 +53,9 @@ public class FileSettingServiceImpl  implements	FileSettingService {
 	{
 		fileSettingDao.removeByIds(ids);
 	}
+
+	@Override
+	public List<FileSettingPo> getFileSettingList(Search search) {
+		return fileSettingDao.search(search);
+	}
 }

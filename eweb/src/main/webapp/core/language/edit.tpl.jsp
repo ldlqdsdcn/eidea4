@@ -102,12 +102,12 @@
                     </div>
                 </div>
             </form>
+            <jsp:include page="/common/common_upload.jsp"/>
         </div>
         <div role="tabpanel" class="tab-pane" id="tab-1">tab-1</div>
         <div role="tabpanel" class="tab-pane" id="tab-2">tab-2</div>
         <div role="tabpanel" class="tab-pane" id="tab-3">tab-3</div>
         <div role="tabpanel" class="tab-pane" id="tab-4">tab-4</div>
     </div>
-
 </div>
 <script type='text/javascript' src="<c:url value="/js/ondrag-start.js"/>"></script>

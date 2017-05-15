@@ -11,7 +11,9 @@
     <packaging>jar</packaging>
 
     <artifactId>ebase</artifactId>
-
+    <properties>
+        <activiti.version>5.19.0</activiti.version>
+    </properties>
     <dependencies>
 <!--        <dependency>
             <groupId>org.apache.activemq</groupId>
@@ -58,16 +60,6 @@
             <version>1.3.176</version>
         </dependency>
         <!-- db -->
-        <dependency>
-            <groupId>org.codehaus.jackson</groupId>
-            <artifactId>jackson-core-asl</artifactId>
-            <version>1.9.12</version>
-        </dependency>
-        <dependency>
-            <groupId>org.codehaus.jackson</groupId>
-            <artifactId>jackson-mapper-asl</artifactId>
-            <version>1.9.12</version>
-        </dependency>
         <!--java web token-->
         <dependency>
             <groupId>org.bitbucket.b_c</groupId>
@@ -102,18 +94,62 @@
         <dependency>
             <groupId>org.activiti</groupId>
             <artifactId>activiti-engine</artifactId>
-            <version>5.19.0</version>
+            <version>${activiti.version}</version>
         </dependency>
-
         <!-- activiti 与 Spring 集成 -->
-
         <dependency>
             <groupId>org.activiti</groupId>
             <artifactId>activiti-spring</artifactId>
-            <version>5.19.0</version>
+            <version>${activiti.version}</version>
+            <exclusions>
+            <exclusion>
+                <artifactId>commons-dbcp</artifactId>
+                <groupId>commons-dbcp</groupId>
+            </exclusion>
+            </exclusions>
         </dependency>
-
-
+        <dependency>
+            <groupId>org.activiti</groupId>
+            <artifactId>activiti-diagram-rest</artifactId>
+            <version>${activiti.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.activiti</groupId>
+            <artifactId>activiti-json-converter</artifactId>
+            <version>${activiti.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>commons-collections</artifactId>
+                    <groupId>commons-collections</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.activiti</groupId>
+            <artifactId>activiti-explorer</artifactId>
+            <version>${activiti.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.activiti</groupId>
+            <artifactId>activiti-modeler</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>xalan</groupId>
+                    <artifactId>xalan</artifactId>
+                </exclusion>
+            </exclusions>
+            <version>${activiti.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.activiti</groupId>
+            <artifactId>activiti-diagram-rest</artifactId>
+            <version>${activiti.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.activiti</groupId>
+            <artifactId>activiti-simple-workflow</artifactId>
+            <version>${activiti.version}</version>
+        </dependency>
         <!--mybatis paging end-->
     </dependencies>
     <build>

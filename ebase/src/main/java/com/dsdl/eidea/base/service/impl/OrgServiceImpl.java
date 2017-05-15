@@ -1,6 +1,8 @@
 package com.dsdl.eidea.base.service.impl;
 
 import com.dsdl.eidea.core.dto.PaginationResult;
+import com.dsdl.eidea.core.entity.bo.TableBo;
+import com.dsdl.eidea.core.entity.po.TablePo;
 import com.dsdl.eidea.core.params.QueryParams;
 import com.dsdl.eidea.core.spring.annotation.DataAccess;
 import com.dsdl.eidea.base.entity.bo.ClientBo;
@@ -14,6 +16,7 @@ import com.googlecode.genericdao.search.SearchResult;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Hibernate;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
 import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
 
@@ -31,14 +34,13 @@ public class OrgServiceImpl implements OrgService {
     private CommonDao<OrgPo,Integer> orgDao;
     @DataAccess(entity = ClientPo.class)
     private CommonDao<ClientPo,Integer> clientDao;
-
     public PaginationResult<OrgBo> findOrgList(Search search, QueryParams queryParams) {
         search.setFirstResult(queryParams.getFirstResult());
         search.setMaxResults(queryParams.getPageSize());
         PaginationResult<OrgBo> paginationResult = null;
         if (queryParams.isInit()){
             SearchResult<OrgPo> searchResult = orgDao.searchAndCount(search);
-            List<OrgBo> list = modelMapper.map(searchResult.getResult(),new TypeToken<List<ClientBo>>(){}.getType());
+            List<OrgBo> list = convert(searchResult.getResult());
             paginationResult = PaginationResult.pagination(list,searchResult.getTotalCount(),queryParams.getPageNo(),queryParams.getPageSize());
         }else{
             List<OrgPo> orgPoList = orgDao.search(search);

@@ -7,6 +7,11 @@
         <property name="databaseType" value="mysql"/>
         <!--databaseSchemaUpdate设置为true， Activiti会自动将数据库表升级到新版本， 当发现依赖和数据库表版本不通过时  -->
         <property name="databaseSchemaUpdate" value="true"/>
+        <property name="mailServerHost" value="${mailserver.host}"/>
+        <property name="mailServerPort" value="${mailserver.port}"/>
+        <property name="mailServerUsername" value="${mailserver.username}"/>
+        <property name="mailServerPassword" value="${mailserver.password}"/>
+        <property name="mailServerDefaultFrom" value="${mailserver.username}"/>
     </bean>
     <!--   当在spring的配置中配置ActivitiRule时候，测试bean将自动被注入：-->
     <bean id="activitiRule" class="org.activiti.engine.test.ActivitiRule">

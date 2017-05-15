@@ -62,6 +62,14 @@ public class DatadictController extends BaseController {
         PaginationResult<DatadictPo> paginationResult = datadictService.getDatadictListByPaging(search, queryParams);
         return JsonResult.success(paginationResult);
     }
+    @RequestMapping(value = "/detaillist", method = RequestMethod.POST)
+    @ResponseBody
+    @RequiresPermissions("view")
+    public JsonResult<PaginationResult<DatadictPo>> detailList(HttpSession session,@RequestBody String dataType) {
+        Search search = SearchHelper.getSearchParam(URI, session);
+        PaginationResult<DatadictPo> paginationResult = datadictService.getDatadictListByDatadictType(search,dataType);
+        return JsonResult.success(paginationResult);
+    }
 
     @RequiresPermissions("view")
     @RequestMapping(value = "/get", method = RequestMethod.GET)
@@ -148,8 +156,9 @@ public class DatadictController extends BaseController {
         if (deleteParams.getIds() == null || deleteParams.getIds().length == 0) {
             return JsonResult.fail(ErrorCodes.VALIDATE_PARAM_ERROR.getCode(), getMessage("common.error.delete.failure", getMessage("datadict.title")));
         }
+        String dataType= datadictService.getDatadict(deleteParams.getIds()[0]).getDataType();
         datadictService.deletes(deleteParams.getIds());
-        return list(session, deleteParams.getQueryParams());
+        return detailList(session,dataType);
     }
 
     @RequiresPermissions(value = "view")

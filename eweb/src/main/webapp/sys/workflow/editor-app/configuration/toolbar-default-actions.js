@@ -261,7 +261,7 @@ KISBPM.TOOLBAR = {
         },
         
         closeEditor: function(services) {
-        	window.location.href = "./";
+        	window.location.href =ACTIVITI.CONFIG.contextRoot+ "/sys/model/showList";
         },
         
         /**

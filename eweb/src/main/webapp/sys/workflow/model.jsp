@@ -67,11 +67,8 @@
             }
             return false;
         }
-        $scope.selectAll = function () {
-            $scope.pageChanged($scope.delFlag);
-        }
-        $scope.deleteRecord = function () {
-
+        $scope.removeModel=function(modelId)
+        {
             bootbox.confirm({
                 message: "<eidea:message key="common.warn.confirm.deletion"/>",
                 buttons: {
@@ -86,13 +83,7 @@
                 },
                 callback: function (result) {
                     if (result) {
-                        var ids = [];
-                        for (var i = 0; i < $scope.modelList.length; i++) {
-                            if ($scope.modelList[i].delFlag) {
-                                ids.push($scope.modelList[i].id);
-                            }
-                        }
-                        $http.post("<c:url value="/test/leave/deletes"/>", id).success(function (data) {
+                        $http.post("<c:url value="/sys/model/delete/"/>"+modelId).success(function (data) {
                             if (data.success) {
                                 bootbox.alert("<eidea:message key="common.warn.deleted.success"/>");
                                 $scope.updateList(data.data);
@@ -105,7 +96,8 @@
                     }
                 }
             });
-        };
+        }
+
 //可现实分页item数量
         $scope.maxSize =${pagingSettingResult.pagingButtonSize};
         if ($rootScope.listQueryParams != null) {

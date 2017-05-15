@@ -23,7 +23,7 @@ import java.io.UnsupportedEncodingException;
  */
 @Controller
 @Slf4j
-public class WorkFlowModelController {
+public class WorkflowModelController {
     @Autowired
     private RepositoryService repositoryService;
     @RequestMapping("/sys/model/create")

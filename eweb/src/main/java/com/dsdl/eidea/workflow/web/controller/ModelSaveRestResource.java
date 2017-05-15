@@ -45,7 +45,7 @@ public class ModelSaveRestResource implements ModelDataJsonConstants {
 
   private ObjectMapper objectMapper=new ObjectMapper();
   
-  @RequestMapping(value="/model/{modelId}/save", method = RequestMethod.PUT)
+  @RequestMapping(value="/sys/workflow/model/{modelId}/save", method = RequestMethod.PUT)
   @ResponseStatus(value = HttpStatus.OK)
   public void saveModel(@PathVariable String modelId, @RequestBody MultiValueMap<String, String> values) {
     try {

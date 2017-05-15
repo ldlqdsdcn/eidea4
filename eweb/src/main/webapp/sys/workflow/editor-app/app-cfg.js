@@ -19,7 +19,12 @@
 'use strict';
 
 var ACTIVITI = ACTIVITI || {};
+var content=document.getElementById("appCfg").getAttribute('content');
+if(content=="/")
+{
+	content="";
+}
 
 ACTIVITI.CONFIG = {
-	'contextRoot' : '/activiti-explorer/service',
+	'contextRoot' : content,
 };

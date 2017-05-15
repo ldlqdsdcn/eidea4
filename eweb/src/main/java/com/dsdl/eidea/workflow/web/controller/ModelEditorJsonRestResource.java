@@ -41,7 +41,7 @@ public class ModelEditorJsonRestResource implements ModelDataJsonConstants {
   
   private ObjectMapper objectMapper=new ObjectMapper();
   
-  @RequestMapping(value="/model/{modelId}/json", method = RequestMethod.GET, produces = "application/json")
+  @RequestMapping(value="/sys/workflow/model/{modelId}/json", method = RequestMethod.GET, produces = "application/json")
   public ObjectNode getEditorJson(@PathVariable String modelId) {
     ObjectNode modelNode = null;
     

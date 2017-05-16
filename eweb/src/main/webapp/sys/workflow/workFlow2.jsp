@@ -21,7 +21,7 @@
     var app = angular.module('myApp', ['ngFileUpload','ngRoute', 'ui.bootstrap', 'jcs-autoValidate'])
             .config(['$routeProvider', function ($routeProvider) {
                 $routeProvider
-                        .when('/edit', {templateUrl: '<c:url value="/sys/workFlow/edit.tpl.jsp"/>'})
+                        .when('/edit', {templateUrl: '<c:url value="/sys/workflow/edit.tpl.jsp"/>'})
                         .otherwise({redirectTo: '/edit'});
             }]);
     app.controller('editCtrl', function ($scope,$rootScope,$http, $routeParams, $timeout, Upload) {

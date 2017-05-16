@@ -158,6 +158,7 @@
             bootbox.alert(response);
         });
         $scope.save = function () {
+            $scope.message="";
             if ($scope.editForm.$valid) {
                 var postUrl = '<c:url value="/base/datadict/saveForUpdated"/>';
                 if ($scope.datadictPo.id == null) {

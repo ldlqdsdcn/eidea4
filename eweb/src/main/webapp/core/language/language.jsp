@@ -192,6 +192,7 @@
                 return false;
             }
 
+            $scope.message="";
             if ($scope.editForm.$valid) {
                 var postUrl = '<c:url value="/core/language/saveForUpdated"/>';
                 if ($scope.languageBo.created) {

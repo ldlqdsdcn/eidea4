@@ -159,6 +159,7 @@ $scope.pageChanged();
             bootbox.alert(response);
         });
         $scope.save = function () {
+            $scope.message ="";
             if ($scope.editForm.$valid) {
                 var postUrl = '<c:url value="/base/commonFile/saveForUpdated"/>';
                 if ($scope.commonFilePo.id == null) {

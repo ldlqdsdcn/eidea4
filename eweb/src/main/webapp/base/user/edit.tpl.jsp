@@ -84,7 +84,7 @@
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 text-right"><%--初始化--%><eidea:label key="user.initialization"/></label>
-                    <div class="col-sm-10 text-left"><input type="checkbox"  id="init" ng-true-value="'Y'" ng-false-value="'N'" ng-model="userBo.init"></label>
+                    <div class="col-sm-10 text-left"><input type="checkbox"  id="init" ng-true-value="'Y'" ng-false-value="'N'" ng-model="userBo.init" ng-disabled="true"></label>
                     </div>
                 </div>
                 <div class="form-group">

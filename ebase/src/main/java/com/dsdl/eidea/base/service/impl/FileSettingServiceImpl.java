@@ -6,6 +6,8 @@
 */
 package com.dsdl.eidea.base.service.impl;
 
+import com.dsdl.eidea.base.entity.bo.ModuleBo;
+import com.dsdl.eidea.base.service.ModuleService;
 import com.dsdl.eidea.core.spring.annotation.DataAccess;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,8 @@ import java.util.List;
 public class FileSettingServiceImpl  implements	FileSettingService {
 	@DataAccess(entity =FileSettingPo.class)
 	private CommonDao<FileSettingPo,Integer> fileSettingDao;
+	@Autowired
+	private ModuleService moduleService;
 	public PaginationResult<FileSettingPo> getFileSettingListByPaging(Search search,QueryParams queryParams)
     {
 		search.setFirstResult(queryParams.getFirstResult());
@@ -57,5 +61,14 @@ public class FileSettingServiceImpl  implements	FileSettingService {
 	@Override
 	public List<FileSettingPo> getFileSettingList(Search search) {
 		return fileSettingDao.search(search);
+	}
+
+	public FileSettingPo getFileSettingsByRequestPath(String path)
+	{
+		ModuleBo moduleBo=moduleService.getModuleBoByPath(path);
+		Search search=new Search();
+		search.addFilterEqual("moduleId",moduleBo.getId());
+		FileSettingPo fileSettingPo=fileSettingDao.searchUnique(search);
+		return fileSettingPo;
 	}
 }

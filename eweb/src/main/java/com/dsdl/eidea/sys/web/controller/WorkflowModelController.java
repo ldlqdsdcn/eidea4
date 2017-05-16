@@ -78,7 +78,7 @@ public class WorkflowModelController {
 
 
         try {
-            response.sendRedirect(request.getContextPath()+"/sys/workFlow/modeler.html?modelId="+modelData.getId());
+            response.sendRedirect(request.getContextPath()+"/sys/workflow/modeler.jsp?modelId="+modelData.getId());
         } catch (IOException e) {
             log.error("页面跳转出错",e);
         }

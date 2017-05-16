@@ -21,6 +21,7 @@
             .config(['$routeProvider', function ($routeProvider) {
                 $routeProvider
                         .when('/list', {templateUrl: '<c:url value="/sys/workflow/model/list.tpl.jsp"/>'})
+                        .when('/create',{templateUrl:'<c:url value="/sys/workflow/model/create.tpl.jsp"/>'})
                         .otherwise({redirectTo: '/list'});
             }]);
     app.controller('listCtrl', function ($scope,$rootScope, $http) {
@@ -114,6 +115,16 @@
             $rootScope.listQueryParams = $scope.queryParams;
         }
         $scope.pageChanged();
+    });
+    app.controller("createCtrl",function($scope,$http){
+        $scope.canAdd=PrivilegeService.hasPrivilege('add');
+        $scope.model={"name":"","key":"","description":""};
+        $scope.create=function () {
+            $scope.model={};
+        }
+        $scope.saveNext=function () {
+            window.location.href="<c:url value="/sys/model/create"/>?name="+$scope.model.name+"&key="+$scope.model.key+"&description="+$scope.model.description;
+        }
     });
     app.run([
         'bootstrap3ElementModifier',

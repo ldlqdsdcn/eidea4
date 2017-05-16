@@ -144,8 +144,8 @@
                 $scope.message="<eidea:label key="client.msg.client_no_error"/>";
                 return false;
             }
+            $scope.message="";
             if ($scope.editForm.$valid) {
-                $scope.message="";
                 var postUrl = '<c:url value="/base/client/saveForUpdated"/>';
                 if ($scope.clientBo.id == null) {
                     postUrl = '<c:url value="/base/client/saveForCreated"/>';

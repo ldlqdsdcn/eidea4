@@ -154,8 +154,8 @@
             bootbox.alert(response);
         });
         $scope.save = function () {
+            $scope.message="";
             if ($scope.editForm.$valid) {
-                $scope.message="";
                 var postUrl = '<c:url value="/core/label/saveForUpdated"/>';
                 if ($scope.labelBo.created) {
                     postUrl = '<c:url value="/core/label/saveForCreated"/>';

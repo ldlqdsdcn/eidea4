@@ -159,8 +159,8 @@ $scope.pageChanged();
             bootbox.alert(response);
         });
         $scope.save = function () {
+            $scope.message="";
             if ($scope.editForm.$valid) {
-                $scope.message="";
                 var postUrl = '<c:url value="/base/window/saveForUpdated"/>';
                 if ($scope.windowPo.id == null) {
                     postUrl = '<c:url value="/base/window/saveForCreated"/>';

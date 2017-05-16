@@ -144,8 +144,8 @@
             bootbox.alert(response);
         });
         $scope.save = function () {
+            $scope.message="";
             if ($scope.editForm.$valid) {
-                $scope.message="";
                 var postUrl = '<c:url value="/base/role/saveForUpdated"/>';
                 if ($scope.roleBo.id == null) {
                     postUrl = '<c:url value="/base/role/saveForCreated"/>';

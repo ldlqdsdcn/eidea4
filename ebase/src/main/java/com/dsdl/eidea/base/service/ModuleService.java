@@ -43,4 +43,9 @@ public interface ModuleService {
      * @return
      */
     boolean findExistId(Integer id);
+
+    /**
+     * 通过path获取模块
+     */
+    ModuleBo getModuleBoByPath(String path);
 }

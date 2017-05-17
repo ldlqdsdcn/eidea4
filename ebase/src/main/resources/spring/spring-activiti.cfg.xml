@@ -12,6 +12,9 @@
         <property name="mailServerUsername" value="${mailserver.username}"/>
         <property name="mailServerPassword" value="${mailserver.password}"/>
         <property name="mailServerDefaultFrom" value="${mailserver.username}"/>
+        <!-- 生成流程图的字体 -->
+        <property name="activityFontName" value="宋体"/>
+        <property name="labelFontName" value="宋体"/>
     </bean>
     <!--   当在spring的配置中配置ActivitiRule时候，测试bean将自动被注入：-->
     <bean id="activitiRule" class="org.activiti.engine.test.ActivitiRule">

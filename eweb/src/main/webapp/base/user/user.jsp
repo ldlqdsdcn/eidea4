@@ -170,7 +170,6 @@
         }
         //用户保存
         $scope.save = function () {
-            $scope.getExistUserName();
             if (userName == false) {
                 return false;
             }

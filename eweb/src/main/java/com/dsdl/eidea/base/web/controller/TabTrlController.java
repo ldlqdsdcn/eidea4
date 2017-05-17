@@ -54,6 +54,14 @@ public JsonResult<PaginationResult<TabTrlPo>> list(HttpSession session,@RequestB
     PaginationResult<TabTrlPo> paginationResult = tabTrlService.getTabTrlListByPaging(search, queryParams);
     return JsonResult.success(paginationResult);
     }
+    @RequestMapping(value = "/tabTrlList", method = RequestMethod.POST)
+    @ResponseBody
+    @RequiresPermissions("view")
+    public JsonResult<PaginationResult<TabTrlPo>> list(HttpSession session,@RequestBody Integer id) {
+        Search search = SearchHelper.getSearchParam(URI, session);
+        PaginationResult<TabTrlPo> paginationResult = tabTrlService.getTabTrlListByTabId(search, id);
+        return JsonResult.success(paginationResult);
+    }
     @RequiresPermissions("view")
     @RequestMapping(value = "/get", method = RequestMethod.GET)
     @ResponseBody

@@ -40,7 +40,24 @@ public class WindowTrlServiceImpl  implements	WindowTrlService {
 		}
     	return paginationResult;
     }
-
+	public PaginationResult<WindowTrlPo> getWindowTrlListByWindowId(Search search,Integer windowId)
+	{
+		QueryParams queryParams = new QueryParams();
+		search.setFirstResult(queryParams.getFirstResult());
+		search.setMaxResults(queryParams.getPageSize());
+		search.addFilterEqual("windowId",windowId);
+		PaginationResult<WindowTrlPo> paginationResult = null;
+		if (queryParams.isInit()) {
+			SearchResult<WindowTrlPo> searchResult = windowTrlDao.searchAndCount(search);
+			paginationResult = PaginationResult.pagination(searchResult.getResult(), searchResult.getTotalCount(), queryParams.getPageNo(), queryParams.getPageSize());
+		}
+		else
+		{
+			List<WindowTrlPo> windowTrlPoList = windowTrlDao.search(search);
+			paginationResult = PaginationResult.pagination(windowTrlPoList, queryParams.getTotalRecords(), queryParams.getPageNo(), queryParams.getPageSize());
+		}
+		return paginationResult;
+	}
     public WindowTrlPo getWindowTrl(Integer id)
 	{
 		return windowTrlDao.find(id);

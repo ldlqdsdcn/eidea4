@@ -16,6 +16,7 @@ import java.util.List;
  */
 public interface WindowTrlService {
 	PaginationResult<WindowTrlPo> getWindowTrlListByPaging(Search search,QueryParams queryParams);
+	PaginationResult<WindowTrlPo> getWindowTrlListByWindowId(Search search,Integer windowId);
 	WindowTrlPo getWindowTrl(Integer id);
 	void saveWindowTrl(WindowTrlPo windowTrl);
 	void deletes(Integer[] ids);

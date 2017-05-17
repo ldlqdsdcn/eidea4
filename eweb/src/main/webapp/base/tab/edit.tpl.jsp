@@ -5,7 +5,8 @@ Date: 2017-05-02 15:43:14
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/inc/taglib.jsp" %>
 <div class="container-fluid" ng-controller="editTabCtrl">
-    <div class="row-fluid">
+    <div ui-view  ng-show="tabTrlListShow"></div>
+    <div class="row-fluid" ng-show="tabEditShow">
         <div class="span12">
             <br>
             <form role="form" name="editForm" novalidate ng-submit="save()">

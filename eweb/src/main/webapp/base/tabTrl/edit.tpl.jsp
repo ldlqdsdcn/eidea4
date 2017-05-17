@@ -4,7 +4,7 @@ Date: 2017-05-02 15:43:44
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/inc/taglib.jsp" %>
-<div class="container-fluid" ng-controller="editCtrl">
+<div class="container-fluid" ng-controller="editTabTrlCtrl">
     <div class="page-header">
         <ol class="breadcrumb">
             <li><a href="javascript:;"><i class="icon-fire"></i><eidea:label key="tabTrl.title"/></a></li>
@@ -58,8 +58,9 @@ Date: 2017-05-02 15:43:44
                         <eidea:label key="common.button.create"/></button>
                         <button type="submit" class="btn btn-default btn-sm" ng-show="canSave"><%--保存--%><eidea:label
                                 key="common.button.save"/></button>
-                        <a href="#/list" class="btn btn-default btn-sm"><%--返回--%><eidea:label
-                                key="common.button.back"/></a>
+                        <%--<a href="#/list" class="btn btn-default btn-sm">&lt;%&ndash;返回&ndash;%&gt;<eidea:label--%>
+                                <%--key="common.button.back"/></a>--%>
+                        <button type="button" class="btn btn-default btn-sm" ng-click="backTabTrlList()"><eidea:label key="common.button.back"/></button>
                     </p>
                 </div>
                 <div class="form-group">

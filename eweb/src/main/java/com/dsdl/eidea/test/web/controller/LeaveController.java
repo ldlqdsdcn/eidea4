@@ -21,10 +21,7 @@ import com.googlecode.genericdao.search.Search;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -109,6 +106,13 @@ public JsonResult<List<LeavePo>> list(HttpSession session) {
         }
         leaveService.deletes(ids);
         return list(session);
+        }
+        @RequiresPermissions("save")
+        @RequestMapping("/saveForApprove/{id}")
+        public JsonResult saveForApprove(@PathVariable("id") Integer id)
+        {
+            leaveService.saveStartLeave(id);
+            return JsonResult.success("提交approve成功");
         }
 
 }

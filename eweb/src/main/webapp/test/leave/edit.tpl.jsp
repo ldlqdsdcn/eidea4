@@ -53,6 +53,7 @@ Date: 2017-05-12 13:36:48
                     <p class="text-right">
                         <button type="reset" ng-click="create()"  class="btn btn-default btn-sm" ng-show="canAdd"><%--新建--%><eidea:label key="common.button.create"/></button>
                         <button type="submit" class="btn btn-default btn-sm" ng-show="canSave"><%--保存--%><eidea:label key="common.button.save"/></button>
+                        <button type="button" class="btn btn-default btn-sm" ng-show="canSave" ng-click="submitApprove()">提交申请</button>
                         <a href="#/list" class="btn btn-default btn-sm"><%--返回--%><eidea:label key="common.button.back"/></a>
                     </p>
                 </div>

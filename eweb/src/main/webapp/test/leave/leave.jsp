@@ -191,6 +191,9 @@ $scope.pageChanged();
                 });
             }
         }
+        $scope.submitApprove=function () {
+
+        };
         $scope.create = function () {
             $scope.message = "";
             $scope.leavePo = {};

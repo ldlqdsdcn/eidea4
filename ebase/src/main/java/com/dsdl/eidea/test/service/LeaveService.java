@@ -20,6 +20,6 @@ public interface LeaveService {
 	/**
 	 * 启用请假申请
 	 */
-	void saveStartLeave(LeavePo leave);
+	void saveStartLeave(Integer id);
 	void deletes(Integer[] ids);
 }

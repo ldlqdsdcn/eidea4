@@ -8,7 +8,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <link rel="shortcut icon" href="/favicon.ico">
     <title><eidea:label key="index.title"/></title>
 
     <!-- Bootstrap core CSS -->
@@ -67,7 +67,7 @@
         <div class="col-md-3 left_col menu_fixed">
             <div class="left_col scroll-view">
                 <div class="navbar nav_title" style="border: 0;">
-                    <a href="<c:url value="/"/> " class="site_title"><i class="fa fa-paw"></i> <span><eidea:label key="index.enterprise_thinking"/></span></a>
+                    <a href="<c:url value="/index.jsp"/> " class="site_title"><li><img src="<c:url value="/img/favicon.png"/>"/></li> <span><eidea:label key="index.enterprise_thinking"/></span></a>
                 </div>
 
                 <div class="clearfix"></div>

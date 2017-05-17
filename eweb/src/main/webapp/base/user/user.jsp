@@ -170,6 +170,7 @@
         }
         //用户保存
         $scope.save = function () {
+            $scope.getExistUserName();
             if (userName == false) {
                 return false;
             }
@@ -193,7 +194,6 @@
             }
             $scope.userBo.roleIds = roleIds;
             if ($scope.editForm.$valid) {
-
                 var postUrl = '<c:url value="/base/user/saveUserForUpdated"/>';
                 if ($scope.userBo.id == null) {
                     postUrl = '<c:url value="/base/user/saveUserForCreated"/>';

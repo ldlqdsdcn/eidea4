@@ -192,7 +192,18 @@ $scope.pageChanged();
             }
         }
         $scope.submitApprove=function () {
+            $http.post('<c:url value="/test/leave/saveForApprove/"/>', $scope.leavePo).success(function (data) {
+                if (data.success) {
+                    $scope.message = "提交申请成功";
 
+                }
+                else {
+                    $scope.message = data.message;
+                    $scope.errors=data.data;
+                }
+            }).error(function (data, status, headers, config) {
+                alert(JSON.stringify(data));
+            });
         };
         $scope.create = function () {
             $scope.message = "";

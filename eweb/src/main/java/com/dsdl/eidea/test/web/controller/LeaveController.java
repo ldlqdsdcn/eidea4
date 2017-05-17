@@ -107,12 +107,16 @@ public JsonResult<List<LeavePo>> list(HttpSession session) {
         leaveService.deletes(ids);
         return list(session);
         }
-        @RequiresPermissions("save")
-        @RequestMapping("/saveForApprove/{id}")
-        public JsonResult saveForApprove(@PathVariable("id") Integer id)
-        {
-            leaveService.saveStartLeave(id);
-            return JsonResult.success("提交approve成功");
+        @RequiresPermissions("update")
+        @RequestMapping(value = "/saveForApprove", method = RequestMethod.POST)
+        @ResponseBody
+        public JsonResult<LeavePo> saveForApprove(@Validated @RequestBody LeavePo leavePo) {
+
+            if(leavePo.getId() == null){
+                return JsonResult.fail(ErrorCodes.VALIDATE_PARAM_ERROR.getCode(), getMessage("common.errror.pk.required"));
+            }
+            leaveService.saveStartLeave(leavePo.getId());
+            return get(leavePo.getId());
         }
 
 }

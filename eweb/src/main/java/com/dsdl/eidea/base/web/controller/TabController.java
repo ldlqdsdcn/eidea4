@@ -59,10 +59,18 @@ return modelAndView;
     @RequestMapping(value = "/list", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions("view")
-public JsonResult<PaginationResult<TabPo>> list(HttpSession session,@RequestBody QueryParams queryParams) {
-    Search search = SearchHelper.getSearchParam(URI, session);
-    PaginationResult<TabPo> paginationResult = tabService.getTabListByPaging(search, queryParams);
-    return JsonResult.success(paginationResult);
+    public JsonResult<PaginationResult<TabPo>> list(HttpSession session,@RequestBody QueryParams queryParams) {
+        Search search = SearchHelper.getSearchParam(URI, session);
+        PaginationResult<TabPo> paginationResult = tabService.getTabListByPaging(search, queryParams);
+        return JsonResult.success(paginationResult);
+    }
+    @RequestMapping(value = "/tablist", method = RequestMethod.POST)
+    @ResponseBody
+    @RequiresPermissions("view")
+    public JsonResult<PaginationResult<TabPo>> list(HttpSession session,@RequestBody Integer id) {
+        Search search = SearchHelper.getSearchParam(URI, session);
+        PaginationResult<TabPo> paginationResult = tabService.getTabListByWindowId(search, id);
+        return JsonResult.success(paginationResult);
     }
     @RequiresPermissions("view")
     @RequestMapping(value = "/get", method = RequestMethod.GET)

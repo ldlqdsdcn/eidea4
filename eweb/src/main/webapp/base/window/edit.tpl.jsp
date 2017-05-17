@@ -6,12 +6,14 @@ Date: 2017-05-02 15:41:30
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/inc/taglib.jsp" %>
 <div class="container-fluid" ng-controller="editCtrl">
+    <div ng-controller="tabCtrl">
     <uib-tabset class="nav nav-tab vertical-tab" vertical="true" active="active">
-        <uib-tab index="0" heading="<ediea:label key="window.title"/>"></uib-tab>
-        <uib-tab index="1" heading="<ediea:label key="windowTrl.title"/>"></uib-tab>
+        <uib-tab index="0" heading="<ediea:label key="window.title"/>" select="showEdit()"></uib-tab>
+        <uib-tab index="1" heading="<ediea:label key="windowTrl.title"/>"select="showList()"></uib-tab>
     </uib-tabset>
-
-    <div class="tab-content vertical-tab-content">
+    </div>
+    <div ui-view class="tab-content vertical-tab-content" ng-show="!show"></div>
+    <div class="tab-content vertical-tab-content" ng-show="show">
             <form role="form" name="editForm" novalidate ng-submit="save()">
                 <jsp:include page="/common/common_edit_button.jsp"/>
                 <div class="row-fluid">

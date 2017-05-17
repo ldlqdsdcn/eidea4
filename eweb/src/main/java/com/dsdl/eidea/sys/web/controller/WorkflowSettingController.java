@@ -5,10 +5,17 @@ import com.dsdl.eidea.core.web.def.WebConst;
 import com.dsdl.eidea.core.web.result.JsonResult;
 import com.dsdl.eidea.core.web.vo.PagingSettingResult;
 import com.dsdl.eidea.sys.web.vo.ProcessDefinitionVo;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.extern.slf4j.Slf4j;
+import org.activiti.bpmn.converter.BpmnXMLConverter;
+import org.activiti.bpmn.model.BpmnModel;
+import org.activiti.editor.constants.ModelDataJsonConstants;
+import org.activiti.editor.language.json.converter.BpmnJsonConverter;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.repository.Deployment;
+import org.activiti.engine.repository.Model;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.repository.ProcessDefinitionQuery;
 import org.activiti.engine.runtime.ProcessInstance;
@@ -23,7 +30,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.ZipInputStream;
@@ -188,6 +200,46 @@ public class WorkflowSettingController {
             repositoryService.suspendProcessDefinitionById(processDefinitionId, true, null);
             redirectAttributes.addFlashAttribute("message", "已挂起ID为[" + processDefinitionId + "]的流程定义。");
         }
+        return "redirect:/sys/workflow/showList";
+    }
+
+    /**
+     * 转换成model
+     * @param processDefinitionId
+     * @return
+     * @throws UnsupportedEncodingException
+     * @throws XMLStreamException
+     */
+    //TODO 转换模型成功 删除当前process，并且返回提醒信息 ，改为rest方式，返回JsonResult，不需要跳转页面。
+    @RequestMapping(value = "/process/convert-to-model/{processDefinitionId}")
+    public String convertToModel(@PathVariable("processDefinitionId") String processDefinitionId)
+            throws UnsupportedEncodingException, XMLStreamException {
+        ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery()
+                .processDefinitionId(processDefinitionId).singleResult();
+        InputStream bpmnStream = repositoryService.getResourceAsStream(processDefinition.getDeploymentId(),
+                processDefinition.getResourceName());
+        XMLInputFactory xif = XMLInputFactory.newInstance();
+        InputStreamReader in = new InputStreamReader(bpmnStream, "UTF-8");
+        XMLStreamReader xtr = xif.createXMLStreamReader(in);
+        BpmnModel bpmnModel = new BpmnXMLConverter().convertToBpmnModel(xtr);
+
+        BpmnJsonConverter converter = new BpmnJsonConverter();
+        com.fasterxml.jackson.databind.node.ObjectNode modelNode = converter.convertToJson(bpmnModel);
+        Model modelData = repositoryService.newModel();
+        modelData.setKey(processDefinition.getKey());
+        modelData.setName(processDefinition.getResourceName());
+        modelData.setCategory(processDefinition.getDeploymentId());
+
+        ObjectNode modelObjectNode = new ObjectMapper().createObjectNode();
+        modelObjectNode.put(ModelDataJsonConstants.MODEL_NAME, processDefinition.getName());
+        modelObjectNode.put(ModelDataJsonConstants.MODEL_REVISION, 1);
+        modelObjectNode.put(ModelDataJsonConstants.MODEL_DESCRIPTION, processDefinition.getDescription());
+        modelData.setMetaInfo(modelObjectNode.toString());
+
+        repositoryService.saveModel(modelData);
+
+        repositoryService.addModelEditorSource(modelData.getId(), modelNode.toString().getBytes("utf-8"));
+
         return "redirect:/sys/workflow/showList";
     }
 }

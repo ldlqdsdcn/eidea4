@@ -58,7 +58,7 @@
                             <a ng-if="!model.suspended" href="<c:url value="/sys/workflow/update/suspend/"/>{{model.id}}">挂起</a>
                     </td>
                     <td>
-                        <a class="btn btn-primary btn-xs" href="#/edit?id={{model.id}}"><eidea:label key="common.button.edit"/><%--编辑--%></a>
+                        <a href='<c:url value="/sys/workflow/process/convert-to-model//"/>/{{model.id}}'>转换为Model</a>
                     </td>
                 </tr>
                 </tbody>

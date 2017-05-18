@@ -49,8 +49,7 @@
                     templateUrl:'<c:url value="/base/tab/list.tpl.jsp"/> '
                 })
                 .state('windowEdit.edittab',{
-                    url:'/edittab',
-                    params:{tabid:{},columnId:{}},
+                    url:'/edittab?tabid&columnId',
                     templateUrl:'<c:url value="/base/tab/edit.tpl.jsp"/> '
                 })
                 .state('windowEdit.edittab.listTabTrl',{

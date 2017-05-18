@@ -32,6 +32,7 @@ import com.dsdl.eidea.core.dto.PaginationResult;
 import com.dsdl.eidea.core.params.QueryParams;
 import com.dsdl.eidea.core.params.DeleteParams;
 import javax.servlet.http.HttpSession;
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 
@@ -105,7 +106,25 @@ public JsonResult<PaginationResult<FileSettingPo>> list(HttpSession session,@Req
         search.addFilterEqual("name",fileSettingPo.getName());
         List<FileSettingPo> fileSettingPos= fileSettingService.getFileSettingList(search);
         if (fileSettingPos.size()>0){
-            return JsonResult.fail(ErrorCodes.VALIDATE_PARAM_ERROR.getCode(), "该名称已存在,请更换名称");
+            return JsonResult.fail(ErrorCodes.VALIDATE_PARAM_ERROR.getCode(), getMessage("filename.validate.exists"));
+        }
+        File [] root = File.listRoots();
+        int location=fileSettingPo.getRootDirectory().indexOf(":");
+        String disk=fileSettingPo.getRootDirectory().substring(0,location).toUpperCase();
+        boolean isTrue=false;
+        for (File r:root){
+            if (r.getAbsolutePath().contains(disk)){
+                isTrue=true;
+                break;
+            }
+        }
+        if (!isTrue){
+            return JsonResult.fail(ErrorCodes.VALIDATE_PARAM_ERROR.getCode(),getMessage("root.directory.validate.exist"));
+        }
+        String path=fileSettingPo.getRootDirectory();
+        File file=new File(path);
+        if (!file.exists()&&!file.isDirectory()){
+            file.mkdirs();
         }
         fileSettingService.saveFileSetting(fileSettingPo);
         return get(fileSettingPo.getId());
@@ -124,6 +143,24 @@ public JsonResult<PaginationResult<FileSettingPo>> list(HttpSession session,@Req
             }
             if(fileSettingPo.getId() == null){
             return JsonResult.fail(ErrorCodes.VALIDATE_PARAM_ERROR.getCode(), getMessage("common.errror.pk.required"));
+            }
+            File [] root = File.listRoots();
+            int location=fileSettingPo.getRootDirectory().indexOf(":");
+            String disk=fileSettingPo.getRootDirectory().substring(0,location).toUpperCase();
+            boolean isTrue=false;
+            for (File r:root){
+               if (r.getAbsolutePath().contains(disk)){
+                   isTrue=true;
+                   break;
+               }
+            }
+            if (!isTrue){
+                return JsonResult.fail(ErrorCodes.VALIDATE_PARAM_ERROR.getCode(), getMessage("root.directory.validate.exist"));
+            }
+            String path=fileSettingPo.getRootDirectory();
+            File file=new File(path);
+            if (!file.exists()&&!file.isDirectory()){
+                file.mkdirs();
             }
             fileSettingService.saveFileSetting(fileSettingPo);
             return get(fileSettingPo.getId());

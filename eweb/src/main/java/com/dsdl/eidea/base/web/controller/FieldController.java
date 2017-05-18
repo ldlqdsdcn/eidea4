@@ -113,6 +113,17 @@ public class FieldController extends BaseController {
         return get(fieldPo.getId());
     }
 
+    //    @RequiresPermissions("delete")
+//    @RequestMapping(value = "/deletes", method = RequestMethod.POST)
+//    @ResponseBody
+//
+//    public JsonResult<PaginationResult<FieldPo>> deletes(@RequestBody DeleteParams<Integer> deleteParams, HttpSession session) {
+//        if (deleteParams.getIds() == null || deleteParams.getIds().length == 0) {
+//            return JsonResult.fail(ErrorCodes.VALIDATE_PARAM_ERROR.getCode(), getMessage("common.error.delete.failure", getMessage("field.title")));
+//        }
+//        fieldService.deletes(deleteParams.getIds());
+//        return list(session, deleteParams.getQueryParams());
+//    }
     @RequiresPermissions("delete")
     @RequestMapping(value = "/deletes", method = RequestMethod.POST)
     @ResponseBody
@@ -121,8 +132,9 @@ public class FieldController extends BaseController {
         if (deleteParams.getIds() == null || deleteParams.getIds().length == 0) {
             return JsonResult.fail(ErrorCodes.VALIDATE_PARAM_ERROR.getCode(), getMessage("common.error.delete.failure", getMessage("field.title")));
         }
+        Integer columnId=fieldService.getField(deleteParams.getIds()[0]).getColumnId();
         fieldService.deletes(deleteParams.getIds());
-        return list(session, deleteParams.getQueryParams());
+        return fieldList(session, columnId);
     }
 
 

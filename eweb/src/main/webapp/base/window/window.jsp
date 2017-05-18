@@ -69,6 +69,15 @@
                     url:'/editField?field',
                     templateUrl:'<c:url value="/base/field/edit.tpl.jsp"/> '
                 })
+                .state('windowEdit.edittab.editField.listFieldTrl',{
+                    url:'/listFieldTrl',
+                    templateUrl:'<c:url value="/base/fieldTrl/list.tpl.jsp"/>'
+                })
+                .state('windowEdit.edittab.editField.editFieldTrl',{
+                    url:'/editField?fieldTrlId',
+                    templateUrl:'<c:url value="/base/fieldTrl/edit.tpl.jsp"/> '
+                })
+
         }]);
     app.controller('listCtrl', function ($scope,$http) {
         $scope.modelList = [];
@@ -276,11 +285,25 @@
     app.controller('tabCtrl',function ($scope,$rootScope,$state) {
         $scope.windowEdit=function(){
             $rootScope.windowEditShow=true;
-            $rootScope.tabListshow=false;
             $rootScope.windowTrlListShow=false;
+            $rootScope.tabListshow=false;
+            $rootScope.tabTrlListShow=false;
+            $rootScope.tabTrlBtnShow=false;
+            $rootScope.fieldListShow=false;
+            $rootScope.fieldTrlListShow=false;
+            $rootScope.fieldBtnShow=false;
+            $rootScope.fieldTrlBtnShow=false;
+
+        }
+        $scope.windowTrlList=function () {
+            $rootScope.windowEditShow=false;
+            $rootScope.tabListshow=false;
             $rootScope.tabTrlBtnShow=false;
             $rootScope.fieldBtnShow=false;
-            $rootScope.tabTrlListShow=false;
+            $rootScope.fieldTrlBtnShow=false;
+            $rootScope.windowTrlListShow=true;
+            $rootScope.fieldListShow=false;
+            $state.go('windowEdit.windowTrlList');
         }
         $scope.tabList=function () {
             $rootScope.windowEditShow=false;
@@ -288,16 +311,10 @@
             $rootScope.tabEditShow=true;
             $rootScope.tabTrlBtnShow=false;
             $rootScope.fieldBtnShow=false;
+            $rootScope.fieldTrlBtnShow=false;
             $rootScope.tabTrlListShow=false;
+            $rootScope.fieldListShow=false;
             $state.go('windowEdit.tablist');
-        }
-        $scope.windowTrlList=function () {
-            $rootScope.windowEditShow=false;
-            $rootScope.tabListshow=false;
-            $rootScope.tabTrlBtnShow=false;
-            $rootScope.fieldBtnShow=false;
-            $rootScope.windowTrlListShow=true;
-            $state.go('windowEdit.windowTrlList');
         }
         $scope.tabTrlList=function () {
             $rootScope.windowEditShow=false;
@@ -306,6 +323,8 @@
             $rootScope.windowTrlListShow=false;
             $rootScope.tabTrlListShow=true;
             $rootScope.fieldListShow=false;
+            $rootScope.fieldTrlBtnShow=false;
+            $rootScope.fieldTrlListShow=false;
             $state.go('windowEdit.edittab.listTabTrl');
         }
         $scope.fieldList=function () {
@@ -315,7 +334,19 @@
             $rootScope.windowTrlListShow=false;
             $rootScope.tabTrlListShow=false;
             $rootScope.fieldListShow=true;
+            $rootScope.fieldEditShow=true;
             $state.go('windowEdit.edittab.listField');
+        }
+        $scope.fieldTrlList=function () {
+            $rootScope.windowEditShow = false;
+            $rootScope.tabListshow = false;
+            $rootScope.tabEditShow = false;
+            $rootScope.windowTrlListShow = false;
+            $rootScope.tabTrlListShow = false;
+            $rootScope.fieldListShow = false;
+            $rootScope.fieldEditShow=false;
+            $rootScope.fieldTrlListShow=true;
+            $state.go('windowEdit.edittab.editField.listFieldTrl');
         }
     });
     app.controller('listWindowTrlCtrl', function ($scope, $http,$stateParams,$state) {
@@ -879,7 +910,7 @@
             $state.go('windowEdit.edittab.listTabTrl');
         }
     });
-    app.controller('listFieldCtrl', function ($scope, $http,$stateParams,$state) {
+    app.controller('listFieldCtrl', function ($scope, $http,$stateParams,$state,$rootScope) {
         $scope.modelList = [];
         $scope.delFlag = false;
         $scope.isLoading = true;
@@ -964,6 +995,7 @@
         };
         $scope.pageChanged();
         $scope.editField=function (id) {
+            $rootScope.fieldTrlBtnShow=true;
             $state.go('windowEdit.edittab.editField',{field:id})
         }
         $scope.createField=function () {
@@ -1058,6 +1090,188 @@
             $state.go('windowEdit.edittab.listField');
         }
     });
+    app.controller('listFieldTrlCtrl', function ($scope, $http,$stateParams,$state) {
+        $scope.modelList = [];
+        $scope.delFlag = false;
+        $scope.isLoading = true;
+        $scope.canDel=PrivilegeService.hasPrivilege('delete');
+        $scope.canAdd=PrivilegeService.hasPrivilege('add');
+        $scope.updateList = function (result) {
+            $scope.modelList = result.data;
+            $scope.queryParams.totalRecords = result.totalRecords;
+            $scope.queryParams.init = false;
+        };
+        $scope.selectAll = function () {
+            for (var i = 0; i < $scope.modelList.length; i++) {
+                $scope.modelList[i].delFlag=$scope.delFlag;
+            }
+        }
+        $scope.canDelete = function () {
+            for (var i = 0; i < $scope.modelList.length; i++) {
+                if ($scope.modelList[i].delFlag) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        $scope.pageChanged = function () {
+            $http.post("<c:url value="/base/fieldTrl/fieldTrlList"/>", $stateParams.field)
+                .success(function (response) {
+                    $scope.isLoading = false;
+                    if (response.success) {
+                        $scope.updateList(response.data);
+                    }
+                    else {
+                        bootbox.alert(response.message);
+                    }
+
+                });
+        }
+
+//批量删除
+        $scope.deleteRecord = function () {
+            bootbox.confirm({
+                message: "<eidea:message key="common.warn.confirm.deletion"/>",
+                buttons: {
+                    confirm: {
+                        label: '<eidea:label key="common.button.yes"/>',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: '<eidea:label key="common.button.no"/>',
+                        className: 'btn-danger'
+                    }
+                }, callback: function (result) {
+                    if (result) {
+                        var ids = [];
+                        for (var i = 0; i < $scope.modelList.length; i++) {
+                            if ($scope.modelList[i].delFlag) {
+                                ids.push($scope.modelList[i].id);
+                            }
+                        }
+                        $scope.queryParams.init=true;
+                        var param={"queryParams":$scope.queryParams,"ids":ids};
+                        $http.post("<c:url value="/base/fieldTrl/deletes"/>", param).success(function (data) {
+                            if (data.success) {
+                                $scope.updateList(data.data);
+                                bootbox.alert("<eidea:message key="module.deleted.success"/>");
+                            } else {
+                                bootbox.alert(data.message);
+                            }
+                        });
+                    }
+                }
+            });
+        };
+
+
+
+
+//可现实分页item数量
+        $scope.maxSize =${pagingSettingResult.pagingButtonSize};
+        $scope.queryParams = {
+            pageSize:${pagingSettingResult.perPageSize},//每页显示记录数
+            pageNo: 1, //当前页
+            totalRecords: 0,//记录数
+            init: true
+        };
+        $scope.pageChanged();
+        $scope.editFieldTrl=function (id) {
+            $state.go('windowEdit.edittab.editField.editFieldTrl',{fieldTrlId:id})
+        }
+        $scope.createFieldTrl=function () {
+            $state.go('windowEdit.edittab.editField.editFieldTrl',{fieldTrlId:null})
+        }
+    });
+    app.controller('editFieldTrlCtrl', function ($scope, $http, $stateParams,$state) {
+        /**
+         * 日期时间选择控件
+         * bootstrap-datetime 24小时时间是hh
+         */
+        $('.bootstrap-datetime').datetimepicker({
+            language:  'zh-CN',
+            format: 'yyyy-mm-dd hh:ii:ss',
+            weekStart: 1,
+            todayBtn:  1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 2,
+            forceParse: 0,
+            showMeridian: 1,
+            clearBtn: true
+        });
+        /**
+         * 日期选择控件
+         */
+        $('.bootstrap-date').datepicker({
+            language:  'zh-CN',
+            format: 'yyyy-mm-dd',
+            autoclose: 1,
+            todayBtn:  1,
+            clearBtn:true
+        });
+
+        $scope.message = '';
+        $scope.fieldTrlPo = {};
+        $scope.canAdd=PrivilegeService.hasPrivilege('add');
+        var url = "<c:url value="/base/fieldTrl/create"/>";
+        if ($stateParams.fieldTrlId != null) {
+            url = "<c:url value="/base/fieldTrl/get"/>" + "?id=" + $stateParams.fieldTrlId;
+        }
+        $http.get(url)
+            .success(function (response) {
+                if (response.success) {
+                    $scope.fieldTrlPo = response.data;
+                    $scope.canSave=(PrivilegeService.hasPrivilege('add')&&$scope.fieldTrlPo.id==null)||PrivilegeService.hasPrivilege('update');
+                }
+                else {
+                    bootbox.alert(response.message);
+                }
+            }).error(function (response) {
+            bootbox.alert(response);
+        });
+        $scope.save = function () {
+            if ($scope.editForm.$valid) {
+                var postUrl = '<c:url value="/base/fieldTrl/saveForUpdated"/>';
+                if ($scope.fieldTrlPo.id == null) {
+                    postUrl = '<c:url value="/base/fieldTrl/saveForCreated"/>';
+                }
+                $http.post(postUrl, $scope.fieldTrlPo).success(function (data) {
+                    if (data.success) {
+                        $scope.message = "<eidea:label key="base.save.success"/>";
+                        $scope.fieldTrlPo = data.data;
+                    }
+                    else {
+                        $scope.message = data.message;
+                        $scope.errors=data.data;
+                    }
+                }).error(function (data, status, headers, config) {
+                    alert(JSON.stringify(data));
+                });
+            }
+        }
+        $scope.create = function () {
+            $scope.message = "";
+            $scope.fieldTrlPo = {};
+            var url = "<c:url value="/base/fieldTrl/create"/>";
+            $http.get(url)
+                .success(function (response) {
+                    if (response.success) {
+                        $scope.fieldTrlPo = response.data;
+                        $scope.canSave=(PrivilegeService.hasPrivilege('add')&&$scope.fieldTrlPo.id==null)||PrivilegeService.hasPrivilege('update');
+                    }
+                    else {
+                        bootbox.alert(response.message);
+                    }
+                }).error(function (response) {
+                bootbox.alert(response);
+            });
+        }
+    $scope.backFieldTrlList=function () {
+        $state.go('windowEdit.edittab.editField.listFieldTrl');
+    }
+    });
+
     app.run([
         'bootstrap3ElementModifier',
         function (bootstrap3ElementModifier) {

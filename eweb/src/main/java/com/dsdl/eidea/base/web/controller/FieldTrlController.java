@@ -49,10 +49,18 @@ return modelAndView;
     @RequestMapping(value = "/list", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions("view")
-public JsonResult<PaginationResult<FieldTrlPo>> list(HttpSession session,@RequestBody QueryParams queryParams) {
-    Search search = SearchHelper.getSearchParam(URI, session);
-    PaginationResult<FieldTrlPo> paginationResult = fieldTrlService.getFieldTrlListByPaging(search, queryParams);
-    return JsonResult.success(paginationResult);
+    public JsonResult<PaginationResult<FieldTrlPo>> list(HttpSession session,@RequestBody QueryParams queryParams) {
+        Search search = SearchHelper.getSearchParam(URI, session);
+        PaginationResult<FieldTrlPo> paginationResult = fieldTrlService.getFieldTrlListByPaging(search, queryParams);
+        return JsonResult.success(paginationResult);
+    }
+    @RequestMapping(value = "/fieldTrlList", method = RequestMethod.POST)
+    @ResponseBody
+    @RequiresPermissions("view")
+    public JsonResult<PaginationResult<FieldTrlPo>> fieldTrlList(HttpSession session,@RequestBody Integer field) {
+        Search search = SearchHelper.getSearchParam(URI, session);
+        PaginationResult<FieldTrlPo> paginationResult = fieldTrlService.getFieldTrlListByField(search, field);
+        return JsonResult.success(paginationResult);
     }
     @RequiresPermissions("view")
     @RequestMapping(value = "/get", method = RequestMethod.GET)
@@ -99,17 +107,28 @@ public JsonResult<PaginationResult<FieldTrlPo>> list(HttpSession session,@Reques
             return get(fieldTrlPo.getId());
             }
 
-    @RequiresPermissions("delete")
-    @RequestMapping(value = "/deletes", method = RequestMethod.POST)
-    @ResponseBody
-
-    public JsonResult<PaginationResult<FieldTrlPo>> deletes(@RequestBody DeleteParams<Integer> deleteParams, HttpSession session) {
+//    @RequiresPermissions("delete")
+//    @RequestMapping(value = "/deletes", method = RequestMethod.POST)
+//    @ResponseBody
+//
+//    public JsonResult<PaginationResult<FieldTrlPo>> deletes(@RequestBody DeleteParams<Integer> deleteParams, HttpSession session) {
+//    if (deleteParams.getIds() == null||deleteParams.getIds().length == 0)  {
+//                return JsonResult.fail(ErrorCodes.VALIDATE_PARAM_ERROR.getCode(), getMessage("common.error.delete.failure",getMessage("fieldTrl.title")));
+//                }
+//            fieldTrlService.deletes(deleteParams.getIds());
+//                return list(session,deleteParams.getQueryParams());
+//        }
+@RequiresPermissions("delete")
+@RequestMapping(value = "/deletes", method = RequestMethod.POST)
+@ResponseBody
+public JsonResult<PaginationResult<FieldTrlPo>> deletes(@RequestBody DeleteParams<Integer> deleteParams, HttpSession session) {
     if (deleteParams.getIds() == null||deleteParams.getIds().length == 0)  {
-                return JsonResult.fail(ErrorCodes.VALIDATE_PARAM_ERROR.getCode(), getMessage("common.error.delete.failure",getMessage("fieldTrl.title")));
-                }
-            fieldTrlService.deletes(deleteParams.getIds());
-                return list(session,deleteParams.getQueryParams());
-        }
+        return JsonResult.fail(ErrorCodes.VALIDATE_PARAM_ERROR.getCode(), getMessage("common.error.delete.failure",getMessage("fieldTrl.title")));
+    }
+    Integer fieldId=fieldTrlService.getFieldTrl(deleteParams.getIds()[0]).getFieldId();
+    fieldTrlService.deletes(deleteParams.getIds());
+    return fieldTrlList(session,fieldId);
+}
 
 
 }

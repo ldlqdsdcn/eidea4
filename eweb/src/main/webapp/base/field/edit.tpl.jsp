@@ -5,12 +5,8 @@ Date: 2017-05-04 13:22:23
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/inc/taglib.jsp" %>
 <div class="container-fluid" ng-controller="editFieldCtrl">
-    <div class="page-header">
-        <ol class="breadcrumb">
-            <li><a href="javascript:;"><i class="icon-fire"></i><eidea:label key="field.title"/></a></li>
-        </ol>
-    </div>
-    <div class="row-fluid">
+    <div ui-view ng-show="fieldTrlListShow"></div>
+    <div class="row-fluid" ng-show="fieldEditShow">
         <div class="span12">
             <br>
             <form role="form" name="editForm" novalidate ng-submit="save()">

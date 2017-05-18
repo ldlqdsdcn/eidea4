@@ -16,6 +16,7 @@ import java.util.List;
  */
 public interface FieldTrlService {
 	PaginationResult<FieldTrlPo> getFieldTrlListByPaging(Search search,QueryParams queryParams);
+	PaginationResult<FieldTrlPo> getFieldTrlListByField(Search search,Integer field);
 	FieldTrlPo getFieldTrl(Integer id);
 	void saveFieldTrl(FieldTrlPo fieldTrl);
 	void deletes(Integer[] ids);

@@ -109,7 +109,8 @@
         };
         $scope.pageChanged();
     });
-    app.controller('editCtrl', function ($scope, $http, $routeParams) {
+    app.controller('edit' +
+        'Ctrl', function ($scope, $http, $routeParams) {
         /**
          * 日期时间选择控件
          * bootstrap-datetime 24小时时间是hh

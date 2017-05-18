@@ -22,4 +22,10 @@ public interface LeaveService {
 	 */
 	void saveStartLeave(Integer id);
 	void deletes(Integer[] ids);
+
+	/**
+	 * 获取正在运行的工作流
+	 * @return
+	 */
+	List<LeavePo> getRunningProcessInstances();
 }

@@ -49,7 +49,8 @@
                     templateUrl:'<c:url value="/base/tab/list.tpl.jsp"/> '
                 })
                 .state('windowEdit.edittab',{
-                    url:'/edittab?tabid',
+                    url:'/edittab',
+                    params:{tabid:{},columnId:{}},
                     templateUrl:'<c:url value="/base/tab/edit.tpl.jsp"/> '
                 })
                 .state('windowEdit.edittab.listTabTrl',{
@@ -59,6 +60,14 @@
                 .state('windowEdit.edittab.editTabTrl',{
                     url:'/editTabTrl?tabTrlId',
                     templateUrl:'<c:url value="/base/tabTrl/edit.tpl.jsp"/>'
+                })
+                .state('windowEdit.edittab.listField',{
+                    url:'/listField',
+                    templateUrl:'<c:url value="/base/field/list.tpl.jsp"/>'
+                })
+                .state('windowEdit.edittab.editField',{
+                    url:'/editField?field',
+                    templateUrl:'<c:url value="/base/field/edit.tpl.jsp"/> '
                 })
         }]);
     app.controller('listCtrl', function ($scope,$http) {
@@ -270,6 +279,7 @@
             $rootScope.tabListshow=false;
             $rootScope.windowTrlListShow=false;
             $rootScope.tabTrlBtnShow=false;
+            $rootScope.fieldBtnShow=false;
             $rootScope.tabTrlListShow=false;
         }
         $scope.tabList=function () {
@@ -277,6 +287,7 @@
             $rootScope.tabListshow=true;
             $rootScope.tabEditShow=true;
             $rootScope.tabTrlBtnShow=false;
+            $rootScope.fieldBtnShow=false;
             $rootScope.tabTrlListShow=false;
             $state.go('windowEdit.tablist');
         }
@@ -284,6 +295,7 @@
             $rootScope.windowEditShow=false;
             $rootScope.tabListshow=false;
             $rootScope.tabTrlBtnShow=false;
+            $rootScope.fieldBtnShow=false;
             $rootScope.windowTrlListShow=true;
             $state.go('windowEdit.windowTrlList');
         }
@@ -293,7 +305,17 @@
             $rootScope.tabEditShow=false;
             $rootScope.windowTrlListShow=false;
             $rootScope.tabTrlListShow=true;
+            $rootScope.fieldListShow=false;
             $state.go('windowEdit.edittab.listTabTrl');
+        }
+        $scope.fieldList=function () {
+            $rootScope.windowEditShow=false;
+            $rootScope.tabListshow=false;
+            $rootScope.tabEditShow=false;
+            $rootScope.windowTrlListShow=false;
+            $rootScope.tabTrlListShow=false;
+            $rootScope.fieldListShow=true;
+            $state.go('windowEdit.edittab.listField');
         }
     });
     app.controller('listWindowTrlCtrl', function ($scope, $http,$stateParams,$state) {
@@ -559,9 +581,10 @@
             init: true
         };
         $scope.pageChanged();
-        $scope.editItem=function (id) {
+        $scope.editItem=function (id,columnId) {
             $rootScope.tabTrlBtnShow=true;
-          $state.go('windowEdit.edittab',{tabid:id})
+            $rootScope.fieldBtnShow=true;
+          $state.go('windowEdit.edittab',{tabid:id,columnId:columnId})
         }
         $scope.createItem=function () {
             $state.go('windowEdit.edittab',{tabid:null})
@@ -672,7 +695,7 @@
             })
         }
         $scope.backItemList=function () {
-            $state.go('windowEdit.tablist',{id:$rootScope.id});
+            $state.go('windowEdit.tablist',{id:$stateParams.id});
         }
     });
     app.controller('listTabTrlCtrl', function ($scope, $http,$stateParams,$state) {
@@ -856,7 +879,185 @@
             $state.go('windowEdit.edittab.listTabTrl');
         }
     });
+    app.controller('listFieldCtrl', function ($scope, $http,$stateParams,$state) {
+        $scope.modelList = [];
+        $scope.delFlag = false;
+        $scope.isLoading = true;
+        $scope.canDel = PrivilegeService.hasPrivilege('delete');
+        $scope.canAdd = PrivilegeService.hasPrivilege('add');
+        $scope.updateList = function (result) {
+            $scope.modelList = result.data;
+            $scope.queryParams.totalRecords = result.totalRecords;
+            $scope.queryParams.init = false;
+        };
+        $scope.selectAll = function () {
+            for (var i = 0; i < $scope.modelList.length; i++) {
+                $scope.modelList[i].delFlag = $scope.delFlag;
+            }
+        }
+        $scope.canDelete = function () {
+            for (var i = 0; i < $scope.modelList.length; i++) {
+                if ($scope.modelList[i].delFlag) {
+                    return true;
+                }
+            }
+            return false;
+        };
+        $scope.pageChanged = function () {
+            $http.post("<c:url value="/base/field/fieldList"/>", $stateParams.columnId)
+                .success(function (response) {
+                    $scope.isLoading = false;
+                    if (response.success) {
+                        $scope.updateList(response.data);
+                    }
+                    else {
+                        bootbox.alert(response.message);
+                    }
 
+                });
+        }
+
+//批量删除
+        $scope.deleteRecord = function () {
+            bootbox.confirm({
+                message: "<eidea:message key="common.warn.confirm.deletion"/>",
+                buttons: {
+                    confirm: {
+                        label: '<eidea:label key="common.button.yes"/>',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: '<eidea:label key="common.button.no"/>',
+                        className: 'btn-danger'
+                    }
+                }, callback: function (result) {
+                    if (result) {
+                        var ids = [];
+                        for (var i = 0; i < $scope.modelList.length; i++) {
+                            if ($scope.modelList[i].delFlag) {
+                                ids.push($scope.modelList[i].id);
+                            }
+                        }
+                        $scope.queryParams.init = true;
+                        var param = {"queryParams": $scope.queryParams, "ids": ids};
+                        $http.post("<c:url value="/base/field/deletes"/>", param).success(function (data) {
+                            if (data.success) {
+                                $scope.updateList(data.data);
+                                bootbox.alert("<eidea:message key="module.deleted.success"/>");
+                            } else {
+                                bootbox.alert(data.message);
+                            }
+                        });
+                    }
+                }
+            });
+        };
+
+
+//可现实分页item数量
+        $scope.maxSize =${pagingSettingResult.pagingButtonSize};
+        $scope.queryParams = {
+            pageSize:${pagingSettingResult.perPageSize},//每页显示记录数
+            pageNo: 1, //当前页
+            totalRecords: 0,//记录数
+            init: true
+        };
+        $scope.pageChanged();
+        $scope.editField=function (id) {
+            $state.go('windowEdit.edittab.editField',{field:id})
+        }
+        $scope.createField=function () {
+            $state.go('windowEdit.edittab.editField',{field:null})
+        }
+    });
+    app.controller('editFieldCtrl', function ($scope, $http, $stateParams,$state) {
+        /**
+         * 日期时间选择控件
+         * bootstrap-datetime 24小时时间是hh
+         */
+        $('.bootstrap-datetime').datetimepicker({
+            language: 'zh-CN',
+            format: 'yyyy-mm-dd hh:ii:ss',
+            weekStart: 1,
+            todayBtn: 1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 2,
+            forceParse: 0,
+            showMeridian: 1,
+            clearBtn: true
+        });
+        /**
+         * 日期选择控件
+         */
+        $('.bootstrap-date').datepicker({
+            language: 'zh-CN',
+            format: 'yyyy-mm-dd',
+            autoclose: 1,
+            todayBtn: 1,
+            clearBtn: true
+        });
+
+        $scope.message = '';
+        $scope.fieldPo = {};
+        $scope.canAdd = PrivilegeService.hasPrivilege('add');
+        var url = "<c:url value="/base/field/create"/>";
+        if ($stateParams.field != null) {
+            url = "<c:url value="/base/field/get"/>" + "?id=" + $stateParams.field;
+        }
+        $http.get(url)
+            .success(function (response) {
+                if (response.success) {
+                    $scope.fieldPo = response.data;
+                    $scope.canSave = (PrivilegeService.hasPrivilege('add') && $scope.fieldPo.id == null) || PrivilegeService.hasPrivilege('update');
+                }
+                else {
+                    bootbox.alert(response.message);
+                }
+            }).error(function (response) {
+            bootbox.alert(response);
+        });
+        $scope.save = function () {
+            if ($scope.editForm.$valid) {
+                var postUrl = '<c:url value="/base/field/saveForUpdated"/>';
+                if ($scope.fieldPo.id == null) {
+                    postUrl = '<c:url value="/base/field/saveForCreated"/>';
+                }
+                $http.post(postUrl, $scope.fieldPo).success(function (data) {
+                    if (data.success) {
+                        $scope.message = "<eidea:label key="base.save.success"/>";
+                        $scope.fieldPo = data.data;
+                    }
+                    else {
+                        $scope.message = data.message;
+                        $scope.errors = data.data;
+                    }
+                }).error(function (data, status, headers, config) {
+                    alert(JSON.stringify(data));
+                });
+            }
+        }
+        $scope.create = function () {
+            $scope.message = "";
+            $scope.fieldPo = {};
+            var url = "<c:url value="/base/field/create"/>";
+            $http.get(url)
+                .success(function (response) {
+                    if (response.success) {
+                        $scope.fieldPo = response.data;
+                        $scope.canSave = (PrivilegeService.hasPrivilege('add') && $scope.fieldPo.id == null) || PrivilegeService.hasPrivilege('update');
+                    }
+                    else {
+                        bootbox.alert(response.message);
+                    }
+                }).error(function (response) {
+                bootbox.alert(response);
+            });
+        }
+        $scope.backFieldList=function () {
+            $state.go('windowEdit.edittab.listField');
+        }
+    });
     app.run([
         'bootstrap3ElementModifier',
         function (bootstrap3ElementModifier) {

@@ -40,7 +40,24 @@ public class FieldServiceImpl  implements	FieldService {
 		}
     	return paginationResult;
     }
-
+	public PaginationResult<FieldPo> getFieldListByColumnId(Search search,Integer columnId)
+	{
+		QueryParams queryParams = new QueryParams();
+		search.setFirstResult(queryParams.getFirstResult());
+		search.setMaxResults(queryParams.getPageSize());
+		search.addFilterEqual("columnId",columnId);
+		PaginationResult<FieldPo> paginationResult = null;
+		if (queryParams.isInit()) {
+			SearchResult<FieldPo> searchResult = fieldDao.searchAndCount(search);
+			paginationResult = PaginationResult.pagination(searchResult.getResult(), searchResult.getTotalCount(), queryParams.getPageNo(), queryParams.getPageSize());
+		}
+		else
+		{
+			List<FieldPo> fieldPoList = fieldDao.search(search);
+			paginationResult = PaginationResult.pagination(fieldPoList, queryParams.getTotalRecords(), queryParams.getPageNo(), queryParams.getPageSize());
+		}
+		return paginationResult;
+	}
     public FieldPo getField(Integer id)
 	{
 		return fieldDao.find(id);

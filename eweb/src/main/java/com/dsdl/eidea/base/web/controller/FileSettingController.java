@@ -6,8 +6,11 @@
 */
 package com.dsdl.eidea.base.web.controller;
 
+import com.dsdl.eidea.base.entity.bo.ModuleBo;
 import com.dsdl.eidea.base.entity.po.FileSettingPo;
+import com.dsdl.eidea.base.entity.po.ModulePo;
 import com.dsdl.eidea.base.service.FileSettingService;
+import com.dsdl.eidea.base.service.ModuleService;
 import com.dsdl.eidea.core.web.controller.BaseController;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import com.dsdl.eidea.core.web.def.WebConst;
@@ -18,6 +21,7 @@ import com.dsdl.eidea.core.web.vo.PagingSettingResult;
 import com.googlecode.genericdao.search.Search;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +32,7 @@ import com.dsdl.eidea.core.dto.PaginationResult;
 import com.dsdl.eidea.core.params.QueryParams;
 import com.dsdl.eidea.core.params.DeleteParams;
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -38,6 +43,8 @@ public class FileSettingController extends BaseController {
 private static final String URI = "fileSetting";
 @Autowired
 private FileSettingService fileSettingService;
+@Autowired
+ private ModuleService moduleService;
 @RequestMapping(value = "/showList", method = RequestMethod.GET)
 @RequiresPermissions("view")
 public ModelAndView showList() {
@@ -63,6 +70,8 @@ public JsonResult<PaginationResult<FileSettingPo>> list(HttpSession session,@Req
         return JsonResult.fail(ErrorCodes.VALIDATE_PARAM_ERROR.getCode(),getMessage("common.errror.get_object",getLabel("fileSetting.title")));
         } else {
         fileSettingPo = fileSettingService.getFileSetting(id);
+            List<ModuleBo> moduleBos=moduleService.getModulePos();
+            fileSettingPo.setModuleBos(moduleBos);
         }
         return JsonResult.success(fileSettingPo);
         }
@@ -72,6 +81,8 @@ public JsonResult<PaginationResult<FileSettingPo>> list(HttpSession session,@Req
         @ResponseBody
         public JsonResult<FileSettingPo> create() {
             FileSettingPo fileSettingPo = new FileSettingPo();
+            List<ModuleBo> moduleBos=moduleService.getModulePos();
+            fileSettingPo.setModuleBos(moduleBos);
             return JsonResult.success(fileSettingPo);
             }
 
@@ -82,7 +93,20 @@ public JsonResult<PaginationResult<FileSettingPo>> list(HttpSession session,@Req
     @RequiresPermissions("add")
     @RequestMapping(value = "/saveForCreated", method = RequestMethod.POST)
     @ResponseBody
-    public JsonResult<FileSettingPo> saveForCreate(@Validated @RequestBody FileSettingPo fileSettingPo) {
+    public JsonResult<FileSettingPo> saveForCreate(@Validated @RequestBody FileSettingPo fileSettingPo,BindingResult bindingResult) {
+        if (bindingResult.getFieldErrorCount()>0){
+            String message="";
+            for (int i=0;i<bindingResult.getFieldErrors().size();i++){
+                message=message+" "+bindingResult.getFieldErrors().get(i).getDefaultMessage();
+            }
+            return JsonResult.fail(ErrorCodes.VALIDATE_PARAM_ERROR.getCode(), message);
+        }
+        Search search=new Search();
+        search.addFilterEqual("name",fileSettingPo.getName());
+        List<FileSettingPo> fileSettingPos= fileSettingService.getFileSettingList(search);
+        if (fileSettingPos.size()>0){
+            return JsonResult.fail(ErrorCodes.VALIDATE_PARAM_ERROR.getCode(), "该名称已存在,请更换名称");
+        }
         fileSettingService.saveFileSetting(fileSettingPo);
         return get(fileSettingPo.getId());
         }
@@ -90,8 +114,14 @@ public JsonResult<PaginationResult<FileSettingPo>> list(HttpSession session,@Req
         @RequiresPermissions("update")
         @RequestMapping(value = "/saveForUpdated", method = RequestMethod.POST)
         @ResponseBody
-        public JsonResult<FileSettingPo> saveForUpdate(@Validated @RequestBody FileSettingPo fileSettingPo) {
-
+        public JsonResult<FileSettingPo> saveForUpdate(@Validated @RequestBody FileSettingPo fileSettingPo, BindingResult bindingResult) {
+            if (bindingResult.getFieldErrorCount() > 0) {
+                String message="";
+                for (int i = 0; i < bindingResult.getFieldErrors().size(); i++) {
+                    message=message+" "+getMessage(bindingResult.getFieldErrors().get(i).getDefaultMessage());
+                }
+                return JsonResult.fail(ErrorCodes.VALIDATE_PARAM_ERROR.getCode(), message);
+            }
             if(fileSettingPo.getId() == null){
             return JsonResult.fail(ErrorCodes.VALIDATE_PARAM_ERROR.getCode(), getMessage("common.errror.pk.required"));
             }

@@ -21,9 +21,9 @@
                     <th><%--名称--%><eidea:label key="base.fileSetting.label.name"/></th>
                     <th><%--rootDirectory--%><eidea:label key="base.fileSetting.label.rootDirectory"/></th>
                     <th><%--fileSize--%><eidea:label key="base.fileSetting.label.fileSize"/></th>
-                    <th><%--fileTypes--%><eidea:label key="base.fileSetting.label.fileTypes"/></th>
-                    <th><%--storageMode--%><eidea:label key="base.fileSetting.label.storageMode"/></th>
-                    <th><%--ftpcommectionId--%><eidea:label key="base.fileSetting.label.ftpcommectionId"/></th>
+                  <%--  <th>&lt;%&ndash;fileTypes&ndash;%&gt;<eidea:label key="base.fileSetting.label.fileTypes"/></th>
+                    <th>&lt;%&ndash;storageMode&ndash;%&gt;<eidea:label key="base.fileSetting.label.storageMode"/></th>
+                    <th>&lt;%&ndash;ftpcommectionId&ndash;%&gt;<eidea:label key="base.fileSetting.label.ftpcommectionId"/></th>--%>
                     <th><%--创建时间--%><eidea:label key="base.fileSetting.label.created"/></th>
                     <th><%--moduleId--%><eidea:label key="base.fileSetting.label.moduleId"/></th>
                     <th><%--编辑--%><eidea:label key="common.button.edit"/></th>
@@ -45,7 +45,7 @@
                     <td>
                         {{model.fileSize}}
                     </td>
-                    <td>
+                  <%--  <td>
                         {{model.fileTypes}}
                     </td>
                     <td>
@@ -53,7 +53,7 @@
                     </td>
                     <td>
                         {{model.ftpcommectionId}}
-                    </td>
+                    </td>--%>
                     <td>
                         {{model.created|date:"yyyy-MM-dd HH:mm:ss"}}
                     </td>

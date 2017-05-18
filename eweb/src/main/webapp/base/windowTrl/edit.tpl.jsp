@@ -5,11 +5,6 @@ Date: 2017-05-02 15:42:28
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/inc/taglib.jsp" %>
 <div class="container-fluid" ng-controller="editWindowTrlCtrl">
-    <div class="page-header">
-        <ol class="breadcrumb">
-            <li><a href="javascript:;"><i class="icon-fire"></i><eidea:label key="windowTrl.title"/></a></li>
-        </ol>
-    </div>
     <div class="row-fluid">
         <div class="span12">
             <br>

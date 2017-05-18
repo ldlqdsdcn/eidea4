@@ -13,7 +13,7 @@
             <table  class="table table-hover table-striped table-condensed">
                 <thead>
                 <tr>
-                    <th><input type="hidden" name="selectAll" style="margin:0px;" ng-change="selectAll()"
+                    <th><input type="checkbox" name="selectAll" style="margin:0px;" ng-change="selectAll()"
                                ng-model="delFlag"></th>
                     <th><eidea:label key="custom.list.index"/></th>
                     <th><eidea:label key="dymenuForm.label.sequence"/></th>

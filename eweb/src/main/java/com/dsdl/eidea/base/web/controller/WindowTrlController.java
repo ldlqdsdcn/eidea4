@@ -58,10 +58,11 @@ public class WindowTrlController extends BaseController {
         PaginationResult<WindowTrlPo> paginationResult = windowTrlService.getWindowTrlListByPaging(search, queryParams);
         return JsonResult.success(paginationResult);
     }
+
     @RequestMapping(value = "/windowTrlList", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions("view")
-    public JsonResult<PaginationResult<WindowTrlPo>> list(HttpSession session, @RequestBody Integer windowId) {
+    public JsonResult<PaginationResult<WindowTrlPo>> windowTrllist(HttpSession session, @RequestBody Integer windowId) {
         Search search = SearchHelper.getSearchParam(URI, session);
         PaginationResult<WindowTrlPo> paginationResult = windowTrlService.getWindowTrlListByWindowId(search, windowId);
         return JsonResult.success(paginationResult);
@@ -112,6 +113,17 @@ public class WindowTrlController extends BaseController {
         return get(windowTrlPo.getId());
     }
 
+    //    @RequiresPermissions("delete")
+//    @RequestMapping(value = "/deletes", method = RequestMethod.POST)
+//    @ResponseBody
+//
+//    public JsonResult<PaginationResult<WindowTrlPo>> deletes(@RequestBody DeleteParams<Integer> deleteParams, HttpSession session) {
+//        if (deleteParams.getIds() == null || deleteParams.getIds().length == 0) {
+//            return JsonResult.fail(ErrorCodes.VALIDATE_PARAM_ERROR.getCode(), getMessage("common.error.delete.failure", getMessage("windowTrl.title")));
+//        }
+//        windowTrlService.deletes(deleteParams.getIds());
+//        return list(session, deleteParams.getQueryParams());
+//    }
     @RequiresPermissions("delete")
     @RequestMapping(value = "/deletes", method = RequestMethod.POST)
     @ResponseBody
@@ -120,8 +132,9 @@ public class WindowTrlController extends BaseController {
         if (deleteParams.getIds() == null || deleteParams.getIds().length == 0) {
             return JsonResult.fail(ErrorCodes.VALIDATE_PARAM_ERROR.getCode(), getMessage("common.error.delete.failure", getMessage("windowTrl.title")));
         }
+        Integer windowId=windowTrlService.getWindowTrl(deleteParams.getIds()[0]).getWindowId();
         windowTrlService.deletes(deleteParams.getIds());
-        return list(session, deleteParams.getQueryParams());
+        return windowTrllist(session, windowId);
     }
 
 

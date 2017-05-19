@@ -20,4 +20,6 @@ public interface DirectoryService {
     boolean findExistId(Integer id);
 
     DirectoryBo getDirectoryBo(Integer id);
+
+    List<DirectoryBo> findAllDirectory(Search search);
 }

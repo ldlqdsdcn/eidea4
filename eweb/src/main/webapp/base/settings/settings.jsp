@@ -24,7 +24,7 @@
                         .when('/edit', {templateUrl: '<c:url value="/base/settings/edit.tpl.jsp"/>'})
                         .otherwise({redirectTo: '/list'});
             }]);
-app.controller('listCtrl', function ($scope, $http) {
+    app.controller('listCtrl', function ($scope, $http) {
 $scope.modelList = [];
 $scope.delFlag = false;
 $scope.isLoading = true;
@@ -197,6 +197,18 @@ $scope.pageChanged();
             });
         }
 
+        //附件上传
+        $scope.showAttachment=function () {
+            bootbox.alert({
+                buttons: {
+                    ok: {
+                        label: '<i class="fa fa-close" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.closed"/>',
+                        className: 'btn-primary'
+                    }
+                },
+                message: '<eidea:message key="common.upload.does.not.required"/>',
+            });
+        }
     });
     app.run([
         'bootstrap3ElementModifier',

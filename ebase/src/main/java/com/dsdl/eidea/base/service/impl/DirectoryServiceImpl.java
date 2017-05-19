@@ -70,4 +70,10 @@ public class DirectoryServiceImpl implements DirectoryService {
         DirectoryBo directoryBo=modelMapper.map(pdirectoryPo,DirectoryBo.class);
         return directoryBo;
     }
+
+    @Override
+    public List<DirectoryBo> findAllDirectory(Search search) {
+        List<DirectoryPo> userPoList = directoryDao.search(search);
+        return modelMapper.map(userPoList,new TypeToken<List<DirectoryBo>>(){}.getType());
+    }
 }

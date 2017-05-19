@@ -2,9 +2,6 @@
 <%@ include file="/inc/taglib.jsp" %>
 <div  class="container-fluid" ng-controller="listCtrl">
 <div class="page-header" >
-    <ol class="breadcrumb">
-        <li><a href="javascript:;"><i class="icon icon-tasks"></i> <eidea:label key="menu.changelog"/></a></li>
-    </ol>
 </div>
 <div class="row-fluid">
     <div class="span12">
@@ -48,7 +45,8 @@
                     {{model.inDate|date:'yyyy-MM-dd HH:mm:ss'}}
                 </td>
                 <td>
-                	<a class="btn btn-primary btn-xs" href="#/edit?id={{model.id}}"><eidea:label key="common.button.view"/></a>
+                	<a class="btn btn-primary btn-xs" href="#/edit?id={{model.id}}">
+                        <i class="fa fa-search fa-1x" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.view"/></a>
                 </td>
             </tr>
             <tr>

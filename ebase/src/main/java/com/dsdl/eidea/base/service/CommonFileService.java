@@ -20,6 +20,7 @@ public interface CommonFileService {
 	CommonFilePo getCommonFile(Integer id);
 	void saveCommonFile(CommonFilePo commonFile);
 	void deletes(Integer[] ids);
+	List<CommonFileBo> getAttachmentList(Search search);
 	void saveAttachmentUpload(CommonFileBo commonFileBo);
 	void deleteAttachment(CommonFileBo commonFileBo);
 }

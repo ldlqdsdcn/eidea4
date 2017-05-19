@@ -1,43 +1,43 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:tns="http://www.activiti.org/testm1484719496242" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" expressionLanguage="http://www.w3.org/1999/XPath" id="m1484719496242" name="" targetNamespace="http://www.activiti.org/testm1484719496242" typeLanguage="http://www.w3.org/2001/XMLSchema">
-  <process id="myProcess_1" isClosed="false" isExecutable="true" processType="None">
-    <startEvent id="_2" name="StartEvent"/>
-    <userTask activiti:exclusive="true" id="_3" name="一级经理"/>
-    <userTask activiti:exclusive="true" id="_4" name="二级经理"/>
-    <userTask activiti:exclusive="true" id="_5" name="boss"/>
-    <endEvent id="_6" name="EndEvent"/>
-    <sequenceFlow id="_7" sourceRef="_2" targetRef="_3"/>
-    <sequenceFlow id="_8" sourceRef="_3" targetRef="_4"/>
-    <sequenceFlow id="_9" sourceRef="_4" targetRef="_5"/>
-    <sequenceFlow id="_10" sourceRef="_5" targetRef="_6"/>
+  <process id="purchase" isClosed="false" isExecutable="true" name="采购审批" processType="Public">
+    <startEvent id="theStart" name="StartEvent"/>
+    <userTask activiti:exclusive="true" id="level_one_manager_approve" name="一级经理"/>
+    <userTask activiti:exclusive="true" id="level_two_manager_approve" name="二级经理"/>
+    <userTask activiti:exclusive="true" id="boss_approve" name="boss"/>
+    <endEvent id="theEnd" name="EndEvent"/>
+    <sequenceFlow id="_7" sourceRef="theStart" targetRef="level_one_manager_approve"/>
+    <sequenceFlow id="_8" sourceRef="level_one_manager_approve" targetRef="level_two_manager_approve"/>
+    <sequenceFlow id="_9" sourceRef="level_two_manager_approve" targetRef="boss_approve"/>
+    <sequenceFlow id="_10" sourceRef="boss_approve" targetRef="theEnd"/>
   </process>
   <bpmndi:BPMNDiagram documentation="background=#FFFFFF;count=1;horizontalcount=1;orientation=0;width=842.4;height=1195.2;imageableWidth=832.4;imageableHeight=1185.2;imageableX=5.0;imageableY=5.0" id="Diagram-_1" name="New Diagram">
-    <bpmndi:BPMNPlane bpmnElement="myProcess_1">
-      <bpmndi:BPMNShape bpmnElement="_2" id="Shape-_2">
+    <bpmndi:BPMNPlane bpmnElement="purchase">
+      <bpmndi:BPMNShape bpmnElement="theStart" id="Shape-theStart">
         <dc:Bounds height="32.0" width="32.0" x="350.0" y="65.0"/>
         <bpmndi:BPMNLabel>
           <dc:Bounds height="32.0" width="32.0" x="0.0" y="0.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="_3" id="Shape-_3">
+      <bpmndi:BPMNShape bpmnElement="level_one_manager_approve" id="Shape-level_one_manager_approve">
         <dc:Bounds height="55.0" width="85.0" x="330.0" y="170.0"/>
         <bpmndi:BPMNLabel>
           <dc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="_4" id="Shape-_4">
+      <bpmndi:BPMNShape bpmnElement="level_two_manager_approve" id="Shape-level_two_manager_approve">
         <dc:Bounds height="55.0" width="85.0" x="340.0" y="315.0"/>
         <bpmndi:BPMNLabel>
           <dc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="_5" id="Shape-_5">
+      <bpmndi:BPMNShape bpmnElement="boss_approve" id="Shape-boss_approve">
         <dc:Bounds height="55.0" width="85.0" x="345.0" y="440.0"/>
         <bpmndi:BPMNLabel>
           <dc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="_6" id="Shape-_6">
+      <bpmndi:BPMNShape bpmnElement="theEnd" id="Shape-theEnd">
         <dc:Bounds height="32.0" width="32.0" x="375.0" y="545.0"/>
         <bpmndi:BPMNLabel>
           <dc:Bounds height="32.0" width="32.0" x="0.0" y="0.0"/>

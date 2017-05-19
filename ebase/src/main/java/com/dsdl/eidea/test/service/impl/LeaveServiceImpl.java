@@ -58,7 +58,6 @@ public class LeaveServiceImpl implements LeaveService {
         }
         return leaveDao.search(search);
     }
-
     public void saveStartLeave(Integer id) {
         String businessKey = String.valueOf(id);
         LeavePo leavePo = leaveDao.find(id);
@@ -107,6 +106,10 @@ public class LeaveServiceImpl implements LeaveService {
                 continue;
             }
             LeavePo leave = leaveDao.find(new Integer(businessKey));
+            if(leave==null)
+            {
+                continue;
+            }
             leave.setProcessInstance(processInstance);
             leave.setProcessDefinition(getProcessDefinition(processInstance.getProcessDefinitionId()));
             UserPo userPo=userDao.find(leave.getLeaveUserId());

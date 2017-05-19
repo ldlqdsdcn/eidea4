@@ -112,18 +112,6 @@ public class WindowTrlController extends BaseController {
         windowTrlService.saveWindowTrl(windowTrlPo);
         return get(windowTrlPo.getId());
     }
-
-    //    @RequiresPermissions("delete")
-//    @RequestMapping(value = "/deletes", method = RequestMethod.POST)
-//    @ResponseBody
-//
-//    public JsonResult<PaginationResult<WindowTrlPo>> deletes(@RequestBody DeleteParams<Integer> deleteParams, HttpSession session) {
-//        if (deleteParams.getIds() == null || deleteParams.getIds().length == 0) {
-//            return JsonResult.fail(ErrorCodes.VALIDATE_PARAM_ERROR.getCode(), getMessage("common.error.delete.failure", getMessage("windowTrl.title")));
-//        }
-//        windowTrlService.deletes(deleteParams.getIds());
-//        return list(session, deleteParams.getQueryParams());
-//    }
     @RequiresPermissions("delete")
     @RequestMapping(value = "/deletes", method = RequestMethod.POST)
     @ResponseBody

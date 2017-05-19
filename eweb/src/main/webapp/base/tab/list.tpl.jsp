@@ -78,7 +78,6 @@
                         {{model.updatedby}}
                     </td>
                     <td>
-                        <%--<a class="btn btn-primary btn-xs" href="#/tab?id={{model.id}}"><eidea:label key="common.button.edit"/>&lt;%&ndash;编辑&ndash;%&gt;</a>--%>
                         <button class="btn btn-primary btn-xs" ng-click="editItem(model.id,model.tableColumnId)"><eidea:label key="common.button.edit"/></button>
                     </td>
                 </tr>

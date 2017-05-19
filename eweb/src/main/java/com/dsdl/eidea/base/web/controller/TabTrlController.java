@@ -112,18 +112,6 @@ public class TabTrlController extends BaseController {
         tabTrlService.saveTabTrl(tabTrlPo);
         return get(tabTrlPo.getId());
     }
-
-    //    @RequiresPermissions("delete")
-//    @RequestMapping(value = "/deletes", method = RequestMethod.POST)
-//    @ResponseBody
-//
-//    public JsonResult<PaginationResult<TabTrlPo>> deletes(@RequestBody DeleteParams<Integer> deleteParams, HttpSession session) {
-//    if (deleteParams.getIds() == null||deleteParams.getIds().length == 0)  {
-//                return JsonResult.fail(ErrorCodes.VALIDATE_PARAM_ERROR.getCode(), getMessage("common.error.delete.failure",getMessage("tabTrl.title")));
-//                }
-//            tabTrlService.deletes(deleteParams.getIds());
-//                return list(session,deleteParams.getQueryParams());
-//        }
     @RequiresPermissions("delete")
     @RequestMapping(value = "/deletes", method = RequestMethod.POST)
     @ResponseBody

@@ -17,13 +17,6 @@
 </jsp:include>
 </body>
 <script type="text/javascript">
-    <%--var app = angular.module('myApp', ['ngRoute', 'ui.bootstrap', 'jcs-autoValidate'])--%>
-        <%--.config(['$routeProvider', function ($routeProvider) {--%>
-            <%--$routeProvider--%>
-                <%--.when('/list', {templateUrl: '<c:url value="/base/window/list.tpl.jsp"/>'})--%>
-                <%--.when('/edit', {templateUrl: '<c:url value="/base/window/edit.tpl.jsp"/>'})--%>
-                <%--.otherwise({redirectTo: '/list'});--%>
-        <%--}]);--%>
     var app = angular.module('myApp',['ui.router','ui.bootstrap','jcs-autoValidate'])
         .config(['$stateProvider','$urlRouterProvider',function ($stateProvider,$urlRouterProvider) {
             $urlRouterProvider.otherwise('/list');
@@ -1032,6 +1025,14 @@
         $scope.message = '';
         $scope.fieldPo = {};
         $scope.canAdd = PrivilegeService.hasPrivilege('add');
+        $http.get("<c:url value="/base/field/selectInputType"/>").success(function (response) {
+            if (response.success){
+                var selectInputTypeList=$.parseJSON(response.data);
+                $scope.inputTypeList=selectInputTypeList.fieldInputType;
+            }else{
+                bootbox.alert(response.message);
+            }
+        });
         var url = "<c:url value="/base/field/create"/>";
         if ($stateParams.field != null) {
             url = "<c:url value="/base/field/get"/>" + "?id=" + $stateParams.field;

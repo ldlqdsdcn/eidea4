@@ -24,7 +24,7 @@
                 .when('/edit', {templateUrl: '<c:url value="/base/field/edit.tpl.jsp"/>'})
                 .otherwise({redirectTo: '/list'});
         }]);
-    app.controller('listCtrl', function ($scope, $http) {
+    app.controller('listFieldCtrl', function ($scope, $http) {
         $scope.modelList = [];
         $scope.delFlag = false;
         $scope.isLoading = true;
@@ -109,7 +109,7 @@
         };
         $scope.pageChanged();
     });
-    app.controller('editCtrl', function ($scope, $http, $routeParams) {
+    app.controller('editFieldCtrl', function ($scope, $http, $routeParams) {
         /**
          * 日期时间选择控件
          * bootstrap-datetime 24小时时间是hh
@@ -140,6 +140,14 @@
         $scope.message = '';
         $scope.fieldPo = {};
         $scope.canAdd = PrivilegeService.hasPrivilege('add');
+        $http.get("<c:url value="/base/field/selectInputType"/>").success(function (response) {
+            if (response.success){
+                var selectInputTypeList=$.parseJSON(response.data);
+                $scope.inputTypeList=selectInputTypeList.fieldInputType;
+            }else{
+                bootbox.alert(response.message);
+            }
+        });
         var url = "<c:url value="/base/field/create"/>";
         if ($routeParams.id != null) {
             url = "<c:url value="/base/field/get"/>" + "?id=" + $routeParams.id;

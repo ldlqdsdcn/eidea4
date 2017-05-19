@@ -95,9 +95,8 @@ Date: 2017-05-04 13:22:23
                 </div>
                 <div class="form-group">
                     <label for="inputType"><%--inputType--%><eidea:label key="base.field.label.inputType"/></label>
-                    <input type="text" class="form-control" id="inputType"
-                           placeholder="<eidea:message key="common.please.input"><eidea:param value="base.field.label.inputType" type="label"/></eidea:message>"
-                           ng-model="fieldPo.inputType" ng-minLength="1" ng-maxLength="11" required>
+                    <select class="form-control" id="inputType"
+                            ng-model="fieldPo.inputType" ng-options="option.key as option.desc for option in inputTypeList" required></select>
 
                 </div>
                 <div class="form-group">
@@ -190,8 +189,6 @@ Date: 2017-05-04 13:22:23
                         <eidea:label key="common.button.create"/></button>
                         <button type="submit" class="btn btn-default btn-sm" ng-show="canSave"><%--保存--%><eidea:label
                                 key="common.button.save"/></button>
-                        <%--<a href="#/list" class="btn btn-default btn-sm">&lt;%&ndash;返回&ndash;%&gt;<eidea:label--%>
-                                <%--key="common.button.back"/></a>--%>
                         <button type="button" class="btn btn-default btn-sm" ng-click="backFieldList()"><eidea:label key="common.button.back"/></button>
                     </p>
                 </div>

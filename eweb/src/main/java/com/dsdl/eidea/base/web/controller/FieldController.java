@@ -8,7 +8,10 @@ package com.dsdl.eidea.base.web.controller;
 
 import com.dsdl.eidea.base.entity.po.FieldPo;
 import com.dsdl.eidea.base.service.FieldService;
+import com.dsdl.eidea.core.def.FieldInputType;
 import com.dsdl.eidea.core.web.controller.BaseController;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import com.dsdl.eidea.core.web.def.WebConst;
 import com.dsdl.eidea.core.web.result.JsonResult;
@@ -112,18 +115,6 @@ public class FieldController extends BaseController {
         fieldService.saveField(fieldPo);
         return get(fieldPo.getId());
     }
-
-    //    @RequiresPermissions("delete")
-//    @RequestMapping(value = "/deletes", method = RequestMethod.POST)
-//    @ResponseBody
-//
-//    public JsonResult<PaginationResult<FieldPo>> deletes(@RequestBody DeleteParams<Integer> deleteParams, HttpSession session) {
-//        if (deleteParams.getIds() == null || deleteParams.getIds().length == 0) {
-//            return JsonResult.fail(ErrorCodes.VALIDATE_PARAM_ERROR.getCode(), getMessage("common.error.delete.failure", getMessage("field.title")));
-//        }
-//        fieldService.deletes(deleteParams.getIds());
-//        return list(session, deleteParams.getQueryParams());
-//    }
     @RequiresPermissions("delete")
     @RequestMapping(value = "/deletes", method = RequestMethod.POST)
     @ResponseBody
@@ -136,6 +127,20 @@ public class FieldController extends BaseController {
         fieldService.deletes(deleteParams.getIds());
         return fieldList(session, columnId);
     }
-
+    @RequiresPermissions(value = "view")
+    @RequestMapping(value = "/selectInputType",method = RequestMethod.GET)
+    @ResponseBody
+    public JsonResult<String> getInputType(){
+        JsonObject listObject =  new JsonObject();
+        JsonArray jsonArray = new JsonArray();
+        for (FieldInputType fieldInputType:FieldInputType.values()){
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("key",fieldInputType.getKey());
+            jsonObject.addProperty("desc",fieldInputType.getDesc());
+            jsonArray.add(jsonObject);
+        }
+        listObject.add("fieldInputType",jsonArray);
+        return JsonResult.success(listObject.toString());
+    }
 
 }

@@ -2,7 +2,6 @@
 <%@ include file="/inc/taglib.jsp" %>
 <div  class="container-fluid" ng-controller="listFieldTrlCtrl">
     <div class="page-header" >
-        <%--<a href="#/edit" class="btn  btn-primary btn-sm" ng-show="canAdd"><eidea:label key="common.button.create"/></a>--%>
         <button type="button" class="btn btn-primary btn-sm" ng-show="canAdd" ng-click="createFieldTrl()"><eidea:label key="common.button.create"/></button>
         <button type="button" class="btn  btn-primary btn-sm" id="search_but" data-toggle="modal"
                 data-target="#searchModal"><eidea:label key="common.button.search"/></button>
@@ -48,7 +47,6 @@
                     </td>
                     <td>
                         <button type="button" class="btn btn-primary btn-xs" ng-click="editFieldTrl(model.id)"><eidea:label key="common.button.edit"></eidea:label></button>
-                        <%--<a class="btn btn-primary btn-xs" href="#/edit?id={{model.id}}"><eidea:label key="common.button.edit"/>&lt;%&ndash;编辑&ndash;%&gt;</a>--%>
                     </td>
                 </tr>
                 </tbody>

@@ -21,7 +21,7 @@
                     <label class="col-sm-2 text-right"><%--登录名称--%><eidea:label key="login.username.login"/></label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" id="username" name="username" ng-model="userBo.username"
-                               placeholder="<eidea:message key="login.input.loginname"/>" required ng-minlength="2" ng-maxlength="50" ng-blur="getExistUserName()">
+                               placeholder="<eidea:message key="login.input.loginname"/>" required ng-minlength="2" ng-maxlength="50">
                         <input type="checkbox" ng-true-value="'N'" ng-false-value="'Y'" ng-model="userBo.isactive">
                         <span><%--停用--%><eidea:label key="datadict.column.isactive"/></span>
                     </div>

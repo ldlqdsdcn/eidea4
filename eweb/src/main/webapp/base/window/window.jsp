@@ -481,6 +481,11 @@
             bootbox.alert(response);
         });
         $scope.save = function () {
+            var windowId=/^[0-9]+$/;
+            if(!windowId.test($scope.windowTrlPo.windowId)){
+                $scope.message="<eidea:label key="base.window.id.type.error"/> ";
+                return false;
+            }
             if ($scope.editForm.$valid) {
                 var postUrl = '<c:url value="/base/windowTrl/saveForUpdated"/>';
                 if ($scope.windowTrlPo.id == null) {
@@ -663,6 +668,19 @@
             bootbox.alert(response);
         });
         $scope.save = function () {
+            var windowId=/^[0-9]+$/;
+            if(!windowId.test($scope.tabPo.windowId)){
+                $scope.message="<eidea:label key="base.window.id.type.error"/> ";
+                return false;
+            }
+            if(!windowId.test($scope.tabPo.level)){
+                $scope.message="<eidea:label key="base.tab.level.type.error"/> ";
+                return false;
+            }
+            if(!windowId.test($scope.tabPo.sortno)){
+                $scope.message="<eidea:label key="base.tab.sortno.type.error"/> ";
+                return false;
+            }
             if ($scope.editForm.$valid) {
                 var postUrl = '<c:url value="/base/tab/saveForUpdated"/>';
                 if ($scope.tabPo.id == null) {
@@ -863,6 +881,11 @@
             bootbox.alert(response);
         });
         $scope.save = function () {
+            var tabid=/^[0-9]+$/
+            if (!tabid.test($scope.tabTrlPo.tabId)){
+                $scope.message="<eidea:label key="base.window.id.type.error"/> ";
+                return false;
+            }
             if ($scope.editForm.$valid) {
                 var postUrl = '<c:url value="/base/tabTrl/saveForUpdated"/>';
                 if ($scope.tabTrlPo.id == null) {
@@ -1051,6 +1074,15 @@
             bootbox.alert(response);
         });
         $scope.save = function () {
+            var sortno=/^[0-9]+$/;
+            if(!sortno.test($scope.fieldPo.seqNo)){
+                $scope.message="<eidea:label key="base.tab.sortno.type.error"/> ";
+                return false;
+            }
+            if(!sortno.test($scope.fieldPo.displaylength)){
+                $scope.message="<eidea:label key="base.field.displaylength.type.error"/> ";
+                return false;
+            }
             if ($scope.editForm.$valid) {
                 var postUrl = '<c:url value="/base/field/saveForUpdated"/>';
                 if ($scope.fieldPo.id == null) {
@@ -1232,6 +1264,11 @@
             bootbox.alert(response);
         });
         $scope.save = function () {
+            var field=/^[0-9]+&/
+            if (!field.test($scope.fieldTrlPo.fieldId)){
+                $scope.message="<eidea:label key="base.field.id.type.error"/> ";
+                return false;
+            }
             if ($scope.editForm.$valid) {
                 var postUrl = '<c:url value="/base/fieldTrl/saveForUpdated"/>';
                 if ($scope.fieldTrlPo.id == null) {

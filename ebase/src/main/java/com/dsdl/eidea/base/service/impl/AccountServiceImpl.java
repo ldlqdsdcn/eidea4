@@ -205,10 +205,8 @@ public class AccountServiceImpl implements AccountService {
         for (UserPo user : allUser) {
             if (ActivateDef.ACTIVATED.getKey().equals(user.getIsactive())) {
                 String userId = user.getId().toString();
-
                 // 添加一个用户到Activiti
                 saveActivitiUser(user);
-
                 // 角色和用户的关系
                 List<UserRolePo> roleList = user.getSysUserRoles();
                 for (UserRolePo role : roleList) {
@@ -216,7 +214,6 @@ public class AccountServiceImpl implements AccountService {
                     log.debug("add membership {user: {}, role: {}}", userId, String.valueOf(role.getId()));
                 }
             }
-
         }
     }
     @Override

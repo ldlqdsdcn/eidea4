@@ -159,6 +159,11 @@ $scope.pageChanged();
             bootbox.alert(response);
         });
         $scope.save = function () {
+            var path = /^[a-zA-Z]:[/]((?! )(?![^\\/]*\s+[\\/])[\w -]+[\\/])*(?! )(?![^.]*\s+\.)[\w -]+$/;
+            if (!path.test($scope.fileSettingPo.rootDirectory)) {
+                $scope.message = '<eidea:label key="folder.path.validate"/>';
+                return;
+            }
             $scope.message = '';
             if ($scope.editForm.$valid) {
                 var postUrl = '<c:url value="/base/fileSetting/saveForUpdated"/>';

@@ -37,7 +37,6 @@ import java.util.UUID;
 @Controller
 @RequestMapping("/common")
 public class CommonUploadController {
-    private static final String URI = "sys_directory";
     @Autowired
     private HttpServletRequest request;
     @Autowired
@@ -148,10 +147,9 @@ public class CommonUploadController {
         }
     }
     public FileSettingBo getFileSetting(CommonFileBo commonFileBo){
-        UserResource resource = (UserResource) request.getSession().getAttribute(WebConst.SESSION_RESOURCE);
-        List<ModuleDirectoryBo> moduleDirectoryBoList=new ArrayList<ModuleDirectoryBo>();
+        List<ModuleDirectoryBo> moduleDirectoryBoList=new ArrayList<>();
         if(StringUtil.isNotEmpty(commonFileBo.getDirectoryUrl())){
-            Search search = SearchHelper.getSearchParam(URI, request.getSession());
+            Search search=new Search();
             List<DirectoryBo> directoryBoList = directoryService.findAllDirectory(search);
             for(DirectoryBo directoryBo:directoryBoList){
                 if(directoryBo.getDirectory().equals(commonFileBo.getDirectoryUrl())){

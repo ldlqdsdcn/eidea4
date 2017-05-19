@@ -54,6 +54,14 @@ public JsonResult<PaginationResult<FieldValidatorPo>> list(HttpSession session,@
     PaginationResult<FieldValidatorPo> paginationResult = fieldValidatorService.getFieldValidatorListByPaging(search, queryParams);
     return JsonResult.success(paginationResult);
     }
+    @RequestMapping(value = "/fieldValidatorList", method = RequestMethod.POST)
+    @ResponseBody
+    @RequiresPermissions("view")
+    public JsonResult<PaginationResult<FieldValidatorPo>> fieldValidatorlist(HttpSession session,@RequestBody Integer fieldId) {
+        Search search = SearchHelper.getSearchParam(URI, session);
+        PaginationResult<FieldValidatorPo> paginationResult = fieldValidatorService.getFieldValidatorListByFieldId(search, fieldId);
+        return JsonResult.success(paginationResult);
+    }
     @RequiresPermissions("view")
     @RequestMapping(value = "/get", method = RequestMethod.GET)
     @ResponseBody
@@ -107,8 +115,9 @@ public JsonResult<PaginationResult<FieldValidatorPo>> list(HttpSession session,@
     if (deleteParams.getIds() == null||deleteParams.getIds().length == 0)  {
                 return JsonResult.fail(ErrorCodes.VALIDATE_PARAM_ERROR.getCode(), getMessage("common.error.delete.failure",getMessage("fieldValidator.title")));
                 }
+                Integer fieldId=fieldValidatorService.getFieldValidator(deleteParams.getIds()[0]).getFieldId();
             fieldValidatorService.deletes(deleteParams.getIds());
-                return list(session,deleteParams.getQueryParams());
+                return fieldValidatorlist(session,fieldId);
         }
 
 

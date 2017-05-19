@@ -4,12 +4,7 @@ Date: 2017-05-02 15:49:09
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/inc/taglib.jsp" %>
-<div class="container-fluid" ng-controller="editCtrl">
-    <div class="page-header">
-        <ol class="breadcrumb">
-            <li><a href="javascript:;"><i class="icon-fire"></i><eidea:label key="fieldValidator.title"/></a></li>
-        </ol>
-    </div>
+<div class="container-fluid" ng-controller="editFieldValidatorCtrl">
     <div class="row-fluid">
         <div class="span12">
             <br>
@@ -100,8 +95,7 @@ Date: 2017-05-02 15:49:09
                         <eidea:label key="common.button.create"/></button>
                         <button type="submit" class="btn btn-default btn-sm" ng-show="canSave"><%--保存--%><eidea:label
                                 key="common.button.save"/></button>
-                        <a href="#/list" class="btn btn-default btn-sm"><%--返回--%><eidea:label
-                                key="common.button.back"/></a>
+                        <button type="button" class="btn btn-default btn-sm" ng-show="canSave" ng-click="backFieldValidatorList()"><eidea:label key="common.button.back"/></button>
                     </p>
                 </div>
                 <div class="form-group">

@@ -5,7 +5,7 @@ Date: 2017-05-02 15:43:14
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/inc/taglib.jsp" %>
 <div class="container-fluid" ng-controller="editTabCtrl">
-    <div ui-view  ng-show="tabTrlListShow||fieldListShow||fieldTrlListShow"></div>
+    <div ui-view  ng-show="tabTrlListShow||fieldListShow||fieldTrlListShow||fieldValidatorListShow"></div>
     <div class="row-fluid" ng-show="tabEditShow">
         <div class="span12">
             <br>

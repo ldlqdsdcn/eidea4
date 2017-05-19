@@ -14,9 +14,10 @@ Date: 2017-05-02 15:41:30
         <uib-tab index="3" heading="<eidea:label key="tabTrl.title"/> " select="tabTrlList()" ng-show="tabTrlBtnShow"></uib-tab>
         <uib-tab index="4" heading="<eidea:label key="field.title"/> " select="fieldList()" ng-show="fieldBtnShow"></uib-tab>
         <uib-tab index="5" heading="<eidea:label key="fieldTrl.title"/> " select="fieldTrlList()" ng-show="fieldTrlBtnShow"></uib-tab>
+        <uib-tab index="6" heading="<eidea:label key="fieldValidator.title"/> " select="fieldValidatorList()" ng-show="fieldValidatorBtnShow"></uib-tab>
     </uib-tabset>
     </div>
-    <div ui-view class="tab-content vertical-tab-content" ng-show="tabListshow||windowTrlListShow||tabTrlListShow||fieldListShow||fieldTrlListShow"></div>
+    <div ui-view class="tab-content vertical-tab-content" ng-show="tabListshow||windowTrlListShow||tabTrlListShow||fieldListShow||fieldTrlListShow||fieldValidatorListShow"></div>
     <div class="tab-content vertical-tab-content" ng-show="windowEditShow">
             <form role="form" name="editForm" novalidate ng-submit="save()">
                 <jsp:include page="/common/common_edit_button.jsp"/>

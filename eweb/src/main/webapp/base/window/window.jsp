@@ -69,7 +69,14 @@
                     url:'/editField?fieldTrlId',
                     templateUrl:'<c:url value="/base/fieldTrl/edit.tpl.jsp"/> '
                 })
-
+                .state('windowEdit.edittab.editField.listFieldValidator',{
+                    url:'/listFieldValidator',
+                    templateUrl:'<c:url value="/base/fieldValidator/list.tpl.jsp"/> '
+                })
+                .state('windowEdit.edittab.editField.editFieldValidator',{
+                    url:'/editFieldValidator?fieldValidatorId',
+                    templateUrl:'<c:url value="/base/fieldValidator/edit.tpl.jsp"/> '
+                })
         }]);
     app.controller('listCtrl', function ($scope,$http) {
         $scope.modelList = [];
@@ -284,7 +291,9 @@
             $rootScope.fieldListShow=false;
             $rootScope.fieldTrlListShow=false;
             $rootScope.fieldBtnShow=false;
+            $rootScope.fieldValidatorBtnShow=false;
             $rootScope.fieldTrlBtnShow=false;
+            $rootScope.fieldValidatorListShow=false;
 
         }
         $scope.windowTrlList=function () {
@@ -294,6 +303,8 @@
             $rootScope.fieldBtnShow=false;
             $rootScope.fieldTrlBtnShow=false;
             $rootScope.windowTrlListShow=true;
+            $rootScope.fieldValidatorBtnShow=false
+            $rootScope.fieldValidatorListShow=false;
             $rootScope.fieldListShow=false;
             $state.go('windowEdit.windowTrlList');
         }
@@ -305,6 +316,8 @@
             $rootScope.fieldBtnShow=false;
             $rootScope.fieldTrlBtnShow=false;
             $rootScope.tabTrlListShow=false;
+            $rootScope.fieldValidatorBtnShow=false
+            $rootScope.fieldValidatorListShow=false;
             $rootScope.fieldListShow=false;
             $state.go('windowEdit.tablist');
         }
@@ -316,6 +329,8 @@
             $rootScope.tabTrlListShow=true;
             $rootScope.fieldListShow=false;
             $rootScope.fieldTrlBtnShow=false;
+            $rootScope.fieldValidatorBtnShow=false
+            $rootScope.fieldValidatorListShow=false;
             $rootScope.fieldTrlListShow=false;
             $state.go('windowEdit.edittab.listTabTrl');
         }
@@ -327,6 +342,8 @@
             $rootScope.tabTrlListShow=false;
             $rootScope.fieldListShow=true;
             $rootScope.fieldTrlBtnShow=false;
+            $rootScope.fieldValidatorBtnShow=false
+            $rootScope.fieldValidatorListShow=false;
             $rootScope.fieldEditShow=true;
             $state.go('windowEdit.edittab.listField');
         }
@@ -340,6 +357,18 @@
             $rootScope.fieldEditShow=false;
             $rootScope.fieldTrlListShow=true;
             $state.go('windowEdit.edittab.editField.listFieldTrl');
+        }
+        $scope.fieldValidatorList=function () {
+            $rootScope.windowEditShow = false;
+            $rootScope.tabListshow = false;
+            $rootScope.tabEditShow = false;
+            $rootScope.windowTrlListShow = false;
+            $rootScope.tabTrlListShow = false;
+            $rootScope.fieldListShow = false;
+            $rootScope.fieldEditShow=false;
+            $rootScope.fieldTrlListShow=false;
+            $rootScope.fieldValidatorListShow=true;
+            $state.go('windowEdit.edittab.editField.listFieldValidator');
         }
     });
     app.controller('listWindowTrlCtrl', function ($scope, $http,$stateParams,$state) {
@@ -1012,6 +1041,7 @@
         $scope.pageChanged();
         $scope.editField=function (id) {
             $rootScope.fieldTrlBtnShow=true;
+            $rootScope.fieldValidatorBtnShow=true;
             $state.go('windowEdit.edittab.editField',{field:id})
         }
         $scope.createField=function () {
@@ -1307,6 +1337,186 @@
         }
     $scope.backFieldTrlList=function () {
         $state.go('windowEdit.edittab.editField.listFieldTrl');
+    }
+    });
+    app.controller('listFieldValidatorCtrl', function ($scope, $http,$stateParams,$state) {
+        $scope.modelList = [];
+        $scope.delFlag = false;
+        $scope.isLoading = true;
+        $scope.canDel=PrivilegeService.hasPrivilege('delete');
+        $scope.canAdd=PrivilegeService.hasPrivilege('add');
+        $scope.updateList = function (result) {
+            $scope.modelList = result.data;
+            $scope.queryParams.totalRecords = result.totalRecords;
+            $scope.queryParams.init = false;
+        };
+        $scope.selectAll = function () {
+            for (var i = 0; i < $scope.modelList.length; i++) {
+                $scope.modelList[i].delFlag=$scope.delFlag;
+            }
+        }
+        $scope.canDelete = function () {
+            for (var i = 0; i < $scope.modelList.length; i++) {
+                if ($scope.modelList[i].delFlag) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        $scope.pageChanged = function () {
+            $http.post("<c:url value="/base/fieldValidator/fieldValidatorList"/>", $stateParams.field)
+                .success(function (response) {
+                    $scope.isLoading = false;
+                    if (response.success) {
+                        $scope.updateList(response.data);
+                    }
+                    else {
+                        bootbox.alert(response.message);
+                    }
+
+                });
+        }
+
+//批量删除
+        $scope.deleteRecord = function () {
+            bootbox.confirm({
+                message: "<eidea:message key="common.warn.confirm.deletion"/>",
+                buttons: {
+                    confirm: {
+                        label: '<eidea:label key="common.button.yes"/>',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: '<eidea:label key="common.button.no"/>',
+                        className: 'btn-danger'
+                    }
+                }, callback: function (result) {
+                    if (result) {
+                        var ids = [];
+                        for (var i = 0; i < $scope.modelList.length; i++) {
+                            if ($scope.modelList[i].delFlag) {
+                                ids.push($scope.modelList[i].id);
+                            }
+                        }
+                        $scope.queryParams.init=true;
+                        var param={"queryParams":$scope.queryParams,"ids":ids};
+                        $http.post("<c:url value="/base/fieldValidator/deletes"/>", param).success(function (data) {
+                            if (data.success) {
+                                $scope.updateList(data.data);
+                                bootbox.alert("<eidea:message key="module.deleted.success"/>");
+                            } else {
+                                bootbox.alert(data.message);
+                            }
+                        });
+                    }
+                }
+            });
+        };
+
+
+
+
+//可现实分页item数量
+        $scope.maxSize =${pagingSettingResult.pagingButtonSize};
+        $scope.queryParams = {
+            pageSize:${pagingSettingResult.perPageSize},//每页显示记录数
+            pageNo: 1, //当前页
+            totalRecords: 0,//记录数
+            init: true
+        };
+        $scope.pageChanged();
+        $scope.editFieldValidator=function (id) {
+            $state.go('windowEdit.edittab.editField.editFieldValidator',{fieldValidatorId:id});
+        }
+        $scope.createFieldValidator=function () {
+            $state.go('windowEdit.edittab.editField.editFieldValidator',{fieldValidatorId:null});
+        }
+    });
+    app.controller('editFieldValidatorCtrl', function ($scope, $http, $stateParams,$state) {
+        /**
+         * 日期时间选择控件
+         * bootstrap-datetime 24小时时间是hh
+         */
+        $('.bootstrap-datetime').datetimepicker({
+            language:  'zh-CN',
+            format: 'yyyy-mm-dd hh:ii:ss',
+            weekStart: 1,
+            todayBtn:  1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 2,
+            forceParse: 0,
+            showMeridian: 1,
+            clearBtn: true
+        });
+        /**
+         * 日期选择控件
+         */
+        $('.bootstrap-date').datepicker({
+            language:  'zh-CN',
+            format: 'yyyy-mm-dd',
+            autoclose: 1,
+            todayBtn:  1,
+            clearBtn:true
+        });
+        $scope.message = '';
+        $scope.fieldValidatorPo = {};
+        $scope.canAdd=PrivilegeService.hasPrivilege('add');
+        var url = "<c:url value="/base/fieldValidator/create"/>";
+        if ($stateParams.fieldValidatorId != null) {
+            url = "<c:url value="/base/fieldValidator/get"/>" + "?id=" + $stateParams.fieldValidatorId;
+        }
+        $http.get(url)
+            .success(function (response) {
+                if (response.success) {
+                    $scope.fieldValidatorPo = response.data;
+                    $scope.canSave=(PrivilegeService.hasPrivilege('add')&&$scope.fieldValidatorPo.id==null)||PrivilegeService.hasPrivilege('update');
+                }
+                else {
+                    bootbox.alert(response.message);
+                }
+            }).error(function (response) {
+            bootbox.alert(response);
+        });
+        $scope.save = function () {
+            if ($scope.editForm.$valid) {
+                var postUrl = '<c:url value="/base/fieldValidator/saveForUpdated"/>';
+                if ($scope.fieldValidatorPo.id == null) {
+                    postUrl = '<c:url value="/base/fieldValidator/saveForCreated"/>';
+                }
+                $http.post(postUrl, $scope.fieldValidatorPo).success(function (data) {
+                    if (data.success) {
+                        $scope.message = "<eidea:label key="base.save.success"/>";
+                        $scope.fieldValidatorPo = data.data;
+                    }
+                    else {
+                        $scope.message = data.message;
+                        $scope.errors=data.data;
+                    }
+                }).error(function (data, status, headers, config) {
+                    alert(JSON.stringify(data));
+                });
+            }
+        }
+        $scope.create = function () {
+            $scope.message = "";
+            $scope.fieldValidatorPo = {};
+            var url = "<c:url value="/base/fieldValidator/create"/>";
+            $http.get(url)
+                .success(function (response) {
+                    if (response.success) {
+                        $scope.fieldValidatorPo = response.data;
+                        $scope.canSave=(PrivilegeService.hasPrivilege('add')&&$scope.fieldValidatorPo.id==null)||PrivilegeService.hasPrivilege('update');
+                    }
+                    else {
+                        bootbox.alert(response.message);
+                    }
+                }).error(function (response) {
+                bootbox.alert(response);
+            });
+        }
+    $scope.backFieldValidatorList=function () {
+        $state.go('windowEdit.edittab.editField.listFieldValidator')
     }
     });
 

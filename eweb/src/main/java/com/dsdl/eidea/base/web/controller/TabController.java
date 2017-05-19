@@ -9,6 +9,7 @@ package com.dsdl.eidea.base.web.controller;
 import com.dsdl.eidea.base.entity.po.TabPo;
 import com.dsdl.eidea.base.service.ChangelogService;
 import com.dsdl.eidea.base.service.TabService;
+import com.dsdl.eidea.base.service.WindowService;
 import com.dsdl.eidea.core.entity.bo.TableBo;
 import com.dsdl.eidea.core.entity.bo.TableColumnBo;
 import com.dsdl.eidea.core.service.TableService;
@@ -49,6 +50,8 @@ public class TabController extends BaseController {
     private TableService tableService;
     @Autowired
     private ChangelogService changelogService;
+    @Autowired
+    private WindowService windowService;
 
     @RequestMapping(value = "/showList", method = RequestMethod.GET)
     @RequiresPermissions("view")
@@ -106,6 +109,9 @@ public class TabController extends BaseController {
     @RequestMapping(value = "/saveForCreated", method = RequestMethod.POST)
     @ResponseBody
     public JsonResult<TabPo> saveForCreate(@Validated @RequestBody TabPo tabPo) {
+        if(windowService.getWindow(tabPo.getWindowId())==null){
+            return JsonResult.fail(ErrorCodes.VALIDATE_PARAM_ERROR.getCode(),getMessage("error.window.id.not_exist"));
+        }
         tabService.saveTab(tabPo);
         return get(tabPo.getId());
     }
@@ -117,6 +123,9 @@ public class TabController extends BaseController {
 
         if (tabPo.getId() == null) {
             return JsonResult.fail(ErrorCodes.VALIDATE_PARAM_ERROR.getCode(), getMessage("common.errror.pk.required"));
+        }
+        if(windowService.getWindow(tabPo.getWindowId())==null){
+            return JsonResult.fail(ErrorCodes.VALIDATE_PARAM_ERROR.getCode(),getMessage("error.window.id.not_exist"));
         }
         tabService.saveTab(tabPo);
         return get(tabPo.getId());

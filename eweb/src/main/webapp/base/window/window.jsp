@@ -326,6 +326,7 @@
             $rootScope.windowTrlListShow=false;
             $rootScope.tabTrlListShow=false;
             $rootScope.fieldListShow=true;
+            $rootScope.fieldTrlBtnShow=false;
             $rootScope.fieldEditShow=true;
             $state.go('windowEdit.edittab.listField');
         }

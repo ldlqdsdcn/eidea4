@@ -7,6 +7,7 @@
 package com.dsdl.eidea.base.web.controller;
 
 import com.dsdl.eidea.base.entity.po.WindowTrlPo;
+import com.dsdl.eidea.base.service.WindowService;
 import com.dsdl.eidea.base.service.WindowTrlService;
 import com.dsdl.eidea.core.web.controller.BaseController;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -40,6 +41,8 @@ public class WindowTrlController extends BaseController {
     private static final String URI = "windowTrl";
     @Autowired
     private WindowTrlService windowTrlService;
+    @Autowired
+    private WindowService windowService;
 
     @RequestMapping(value = "/showList", method = RequestMethod.GET)
     @RequiresPermissions("view")
@@ -97,6 +100,9 @@ public class WindowTrlController extends BaseController {
     @RequestMapping(value = "/saveForCreated", method = RequestMethod.POST)
     @ResponseBody
     public JsonResult<WindowTrlPo> saveForCreate(@Validated @RequestBody WindowTrlPo windowTrlPo) {
+        if (windowService.getWindow(windowTrlPo.getWindowId())==null){
+            return JsonResult.fail(ErrorCodes.VALIDATE_PARAM_ERROR.getCode(),getMessage("error.window.id.not_exist"));
+        }
         windowTrlService.saveWindowTrl(windowTrlPo);
         return get(windowTrlPo.getId());
     }
@@ -108,6 +114,9 @@ public class WindowTrlController extends BaseController {
 
         if (windowTrlPo.getId() == null) {
             return JsonResult.fail(ErrorCodes.VALIDATE_PARAM_ERROR.getCode(), getMessage("common.errror.pk.required"));
+        }
+        if (windowService.getWindow(windowTrlPo.getWindowId())==null){
+            return JsonResult.fail(ErrorCodes.VALIDATE_PARAM_ERROR.getCode(),getMessage("error.window.id.not_exist"));
         }
         windowTrlService.saveWindowTrl(windowTrlPo);
         return get(windowTrlPo.getId());

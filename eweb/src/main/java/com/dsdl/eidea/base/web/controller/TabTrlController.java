@@ -7,6 +7,7 @@
 package com.dsdl.eidea.base.web.controller;
 
 import com.dsdl.eidea.base.entity.po.TabTrlPo;
+import com.dsdl.eidea.base.service.TabService;
 import com.dsdl.eidea.base.service.TabTrlService;
 import com.dsdl.eidea.core.web.controller.BaseController;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -40,6 +41,8 @@ public class TabTrlController extends BaseController {
     private static final String URI = "tabTrl";
     @Autowired
     private TabTrlService tabTrlService;
+    @Autowired
+    private TabService tabService;
 
     @RequestMapping(value = "/showList", method = RequestMethod.GET)
     @RequiresPermissions("view")
@@ -97,6 +100,9 @@ public class TabTrlController extends BaseController {
     @RequestMapping(value = "/saveForCreated", method = RequestMethod.POST)
     @ResponseBody
     public JsonResult<TabTrlPo> saveForCreate(@Validated @RequestBody TabTrlPo tabTrlPo) {
+        if (tabService.getTab(tabTrlPo.getTabId())==null){
+            return JsonResult.fail(ErrorCodes.VALIDATE_PARAM_ERROR.getCode(),getMessage("error.tab.id.not.exist"));
+        }
         tabTrlService.saveTabTrl(tabTrlPo);
         return get(tabTrlPo.getId());
     }
@@ -108,6 +114,9 @@ public class TabTrlController extends BaseController {
 
         if (tabTrlPo.getId() == null) {
             return JsonResult.fail(ErrorCodes.VALIDATE_PARAM_ERROR.getCode(), getMessage("common.errror.pk.required"));
+        }
+        if (tabService.getTab(tabTrlPo.getTabId())==null){
+            return JsonResult.fail(ErrorCodes.VALIDATE_PARAM_ERROR.getCode(),getMessage("error.tab.id.not.exist"));
         }
         tabTrlService.saveTabTrl(tabTrlPo);
         return get(tabTrlPo.getId());

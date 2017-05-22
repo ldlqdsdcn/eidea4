@@ -2,9 +2,6 @@
 <%@ include file="/inc/taglib.jsp" %>
 <div  class="container-fluid" ng-controller="listCtrl">
     <div class="page-header" >
-        <ol class="breadcrumb">
-            <li><a href="javascript:;"><i class="icon icon-tasks"></i><eidea:label key="menu.online"/></a></li>
-        </ol>
     </div>
     <div class="row-fluid">
         <div class="span12">

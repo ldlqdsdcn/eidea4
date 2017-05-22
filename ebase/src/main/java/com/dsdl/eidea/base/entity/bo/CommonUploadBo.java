@@ -11,5 +11,5 @@ import lombok.Setter;
 public class CommonUploadBo {
     private String uri;
     private String directoryUrl;
-    private String tableId;
+    private Integer tableId;
 }

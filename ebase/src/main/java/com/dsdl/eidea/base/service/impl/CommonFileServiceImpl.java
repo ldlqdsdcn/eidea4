@@ -11,6 +11,8 @@ import com.dsdl.eidea.base.entity.po.FileRelationPo;
 import com.dsdl.eidea.base.entity.po.FileSettingPo;
 import com.dsdl.eidea.core.spring.annotation.DataAccess;
 import com.dsdl.eidea.util.StringUtil;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.dsdl.eidea.base.entity.po.CommonFilePo;
@@ -33,6 +35,7 @@ public class CommonFileServiceImpl  implements	CommonFileService {
 	private CommonDao<CommonFilePo,Integer> commonFileDao;
 	@DataAccess(entity =FileRelationPo.class)
 	private CommonDao<FileRelationPo,Integer> commonFileRelationDao;
+	private ModelMapper modelMapper = new ModelMapper();
 
 	public PaginationResult<CommonFilePo> getCommonFileListByPaging(Search search,QueryParams queryParams)
     {
@@ -65,6 +68,12 @@ public class CommonFileServiceImpl  implements	CommonFileService {
 	}
 
 	@Override
+	public List<CommonFileBo> getAttachmentList(Search search) {
+		List<CommonFilePo> commonFilePoList = commonFileDao.search(search);
+		return modelMapper.map(commonFilePoList,new TypeToken<List<CommonFileBo>>(){}.getType());
+	}
+
+	@Override
 	public void saveAttachmentUpload(CommonFileBo commonFileBo) {
 		CommonFilePo commonFilePo=new CommonFilePo();
 		if(StringUtil.isNotEmpty(commonFileBo.getFileKeyword()) && !commonFileBo.getFileKeyword().equals("null")){
@@ -86,7 +95,7 @@ public class CommonFileServiceImpl  implements	CommonFileService {
 		FileRelationPo fileRelationPo=new FileRelationPo();
 		fileRelationPo.setTableName(commonFileBo.getUri());
 		fileRelationPo.setFileId(commonFilePo.getId());
-		fileRelationPo.setTableId(Integer.parseInt(commonFileBo.getTableId()));
+		fileRelationPo.setTableId(commonFileBo.getTableId());
 		fileRelationPo.setCreated(commonFileBo.getCreated());
 		commonFileRelationDao.save(fileRelationPo);
 	}

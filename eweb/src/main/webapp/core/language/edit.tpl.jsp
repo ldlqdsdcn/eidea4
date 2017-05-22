@@ -110,4 +110,3 @@
         <div role="tabpanel" class="tab-pane" id="tab-4">tab-4</div>
     </div>
 </div>
-<script type='text/javascript' src="<c:url value="/js/ondrag-start.js"/>"></script>

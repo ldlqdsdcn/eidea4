@@ -13,8 +13,8 @@
                 </h4>
             </div>
             <div class="modal-body">
-                <form role="form" name="editForm" novalidate ng-submit="attachmentUpload()">
-                    <button type="submit" class="btn  btn-primary btn-sm" title="<eidea:label key="common.button.upload"/>">
+                <form role="form" name="uploadForm" novalidate ng-submit="attachmentUpload()">
+                    <button type="submit" class="btn  btn-primary btn-sm" title="<eidea:label key="common.button.upload"/>" ng-disabled="canUpload">
                         <i class="fa fa-upload fa-1x" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.upload"/>
                     </button></br>
                     <div class="row-fluid">
@@ -57,7 +57,7 @@
                     <tr ng-repeat="attachment in attachmentList track by $index" ng-class-even="success">
                         <input type="hidden" ng-model="attachmentId" value="{{attachment.id}}"/>
                         <td>{{$index+1}}</td>
-                        <td>{{attachment.filename}}</td>
+                        <td>{{attachment.fileName}}</td>
                         <td>{{attachment.created|date:'yyyy-MM-dd HH:mm:ss'}}</td>
                         <td>
                             <button type="button" class="btn  btn-primary btn-sm" ng-click="attachmentDelete(attachment.id)" title="<eidea:label key="common.button.delete"/>"><%--删除--%>

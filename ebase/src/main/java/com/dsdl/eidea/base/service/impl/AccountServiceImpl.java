@@ -13,6 +13,7 @@ import com.dsdl.eidea.core.spring.annotation.DataAccess;
 import lombok.extern.slf4j.Slf4j;
 import org.activiti.engine.IdentityService;
 import org.activiti.engine.identity.Group;
+import org.activiti.engine.identity.User;
 import org.activiti.engine.identity.UserQuery;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -29,7 +30,6 @@ import java.util.List;
 public class AccountServiceImpl implements AccountService {
     @Autowired
     private IdentityService identityService;
-
     @DataAccess(entity = RolePo.class)
     private CommonDao<RolePo, Integer> roleDao;
     @DataAccess(entity = UserPo.class)
@@ -46,7 +46,6 @@ public class AccountServiceImpl implements AccountService {
      */
     public void save(UserPo user, Integer orgId, List<Integer> roleIds, boolean synToActiviti) {
         String userId = String.valueOf(user.getId());
-
         // 同步数据到Activiti Identify模块
         if (synToActiviti) {
             UserQuery userQuery = identityService.createUserQuery();
@@ -104,7 +103,7 @@ public class AccountServiceImpl implements AccountService {
             RolePo role = roleDao.find(roleId);
             log.debug("add role to activit: {}", role);
             //TODO
-            identityService.createMembership(userId, String.valueOf(roleId));
+            identityService.createMembership(userId, role.getNo());
         }
     }
 
@@ -168,7 +167,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void synAllUserAndRoleToActiviti() {
+    public void saveSynAllUserAndRoleToActiviti() {
 
         // 清空工作流用户、角色以及关系
         deleteAllActivitiIdentifyData();
@@ -187,7 +186,7 @@ public class AccountServiceImpl implements AccountService {
         List<RolePo> allRole = roleDao.findAll();
         for (RolePo role : allRole) {
             if (ActivateDef.ACTIVATED.getKey().equals(role.getIsactive())) {
-                String groupId = String.valueOf(role.getId());
+                String groupId = role.getNo();
                 Group group = identityService.newGroup(groupId);
                 group.setName(role.getName());
                 group.setType("");
@@ -210,17 +209,28 @@ public class AccountServiceImpl implements AccountService {
                 // 角色和用户的关系
                 List<UserRolePo> roleList = user.getSysUserRoles();
                 for (UserRolePo role : roleList) {
-                    identityService.createMembership(userId, String.valueOf(role.getId()));
+                    identityService.createMembership(userId, role.getSysRole().getNo());
                     log.debug("add membership {user: {}, role: {}}", userId, String.valueOf(role.getId()));
                 }
             }
         }
     }
+
     @Override
     public void deleteAllActivitiIdentifyData() {
-        identityDao.deleteAllMemerShip();
-        identityDao.deleteAllInfo();
-        identityDao.deleteAllGroup();
-        identityDao.deleteAllUser();
+
+        List<Group> groupList = identityService.createGroupQuery().list();
+        List<User> userList = identityService.createUserQuery().list();
+        for (Group group : groupList) {
+            for (User user : userList) {
+                identityService.deleteMembership(user.getId(), group.getId());
+            }
+        }
+        for (User user : userList) {
+            identityService.deleteUser(user.getId());
+        }
+        for (Group group : groupList) {
+            identityService.deleteGroup(group.getId());
+        }
     }
 }

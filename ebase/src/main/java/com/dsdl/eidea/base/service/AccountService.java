@@ -1,6 +1,5 @@
 package com.dsdl.eidea.base.service;
 
-import com.dsdl.eidea.base.entity.bo.UserBo;
 import com.dsdl.eidea.base.entity.po.UserPo;
 import com.dsdl.eidea.base.exception.OrganizationNotFoundException;
 import com.dsdl.eidea.base.exception.ServiceException;
@@ -41,7 +40,7 @@ public interface AccountService {
      * 同步用户、角色数据到工作流
      * @throws Exception
      */
-    public void synAllUserAndRoleToActiviti();
+    public void saveSynAllUserAndRoleToActiviti();
 
     /**
      * 删除工作流引擎Activiti的用户、角色以及关系

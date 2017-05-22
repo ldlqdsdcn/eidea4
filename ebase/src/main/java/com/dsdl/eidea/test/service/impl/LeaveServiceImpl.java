@@ -28,7 +28,9 @@ import com.dsdl.eidea.core.dao.CommonDao;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author 刘大磊 2017-05-12 13:36:48
@@ -40,6 +42,8 @@ public class LeaveServiceImpl implements LeaveService {
     private CommonDao<LeavePo, Integer> leaveDao;
     @DataAccess(entity = UserPo.class)
     private CommonDao<UserPo, Integer> userDao;
+
+
 
     @Autowired
     private IdentityService identityService;
@@ -65,8 +69,12 @@ public class LeaveServiceImpl implements LeaveService {
         try {
             // 用来设置启动流程的人员ID，引擎会自动把用户ID保存到activiti:initiator中
             identityService.setAuthenticatedUserId(leavePo.getLeaveUserId().toString());
-
-            processInstance = runtimeService.startProcessInstanceByKey("leave", businessKey);
+            Map<String,Object> variables=new HashMap<>();
+            variables.put("userId",leavePo.getLeaveUserId());
+            UserPo userPo=userDao.find(leavePo.getLeaveUserId());
+            variables.put("username",userPo.getUsername());
+            variables.put("orgId",userPo.getOrgId());
+            processInstance = runtimeService.startProcessInstanceByKey("leave", businessKey,variables);
             String processInstanceId = processInstance.getId();
             leavePo.setProcessInstanceId(processInstanceId);
             leaveDao.saveForLog(leavePo);

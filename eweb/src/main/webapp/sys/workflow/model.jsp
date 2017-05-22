@@ -40,6 +40,19 @@
                     }
 
                 });
+        $scope.deploy=function(modelId)
+        {
+            $http.get("<c:url value="/sys/model/deploy/"/>"+modelId)
+                    .success(function (response) {
+                        if (response.success) {
+                            bootbox.alert("部署工作流成功");
+                        }
+                        else {
+                            bootbox.alert(response.message);
+                        }
+
+                    });
+        }
         $scope.updateList = function (data) {
             $scope.allList = data;
             $scope.queryParams.totalRecords  = $scope.allList.length;

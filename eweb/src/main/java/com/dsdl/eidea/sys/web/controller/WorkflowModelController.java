@@ -12,7 +12,9 @@ import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.editor.constants.ModelDataJsonConstants;
 import org.activiti.editor.language.json.converter.BpmnJsonConverter;
 import org.activiti.engine.RepositoryService;
+import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.Model;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -20,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.json.Json;
@@ -27,8 +30,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
+import java.util.zip.ZipInputStream;
 
 /**
  * Created by 刘大磊 on 2017/5/15 8:59.
@@ -96,6 +101,35 @@ public class WorkflowModelController {
         List<Model> list = repositoryService.createModelQuery().list();
                 return JsonResult.success(list);
     }
+
+    /**
+     * 部署工作流到服务器
+     * @param modelId
+     * @return
+     */
+    @RequiresPermissions("add")
+    @RequestMapping(value = "/deploy/{modelId}", method = RequestMethod.GET)
+    @ResponseBody
+    public JsonResult<Void> deploy(@PathVariable("modelId") String modelId) {
+        Model modelData = repositoryService.getModel(modelId);
+        BpmnJsonConverter jsonConverter = new BpmnJsonConverter();
+        byte[] modelEditorSource = repositoryService.getModelEditorSource(modelData.getId());
+
+        JsonNode editorNode = null;
+        try {
+            editorNode = new ObjectMapper().readTree(modelEditorSource);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        BpmnModel bpmnModel = jsonConverter.convertToBpmnModel(editorNode);
+        BpmnXMLConverter xmlConverter = new BpmnXMLConverter();
+        byte[] exportBytes = xmlConverter.convertToXML(bpmnModel);
+        ByteArrayInputStream in = new ByteArrayInputStream(exportBytes);
+      Deployment deployment= repositoryService.createDeployment().addInputStream(modelData.getName(),in).deploy();
+      List list=  repositoryService.createProcessDefinitionQuery().deploymentId(deployment.getId()).list();
+        return JsonResult.success(null);
+    }
+
     /**
      * 导出model对象为指定类型
      *

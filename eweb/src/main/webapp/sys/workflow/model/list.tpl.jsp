@@ -59,6 +59,7 @@
                         导出(<a href="<c:url value="/sys/model/export"/>/{{model.id}}/bpmn" target="_blank">BPMN</a>
                         |&nbsp;<a href="<c:url value="/sys/model/export"/>/{{model.id}}/json" target="_blank">JSON</a>
                         )
+                         <button class="btn btn-primary btn-xs" ng-click="deploy(model.id)">部署</button>
                          <a  href="<c:url value="/sys/workflow/modeler.jsp"/>?modelId={{model.id}}" class="btn btn-primary btn-xs"><eidea:label key="common.button.edit"/><%--编辑--%></a>
 
                          <button class="btn btn-danger btn-xs" ng-click="removeModel(model.id)"><eidea:label key="common.button.delete"/></button>

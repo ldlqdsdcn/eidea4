@@ -191,7 +191,6 @@
             todayBtn: 1,
             clearBtn: true
         });
-        var date = new Date();
         $scope.message = '';
         $scope.windowPo = {};
         $scope.canAdd = PrivilegeService.hasPrivilege('add');
@@ -204,12 +203,6 @@
             .success(function (response) {
                 if (response.success) {
                     $scope.windowPo = response.data;
-                    if ($scope.windowPo.id==null){
-                        $scope.windowPo.created=date;
-                        $scope.windowPo.updated=date;
-                    }else{
-                        $scope.windowPo.updated=date;
-                    }
                     $scope.getClientList();
                     $scope.getOrgList();
                     $scope.canSave = (PrivilegeService.hasPrivilege('add') && $scope.windowPo.id == null) || PrivilegeService.hasPrivilege('update');

@@ -63,9 +63,7 @@ Date: 2017-05-02 15:41:30
                                     key="base.window.label.createdby"/></label>
                             <input type="text" class="form-control" id="createdby"
                                    placeholder="<eidea:message key="common.please.input"><eidea:param value="base.window.label.createdby" type="label"/></eidea:message>"
-                                   ng-model="windowPo.createdby" required ng-minlength="1" ng-maxlength="11"
-                                   ng-disabled="windowPo.id!=null">
-
+                                   ng-model="windowPo.createdby" required ng-minlength="1" ng-maxlength="11">
                         </div>
                         <div class="form-group">
                             <label for="created"><%--创建时间--%><eidea:label key="base.window.label.created"/></label>
@@ -73,7 +71,7 @@ Date: 2017-05-02 15:41:30
                                 <input type="text" class="form-control" id="created"
                                        placeholder="<eidea:message key="common.please.input"><eidea:param value="base.window.label.created" type="label"/></eidea:message>"
                                        ng-model="windowPo.created"
-                                       uib-datepicker-popup="yyyy-MM-dd HH:mm:ss" ng-disabled="windowPo.id!=null" required>
+                                       uib-datepicker-popup="yyyy-MM-dd HH:mm:ss" required>
                                 <span class="input-group-addon"><span
                                         class="glyphicon glyphicon-calendar"></span></span>
                             </div>
@@ -85,7 +83,7 @@ Date: 2017-05-02 15:41:30
                                 <input type="text" class="form-control" id="updated"
                                        placeholder="<eidea:message key="common.please.input"><eidea:param value="base.window.label.updated" type="label"/></eidea:message>"
                                        ng-model="windowPo.updated"
-                                       uib-datepicker-popup="yyyy-MM-dd HH:mm:ss" ng-disabled="windowPo.id==null" required>
+                                       uib-datepicker-popup="yyyy-MM-dd HH:mm:ss" required>
                                 <span class="input-group-addon"><span
                                         class="glyphicon glyphicon-calendar"></span></span>
                             </div>

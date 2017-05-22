@@ -1,5 +1,6 @@
 package com.dsdl.eidea.base.service.impl;
 
+import com.dsdl.eidea.base.service.AccountService;
 import com.dsdl.eidea.core.dto.PaginationResult;
 import com.dsdl.eidea.core.params.QueryParams;
 import com.dsdl.eidea.core.spring.annotation.DataAccess;
@@ -16,6 +17,7 @@ import com.googlecode.genericdao.search.Search;
 import com.googlecode.genericdao.search.SearchResult;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -37,7 +39,8 @@ public class UserServiceImpl implements UserService {
     private CommonDao<UserRolePo, Integer> userRoleDao;
     @DataAccess(entity = UserSessionPo.class)
     private CommonDao<UserSessionPo, Integer> userSessionDao;
-
+    @Autowired
+    private AccountService accountService;
     private ModelMapper modelMapper = new ModelMapper();
 
     @Override
@@ -59,7 +62,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUserList(Integer[] ids) {
+        for(Integer id:ids)
+        {
+            accountService.deleteUser(id);
+        }
         userDao.removeByIdsForLog(ids);
+
     }
 
     @Override
@@ -97,6 +105,7 @@ public class UserServiceImpl implements UserService {
         }
         userDao.saveForLog(userPo);
         userBo.setId(userPo.getId());
+        accountService.saveUser(userPo.getId());
     }
 
     @Override

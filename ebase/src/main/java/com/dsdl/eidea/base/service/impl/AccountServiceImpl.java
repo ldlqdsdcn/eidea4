@@ -32,7 +32,7 @@ public class AccountServiceImpl implements AccountService {
 
     @DataAccess(entity = RolePo.class)
     private CommonDao<RolePo, Integer> roleDao;
-    @DataAccess(entity = RolePo.class)
+    @DataAccess(entity = UserPo.class)
     private CommonDao<UserPo, Integer> userDao;
     @Autowired
     private IdentityDao identityDao;

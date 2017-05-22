@@ -13,6 +13,7 @@ import java.util.List;
 @Setter
 public class RoleBo {
 	private Integer id;
+	private String no;
 	@NotBlank(message = "pagemenu.name.check")
 	@Length(min = 1,max = 45,message = "pagemenu.name.prompt")
 	private String name;

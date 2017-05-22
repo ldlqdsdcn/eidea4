@@ -36,6 +36,6 @@
 <%--日期控件支持--%>
 <link rel="stylesheet" href="<c:url value="/css/bootstrap/datetimepicker/bootstrap-datetimepicker.min.css"/>" type="text/css" media="all"/>
 <link rel="stylesheet" href="<c:url value="/css/bootstrap/datepicker/bootstrap-datepicker3.min.css"/>" type="text/css" media="all"/>
-
+<%--上传控件--%>
 <script type='text/javascript' src="<c:url value="/js/angular/ngfileupload/ng-file-upload.js"/>"></script>
 <script type='text/javascript' src="<c:url value="/js/angular/ngfileupload/ng-file-upload-shim.js"/>"></script>

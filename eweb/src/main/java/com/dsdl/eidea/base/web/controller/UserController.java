@@ -76,7 +76,14 @@ public class UserController {
     @RequestMapping(value = "/deleteUserList", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions(value = "delete")
-    public JsonResult<PaginationResult<UserBo>> deleteUserList(@RequestBody DeleteParams<Integer> deleteParams, HttpServletRequest request) {
+    public JsonResult<PaginationResult<UserBo>> deleteUserList(@RequestBody DeleteParams<Integer> deleteParams, HttpServletRequest request,HttpSession session) {
+        UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
+        for (Integer i:deleteParams.getIds()){
+            UserBo userBo=userService.getUser(i);
+            if (userBo.getInit().equals("Y")){
+                return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("useraccount.not.delete"));
+            }
+        }
         userService.deleteUserList(deleteParams.getIds());
         return getUserList(request,deleteParams.getQueryParams());
     }

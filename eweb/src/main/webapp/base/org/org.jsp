@@ -157,6 +157,7 @@
             bootbox.alert(response);
         });
         $scope.save = function () {
+            $scope.message="";
             if ($scope.editForm.$valid) {
                 var postUrl = '<c:url value="/base/org/saveForUpdated"/>';
                 if ($scope.orgBo.id == null) {

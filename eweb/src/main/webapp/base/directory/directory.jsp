@@ -135,6 +135,7 @@
             });
         }
         $scope.save = function () {
+            $scope.message="";
             if ($scope.editForm.$valid) {
                 var postUrl = '<c:url value="/base/directory/saveForUpdated"/>';
                 if ($scope.directoryBo.id==null) {

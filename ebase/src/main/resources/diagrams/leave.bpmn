@@ -2,7 +2,7 @@
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:tns="http://www.activiti.org/test" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" expressionLanguage="http://www.w3.org/1999/XPath" id="m1494572514411" name="" targetNamespace="http://www.activiti.org/test" typeLanguage="http://www.w3.org/2001/XMLSchema">
   <process id="leave" isClosed="false" isExecutable="true" name="请假流程" processType="None">
     <startEvent id="theStart" name="Start"/>
-    <userTask activiti:exclusive="true" id="managerReview" name="部门领导审批"/>
+    <userTask activiti:async="true" activiti:exclusive="true" id="managerReview" name="部门领导审批"/>
     <sequenceFlow id="_4" sourceRef="theStart" targetRef="managerReview"/>
     <exclusiveGateway gatewayDirection="Unspecified" id="_5" name="ExclusiveGateway"/>
     <sequenceFlow id="_6" sourceRef="managerReview" targetRef="_5"/>
@@ -78,14 +78,14 @@
           <omgdc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="_12" id="BPMNEdge__12" sourceElement="_3" targetElement="_11">
+      <bpmndi:BPMNEdge bpmnElement="_12" id="BPMNEdge__12" sourceElement="_3" targetElement="theEnd">
         <omgdi:waypoint x="477.0" y="246.0"/>
         <omgdi:waypoint x="675.0" y="256.0"/>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="_15" id="BPMNEdge__15" sourceElement="_13" targetElement="_9">
+      <bpmndi:BPMNEdge bpmnElement="_15" id="BPMNEdge__15" sourceElement="_13" targetElement="judgementLeave">
         <omgdi:waypoint x="695.0" y="26.0"/>
         <omgdi:waypoint x="695.0" y="115.0"/>
         <omgdi:waypoint x="505.0" y="172.5"/>
@@ -100,7 +100,7 @@
           <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="_17" id="BPMNEdge__17" sourceElement="_13" targetElement="_16">
+      <bpmndi:BPMNEdge bpmnElement="_17" id="BPMNEdge__17" sourceElement="_13" targetElement="reportBack">
         <omgdi:waypoint x="712.0" y="11.0"/>
         <omgdi:waypoint x="820.0" y="55.0"/>
         <omgdi:waypoint x="820.0" y="80.0"/>
@@ -108,14 +108,14 @@
           <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="_18" id="BPMNEdge__18" sourceElement="_16" targetElement="_11">
+      <bpmndi:BPMNEdge bpmnElement="_18" id="BPMNEdge__18" sourceElement="reportBack" targetElement="theEnd">
         <omgdi:waypoint x="780.0" y="107.5"/>
         <omgdi:waypoint x="707.0" y="256.0"/>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="_2" id="BPMNEdge__2" sourceElement="_5" targetElement="_9">
+      <bpmndi:BPMNEdge bpmnElement="_2" id="BPMNEdge__2" sourceElement="_5" targetElement="judgementLeave">
         <omgdi:waypoint x="441.0" y="32.0"/>
         <omgdi:waypoint x="441.0" y="145.0"/>
         <bpmndi:BPMNLabel>
@@ -136,7 +136,7 @@
           <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="_7" id="BPMNEdge__7" sourceElement="_9" targetElement="_3">
+      <bpmndi:BPMNEdge bpmnElement="_7" id="BPMNEdge__7" sourceElement="judgementLeave" targetElement="_3">
         <omgdi:waypoint x="460.0" y="200.0"/>
         <omgdi:waypoint x="460.0" y="225.0"/>
         <omgdi:waypoint x="460.0" y="231.0"/>

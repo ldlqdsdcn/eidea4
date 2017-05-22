@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:tns="http://www.activiti.org/testm1484719496242" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" expressionLanguage="http://www.w3.org/1999/XPath" id="m1484719496242" name="" targetNamespace="http://www.activiti.org/testm1484719496242" typeLanguage="http://www.w3.org/2001/XMLSchema">
+  <process id="purchase" isClosed="false" isExecutable="true" name="采购审批" processType="Public">
+    <startEvent id="theStart" name="StartEvent"/>
+    <userTask activiti:exclusive="true" id="level_one_manager_approve" name="一级经理"/>
+    <userTask activiti:exclusive="true" id="level_two_manager_approve" name="二级经理"/>
+    <userTask activiti:exclusive="true" id="boss_approve" name="boss"/>
+    <endEvent id="theEnd" name="EndEvent"/>
+    <sequenceFlow id="_7" sourceRef="theStart" targetRef="level_one_manager_approve"/>
+    <sequenceFlow id="_8" sourceRef="level_one_manager_approve" targetRef="level_two_manager_approve"/>
+    <sequenceFlow id="_9" sourceRef="level_two_manager_approve" targetRef="boss_approve"/>
+    <sequenceFlow id="_10" sourceRef="boss_approve" targetRef="theEnd"/>
+  </process>
+  <bpmndi:BPMNDiagram documentation="background=#FFFFFF;count=1;horizontalcount=1;orientation=0;width=842.4;height=1195.2;imageableWidth=832.4;imageableHeight=1185.2;imageableX=5.0;imageableY=5.0" id="Diagram-_1" name="New Diagram">
+    <bpmndi:BPMNPlane bpmnElement="purchase">
+      <bpmndi:BPMNShape bpmnElement="theStart" id="Shape-theStart">
+        <dc:Bounds height="32.0" width="32.0" x="350.0" y="65.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="32.0" width="32.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="level_one_manager_approve" id="Shape-level_one_manager_approve">
+        <dc:Bounds height="55.0" width="85.0" x="330.0" y="170.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="level_two_manager_approve" id="Shape-level_two_manager_approve">
+        <dc:Bounds height="55.0" width="85.0" x="340.0" y="315.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boss_approve" id="Shape-boss_approve">
+        <dc:Bounds height="55.0" width="85.0" x="345.0" y="440.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="theEnd" id="Shape-theEnd">
+        <dc:Bounds height="32.0" width="32.0" x="375.0" y="545.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="32.0" width="32.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="_7" id="BPMNEdge__7" sourceElement="_2" targetElement="_3">
+        <di:waypoint x="366.0" y="97.0"/>
+        <di:waypoint x="366.0" y="170.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_8" id="BPMNEdge__8" sourceElement="_3" targetElement="_4">
+        <di:waypoint x="377.5" y="225.0"/>
+        <di:waypoint x="377.5" y="315.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_9" id="BPMNEdge__9" sourceElement="_4" targetElement="_5">
+        <di:waypoint x="385.0" y="370.0"/>
+        <di:waypoint x="385.0" y="440.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_10" id="BPMNEdge__10" sourceElement="_5" targetElement="_6">
+        <di:waypoint x="391.0" y="495.0"/>
+        <di:waypoint x="391.0" y="545.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

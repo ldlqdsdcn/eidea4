@@ -160,6 +160,7 @@
             bootbox.alert(response);
         });
         $scope.save = function () {
+            $scope.message="";
             if ($scope.editForm.$valid) {
                 var postUrl = '<c:url value="/base/tab/saveForUpdated"/>';
                 if ($scope.tabPo.id == null) {

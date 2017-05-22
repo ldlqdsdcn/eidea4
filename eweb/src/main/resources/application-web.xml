@@ -7,4 +7,5 @@
 	<import resource="classpath:spring-shiro.xml"/>
 	<!--引入dubbo-->
 	<!--<import resource="classpath:spring/providers.xml"/>-->
+	<bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper"/>
 	</beans>

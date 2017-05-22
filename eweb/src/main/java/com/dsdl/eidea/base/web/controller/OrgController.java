@@ -56,7 +56,7 @@ public class OrgController {
     @RequiresPermissions(value = "view")
     public JsonResult<PaginationResult<OrgBo>> list(HttpSession session, @RequestBody QueryParams queryParams) {
         Search search = SearchHelper.getSearchParam(URI, session);
-        PaginationResult<OrgBo> orgBoList = orgService.findOrgList(search,queryParams);
+        PaginationResult<OrgBo> orgBoList = orgService.findOrgList(search, queryParams);
         return JsonResult.success(orgBoList);
     }
 
@@ -107,6 +107,9 @@ public class OrgController {
         if (orgBo.getId() == null) {
             return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("common.primary_key.isempty"));
         }
+        if (orgService.getOrgByNo(orgBo.getNo()).getId() != orgBo.getId()) {
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("org.msg.no_exists"));
+        }
         orgService.save(orgBo);
         return get(orgBo.getId());
     }
@@ -120,7 +123,7 @@ public class OrgController {
             return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("client.msg.select_delete"));
         }
         orgService.deletes(deleteParams.getIds());
-        return list(session,deleteParams.getQueryParams());
+        return list(session, deleteParams.getQueryParams());
     }
 
     @RequestMapping(value = "/clients", method = RequestMethod.GET)

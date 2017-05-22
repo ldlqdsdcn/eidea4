@@ -149,6 +149,7 @@
             bootbox.alert(response);
         });
         $scope.save = function () {
+            $scope.message="";
             if ($scope.editForm.$valid) {
                 var postUrl = '<c:url value="/core/reportSettings/saveForUpdated"/>';
                 if ($scope.reportBo.created) {

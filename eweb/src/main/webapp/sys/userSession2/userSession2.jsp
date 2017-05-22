@@ -172,6 +172,7 @@ $scope.pageChanged();
             bootbox.alert(response);
         });
         $scope.save = function () {
+            $scope.message="";
             if ($scope.editForm.$valid) {
                 var postUrl = '<c:url value="/sys/userSession2/saveForUpdated"/>';
                 if ($scope.userSession2Po.id == null) {

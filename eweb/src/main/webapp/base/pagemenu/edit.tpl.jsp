@@ -33,7 +33,7 @@
                     <tr>
                         <td class="control-label"> <eidea:label key="module.label.parentmenu"/></td>
                         <td  class="form-group"><select class="form-control" ng-model="pageMenuBo.parentMenuId" ng-options="parentMenu.id as parentMenu.name for parentMenu in pageMenuBoList"/></td>
-                        <td class="control-label"> <eidea:label key="base.whetherEffective"/></td><td> <input type="checkbox" id="isactive"   ng-true-value="'Y'" ng-false-value="'N'" ng-model="pageMenuBo.isactive" ></td>
+                        <td class="control-label"> <eidea:label key="base.whetherEffective"/></td><td class="form-group"> <input type="checkbox" id="isactive"   ng-true-value="'Y'" ng-false-value="'N'" ng-model="pageMenuBo.isactive" ></td>
                     </tr>
                 </table>
                 <div>

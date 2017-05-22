@@ -7,6 +7,7 @@
 package com.dsdl.eidea.base.service.impl;
 
 import com.dsdl.eidea.core.spring.annotation.DataAccess;
+import com.googlecode.genericdao.search.Field;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.dsdl.eidea.base.entity.po.FieldPo;
@@ -57,6 +58,16 @@ public class FieldServiceImpl  implements	FieldService {
 			paginationResult = PaginationResult.pagination(fieldPoList, queryParams.getTotalRecords(), queryParams.getPageNo(), queryParams.getPageSize());
 		}
 		return paginationResult;
+	}
+	public boolean findExistFieldByName(String name){
+		Search search = new Search();
+		search.addFilterEqual("name",name);
+		List<FieldPo> fieldPoList = fieldDao.search(search);
+		if (fieldPoList.size()>0&&fieldPoList!=null){
+			return true;
+		}else{
+			return false;
+		}
 	}
     public FieldPo getField(Integer id)
 	{

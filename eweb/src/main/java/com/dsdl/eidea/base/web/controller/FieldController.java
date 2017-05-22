@@ -100,6 +100,10 @@ public class FieldController extends BaseController {
     @RequestMapping(value = "/saveForCreated", method = RequestMethod.POST)
     @ResponseBody
     public JsonResult<FieldPo> saveForCreate(@Validated @RequestBody FieldPo fieldPo) {
+        if (fieldService.findExistFieldByName(fieldPo.getName())){
+            return JsonResult.fail(ErrorCodes.VALIDATE_PARAM_ERROR.getCode(),getMessage("field.error.name.exist"));
+        }
+
         fieldService.saveField(fieldPo);
         return get(fieldPo.getId());
     }

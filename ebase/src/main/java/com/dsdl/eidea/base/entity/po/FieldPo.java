@@ -26,13 +26,13 @@ import org.hibernate.validator.constraints.NotBlank;
 @Entity(name = "core_field")
 public class FieldPo implements java.io.Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "[id]",length = 11,nullable = false)
+    @Column(name = "[id]",length = 11,nullable = false,unique = true)
     @Id
     private Integer id;
     /**
     * 排序号
     **/
-    @Column(name = "[seq_no]",length = 11,nullable = false)
+    @Column(name = "[seq_no]",length = 11,nullable = false,unique = true)
     @NotNull(message = "error.sortno.not.null")
     private Integer seqNo;
     /**
@@ -45,7 +45,7 @@ public class FieldPo implements java.io.Serializable {
     /**
     * 字段名
     **/
-    @Column(name = "[field_name]",length =200,nullable = false)
+    @Column(name = "[field_name]",length =200,nullable = false,unique = true)
     @Length(min = 2,max = 200,message = "error.field.name.length")
     @NotBlank(message = "error.field.name.not.null" )
     private String fieldName;

@@ -45,5 +45,5 @@
     <!--activemq-->
     <import resource="classpath:spring/spirng-jms.xml"/>
     <!--activiti 工作流-->
-    <!--<import resource="classpath:spring/spring-activiti.cfg.xml"/>-->
+    <import resource="classpath:spring/spring-activiti.cfg.xml"/>
 </beans>

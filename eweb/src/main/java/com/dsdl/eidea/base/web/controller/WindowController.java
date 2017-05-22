@@ -83,6 +83,9 @@ public JsonResult<PaginationResult<WindowPo>> list(HttpSession session,@RequestB
     @RequestMapping(value = "/saveForCreated", method = RequestMethod.POST)
     @ResponseBody
     public JsonResult<WindowPo> saveForCreate(@Validated @RequestBody WindowPo windowPo) {
+        if (windowService.findExistWindowByName(windowPo.getName())){
+            return JsonResult.fail(ErrorCodes.VALIDATE_PARAM_ERROR.getCode(),getMessage("window.error.name.exist"));
+        }
         windowService.saveWindow(windowPo);
         return get(windowPo.getId());
     }
@@ -95,7 +98,15 @@ public JsonResult<PaginationResult<WindowPo>> list(HttpSession session,@RequestB
         if (windowPo.getId() == null) {
             return JsonResult.fail(ErrorCodes.VALIDATE_PARAM_ERROR.getCode(), getMessage("common.errror.pk.required"));
         }
-        windowService.saveWindow(windowPo);
+        if (windowService.findExistWindowByName(windowPo.getName())){
+            if (windowService.getExistWindowByName(windowPo.getName()).getId()==windowPo.getId()){
+                windowService.saveWindow(windowPo);
+            }else{
+                return JsonResult.fail(ErrorCodes.VALIDATE_PARAM_ERROR.getCode(),getMessage("window.error.name.exist"));
+            }
+        }else{
+            windowService.saveWindow(windowPo);
+        }
         return get(windowPo.getId());
     }
 

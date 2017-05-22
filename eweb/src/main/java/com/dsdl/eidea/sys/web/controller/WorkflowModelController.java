@@ -111,22 +111,20 @@ public class WorkflowModelController {
     @RequestMapping(value = "/deploy/{modelId}", method = RequestMethod.GET)
     @ResponseBody
     public JsonResult<Void> deploy(@PathVariable("modelId") String modelId) {
-        Model modelData = repositoryService.getModel(modelId);
-        BpmnJsonConverter jsonConverter = new BpmnJsonConverter();
-        byte[] modelEditorSource = repositoryService.getModelEditorSource(modelData.getId());
-
-        JsonNode editorNode = null;
         try {
-            editorNode = new ObjectMapper().readTree(modelEditorSource);
-        } catch (IOException e) {
-            e.printStackTrace();
+            Model modelData = repositoryService.getModel(modelId);
+            ObjectNode modelNode = (ObjectNode) new ObjectMapper().readTree(repositoryService.getModelEditorSource(modelData.getId()));
+            byte[] bpmnBytes = null;
+
+            BpmnModel model = new BpmnJsonConverter().convertToBpmnModel(modelNode);
+            bpmnBytes = new BpmnXMLConverter().convertToXML(model);
+
+            String processName = modelData.getName() + ".bpmn20.xml";
+            Deployment deployment = repositoryService.createDeployment().name(modelData.getName()).addString(processName, new String(bpmnBytes)).deploy();
+            log.warn("message", "部署成功，部署ID=" + deployment.getId());
+        } catch (Exception e) {
+            log.error("根据模型部署流程失败：modelId={}", modelId, e);
         }
-        BpmnModel bpmnModel = jsonConverter.convertToBpmnModel(editorNode);
-        BpmnXMLConverter xmlConverter = new BpmnXMLConverter();
-        byte[] exportBytes = xmlConverter.convertToXML(bpmnModel);
-        ByteArrayInputStream in = new ByteArrayInputStream(exportBytes);
-      Deployment deployment= repositoryService.createDeployment().addInputStream(modelData.getName(),in).deploy();
-      List list=  repositoryService.createProcessDefinitionQuery().deploymentId(deployment.getId()).list();
         return JsonResult.success(null);
     }
 

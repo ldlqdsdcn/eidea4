@@ -32,7 +32,7 @@ public class FieldPo implements java.io.Serializable {
     /**
     * 排序号
     **/
-    @Column(name = "[seq_no]",length = 11,nullable = false,unique = true)
+    @Column(name = "[seq_no]",length = 11,nullable = false)
     @NotNull(message = "error.sortno.not.null")
     private Integer seqNo;
     /**
@@ -45,7 +45,7 @@ public class FieldPo implements java.io.Serializable {
     /**
     * 字段名
     **/
-    @Column(name = "[field_name]",length =200,nullable = false,unique = true)
+    @Column(name = "[field_name]",length =200,nullable = false)
     @Length(min = 2,max = 200,message = "error.field.name.length")
     @NotBlank(message = "error.field.name.not.null" )
     private String fieldName;

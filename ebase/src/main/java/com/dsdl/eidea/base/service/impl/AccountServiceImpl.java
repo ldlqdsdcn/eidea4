@@ -40,128 +40,89 @@ public class AccountServiceImpl implements AccountService {
     /**
      * 保存用户信息，并且同步用户信息到activiti的identity.User和identify.Group
      *
-     * @param user          用户对象{@link UserBo}
-     * @param roleIds       用户拥有的角色ID集合
-     * @param synToActiviti 是否同步数据到Activiti
      */
-    public void save(UserPo user, Integer orgId, List<Integer> roleIds, boolean synToActiviti) {
-        String userId = String.valueOf(user.getId());
+    public void saveUser(Integer userId) {
+        String userIdStr=String.valueOf(userId);
         // 同步数据到Activiti Identify模块
-        if (synToActiviti) {
+            UserPo userPo=userDao.find(userId);
             UserQuery userQuery = identityService.createUserQuery();
-            List<org.activiti.engine.identity.User> activitiUsers = userQuery.userId(userId).list();
+            List<org.activiti.engine.identity.User> activitiUsers = userQuery.userId(userPo.getUsername()).list();
 
-            if (activitiUsers.size() == 1) {
-                updateActivitiData(user, roleIds, activitiUsers.get(0));
-            } else if (activitiUsers.size() > 1) {
-                String errorMsg = "发现重复用户：id=" + userId;
-                log.error(errorMsg);
-                throw new RuntimeException(errorMsg);
-            } else {
-                newActivitiUser(user, roleIds);
+            List<UserRolePo> userRolePoList= userPo.getSysUserRoles();
+            List<Group> groupList = identityService.createGroupQuery().list();
+            for(Group group:groupList)
+            {
+                identityService.deleteMembership(userPo.getUsername(),group.getId());
             }
-        }
-
-    }
-
-    /**
-     * 添加工作流用户以及角色
-     *
-     * @param user    用户对象{@link UserPo}
-     * @param roleIds 用户拥有的角色ID集合
-     */
-    private void newActivitiUser(UserPo user, List<Integer> roleIds) {
-        String userId = user.getId().toString();
-
-        // 添加用户
-        saveActivitiUser(user);
-
-        // 添加membership
-        addMembershipToIdentify(roleIds, userId);
-    }
-
-    /**
-     * 添加一个用户到Activiti {@link org.activiti.engine.identity.User}
-     *
-     * @param user 用户对象, {@link UserPo}
-     */
-    private void saveActivitiUser(UserPo user) {
-        String userId = user.getId().toString();
-        org.activiti.engine.identity.User activitiUser = identityService.newUser(userId);
-        cloneAndSaveActivitiUser(user, activitiUser);
-        log.debug("add activiti user: {}", ToStringBuilder.reflectionToString(activitiUser));
-    }
-
-    /**
-     * 添加Activiti Identify的用户于组关系
-     *
-     * @param roleIds 角色ID集合
-     * @param userId  用户ID
-     */
-    private void addMembershipToIdentify(List<Integer> roleIds, String userId) {
-        for (Integer roleId : roleIds) {
-            RolePo role = roleDao.find(roleId);
-            log.debug("add role to activit: {}", role);
-            //TODO
-            identityService.createMembership(userId, role.getNo());
-        }
-    }
-
-    /**
-     * 更新工作流用户以及角色
-     *
-     * @param user         用户对象{@link UserPo}
-     * @param roleIds      用户拥有的角色ID集合
-     * @param activitiUser Activiti引擎的用户对象，{@link org.activiti.engine.identity.User}
-     */
-    private void updateActivitiData(UserPo user, List<Integer> roleIds, org.activiti.engine.identity.User activitiUser) {
-
-        String userId = user.getId().toString();
-
-        // 更新用户主体信息
-        cloneAndSaveActivitiUser(user, activitiUser);
-
-        // 删除用户的membership
-        List<Group> activitiGroups = identityService.createGroupQuery().groupMember(userId).list();
-        for (Group group : activitiGroups) {
-            log.debug("delete group from activit: {}", ToStringBuilder.reflectionToString(group));
-            identityService.deleteMembership(userId, group.getId());
-        }
-
-        // 添加membership
-        addMembershipToIdentify(roleIds, userId);
-    }
-
-    /**
-     * 使用系统用户对象属性设置到Activiti User对象中
-     *
-     * @param user         系统用户对象
-     * @param activitiUser Activiti User
-     */
-    private void cloneAndSaveActivitiUser(UserPo user, org.activiti.engine.identity.User activitiUser) {
-        activitiUser.setFirstName(user.getName());
+            User activitiUser=null;
+            if(activitiUsers.size()==0)
+            {
+                activitiUser=identityService.newUser(userPo.getUsername());
+            }
+            else
+            {
+                activitiUser=activitiUsers.get(0);
+            }
+        activitiUser.setFirstName(userPo.getName());
         activitiUser.setLastName(StringUtils.EMPTY);
         activitiUser.setPassword(StringUtils.EMPTY);
-        activitiUser.setEmail(user.getEmail());
+        activitiUser.setEmail(userPo.getEmail());
+
         identityService.saveUser(activitiUser);
+        for(UserRolePo userRolePo:userRolePoList)
+        {
+            log.warn("userId="+userIdStr+" | roleId="+userRolePo.getSysRole().getId());
+            identityService.createMembership(userPo.getUsername(),userRolePo.getSysRole().getNo());
+        }
+
+    }
+    public void saveRole(Integer roleId)
+    {
+        String roleIdStr=String.valueOf(roleId);
+        RolePo rolePo=roleDao.find(roleId);
+        List<Group> groupList=identityService.createGroupQuery().groupId(roleIdStr).list();
+        Group group=null;
+        if(groupList.size()==0)
+        {
+            group=identityService.newGroup(rolePo.getNo());
+        }
+        else
+        {
+            group=groupList.get(0);
+        }
+        group.setName(rolePo.getName());
+        group.setType("");
+        identityService.saveGroup(group);
+
+
     }
 
+    /**
+     *
+     * @param roleId
+     */
+    public void deleteRole(Integer roleId)
+    {
+        RolePo rolePo=roleDao.find(roleId);
+        identityService.deleteGroup(rolePo.getNo());
+    }
+
+
     @Override
-    public void delete(Integer userId, boolean synToActiviti) throws ServiceException {
+    public void deleteUser(Integer userId) throws ServiceException {
         UserPo userPo = userDao.find(userId);
         /**
          * 同步删除Activiti User Group
          */
-        if (synToActiviti) {
             // 同步删除Activiti User
             List<UserRolePo> roleList = userPo.getSysUserRoles();
             for (UserRolePo role : roleList) {
-                identityService.deleteMembership(userId.toString(), String.valueOf(role.getSysRole().getId()));
+                identityService.deleteMembership(userPo.getUsername(), role.getSysRole().getNo());
             }
 
             // 同步删除Activiti User
-            identityService.deleteUser(userId.toString());
-        }
+            identityService.deleteUser(userPo.getUsername());
+
 
 
     }
@@ -186,8 +147,7 @@ public class AccountServiceImpl implements AccountService {
         List<RolePo> allRole = roleDao.findAll();
         for (RolePo role : allRole) {
             if (ActivateDef.ACTIVATED.getKey().equals(role.getIsactive())) {
-                String groupId = role.getNo();
-                Group group = identityService.newGroup(groupId);
+                Group group = identityService.newGroup(role.getNo());
                 group.setName(role.getName());
                 group.setType("");
                 identityService.saveGroup(group);
@@ -203,15 +163,8 @@ public class AccountServiceImpl implements AccountService {
         List<UserPo> allUser = userDao.findAll();
         for (UserPo user : allUser) {
             if (ActivateDef.ACTIVATED.getKey().equals(user.getIsactive())) {
-                String userId = user.getId().toString();
                 // 添加一个用户到Activiti
-                saveActivitiUser(user);
-                // 角色和用户的关系
-                List<UserRolePo> roleList = user.getSysUserRoles();
-                for (UserRolePo role : roleList) {
-                    identityService.createMembership(userId, role.getSysRole().getNo());
-                    log.debug("add membership {user: {}, role: {}}", userId, String.valueOf(role.getId()));
-                }
+                saveUser(user.getId());
             }
         }
     }

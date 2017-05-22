@@ -1,5 +1,6 @@
 package com.dsdl.eidea.base.service.impl;
 
+import com.dsdl.eidea.base.service.AccountService;
 import com.dsdl.eidea.core.dto.PaginationResult;
 import com.dsdl.eidea.core.params.QueryParams;
 import com.dsdl.eidea.core.spring.annotation.DataAccess;
@@ -16,6 +17,7 @@ import com.googlecode.genericdao.search.SearchResult;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.modelmapper.TypeToken;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -25,20 +27,21 @@ import java.util.stream.Collectors;
 @Service
 public class RoleServiceImpl implements RoleService {
     @DataAccess(entity = RolePo.class)
-    private CommonDao<RolePo,Integer>  roleDao;
+    private CommonDao<RolePo, Integer> roleDao;
     @DataAccess(entity = OrgPo.class)
-    private CommonDao<OrgPo,Integer> orgDao;
+    private CommonDao<OrgPo, Integer> orgDao;
     @DataAccess(entity = ModulePo.class)
-    private CommonDao<ModulePo,Integer> moduleDao;
+    private CommonDao<ModulePo, Integer> moduleDao;
     @DataAccess(entity = OperatorPo.class)
-    private CommonDao<OperatorPo,Integer> operatorDao;
+    private CommonDao<OperatorPo, Integer> operatorDao;
     @DataAccess(entity = PrivilegesPo.class)
-    private CommonDao<PrivilegesPo,Integer> privilegesDao;
+    private CommonDao<PrivilegesPo, Integer> privilegesDao;
     @DataAccess(entity = ModuleRolePo.class)
-    private CommonDao<ModuleRolePo,Integer> moduleRoleDao;
+    private CommonDao<ModuleRolePo, Integer> moduleRoleDao;
     @DataAccess(entity = RoleOrgaccessPo.class)
-    private CommonDao<RoleOrgaccessPo,Integer> roleOrgaccessDao;
-
+    private CommonDao<RoleOrgaccessPo, Integer> roleOrgaccessDao;
+    @Autowired
+    private AccountService accountService;
     private final ModelMapper modelMapper = new ModelMapper();
 
     public RoleServiceImpl() {
@@ -77,14 +80,16 @@ public class RoleServiceImpl implements RoleService {
         search.setFirstResult(queryParams.getFirstResult());
         search.setMaxResults(queryParams.getPageSize());
         PaginationResult<RoleBo> paginationResult = null;
-        if (queryParams.isInit()){
+        if (queryParams.isInit()) {
             SearchResult<RolePo> searchResult = roleDao.searchAndCount(search);
-            List<RoleBo> list = modelMapper.map(searchResult.getResult(),new TypeToken<List<RoleBo>>(){}.getType());
-            paginationResult = PaginationResult.pagination(list,searchResult.getTotalCount(),queryParams.getPageNo(),queryParams.getPageSize());
-        }else{
+            List<RoleBo> list = modelMapper.map(searchResult.getResult(), new TypeToken<List<RoleBo>>() {
+            }.getType());
+            paginationResult = PaginationResult.pagination(list, searchResult.getTotalCount(), queryParams.getPageNo(), queryParams.getPageSize());
+        } else {
             List<RolePo> rolePoList = roleDao.search(search);
-            List<RoleBo> roleBoList = modelMapper.map(rolePoList,new TypeToken<List<RoleBo>>(){}.getType());
-            paginationResult = PaginationResult.pagination(roleBoList,queryParams.getTotalRecords(),queryParams.getPageNo(),queryParams.getPageSize());
+            List<RoleBo> roleBoList = modelMapper.map(rolePoList, new TypeToken<List<RoleBo>>() {
+            }.getType());
+            paginationResult = PaginationResult.pagination(roleBoList, queryParams.getTotalRecords(), queryParams.getPageNo(), queryParams.getPageSize());
         }
         return paginationResult;
     }
@@ -142,6 +147,7 @@ public class RoleServiceImpl implements RoleService {
 
         roleDao.saveForLog(rolePo);
         roleBo.setId(rolePo.getId());
+        accountService.saveRole(rolePo.getId());
     }
 
     @Override
@@ -154,12 +160,13 @@ public class RoleServiceImpl implements RoleService {
         }
         return false;
     }
+
     @Override
-    public RoleBo findExistRoleByName(String roleName){
+    public RoleBo findExistRoleByName(String roleName) {
         Search search = new Search();
-        search.addFilterEqual("name",roleName);
+        search.addFilterEqual("name", roleName);
         RolePo rolePo = roleDao.searchUnique(search);
-        RoleBo roleBo = modelMapper.map(rolePo,RoleBo.class);
+        RoleBo roleBo = modelMapper.map(rolePo, RoleBo.class);
         return roleBo;
     }
 
@@ -169,9 +176,9 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public boolean getHasUsers(Integer id) {
-       RolePo rolePo= roleDao.find(id);
-        List<UserRolePo> userRolePos=rolePo.getSysUserRoles();
-        if (userRolePos.size()>0){
+        RolePo rolePo = roleDao.find(id);
+        List<UserRolePo> userRolePos = rolePo.getSysUserRoles();
+        if (userRolePos.size() > 0) {
             return true;
         }
         return false;
@@ -300,6 +307,9 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public void deletes(Integer[] ids) {
+        for (Integer id : ids) {
+            accountService.deleteRole(id);
+        }
         roleDao.removeByIdsForLog(ids);
     }
 }

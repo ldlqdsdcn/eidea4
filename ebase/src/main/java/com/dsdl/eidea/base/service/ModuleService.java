@@ -1,6 +1,7 @@
 package com.dsdl.eidea.base.service;
 
 import com.dsdl.eidea.base.entity.bo.ModuleBo;
+import com.dsdl.eidea.base.entity.po.ModulePo;
 import com.dsdl.eidea.core.dto.PaginationResult;
 import com.dsdl.eidea.core.params.QueryParams;
 import com.googlecode.genericdao.search.Search;
@@ -43,4 +44,11 @@ public interface ModuleService {
      * @return
      */
     boolean findExistId(Integer id);
+
+    /**
+     * 通过path获取模块
+     */
+    ModuleBo getModuleBoByPath(String path);
+
+    List<ModuleBo> getModulePos();
 }

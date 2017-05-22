@@ -20,4 +20,11 @@ public interface FileSettingService {
 	void saveFileSetting(FileSettingPo fileSetting);
 	void deletes(Integer[] ids);
 	List<FileSettingPo> getFileSettingList(Search search);
+
+	/**
+	 * 通过访问路径获取文件设置
+	 * @param path
+	 * @return
+	 */
+	FileSettingPo getFileSettingsByRequestPath(String path);
 }

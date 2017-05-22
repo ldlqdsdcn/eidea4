@@ -28,4 +28,6 @@ public interface OrgService {
     void deletes(Integer[] ids);
 
     OrgPo getOrg(Integer orgId);
+
+    OrgPo getOrgByNo(String no);
 }

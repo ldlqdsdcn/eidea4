@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * Created by admin on 2017/5/4.
+ * Created by Bobo on 2017/5/4.
  */
 @Controller
 @RequestMapping("/common")

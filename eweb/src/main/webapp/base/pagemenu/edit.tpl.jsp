@@ -71,4 +71,3 @@
         <jsp:include page="/common/common_upload.jsp"/>
     </div>
 </div>
-<script type='text/javascript' src="<c:url value="/js/ondrag-start.js"/>"></script>

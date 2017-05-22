@@ -104,8 +104,8 @@ Date: 2017-04-26 15:34:17
                         {{model.remark}}
                     </td>
                     <td>
-                        <a class="btn btn-primary btn-xs" href="#/editDetail?id={{model.id}}"><eidea:label
-                                key="common.button.edit"/><%--编辑--%></a>
+                        <a class="btn btn-primary btn-xs" href="#/editDetail?id={{model.id}}">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.edit"/><%--编辑--%></a>
                     </td>
                 </tr>
                 </tbody>

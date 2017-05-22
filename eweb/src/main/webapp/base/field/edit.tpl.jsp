@@ -142,4 +142,3 @@ Date: 2017-05-04 13:22:23
     </form>
     <jsp:include page="/common/common_upload.jsp"/>
 </div>
-<script type='text/javascript' src="<c:url value="/js/ondrag-start.js"/>"></script>

@@ -40,4 +40,3 @@ Date: 2017-05-06 07:51:36
         </div>
     </form>
 </div>
-<script type='text/javascript' src="<c:url value="/js/ondrag-start.js"/>"></script>

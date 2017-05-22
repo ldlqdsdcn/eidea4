@@ -24,7 +24,7 @@
                 .when('/edit', {templateUrl: '<c:url value="/base/field/edit.tpl.jsp"/>'})
                 .otherwise({redirectTo: '/list'});
         }]);
-    app.controller('listFieldCtrl', function ($scope, $http) {
+    app.controller('listCtrl', function ($scope, $http) {
         $scope.modelList = [];
         $scope.delFlag = false;
         $scope.isLoading = true;
@@ -109,7 +109,7 @@
         };
         $scope.pageChanged();
     });
-    app.controller('editFieldCtrl', function ($scope, $http, $routeParams) {
+    app.controller('editCtrl', function ($scope, $http, $routeParams) {
         /**
          * 日期时间选择控件
          * bootstrap-datetime 24小时时间是hh

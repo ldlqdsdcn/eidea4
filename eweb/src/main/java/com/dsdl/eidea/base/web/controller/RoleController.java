@@ -63,8 +63,8 @@ public class RoleController {
     @RequiresPermissions(value = "add")
     public JsonResult<RoleBo> saveForCreated(@RequestBody RoleBo roleBo, HttpSession session) {
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
-        if (roleService.findExistRole(roleBo.getName())) {
-            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("role.error.name_exists"));
+        if (roleService.findExistRole(roleBo.getNo())) {
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("role.number.equal"));
         }
         roleService.save(roleBo);
         return get(roleBo.getId(), session);
@@ -85,7 +85,7 @@ public class RoleController {
             roleService.save(roleBo);
         }
         return get(roleBo.getId(), session);
-    }
+        }
 
     @RequestMapping(value = "/get", method = RequestMethod.GET)
     @ResponseBody

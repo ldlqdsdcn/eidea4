@@ -5,6 +5,7 @@ import com.dsdl.eidea.base.entity.po.OrgPo;
 import com.dsdl.eidea.base.service.OrgService;
 import com.dsdl.eidea.core.params.QueryParams;
 import com.googlecode.genericdao.search.Search;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,10 @@ import java.util.List;
 public class OrgServiceTest {
     @Autowired
     private OrgService orgService;
+    @Before
+    public void testOrg(){
+
+    }
     @Test
     public void testGetOrg()
     {

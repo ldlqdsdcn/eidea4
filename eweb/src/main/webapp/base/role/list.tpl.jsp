@@ -11,6 +11,7 @@
                                ng-model="delFlag"></th>
                     <th><eidea:label key="base.serialNumber"/><%--序号--%></th>
                     <th><eidea:label key="role.roleName"/><%--角色名--%></th>
+                    <th><eidea:label key="role.number"/><%--角色编号--%></th>
                     <th><eidea:label key="base.remarks"/><%--备注--%></th>
                     <th><eidea:label key="base.whetherEffective"/><%--是否有效--%></th>
                     <th><eidea:label key="common.button.edit"/><%--编辑--%></th>
@@ -26,6 +27,7 @@
                     <td>
                         {{model.name}}
                     </td>
+                    <td>{{model.no}}</td>
                     <td>
                         {{model.remark}}
                     </td>

@@ -115,10 +115,8 @@ public class WorkflowModelController {
             Model modelData = repositoryService.getModel(modelId);
             ObjectNode modelNode = (ObjectNode) new ObjectMapper().readTree(repositoryService.getModelEditorSource(modelData.getId()));
             byte[] bpmnBytes = null;
-
             BpmnModel model = new BpmnJsonConverter().convertToBpmnModel(modelNode);
             bpmnBytes = new BpmnXMLConverter().convertToXML(model);
-
             String processName = modelData.getName() + ".bpmn20.xml";
             Deployment deployment = repositoryService.createDeployment().name(modelData.getName()).addString(processName, new String(bpmnBytes)).deploy();
             log.warn("message", "部署成功，部署ID=" + deployment.getId());

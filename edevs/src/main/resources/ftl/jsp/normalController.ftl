@@ -67,7 +67,7 @@ if ($scope.modelList[i].delFlag) {
 ids.push($scope.modelList[i].id);
 }
 }
-$http.post("<c:url value="/${module}/${model?uncap_first}/deletes"/>", ${pkProp}).success(function (data) {
+$http.post("<c:url value="/${module}/${model?uncap_first}/deletes"/>", ${pkProp}s).success(function (data) {
 if (data.success) {
 bootbox.alert("<eidea:message key="common.warn.deleted.success"/>");
 $scope.updateList(data.data);

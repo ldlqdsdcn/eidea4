@@ -55,4 +55,19 @@ public class LeaveProcessController {
         });
         return JsonResult.success(leaveVoList);
     }
+    @RequestMapping("/showTodoList")
+    @RequiresPermissions("view")
+    public ModelAndView showTodoList()
+    {
+        ModelAndView modelAndView = new ModelAndView("/test/leaveProcess/todoList");
+        modelAndView.addObject(WebConst.PAGING_SETTINGS, PagingSettingResult.getDefault());
+        return modelAndView;
+    }
+    @RequestMapping("/todoList")
+    @ResponseBody
+    @RequiresPermissions("view")
+    public JsonResult<List<LeaveVo>> getTodoList() {
+        List<LeaveVo> leaveVoList = new ArrayList<>();
+        return JsonResult.success(leaveVoList);
+    }
 }

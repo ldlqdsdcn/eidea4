@@ -18,6 +18,7 @@ import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.runtime.ProcessInstanceQuery;
 import org.activiti.engine.task.Task;
+import org.activiti.engine.task.TaskQuery;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -96,7 +97,32 @@ public class LeaveServiceImpl implements LeaveService {
         leaveDao.removeByIds(ids);
     }
 
+    public List<LeavePo> getTodoLeaveList(String userId) {
+        List<LeavePo> results = new ArrayList<>();
 
+        // 根据当前人的ID查询
+        TaskQuery taskQuery = taskService.createTaskQuery().taskCandidateOrAssigned(userId);
+        List<Task> tasks = taskQuery.list();
+
+        // 根据流程的业务ID查询实体并关联
+        for (Task task : tasks) {
+            String processInstanceId = task.getProcessInstanceId();
+            ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceId(processInstanceId).active().singleResult();
+            if (processInstance == null) {
+                continue;
+            }
+            String businessKey = processInstance.getBusinessKey();
+            if (businessKey == null) {
+                continue;
+            }
+            LeavePo leave = leaveDao.find(Integer.parseInt(businessKey));
+            leave.setTask(task);
+            leave.setProcessInstance(processInstance);
+            leave.setProcessDefinition(getProcessDefinition(processInstance.getProcessDefinitionId()));
+            results.add(leave);
+        }
+        return results;
+    }
     /**
      * 读取运行中的流程
      *

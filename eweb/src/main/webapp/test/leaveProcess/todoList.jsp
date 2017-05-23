@@ -1,10 +1,11 @@
 <%--
   Created by IntelliJ IDEA.
   User: 刘大磊
-  Date: 2017/5/18
-  Time: 13:23
+  Date: 2017/5/23
+  Time: 9:47
   To change this template use File | Settings | File Templates.
 --%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/inc/taglib.jsp" %>
 <html>
@@ -14,19 +15,81 @@
     <%@include file="/inc/inc_ang_js_css.jsp" %>
 </head>
 <body>
-<div ng-app='myApp' ng-view class="content"></div>
+<div ng-app='myApp' ng-view class="content">
+    <div  class="container-fluid" ng-controller="listCtrl">
+        <div class="page-header" >
+            <ol class="breadcrumb">
+                <li><a href="javascript:;"><i class="icon icon-tasks"></i><eidea:label key="leave.title"/></a></li>
+            </ol>
+            <a href="#/edit" class="btn  btn-primary btn-sm" ng-show="canAdd"><eidea:label key="common.button.create"/></a>
+            <button type="button" class="btn  btn-primary btn-sm" id="search_but" data-toggle="modal"
+                    data-target="#searchModal"><eidea:label key="common.button.search"/></button>
+            <button type="button" class="btn  btn-primary btn-sm" ng-disabled="!canDelete()"
+                    ng-click="deleteRecord()" ng-show="canDel" ><eidea:label key="common.button.delete"/></button>
+        </div>
+        <div class="row-fluid">
+            <div class="span12">
+                <table  class="table table-hover table-striped table-condensed">
+                    <thead>
+                    <tr>
+                        <th><input type="checkbox" name="selectAll" style="margin:0px;" ng-change="selectAll()"  ng-model="delFlag"></th>
+                        <th><%--序号--%><eidea:label key="base.serialNumber"/></th>
+                        <th><%--标题--%><eidea:label key="test.leave.label.title"/></th>
+                        <th><%--content--%><eidea:label key="test.leave.label.content"/></th>
+                        <th><%--开始时间--%><eidea:label key="test.leave.label.bgnTime"/></th>
+                        <th><%--结束时间--%><eidea:label key="test.leave.label.endTime"/></th>
+                        <th><%--leaveUserId--%><eidea:label key="test.leave.label.leaveUserId"/></th>
+                        <th>&nbsp;</th>
+                        <th><%--编辑--%><eidea:label key="common.button.edit"/></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    <tr ng-repeat="model in modelList track by $index" ng-class-even="success">
+                        <td>
+                            <input type="checkbox" ng-model="model.delFlag">
+                        </td>
+                        <td>{{(queryParams.pageNo-1)*queryParams.pageSize+$index+1}}</td>
+                        <td>
+                            {{model.title}}
+                        </td>
+                        <td>
+                            {{model.content}}
+                        </td>
+                        <td>
+                            {{model.bgnTime|date:"yyyy-MM-dd HH:mm:ss"}}
+                        </td>
+                        <td>
+                            {{model.endTime|date:"yyyy-MM-dd HH:mm:ss"}}
+                        </td>
+                        <td>
+                            {{model.userName}}
+                        </td>
+                        <td>
+                            <a target="_blank" href='<c:url value="/common/activiti/show/trace/"/>{{model.processInstanceId}}'  title="点击查看流程图">{{model.taskName }}</a>
+                        </td>
+                        <td>{{model.taskCreateTime }}</td>
+                        <td>{{model.suspended ? "已挂起" : "正常" }}；<b title='流程版本号'>V: {{model.version }}</b></td>
+                        <td>{{model.assignee }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <ul uib-pagination boundary-links="true" total-items="queryParams.totalRecords" ng-model="queryParams.pageNo"
+                    max-size="maxSize" first-text="<eidea:label key="common.label.firstpage"/>" previous-text="<eidea:label key="common.label.previouspage"/>" next-text="<eidea:label key="common.label.nextpage"/>" last-text="<eidea:label key="common.label.lastpage"/>"
+                    class="pagination-sm" boundary-link-numbers="true" rotate="false" items-per-page="queryParams.pageSize"
+                    ng-change="pageChanged()"></ul>
+                <div class="text-left ng-binding padding_total_banner"><eidea:message key="common.msg.result.prefix"/><span>{{queryParams.totalRecords}}</span><eidea:message key="common.msg.result.suffix"/></div>
+            </div>
+        </div>
+    </div>
+
+</div>
 <jsp:include page="/common/searchPage">
     <jsp:param name="uri" value="${uri}"/>
 </jsp:include>
 </body>
 <script type="text/javascript">
-    var app = angular.module('myApp', ['ngRoute', 'ui.bootstrap', 'jcs-autoValidate'])
-            .config(['$routeProvider', function ($routeProvider) {
-                $routeProvider
-                        .when('/list', {templateUrl: '<c:url value="/test/leaveProcess/list.tpl.jsp"/>'})
-                        .otherwise({redirectTo: '/list'});
-
-            }]);
+    var app = angular.module('myApp', ['ui.bootstrap', 'jcs-autoValidate']);
     app.controller('listCtrl', function ($scope,$rootScope, $http) {
         $scope.allList = [];
         $scope.modelList = [];
@@ -127,110 +190,5 @@
         }
         $scope.pageChanged();
     });
-    app.controller('editCtrl', function ($scope, $http, $routeParams) {
-        /**
-         * 日期时间选择控件
-         * bootstrap-datetime 24小时时间是hh
-         */
-        $('.bootstrap-datetime').datetimepicker({
-            language:  'zh-CN',
-            format: 'yyyy-mm-dd hh:ii:ss',
-            weekStart: 1,
-            todayBtn:  1,
-            autoclose: 1,
-            todayHighlight: 1,
-            startView: 2,
-            forceParse: 0,
-            showMeridian: 1,
-            clearBtn: true
-        });
-        /**
-         * 日期选择控件
-         */
-        $('.bootstrap-date').datepicker({
-            language:  'zh-CN',
-            format: 'yyyy-mm-dd',
-            autoclose: 1,
-            todayBtn:  1,
-            clearBtn:true
-        });
-
-        $scope.message = '';
-        $scope.leavePo = {};
-        $scope.canAdd=PrivilegeService.hasPrivilege('add');
-        var url = "<c:url value="/test/leave/create"/>";
-        if ($routeParams.id != null) {
-            url = "<c:url value="/test/leave/get"/>" + "?id=" + $routeParams.id;
-        }
-        $http.get(url)
-                .success(function (response) {
-                    if (response.success) {
-                        $scope.leavePo = response.data;
-                        $scope.canSave=(PrivilegeService.hasPrivilege('add')&&$scope.leavePo.id==null)||PrivilegeService.hasPrivilege('update');
-                    }
-                    else {
-                        bootbox.alert(response.message);
-                    }
-                }).error(function (response) {
-            bootbox.alert(response);
-        });
-        $scope.save = function () {
-            if ($scope.editForm.$valid) {
-                var postUrl = '<c:url value="/test/leave/saveForUpdated"/>';
-                if ($scope.leavePo.id == null) {
-                    postUrl = '<c:url value="/test/leave/saveForCreated"/>';
-                }
-                $http.post(postUrl, $scope.leavePo).success(function (data) {
-                    if (data.success) {
-                        $scope.message = "<eidea:label key="base.save.success"/>";
-                        $scope.leavePo = data.data;
-                    }
-                    else {
-                        $scope.message = data.message;
-                        $scope.errors=data.data;
-                    }
-                }).error(function (data, status, headers, config) {
-                    alert(JSON.stringify(data));
-                });
-            }
-        }
-        $scope.submitApprove=function () {
-            $http.post('<c:url value="/test/leave/saveForApprove/"/>', $scope.leavePo).success(function (data) {
-                if (data.success) {
-                    $scope.message = "提交申请成功";
-
-                }
-                else {
-                    $scope.message = data.message;
-                    $scope.errors=data.data;
-                }
-            }).error(function (data, status, headers, config) {
-                alert(JSON.stringify(data));
-            });
-        };
-        $scope.create = function () {
-            $scope.message = "";
-            $scope.leavePo = {};
-            var url = "<c:url value="/test/leave/create"/>";
-            $http.get(url)
-                    .success(function (response) {
-                        if (response.success) {
-                            $scope.leavePo = response.data;
-                            $scope.canSave=(PrivilegeService.hasPrivilege('add')&&$scope.leavePo.id==null)||PrivilegeService.hasPrivilege('update');
-                        }
-                        else {
-                            bootbox.alert(response.message);
-                        }
-                    }).error(function (response) {
-                bootbox.alert(response);
-            });
-        }
-
-    });
-    app.run([
-        'bootstrap3ElementModifier',
-        function (bootstrap3ElementModifier) {
-            bootstrap3ElementModifier.enableValidationStateIcons(true);
-        }]);
 </script>
 </html>

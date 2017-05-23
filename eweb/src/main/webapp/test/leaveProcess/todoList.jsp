@@ -39,7 +39,11 @@
                         <th><%--开始时间--%><eidea:label key="test.leave.label.bgnTime"/></th>
                         <th><%--结束时间--%><eidea:label key="test.leave.label.endTime"/></th>
                         <th><%--leaveUserId--%><eidea:label key="test.leave.label.leaveUserId"/></th>
-                        <th>&nbsp;</th>
+                        <th>状态</th>
+                        <th>任务创建时间</th>
+                        <th>suspended</th>
+                        <th>assignee</th>
+
                         <th><%--编辑--%><eidea:label key="common.button.edit"/></th>
                     </tr>
                     </thead>
@@ -71,6 +75,14 @@
                         <td>{{model.taskCreateTime }}</td>
                         <td>{{model.suspended ? "已挂起" : "正常" }}；<b title='流程版本号'>V: {{model.version }}</b></td>
                         <td>{{model.assignee }}</td>
+                        <td ng-show="model.assignee!=null&&model.assignee!=''">
+
+                            <button class="btn btn-primary btn-sm" ng-click="approve(model.taskId)">同意</button>
+                            <button class="btn btn-primary btn-sm" ng-click="reject(model.taskId)">拒绝</button>
+                        </td>
+                        <td ng-show="model.assignee==null||model.assignee==''">
+                            <button class="btn btn-primary btn-sm" ng-click="claim(model.taskId)">签收</button>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
@@ -96,7 +108,7 @@
         $scope.delFlag = false;
         $scope.canDel=PrivilegeService.hasPrivilege('delete');
         $scope.canAdd=PrivilegeService.hasPrivilege('add');
-        $http.get("<c:url value="/test/leaveProcess/list"/>")
+        $http.get("<c:url value="/test/leaveProcess/todoList"/>")
                 .success(function (response) {
                     if (response.success) {
                         $scope.updateList(response.data);
@@ -134,6 +146,49 @@
             }
             return false;
         }
+        $scope.approve=function(taskId)
+        {
+            $http.post("<c:url value="/test/leaveProcess/complete/"/>"+taskId+"/"+true).success(function (data) {
+                if (data.success) {
+                    bootbox.alert({"message":"审批通过","callback": function() {
+
+                        window.location.href="<c:url value="/test/leaveProcess/showTodoList"/>";
+                    }});
+                }
+                else {
+                    bootbox.alert(data.message);
+                }
+
+            });
+        };
+        $scope.reject=function(taskId)
+        {
+            $http.post("<c:url value="/test/leaveProcess/complete/"/>"+taskId+"/"+false).success(function (data) {
+                if (data.success) {
+                    bootbox.alert({"message":"审批拒绝","callback": function() {
+                        window.location.href="<c:url value="/test/leaveProcess/showTodoList"/>";
+                    }});
+                }
+                else {
+                    bootbox.alert(data.message);
+                }
+
+            });
+        }
+        $scope.claim=function(taskId)
+        {
+            $http.post("<c:url value="/test/leaveProcess/taskClaim/"/>"+taskId+"").success(function (data) {
+                if (data.success) {
+                    bootbox.alert({"message":"签收成功","callback": function() {
+                        window.location.href="<c:url value="/test/leaveProcess/showTodoList"/>";
+                    }});
+                }
+                else {
+                    bootbox.alert(data.message);
+                }
+
+            });
+        };
         $scope.selectAll = function () {
             $scope.pageChanged($scope.delFlag);
         }

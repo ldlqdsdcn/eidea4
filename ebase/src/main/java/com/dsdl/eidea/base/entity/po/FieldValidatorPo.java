@@ -7,11 +7,15 @@
 */
 package com.dsdl.eidea.base.entity.po;
 
-import java.util.Date;
-import java.math.BigDecimal;
-import javax.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Length;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
+import java.util.Date;
+
 /**
 * table name core_field_validator
 *            字段验证
@@ -28,12 +32,14 @@ public class FieldValidatorPo implements java.io.Serializable {
     /**
     * 字段id
     **/
-    @Column(name = "[field_id]" )
+    @Column(name = "[field_id]",nullable = false,length = 11)
+    @NotNull(message = "error.field.id.not.null")
     private Integer fieldId;
     /**
     * 验证类型
     **/
-    @Column(name = "[validate_type]" )
+    @Column(name = "[validate_type]",nullable = false,length = 11)
+    @NotNull(message = "error.validatetype.not.null")
     private Integer validateType;
     /**
     * 最大值
@@ -58,16 +64,17 @@ public class FieldValidatorPo implements java.io.Serializable {
     /**
     * 最大长度
     **/
-    @Column(name = "[max_length]" )
+    @Column(name = "[max_length]",length = 11)
     private Integer maxLength;
     /**
     * 最小长度
     **/
-    @Column(name = "[min_length]" )
+    @Column(name = "[min_length]",length = 11)
     private Integer minLength;
     /**
     * 验证正则表达式
     **/
-    @Column(name = "[validator_patten]",length =500 )
+    @Column(name = "[validator_patten]",length =500)
+    @Length(max = 500,message = "error.validatorPattern.length")
     private String validatorPatten;
 }

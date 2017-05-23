@@ -27,4 +27,6 @@ public interface WindowService {
 	 * @return
 	 */
 	WindowBo getWindowBo(Integer id,String lang);
+	boolean findExistWindowByName(String name);
+	WindowPo getExistWindowByName(String name);
 }

@@ -131,8 +131,6 @@ public class OrgController {
     @RequiresPermissions(value = "view")
     public JsonResult<List<ClientBo>> clientList() {
         List<ClientBo> clientBoList = clientService.getClientListForActivated();
-
-
         return JsonResult.success(clientBoList);
     }
 }

@@ -125,6 +125,44 @@
             $rootScope.listQueryParams = $scope.queryParams;
         }
         $scope.pageChanged();
+        //修改激活/挂起/转换为Model
+        $scope.updateSuspended=function (message,url,id) {
+            bootbox.confirm({
+                message: message,
+                buttons: {
+                    confirm: {
+                        label: '<eidea:label key="common.button.yes"/>',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: '<eidea:label key="common.button.no"/>',
+                        className: 'btn-danger'
+                    }
+                },
+                callback: function (result) {
+                    if(result){
+                        $http.get(url+id).success(function (response) {
+                            bootbox.alert({
+                                buttons: {
+                                    ok: {
+                                        label: '<i class="fa fa-close" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.confirm"/>',
+                                        className: 'btn-primary'
+                                    }
+                                },
+                                message: response.data.message
+                            });
+                            if(response.data.processDefinitionList != null){
+                                $scope.modelList=response.data.processDefinitionList;
+                            }
+                        });
+                    }
+                }
+            });
+        }
+        $scope.openImage=function (id) {
+            $("#workflowImageModal").modal("show");
+            $("#workflowImage").attr("src",'<c:url value="/sys/workflow/resource/read"/>?processDefinitionId='+id+'&resourceType=image');
+        }
     });
     app.controller('editCtrl', function ($scope,$rootScope,$http, $routeParams, $timeout ,$location, Upload) {
         //工作流上传
@@ -156,16 +194,17 @@
                 //上传成功
                 bootbox.alert({
                     buttons: {
-                        ok: {//TODO 需要国际化确实
-                            label: '<i class="fa fa-close" aria-hidden="true"></i>&nbsp;确认',
+                        ok: {
+                            label: '<i class="fa fa-close" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.confirm"/>',
                             className: 'btn-primary'
                         }
                     },
-                    message: '<eidea:message key="common.upload.success"/>', callback: function() {
-                        //TODO 看看有没有通过angularjs 路由直接跳转回list界面
+                    message: '<eidea:message key="common.upload.success"/>'
+/*                    , callback: function() {
                       window.location.href="<c:url value="/sys/workflow/showList"/>";
-                    }
+                    }*/
                 });
+                $location.path("/list");
             }).error(function (data, status, headers, config) {
                 //上传失败
                 console.log('error status: ' + status);

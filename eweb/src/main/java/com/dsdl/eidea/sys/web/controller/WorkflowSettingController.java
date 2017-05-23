@@ -1,6 +1,7 @@
 package com.dsdl.eidea.sys.web.controller;
 
 import com.dsdl.eidea.base.service.FileSettingService;
+import com.dsdl.eidea.base.web.vo.UserResource;
 import com.dsdl.eidea.core.web.def.WebConst;
 import com.dsdl.eidea.core.web.result.JsonResult;
 import com.dsdl.eidea.core.web.vo.PagingSettingResult;
@@ -30,6 +31,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -37,7 +39,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.zip.ZipInputStream;
 
 /**
@@ -47,6 +51,8 @@ import java.util.zip.ZipInputStream;
 @RequestMapping("/sys/workflow")
 @Slf4j
 public class WorkflowSettingController {
+    @Autowired
+    private HttpServletRequest request;
     @Autowired
     private RuntimeService runtimeService;
     @Autowired
@@ -72,6 +78,11 @@ public class WorkflowSettingController {
     /*
      * 保存两个对象，一个是ProcessDefinition（流程定义），一个是Deployment（流程部署）
      */
+        List<ProcessDefinitionVo> processDefinitionList=getProcessDefinitionList();
+        return JsonResult.success(processDefinitionList);
+    }
+
+    public List<ProcessDefinitionVo> getProcessDefinitionList(){
         List<ProcessDefinitionVo> processDefinitionVoList = new ArrayList<>();
         ProcessDefinitionQuery processDefinitionQuery = repositoryService.createProcessDefinitionQuery().orderByDeploymentId().desc();
         List<ProcessDefinition> processDefinitionList = processDefinitionQuery.list();
@@ -90,7 +101,7 @@ public class WorkflowSettingController {
 
             processDefinitionVoList.add(processDefinitionVo);
         }
-        return JsonResult.success(processDefinitionVoList);
+        return processDefinitionVoList;
     }
 
     @RequiresPermissions("delete")
@@ -148,6 +159,9 @@ public class WorkflowSettingController {
             resourceName = processDefinition.getDiagramResourceName();
         } else if (resourceType.equals("xml")) {
             resourceName = processDefinition.getResourceName();
+            response.reset();
+            response.setContentType("application/x-download");
+            response.addHeader("Content-Disposition", "attachment; filename=" + new String(resourceName.getBytes("utf-8"),"iso8859-1"));
         }
         InputStream resourceAsStream = repositoryService.getResourceAsStream(processDefinition.getDeploymentId(), resourceName);
         byte[] b = new byte[1024];
@@ -189,18 +203,21 @@ public class WorkflowSettingController {
     /**
      * 挂起、激活流程实例
      */
-    //TODO 续改成 Rest方式
-    @RequestMapping(value = "/update/{state}/{processDefinitionId}")
-    public String updateState(@PathVariable("state") String state, @PathVariable("processDefinitionId") String processDefinitionId,
-                              RedirectAttributes redirectAttributes) {
+    @RequestMapping(value = "/update/{state}/{processDefinitionId}",method = RequestMethod.GET)
+    @ResponseBody
+    public JsonResult<Map<String,Object>> updateState(@PathVariable("state") String state, @PathVariable("processDefinitionId") String processDefinitionId) {
+        HashMap<String,Object> resultMap=new HashMap<>();
+        UserResource resource = (UserResource) request.getSession().getAttribute(WebConst.SESSION_RESOURCE);
         if (state.equals("active")) {
-            redirectAttributes.addFlashAttribute("message", "已激活ID为[" + processDefinitionId + "]的流程定义。");
+            resultMap.put("message", resource.getMessage("workflow.active.ID.as")+"[" + processDefinitionId + "]"+resource.getMessage("workflow.active.process.definition"));
             repositoryService.activateProcessDefinitionById(processDefinitionId, true, null);
         } else if (state.equals("suspend")) {
             repositoryService.suspendProcessDefinitionById(processDefinitionId, true, null);
-            redirectAttributes.addFlashAttribute("message", "已挂起ID为[" + processDefinitionId + "]的流程定义。");
+            resultMap.put("message", resource.getMessage("workflow.suspend.ID.as")+"[" + processDefinitionId + "]"+resource.getMessage("workflow.active.process.definition"));
         }
-        return "redirect:/sys/workflow/showList";
+        List<ProcessDefinitionVo> processDefinitionList=getProcessDefinitionList();
+        resultMap.put("processDefinitionList",processDefinitionList);
+        return JsonResult.success(resultMap);
     }
 
     /**
@@ -210,10 +227,12 @@ public class WorkflowSettingController {
      * @throws UnsupportedEncodingException
      * @throws XMLStreamException
      */
-    //TODO 转换模型成功 删除当前process，并且返回提醒信息 ，改为rest方式，返回JsonResult，不需要跳转页面。
-    @RequestMapping(value = "/process/convert-to-model/{processDefinitionId}")
-    public String convertToModel(@PathVariable("processDefinitionId") String processDefinitionId)
+    //TODO 转换模型成功 删除当前process
+    @RequestMapping(value = "/process/convert-to-model/{processDefinitionId}",method = RequestMethod.GET)
+    @ResponseBody
+    public JsonResult<Map<String,Object>> convertToModel(@PathVariable("processDefinitionId") String processDefinitionId)
             throws UnsupportedEncodingException, XMLStreamException {
+        HashMap<String,Object> resultMap=new HashMap<>();
         ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery()
                 .processDefinitionId(processDefinitionId).singleResult();
         InputStream bpmnStream = repositoryService.getResourceAsStream(processDefinition.getDeploymentId(),
@@ -239,7 +258,8 @@ public class WorkflowSettingController {
         repositoryService.saveModel(modelData);
 
         repositoryService.addModelEditorSource(modelData.getId(), modelNode.toString().getBytes("utf-8"));
-
-        return "redirect:/sys/workflow/showList";
+        UserResource resource = (UserResource) request.getSession().getAttribute(WebConst.SESSION_RESOURCE);
+        resultMap.put("message", resource.getMessage("workflow.convert.model.success"));
+        return JsonResult.success(resultMap);
     }
 }

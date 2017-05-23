@@ -40,7 +40,24 @@ public class FieldTrlServiceImpl  implements	FieldTrlService {
 		}
     	return paginationResult;
     }
-
+	public PaginationResult<FieldTrlPo> getFieldTrlListByField(Search search,Integer field)
+	{
+		QueryParams queryParams = new QueryParams();
+		search.setFirstResult(queryParams.getFirstResult());
+		search.setMaxResults(queryParams.getPageSize());
+		search.addFilterEqual("fieldId",field);
+		PaginationResult<FieldTrlPo> paginationResult = null;
+		if (queryParams.isInit()) {
+			SearchResult<FieldTrlPo> searchResult = fieldTrlDao.searchAndCount(search);
+			paginationResult = PaginationResult.pagination(searchResult.getResult(), searchResult.getTotalCount(), queryParams.getPageNo(), queryParams.getPageSize());
+		}
+		else
+		{
+			List<FieldTrlPo> fieldTrlPoList = fieldTrlDao.search(search);
+			paginationResult = PaginationResult.pagination(fieldTrlPoList, queryParams.getTotalRecords(), queryParams.getPageNo(), queryParams.getPageSize());
+		}
+		return paginationResult;
+	}
     public FieldTrlPo getFieldTrl(Integer id)
 	{
 		return fieldTrlDao.find(id);

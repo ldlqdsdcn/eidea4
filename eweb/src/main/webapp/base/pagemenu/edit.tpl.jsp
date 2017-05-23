@@ -11,6 +11,7 @@
     <div class="x_content">
 
             <form role="form" name="editForm" novalidate  ng-submit="save()" class="form-horizontal form-label-left input_mask">
+                <jsp:include page="/common/common_edit_button.jsp"/>
                 <table class="table table-borderless" >
                     <tr>
                         <td class="control-label"><eidea:label key="dymenuForm.label.sequence"/></td>
@@ -61,19 +62,12 @@
                          </tbody>
                      </table>
                 </div>
-                <div class="from-group">
-                    <p class="text-right">
-                        <button type="reset" ng-click="create()"  class="btn btn-default btn-sm" ng-show="canAdd"><eidea:label key="common.button.create"/></button>
-                        <button type="submit" class="btn btn-default btn-sm" ng-show="canSave"><eidea:label key="common.button.save"/></button>
-                        <a href="#/list" class="btn btn-default btn-sm"><eidea:label key="common.button.back"/></a>
-                    </p>
-                </div>
                 <div class="form-group">
                     <p class="text-center" style="color: red">
                         {{message}}
                     </p>
                 </div>
             </form>
-
+        <jsp:include page="/common/common_upload.jsp"/>
     </div>
 </div>

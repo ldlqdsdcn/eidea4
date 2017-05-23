@@ -97,6 +97,12 @@ public class OrgServiceImpl implements OrgService {
         return orgPo;
     }
 
+    @Override
+    public OrgPo getOrgByNo(String no){
+        Search search = new Search();
+        search.addFilterEqual("no",no);
+        return orgDao.searchUnique(search);
+    }
     private List<OrgBo> convert(List<OrgPo> orgPoList) {
         return orgPoList.stream().map(e -> {
             OrgBo orgBo = modelMapper.map(e, OrgBo.class);

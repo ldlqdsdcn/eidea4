@@ -28,4 +28,11 @@ public interface LeaveService {
 	 * @return
 	 */
 	List<LeavePo> getRunningProcessInstances();
+
+	/**
+	 * 获取要处理的任务，根据当前用户名
+	 * @param userId
+	 * @return
+	 */
+	List<LeavePo> getTodoLeaveList(String userId);
 }

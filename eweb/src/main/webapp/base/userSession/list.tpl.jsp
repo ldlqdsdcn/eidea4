@@ -1,12 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/inc/taglib.jsp" %>
 <div  class="container-fluid" ng-controller="listCtrl">
-<div class="page-header" >
-    <ol class="breadcrumb">
-        <li><a href="javascript:;"><i class="icon icon-tasks"></i><eidea:label key="loginlog.label.log"/></a></li>
-    </ol>
-    <button type="button" class="btn  btn-primary btn-sm" id="search_but" data-toggle="modal"
-            data-target="#searchModal"><eidea:label key="common.button.search"/></button>
+<div class="page-header button-css" >
+    <button type="button" class="btn  btn-primary btn-sm" id="search_but" title="<eidea:label key="common.button.search"/>" data-toggle="modal"
+            data-target="#searchModal"><i class="fa fa-search fa-1x" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.search"/></button>
 </div>
 <div class="row-fluid">
     <div class="span12">

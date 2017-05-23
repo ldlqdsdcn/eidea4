@@ -125,8 +125,6 @@
         $scope.pageChanged();
 
     });
-
-
     app.controller('editCtrl', function ($scope,$rootScope,  $http, $routeParams) {
         $scope.message= '';
         $scope.messageBo = {};
@@ -183,6 +181,18 @@
             });
         }
 
+        //附件上传
+        $scope.showAttachment=function () {
+            bootbox.alert({
+                buttons: {
+                    ok: {
+                        label: '<i class="fa fa-close" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.closed"/>',
+                        className: 'btn-primary'
+                    }
+                },
+                message: '<eidea:message key="common.upload.does.not.required"/>',
+            });
+        }
     });
     app.run([
         'bootstrap3ElementModifier',

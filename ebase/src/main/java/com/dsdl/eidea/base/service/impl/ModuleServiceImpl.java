@@ -171,4 +171,13 @@ public class ModuleServiceImpl implements ModuleService {
 
         return null;
     }
+
+    @Override
+    public List<ModuleBo> getModulePos() {
+        Search search=new Search();
+        search.addFilterEqual("isactive","Y");
+        List<ModulePo> modulePos=moduleDao.search(search);
+        List<ModuleBo> moduleBos= modelMapper.map(modulePos,new TypeToken<List<ModuleBo>>(){}.getType());
+        return moduleBos;
+    }
 }

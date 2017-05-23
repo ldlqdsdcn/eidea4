@@ -54,6 +54,7 @@
                         |&nbsp;<a href="<c:url value="/sys/model/export"/>/{{model.id}}/json">
                             <%--JSON--%><eidea:label key="workflow.model.label.json"/></a>
                         )
+                         <button class="btn btn-primary btn-xs" ng-click="deploy(model.id)">部署</button>
                          <a  href="<c:url value="/sys/workflow/modeler.jsp"/>?modelId={{model.id}}" class="btn btn-primary btn-xs">
                              <i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.edit"/><%--编辑--%>
                          </a>

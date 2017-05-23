@@ -20,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -80,8 +81,15 @@ public class ActivitiController {
         Context.setProcessEngineConfiguration((ProcessEngineConfigurationImpl) processEngineConfiguration);
 
         ProcessDiagramGenerator diagramGenerator = processEngineConfiguration.getProcessDiagramGenerator();
-        InputStream imageStream = diagramGenerator.generateDiagram(bpmnModel, "png", activeActivityIds);
-
+        //InputStream imageStream = diagramGenerator.generateDiagram(bpmnModel, "png", activeActivityIds);
+        String font=processEngine.getProcessEngineConfiguration().getActivityFontName();
+        InputStream imageStream =diagramGenerator.generateDiagram(bpmnModel, "png", activeActivityIds, Collections.<String>emptyList(), font, font, font, null, 1.0);
+       /* InputStream imageStream = diagramGenerator.generateDiagram(
+                bpmnModel, "png",
+                activeActivityIds, Collections.<String>emptyList(),
+                processEngine.getProcessEngineConfiguration().getActivityFontName(),
+                processEngine.getProcessEngineConfiguration().getLabelFontName(),
+                null, 1.0);*/
         // 输出资源内容到相应对象
         byte[] b = new byte[1024];
         int len;

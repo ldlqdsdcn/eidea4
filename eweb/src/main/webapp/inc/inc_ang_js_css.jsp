@@ -14,6 +14,7 @@
 <script type='text/javascript' src='<c:url value="/js/bootbox.min.js"/>'></script>
 <script type='text/javascript' src="<c:url value="/js/angular/angular.min.js"/>"></script>
 <script type='text/javascript' src="<c:url value="/js/angular/angular-route.min.js"/>"></script>
+<script type="text/javascript"src="<c:url value="/js/angular/angular-ui-router.min.js"/>"></script>
 <script type='text/javascript' src="<c:url value="/js/angular/jcs-auto-validate.min.js"/>"></script>
 <script type='text/javascript' src="<c:url value="/js/angular/ui-bootstrap-tpls-2.2.0.min.js"/>"></script>
 <script type='text/javascript' src="<c:url value="/js/angular/i18n/angular-locale_zh-cn.js"/>"></script>
@@ -35,6 +36,6 @@
 <%--日期控件支持--%>
 <link rel="stylesheet" href="<c:url value="/css/bootstrap/datetimepicker/bootstrap-datetimepicker.min.css"/>" type="text/css" media="all"/>
 <link rel="stylesheet" href="<c:url value="/css/bootstrap/datepicker/bootstrap-datepicker3.min.css"/>" type="text/css" media="all"/>
-
+<%--上传控件--%>
 <script type='text/javascript' src="<c:url value="/js/angular/ngfileupload/ng-file-upload.js"/>"></script>
 <script type='text/javascript' src="<c:url value="/js/angular/ngfileupload/ng-file-upload-shim.js"/>"></script>

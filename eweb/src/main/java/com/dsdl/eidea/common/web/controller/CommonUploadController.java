@@ -1,27 +1,26 @@
 package com.dsdl.eidea.common.web.controller;
 
-import com.dsdl.eidea.base.entity.bo.CommonFileBo;
-import com.dsdl.eidea.base.entity.bo.DirectoryBo;
-import com.dsdl.eidea.base.entity.bo.ModuleDirectoryBo;
+import com.dsdl.eidea.base.entity.bo.*;
 import com.dsdl.eidea.base.entity.po.CommonFilePo;
 import com.dsdl.eidea.base.entity.po.FileSettingPo;
 import com.dsdl.eidea.base.entity.po.ModuleDirectoryPo;
-import com.dsdl.eidea.base.service.CommonFileService;
-import com.dsdl.eidea.base.service.DirectoryService;
-import com.dsdl.eidea.base.service.FileSettingService;
-import com.dsdl.eidea.base.service.ModuleDirectoryService;
+import com.dsdl.eidea.base.service.*;
+import com.dsdl.eidea.base.service.impl.FileRelationServiceImpl;
+import com.dsdl.eidea.base.web.vo.UserResource;
 import com.dsdl.eidea.core.dto.PaginationResult;
 import com.dsdl.eidea.core.params.QueryParams;
+import com.dsdl.eidea.core.web.def.WebConst;
 import com.dsdl.eidea.core.web.result.JsonResult;
+import com.dsdl.eidea.core.web.result.def.ErrorCodes;
 import com.dsdl.eidea.core.web.util.SearchHelper;
+import com.dsdl.eidea.util.StringUtil;
 import com.googlecode.genericdao.search.Search;
 import org.fusesource.hawtbuf.BufferInputStream;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,12 +32,11 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * Created by admin on 2017/5/4.
+ * Created by Bobo on 2017/5/4.
  */
 @Controller
 @RequestMapping("/common")
 public class CommonUploadController {
-    private static final String URI = "sys_directory";
     @Autowired
     private HttpServletRequest request;
     @Autowired
@@ -49,24 +47,31 @@ public class CommonUploadController {
     private DirectoryService directoryService;
     @Autowired
     private ModuleDirectoryService moduleDirectoryService;
+    @Autowired
+    private FileRelationService fileRelationService;
 
+    private ModelMapper modelMapper = new ModelMapper();
+
+    @RequestMapping(value = "/attachmentList", method = RequestMethod.POST)
+    @ResponseBody
+    public JsonResult<List<CommonFileBo>>  attachmentList(@RequestBody CommonFileBo commonFileBo){
+        UserResource resource = (UserResource) request.getSession().getAttribute(WebConst.SESSION_RESOURCE);
+        FileSettingBo fileSettingBo=getFileSetting(commonFileBo);
+        if(fileSettingBo == null){
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("common.upload.parameter.error"));
+        }
+       return JsonResult.success(list(commonFileBo.getTableId(),commonFileBo.getUri()));
+    }
     @RequestMapping(value = "/attachmentUpload", method = RequestMethod.POST)
     @ResponseBody
-    public JsonResult<List<CommonFilePo>> attachmentUpload(MultipartFile file, CommonFileBo commonFileBo){
+    public JsonResult<List<CommonFileBo>> attachmentUpload(MultipartFile file,CommonFileBo commonFileBo){
+        UserResource resource = (UserResource) request.getSession().getAttribute(WebConst.SESSION_RESOURCE);
+        FileSettingBo fileSettingBo=getFileSetting(commonFileBo);
+        if(fileSettingBo == null){
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("common.upload.parameter.error"));
+        }
         if(file != null){
-            List<ModuleDirectoryBo> moduleDirectoryBoList=new ArrayList<ModuleDirectoryBo>();
-            Search search = SearchHelper.getSearchParam(URI, request.getSession());
-            PaginationResult<DirectoryBo> directoryBoList = directoryService.findDirectory(search,new QueryParams());
-            for(DirectoryBo directoryBo:directoryBoList.getData()){
-                if(directoryBo.getDirectory().equals(commonFileBo.getDirectoryUrl())){
-                    moduleDirectoryBoList=moduleDirectoryService.getModuleDirectoryList(directoryBo.getId());
-                    break;
-                }
-            }
-            Search moduleSearch=new Search();
-            moduleSearch.addFilterEqual("moduleId",moduleDirectoryBoList.get(0).getSysModuleId());
-            List<FileSettingPo> fileSettingPoList=fileSettingService.getFileSettingList(moduleSearch);
-            String filepath=fileSettingPoList.get(0).getRootDirectory();
+            String filepath=fileSettingBo.getRootDirectory();
             File attachmentDir = new File(filepath);
             if (!attachmentDir.exists()) {
                 attachmentDir.mkdirs();
@@ -88,7 +93,7 @@ public class CommonUploadController {
             commonFileBo.setFileIsreadonly(0);
             commonFileBo.setFileIshidden(0);
             commonFileBo.setCreated(new Date());
-            commonFileBo.setCommonFileSettingId(fileSettingPoList.get(0).getId());
+            commonFileBo.setCommonFileSettingId(fileSettingBo.getId());
             try{
                 commonFileService.saveAttachmentUpload(commonFileBo);
             }catch (Exception e){
@@ -99,19 +104,24 @@ public class CommonUploadController {
                 }
             }
         }
-        return JsonResult.success(list().getData());
+        return JsonResult.success(list(commonFileBo.getTableId(),commonFileBo.getUri()));
     }
 
     @RequestMapping(value="/attachmentDelete", method = RequestMethod.POST)
     @ResponseBody
-    public JsonResult<List<CommonFilePo>> attachmentDelete(@RequestBody CommonFileBo commonFileBo){
+    public JsonResult<List<CommonFileBo>> attachmentDelete(@RequestBody CommonFileBo commonFileBo){
+        UserResource resource = (UserResource) request.getSession().getAttribute(WebConst.SESSION_RESOURCE);
+        FileSettingBo fileSettingBo=getFileSetting(commonFileBo);
+        if(fileSettingBo == null){
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("common.upload.parameter.error"));
+        }
         CommonFilePo commonFilePo=commonFileService.getCommonFile(commonFileBo.getId());
         commonFileService.deleteAttachment(commonFileBo);
         File oldFile = new File(commonFilePo.getPath());
         if (oldFile.exists()) {
             oldFile.delete();
         }
-        return JsonResult.success(list().getData());
+        return JsonResult.success(list(commonFileBo.getTableId(),commonFileBo.getUri()));
     }
 
     @RequestMapping("/attachmentDownload")
@@ -136,7 +146,39 @@ public class CommonUploadController {
             fis.close();
         }
     }
-    public PaginationResult<CommonFilePo> list(){
-        return commonFileService.getCommonFileListByPaging(new Search(), new QueryParams());
+    public FileSettingBo getFileSetting(CommonFileBo commonFileBo){
+        List<ModuleDirectoryBo> moduleDirectoryBoList=new ArrayList<>();
+        if(StringUtil.isNotEmpty(commonFileBo.getDirectoryUrl())){
+            Search search=new Search();
+            List<DirectoryBo> directoryBoList = directoryService.findAllDirectory(search);
+            for(DirectoryBo directoryBo:directoryBoList){
+                if(directoryBo.getDirectory().equals(commonFileBo.getDirectoryUrl())){
+                    moduleDirectoryBoList=moduleDirectoryService.getModuleDirectoryList(directoryBo.getId());
+                    break;
+                }
+            }
+        }
+        if(moduleDirectoryBoList == null || moduleDirectoryBoList.size() == 0){
+            return null;
+        }
+        Search moduleSearch=new Search();
+        moduleSearch.addFilterEqual("moduleId",moduleDirectoryBoList.get(0).getSysModuleId());
+        List<FileSettingPo> fileSettingPoList=fileSettingService.getFileSettingList(moduleSearch);
+        if(fileSettingPoList == null || fileSettingPoList.size() == 0){
+            return null;
+        }
+        return modelMapper.map(fileSettingPoList.get(0), FileSettingBo.class);
+    }
+    public List<CommonFileBo> list(int tableId,String tableName){
+        Search search=new Search();
+        search.addFilterEqual("tableId",tableId);
+        search.addFilterIn("tableName",tableName);
+        List<FileRelationBo> FileRelationBoList=fileRelationService.getFileRelationList(search);
+        List<CommonFilePo> commonFileBoList=new ArrayList<>();
+        FileRelationBoList.forEach(fileRelationBo -> {
+            CommonFilePo commonFilePo=commonFileService.getCommonFile(fileRelationBo.getFileId());
+            commonFileBoList.add(commonFilePo);
+        });
+        return modelMapper.map(commonFileBoList,new TypeToken<List<CommonFileBo>>(){}.getType());
     }
 }

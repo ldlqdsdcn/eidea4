@@ -84,7 +84,7 @@ $(document).ready(function() {
                 $SIDEBAR_MENU.find('li').removeClass('active active-sm');
                 $SIDEBAR_MENU.find('li ul').slideUp();
             }else if(!$BODY.hasClass('nav-md')){
-                if(this != ''){
+                if($li.find("ul").length == 0){
                     $SIDEBAR_MENU.find('li ul').slideUp();
                     $SIDEBAR_MENU.find('li').removeClass('active active-sm');
                 }

@@ -1,19 +1,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/inc/taglib.jsp" %>
 <div  class="container-fluid" ng-controller="listCtrl">
-    <div class="page-header  button-css" >
-        <a href="#/edit" class="btn  btn-primary btn-sm" ng-show="canAdd"><eidea:label key="common.button.create"/></a>
-         <button type="button" class="btn  btn-primary btn-sm" id="search_but" data-toggle="modal"
-                data-target="#searchModal"><eidea:label key="common.button.search"/></button>
-        <button type="button" class="btn  btn-primary btn-sm" ng-disabled="!canDelete()"
-                ng-click="deleteRecord()" ng-show="canDel"><eidea:label key="common.button.delete"/></button>
-    </div>
+    <jsp:include page="/common/common_list_button.jsp"/>
     <div class="row-fluid">
         <div class="span12">
             <table  class="table table-hover table-striped table-condensed">
                 <thead>
                 <tr>
-                    <th><input type="hidden" name="selectAll" style="margin:0px;" ng-change="selectAll()"
+                    <th><input type="checkbox" name="selectAll" style="margin:0px;" ng-change="selectAll()"
                                ng-model="delFlag"></th>
                     <th><eidea:label key="custom.list.index"/></th>
                     <th><eidea:label key="dymenuForm.label.sequence"/></th>
@@ -54,7 +48,9 @@
                         {{model.isactive}}
                     </td>
                     <td>
-                        <a class="btn btn-primary btn-xs" href="#/edit?id={{model.id}}"><eidea:label key="common.button.edit"/></a>
+                        <a class="btn btn-primary btn-xs" href="#/edit?id={{model.id}}">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.edit"/>
+                        </a>
                     </td>
                 </tr>
                 </tbody>
@@ -64,5 +60,6 @@
                 class="pagination-sm" boundary-link-numbers="true" rotate="false" items-per-page="queryParams.pageSize"
                 ng-change="pageChanged()"></ul>
             <div class="text-left ng-binding padding_total_banner"><eidea:message key="common.msg.result.prefix"/><span>{{queryParams.totalRecords}}</span><eidea:message key="common.msg.result.suffix"/></div>
+        </div>
     </div>
 </div>

@@ -46,7 +46,9 @@
 
         $scope.selectAll = function () {
             for (var i = 0; i < $scope.modelList.length; i++) {
-                $scope.modelList[i].delFlag = $scope.delFlag;
+                if ($scope.modelList[i].init == 'N') {
+                    $scope.modelList[i].delFlag = $scope.delFlag;
+                }
             }
         }
         $scope.canDelete = function () {

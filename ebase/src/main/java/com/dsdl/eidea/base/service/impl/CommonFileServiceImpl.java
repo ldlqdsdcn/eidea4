@@ -95,7 +95,7 @@ public class CommonFileServiceImpl  implements	CommonFileService {
 		FileRelationPo fileRelationPo=new FileRelationPo();
 		fileRelationPo.setTableName(commonFileBo.getUri());
 		fileRelationPo.setFileId(commonFilePo.getId());
-		fileRelationPo.setTableId(commonFileBo.getTableId());
+		fileRelationPo.setTableId(Integer.parseInt(commonFileBo.getTableId()));
 		fileRelationPo.setCreated(commonFileBo.getCreated());
 		commonFileRelationDao.save(fileRelationPo);
 	}

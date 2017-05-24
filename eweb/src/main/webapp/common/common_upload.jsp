@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/inc/taglib.jsp" %>
-<!-- 模态框（Modal） -->
+<!-- 附件上传模态框（Modal） -->
 <div class="modal fade modal-fail" id="attachmentModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -71,6 +71,63 @@
                     </tr>
                     </tbody>
                 </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!--操作日志模态框-->
+<div class="modal fade modal-fail" id="changeLogModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="changeLogo">
+                    操作日志
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="row-fluid">
+                    <div class="span12">
+                        <br>
+                        <div class="form-group">
+                            <label ><eidea:label key="searchcolumn.column.tableName"/></label> &nbsp;&nbsp;<span ng-bind="changelogVo.changelogBo.name"></span> &nbsp;&nbsp;&nbsp;
+
+                        </div>
+                        <div class="form-group">
+                            <label><eidea:label key="javaclass.column.classname"/></label> &nbsp;&nbsp;<span ng-bind="changelogVo.changelogBo.poClass"></span>
+                        </div>
+                        <div class="form-group">
+                            <label ><eidea:label key="changelog.business.name"/></label> &nbsp;&nbsp;&nbsp;<span
+                                ng-bind="changelogVo.changelogBo.tableName"></span>
+                        </div>
+                        <div class="form-group">
+                            <label><eidea:label key="changelog.primarykey"/></label>&nbsp;&nbsp; <span ng-bind="changelogVo.changelogBo.pk"></span>&nbsp;&nbsp;&nbsp;
+                        </div>
+                        <div class="form-group">
+                            <label ><eidea:label key="table.column.buskey"/></label> &nbsp;&nbsp;<span ng-bind="changelogVo.changelogBo.buPk"></span>
+                        </div>
+                        <div>
+                            <p><eidea:label key="changelog.operation.list"/></p>
+                            <table id="international_list"
+                                   class="table table-hover table-bordered">
+                                <thead>
+                                <tr>
+                                    <th ng-repeat="model in changelogVo.header track by $index">{{model}}</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                <tr ng-repeat="model in changelogVo.bodyList track by $index">
+                                    <td ng-repeat="column in model track by $index">{{column}}</td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

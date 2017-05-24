@@ -36,7 +36,7 @@ import javax.servlet.http.HttpSession;
 @Controller
 @RequestMapping("/base/datadictType")
 public class DatadictTypeController extends BaseController {
-    private static final String URI = "datadictType";
+    private static final String URI = "base_datadictType";
     @Autowired
     private DatadictTypeService datadictTypeService;
 

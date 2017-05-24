@@ -217,4 +217,10 @@ public class TableServiceImpl implements TableService {
         }
         return tableBoList;
     }
+
+    @Override
+    public List<TableBo> findAllTableBoList(Search search) {
+        List<TablePo> tablePoList = tableDao.search(search);
+        return modelMapper.map(tablePoList, new TypeToken<List<TableBo>>() {}.getType());
+    }
 }

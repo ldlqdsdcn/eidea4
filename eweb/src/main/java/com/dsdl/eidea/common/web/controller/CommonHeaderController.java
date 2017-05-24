@@ -6,14 +6,19 @@ import com.dsdl.eidea.base.entity.po.FileSettingPo;
 import com.dsdl.eidea.base.entity.po.ModuleDirectoryPo;
 import com.dsdl.eidea.base.service.*;
 import com.dsdl.eidea.base.service.impl.FileRelationServiceImpl;
+import com.dsdl.eidea.base.web.vo.ChangelogVo;
 import com.dsdl.eidea.base.web.vo.UserResource;
 import com.dsdl.eidea.core.dto.PaginationResult;
+import com.dsdl.eidea.core.entity.bo.TableBo;
+import com.dsdl.eidea.core.entity.bo.TableColumnBo;
 import com.dsdl.eidea.core.params.QueryParams;
+import com.dsdl.eidea.core.service.TableService;
 import com.dsdl.eidea.core.web.def.WebConst;
 import com.dsdl.eidea.core.web.result.JsonResult;
 import com.dsdl.eidea.core.web.result.def.ErrorCodes;
 import com.dsdl.eidea.core.web.util.SearchHelper;
 import com.dsdl.eidea.util.StringUtil;
+import com.google.gson.Gson;
 import com.googlecode.genericdao.search.Search;
 import org.fusesource.hawtbuf.BufferInputStream;
 import org.modelmapper.ModelMapper;
@@ -26,17 +31,14 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Created by Bobo on 2017/5/4.
  */
 @Controller
 @RequestMapping("/common")
-public class CommonUploadController {
+public class CommonHeaderController {
     @Autowired
     private HttpServletRequest request;
     @Autowired
@@ -49,6 +51,10 @@ public class CommonUploadController {
     private ModuleDirectoryService moduleDirectoryService;
     @Autowired
     private FileRelationService fileRelationService;
+    @Autowired
+    private TableService tableService;
+    @Autowired
+    private ChangelogService changelogService;
 
     private ModelMapper modelMapper = new ModelMapper();
 
@@ -169,7 +175,7 @@ public class CommonUploadController {
         }
         return modelMapper.map(fileSettingPoList.get(0), FileSettingBo.class);
     }
-    public List<CommonFileBo> list(int tableId,String tableName){
+    public List<CommonFileBo> list(String tableId,String tableName){
         Search search=new Search();
         search.addFilterEqual("tableId",tableId);
         search.addFilterIn("tableName",tableName);
@@ -180,5 +186,91 @@ public class CommonUploadController {
             commonFileBoList.add(commonFilePo);
         });
         return modelMapper.map(commonFileBoList,new TypeToken<List<CommonFileBo>>(){}.getType());
+    }
+
+    @RequestMapping(value = "/changeLogList", method = RequestMethod.POST)
+    @ResponseBody
+    public JsonResult<ChangelogVo> getChangeLogList(@RequestBody ChangelogBo changelogBo){
+        Search search=new Search();
+        List<TableBo> tableBoList=tableService.findAllTableBoList(search);
+        Search logSearch=new Search();
+        for(TableBo tableBo:tableBoList){
+            if(tableBo.getTableName().replaceAll("_","").toLowerCase().equals(changelogBo.getUri().replaceAll("_","").toLowerCase())){
+                logSearch.addFilterEqual("tablePo.id",tableBo.getId());break;
+            }
+        }
+        logSearch.addFilterEqual("pk",changelogBo.getTableId());
+        if(logSearch.getFilters().size()==2){
+            List<ChangelogBo> changelogBoList=changelogService.getChangeLogList(logSearch);
+            if(changelogBoList != null && changelogBoList.size() > 0){
+                List<TableColumnBo> tableColumnBoList = changelogService.getChangelogHeader(changelogBoList.get(0).getName());
+                ChangelogVo changelogVo = buildChangeLogVo(tableColumnBoList, changelogBoList);
+                changelogVo.setChangelogBo(changelogBoList.get(0));
+                return JsonResult.success(changelogVo);
+            }
+        }
+        return JsonResult.success(null);
+    }
+
+    private ChangelogVo buildChangeLogVo(List<TableColumnBo> tableColumnBoList, List<ChangelogBo> changelogBoList) {
+        UserResource resource = (UserResource) request.getSession().getAttribute(WebConst.SESSION_RESOURCE);
+        ChangelogVo changelogVo = new ChangelogVo();
+        List<String> headerKeyList = new ArrayList<>();
+        List<String> headerList = new ArrayList<>();
+        headerList.add(resource.getLabel("changelog.primarykey"));
+        headerList.add(resource.getLabel("table.column.buskey"));
+        headerList.add(resource.getLabel("changelog.label.operation.primarykey"));
+        headerList.add(resource.getLabel("common.upload.operation"));
+        headerList.add(resource.getLabel("changelog.operatetime"));
+
+        for (TableColumnBo tableColumnBo : tableColumnBoList) {
+            headerList.add(tableColumnBo.getName());
+            headerKeyList.add(tableColumnBo.getPropertyName());
+        }
+        changelogVo.setHeader(headerList);
+
+        List<List<String>> bodyList = new ArrayList<>();
+
+
+        for (ChangelogBo item : changelogBoList) {
+            Map<String, Object> body = jsonToMap(item);
+            List<String> columnList = new ArrayList<>();
+            columnList.add(item.getPk());
+            columnList.add(item.getBuPk());
+            columnList.add(item.getSysUser());
+            String operateType = item.getOperateType();
+            if ("D".equals(operateType)) {
+                columnList.add(resource.getLabel("common.button.delete"));
+            } else if ("I".equals(operateType)) {
+                columnList.add(resource.getLabel("common.button.add"));
+            } else if ("U".equals(operateType)) {
+                columnList.add(resource.getLabel("common.button.update"));
+            }
+            columnList.add(String.valueOf(item.getInDate()));
+            for (String header : headerKeyList) {
+                String value = String.valueOf(body.get(header));
+                columnList.add(value);
+            }
+            bodyList.add(columnList);
+        }
+        changelogVo.setBodyList(bodyList);
+        return changelogVo;
+    }
+
+    private Map<String, Object> jsonToMap(ChangelogBo cl) {
+        Gson gson = new Gson();
+        Map<String, Object> valueMap = new HashMap<String, Object>();
+        Map<String, String> object = gson.fromJson(cl.getContext(), HashMap.class);
+        Set<String> set = object.keySet();
+        String key = null;
+        Object value = null;
+        Iterator<String> iterator = set.iterator();
+        while (iterator.hasNext()) {
+            key = iterator.next();
+            value = object.get(key);
+            valueMap.put(key, value);
+        }
+
+        return valueMap;
     }
 }

@@ -28,7 +28,7 @@
     <button type="button" class="btn  btn-primary btn-sm btn-hg" title="<eidea:label key="common.button.print"/>">
         <i class="fa fa-print fa-1x" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.print"/>
     </button>
-    <button type="button" class="btn  btn-primary btn-sm btn-hg" title="<eidea:label key="common.button.refresh"/>">
+    <button type="button" class="btn  btn-primary btn-sm btn-hg" title="<eidea:label key="common.button.refresh"/>" ng-click="commonListHeader('refresh')">
         <i class="fa fa-refresh fa-1x" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.refresh"/>
     </button>
     <button type="button" class="btn  btn-primary btn-sm btn-hg" title="<eidea:label key="common.button.help"/>">

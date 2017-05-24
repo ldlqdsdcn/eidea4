@@ -66,17 +66,17 @@
     <button type="button" class="btn  btn-primary btn-sm btn-hg" title="<eidea:label key="common.button.print"/>">
         <i class="fa fa-print fa-1x" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.print"/>
     </button>
-    <button type="button" class="btn  btn-primary btn-sm btn-hg" ng-click="showAttachment()" title="<eidea:label key="common.button.attachment"/>">
+    <button type="button" class="btn  btn-primary btn-sm btn-hg" ng-click="commonEditHeader('attachment')" title="<eidea:label key="common.button.attachment"/>">
         <i class="fa fa-ils fa-1x" aria-hidden="true"></i>&nbsp;<eidea:label
             key="common.button.attachment"/>
     </button>
     <button type="button" class="btn  btn-primary btn-sm btn-hg"
-            title="<eidea:label key="common.button.refresh"/>">
+            title="<eidea:label key="common.button.refresh"/>" ng-click="commonEditHeader('refresh')">
         <i class="fa fa-refresh fa-1x" aria-hidden="true"></i>&nbsp;<eidea:label
             key="common.button.refresh"/>
     </button>
     <button type="button" class="btn  btn-primary btn-sm btn-hg"
-            title="<eidea:label key="common.button.operation.log"/>">
+            title="<eidea:label key="common.button.operation.log"/>" ng-click="commonEditHeader('log')">
         <i class="fa fa-file-text-o fa-1x" aria-hidden="true"></i>&nbsp;<eidea:label
             key="common.button.operation.log"/>
     </button>

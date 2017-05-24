@@ -39,7 +39,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/base/datadict")
 public class DatadictController extends BaseController {
-    private static final String URI = "datadict";
+    private static final String URI = "base_datadict";
     @Autowired
     private DatadictService datadictService;
     @Autowired

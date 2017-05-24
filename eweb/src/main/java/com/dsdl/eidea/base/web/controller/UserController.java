@@ -114,8 +114,17 @@ public class UserController {
         if (userBo.getId() == null) {
             return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("common.primary_key.isempty"));
         }
-        userService.saveUser(userBo);
-        return getUser(userBo.getId(), session);
+        UserBo userBoBase=userService.getUser(userBo.getId());
+        boolean isTrue=userService.getExistUserName(userBo);
+        if (userBoBase.getUsername().equals(userBo.getUsername())){
+            userService.saveUser(userBo);
+            return getUser(userBo.getId(), session);
+        }else if(!isTrue){
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("pagemenu.connection.point"));
+        }else{
+            userService.saveUser(userBo);
+            return getUser(userBo.getId(), session);
+        }
     }
 
     /**

@@ -8,7 +8,7 @@ Date: 2017-05-02 15:43:14
     <div ui-view ng-show="tabTrlListShow||fieldListShow||fieldTrlListShow||fieldValidatorListShow"></div>
     <form role="form" name="editForm" novalidate ng-submit="save()" ng-show="tabEditShow"
           class="form-horizontal form-label-left input_mask">
-        <table class="table v-table-borderless">
+        <table class="table table-borderless">
             <tr>
                 <td class="control-label"><%--窗体ID--%><eidea:label key="base.tab.label.windowId"/></td>
                 <td class="form-group"><input type="text" class="form-control" id="windowId"
@@ -91,7 +91,7 @@ Date: 2017-05-02 15:43:14
                     <eidea:label key="common.button.create"/></button>
                 <button type="submit" class="btn btn-default btn-sm" ng-show="canSave"><%--保存--%><eidea:label
                         key="common.button.save"/></button>
-                <button class="btn btn-default btn-sm" ng-click="backItemList()"><eidea:label
+                <button class="btn btn-default btn-sm" ng-click="back()"><eidea:label
                         key="common.button.back"/></button>
             </p>
         </div>

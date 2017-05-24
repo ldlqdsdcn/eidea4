@@ -1,7 +1,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/inc/taglib.jsp" %>
-<div  class="container-fluid" ng-controller="listCtrl">
-    <jsp:include page="/common/common_list_button.jsp"/>
+<div  class="container-fluid" ng-controller="listFieldCtrl">
+    <div class="page-header" >
+        <button type="button" class="btn btn-primary btn-sm" ng-show="canAdd" ng-click="createField()"><eidea:label key="common.button.create"/></button>
+        <button type="button" class="btn  btn-primary btn-sm" id="search_but" data-toggle="modal"
+                data-target="#searchModal"><eidea:label key="common.button.search"/></button>
+        <button type="button" class="btn  btn-primary btn-sm" ng-disabled="!canDelete()"
+                ng-click="deleteRecord()" ng-show="canDel" ><eidea:label key="common.button.delete"/></button>
+    </div>
     <div class="row-fluid">
         <div class="span12">
             <table  class="table table-hover table-striped table-condensed">
@@ -30,7 +36,9 @@
                     <th><%--defaultvalue--%><eidea:label key="base.field.label.defaultvalue"/></th>
                     <th><%--isdisplaygrid--%><eidea:label key="base.field.label.isdisplaygrid"/></th>
                     <th><%--seqnogrid--%><eidea:label key="base.field.label.seqnogrid"/></th>
+                    <th><%--isprinted--%><eidea:label key="base.field.label.isprinted"/></th>
                     <th><%--isallowcopy--%><eidea:label key="base.field.label.isallowcopy"/></th>
+                    <th><%--isreport--%><eidea:label key="base.field.label.isreport"/></th>
                     <th><%--编辑--%><eidea:label key="common.button.edit"/></th>
                 </tr>
                 </thead>
@@ -105,12 +113,16 @@
                         {{model.seqnogrid}}
                     </td>
                     <td>
+                        {{model.isprinted}}
+                    </td>
+                    <td>
                         {{model.isallowcopy}}
                     </td>
                     <td>
-                        <a class="btn btn-primary btn-xs" href="#/edit?id={{model.id}}">
-                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.edit"/><%--编辑--%>
-                        </a>
+                        {{model.isreport}}
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-primary btn-xs" ng-click="editField(model.id)"><eidea:label key="common.button.edit"/></button>
                     </td>
                 </tr>
                 </tbody>

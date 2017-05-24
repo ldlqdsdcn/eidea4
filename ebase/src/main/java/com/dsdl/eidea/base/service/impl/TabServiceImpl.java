@@ -40,6 +40,24 @@ public class TabServiceImpl  implements	TabService {
 		}
     	return paginationResult;
     }
+	public PaginationResult<TabPo> getTabListByWindowId(Search search,Integer id)
+	{
+		QueryParams queryParams= new QueryParams();
+		search.setFirstResult(queryParams.getFirstResult());
+		search.setMaxResults(queryParams.getPageSize());
+		search.addFilterEqual("windowId",id);
+		PaginationResult<TabPo> paginationResult = null;
+		if (queryParams.isInit()) {
+			SearchResult<TabPo> searchResult = tabDao.searchAndCount(search);
+			paginationResult = PaginationResult.pagination(searchResult.getResult(), searchResult.getTotalCount(), queryParams.getPageNo(), queryParams.getPageSize());
+		}
+		else
+		{
+			List<TabPo> tabPoList = tabDao.search(search);
+			paginationResult = PaginationResult.pagination(tabPoList, queryParams.getTotalRecords(), queryParams.getPageNo(), queryParams.getPageSize());
+		}
+		return paginationResult;
+	}
 
     public TabPo getTab(Integer id)
 	{

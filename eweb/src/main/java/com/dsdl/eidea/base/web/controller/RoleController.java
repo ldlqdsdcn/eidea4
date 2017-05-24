@@ -63,8 +63,8 @@ public class RoleController {
     @RequiresPermissions(value = "add")
     public JsonResult<RoleBo> saveForCreated(@RequestBody RoleBo roleBo, HttpSession session) {
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
-        if (roleService.findExistRole(roleBo.getName())) {
-            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("role.error.name_exists"));
+        if (roleService.findExistRole(roleBo.getNo())) {
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("role.number.equal"));
         }
         roleService.save(roleBo);
         return get(roleBo.getId(), session);
@@ -75,16 +75,16 @@ public class RoleController {
     @RequiresPermissions(value = "update")
     public JsonResult<RoleBo> saveForUpdated(@RequestBody RoleBo roleBo, HttpSession session) {
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
-        if (roleService.findExistRole(roleBo.getName())) {
-            if (roleService.findExistRoleByName(roleBo.getName()).getId() == roleBo.getId()) {
-                roleService.save(roleBo);
-            } else {
-                return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("role.error.name_exists"));
-            }
-        } else {
+        RoleBo roleBoOld=roleService.getRoleBo(roleBo.getId());
+        if (roleBoOld.getNo().equals(roleBo.getNo())){
             roleService.save(roleBo);
+            return get(roleBo.getId(), session);
+        }else if (roleService.findExistRole(roleBo.getNo())){
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("role.number.equal"));
+        }else{
+            roleService.save(roleBo);
+            return get(roleBo.getId(), session);
         }
-        return get(roleBo.getId(), session);
     }
 
     @RequestMapping(value = "/get", method = RequestMethod.GET)

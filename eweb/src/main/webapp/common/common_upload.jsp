@@ -9,7 +9,7 @@
                     &times;
                 </button>
                 <h4 class="modal-title" id="myModalLabel">
-                    附件上传
+                    <%--附件上传--%><eidea:label key="common.title.attachment.upload"/>
                 </h4>
             </div>
             <div class="modal-body">

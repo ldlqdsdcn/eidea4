@@ -1,7 +1,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/inc/taglib.jsp" %>
-<div  class="container-fluid" ng-controller="listCtrl">
-    <jsp:include page="/common/common_list_button.jsp"/>
+<div  class="container-fluid" ng-controller="listTabCtrl">
+    <div class="page-header" >
+        <button type="button" class="btn btn-primary btn-sm" ng-show="canAdd" ng-click="createItem()"><eidea:label key="common.button.create"/></button>
+        <button type="button" class="btn  btn-primary btn-sm" id="search_but" data-toggle="modal"
+                data-target="#searchModal"><eidea:label key="common.button.search"/></button>
+        <button type="button" class="btn  btn-primary btn-sm" ng-disabled="!canDelete()"
+                ng-click="deleteRecord()" ng-show="canDel" ><eidea:label key="common.button.delete"/></button>
+    </div>
     <div class="row-fluid">
         <div class="span12">
             <table  class="table table-hover table-striped table-condensed">
@@ -72,9 +78,7 @@
                         {{model.updatedby}}
                     </td>
                     <td>
-                        <a class="btn btn-primary btn-xs" href="#/edit?id={{model.id}}">
-                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.edit"/><%--编辑--%>
-                        </a>
+                        <button class="btn btn-primary btn-xs" ng-click="editItem(model.id,model.tableColumnId)"><eidea:label key="common.button.edit"/></button>
                     </td>
                 </tr>
                 </tbody>

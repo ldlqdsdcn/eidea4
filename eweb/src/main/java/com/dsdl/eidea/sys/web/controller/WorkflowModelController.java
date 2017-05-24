@@ -12,7 +12,9 @@ import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.editor.constants.ModelDataJsonConstants;
 import org.activiti.editor.language.json.converter.BpmnJsonConverter;
 import org.activiti.engine.RepositoryService;
+import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.Model;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -20,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.json.Json;
@@ -27,8 +30,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
+import java.util.zip.ZipInputStream;
 
 /**
  * Created by 刘大磊 on 2017/5/15 8:59.
@@ -96,6 +101,31 @@ public class WorkflowModelController {
         List<Model> list = repositoryService.createModelQuery().list();
                 return JsonResult.success(list);
     }
+
+    /**
+     * 部署工作流到服务器
+     * @param modelId
+     * @return
+     */
+    @RequiresPermissions("add")
+    @RequestMapping(value = "/deploy/{modelId}", method = RequestMethod.GET)
+    @ResponseBody
+    public JsonResult<Void> deploy(@PathVariable("modelId") String modelId) {
+        try {
+            Model modelData = repositoryService.getModel(modelId);
+            ObjectNode modelNode = (ObjectNode) new ObjectMapper().readTree(repositoryService.getModelEditorSource(modelData.getId()));
+            byte[] bpmnBytes = null;
+            BpmnModel model = new BpmnJsonConverter().convertToBpmnModel(modelNode);
+            bpmnBytes = new BpmnXMLConverter().convertToXML(model);
+            String processName = modelData.getName() + ".bpmn20.xml";
+            Deployment deployment = repositoryService.createDeployment().name(modelData.getName()).addString(processName, new String(bpmnBytes)).deploy();
+            log.warn("message", "部署成功，部署ID=" + deployment.getId());
+        } catch (Exception e) {
+            log.error("根据模型部署流程失败：modelId={}", modelId, e);
+        }
+        return JsonResult.success(null);
+    }
+
     /**
      * 导出model对象为指定类型
      *
@@ -142,19 +172,27 @@ public class WorkflowModelController {
             }
 
             ByteArrayInputStream in = new ByteArrayInputStream(exportBytes);
-            IOUtils.copy(in, response.getOutputStream());
-
-            response.setHeader("Content-Disposition", "attachment; filename=" + filename);
-            response.flushBuffer();
+            response.reset();
+            response.setContentType("application/x-download");
+            response.addHeader("Content-Disposition", "attachment; filename=" + new String(filename.getBytes("utf-8"),"iso8859-1"));
+            byte[] b = new byte[1024];
+            int len = -1;
+            while ((len = in.read(b, 0, 1024)) != -1) {
+                response.getOutputStream().write(b, 0, len);
+            }
         } catch (Exception e) {
             log.error("导出model的xml文件失败：modelId={}, type={}", modelId, type, e);
         }
     }
-    @RequestMapping(value = "/delete/{modelId}")
+    @RequestMapping(value = "/delete")
     @ResponseBody
     @RequiresPermissions("delete")
-    public JsonResult<List<Model>> delete(@PathVariable("modelId") String modelId) {
-        repositoryService.deleteModel(modelId);
+    public JsonResult<List<Model>> delete(@RequestBody String[] ids) {
+        if(ids != null && ids.length > 0){
+            for(String modelId:ids){
+                repositoryService.deleteModel(modelId);
+            }
+        }
         return modelList();
     }
 

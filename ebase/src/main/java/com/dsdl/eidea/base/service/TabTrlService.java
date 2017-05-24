@@ -16,6 +16,7 @@ import java.util.List;
  */
 public interface TabTrlService {
 	PaginationResult<TabTrlPo> getTabTrlListByPaging(Search search,QueryParams queryParams);
+	PaginationResult<TabTrlPo> getTabTrlListByTabId(Search search,Integer tabId);
 	TabTrlPo getTabTrl(Integer id);
 	void saveTabTrl(TabTrlPo tabTrl);
 	void deletes(Integer[] ids);

@@ -18,6 +18,7 @@ import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.runtime.ProcessInstanceQuery;
 import org.activiti.engine.task.Task;
+import org.activiti.engine.task.TaskQuery;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,7 +29,9 @@ import com.dsdl.eidea.core.dao.CommonDao;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author 刘大磊 2017-05-12 13:36:48
@@ -40,6 +43,8 @@ public class LeaveServiceImpl implements LeaveService {
     private CommonDao<LeavePo, Integer> leaveDao;
     @DataAccess(entity = UserPo.class)
     private CommonDao<UserPo, Integer> userDao;
+
+
 
     @Autowired
     private IdentityService identityService;
@@ -65,8 +70,12 @@ public class LeaveServiceImpl implements LeaveService {
         try {
             // 用来设置启动流程的人员ID，引擎会自动把用户ID保存到activiti:initiator中
             identityService.setAuthenticatedUserId(leavePo.getLeaveUserId().toString());
-
-            processInstance = runtimeService.startProcessInstanceByKey("leave", businessKey);
+            Map<String,Object> variables=new HashMap<>();
+            variables.put("userId",leavePo.getLeaveUserId());
+            UserPo userPo=userDao.find(leavePo.getLeaveUserId());
+            variables.put("username",userPo.getUsername());
+            variables.put("orgId",userPo.getOrgId());
+            processInstance = runtimeService.startProcessInstanceByKey("leave", businessKey,variables);
             String processInstanceId = processInstance.getId();
             leavePo.setProcessInstanceId(processInstanceId);
             leaveDao.saveForLog(leavePo);
@@ -88,7 +97,32 @@ public class LeaveServiceImpl implements LeaveService {
         leaveDao.removeByIds(ids);
     }
 
+    public List<LeavePo> getTodoLeaveList(String userId) {
+        List<LeavePo> results = new ArrayList<>();
 
+        // 根据当前人的ID查询
+        TaskQuery taskQuery = taskService.createTaskQuery().taskCandidateOrAssigned(userId);
+        List<Task> tasks = taskQuery.list();
+
+        // 根据流程的业务ID查询实体并关联
+        for (Task task : tasks) {
+            String processInstanceId = task.getProcessInstanceId();
+            ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceId(processInstanceId).active().singleResult();
+            if (processInstance == null) {
+                continue;
+            }
+            String businessKey = processInstance.getBusinessKey();
+            if (businessKey == null) {
+                continue;
+            }
+            LeavePo leave = leaveDao.find(Integer.parseInt(businessKey));
+            leave.setTask(task);
+            leave.setProcessInstance(processInstance);
+            leave.setProcessDefinition(getProcessDefinition(processInstance.getProcessDefinitionId()));
+            results.add(leave);
+        }
+        return results;
+    }
     /**
      * 读取运行中的流程
      *

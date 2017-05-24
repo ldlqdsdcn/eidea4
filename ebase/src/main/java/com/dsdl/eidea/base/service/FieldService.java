@@ -16,6 +16,8 @@ import java.util.List;
  */
 public interface FieldService {
 	PaginationResult<FieldPo> getFieldListByPaging(Search search,QueryParams queryParams);
+	PaginationResult<FieldPo> getFieldListByColumnId(Search search,Integer columnId);
+	boolean findExistFieldByName(String name);
 	FieldPo getField(Integer id);
 	void saveField(FieldPo field);
 	void deletes(Integer[] ids);

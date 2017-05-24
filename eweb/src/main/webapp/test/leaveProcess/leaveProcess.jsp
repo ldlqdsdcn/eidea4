@@ -96,7 +96,7 @@
                                 ids.push($scope.modelList[i].id);
                             }
                         }
-                        $http.post("<c:url value="/test/leave/deletes"/>", id).success(function (data) {
+                        $http.post("<c:url value="/test/leave/deletes"/>", ids).success(function (data) {
                             if (data.success) {
                                 bootbox.alert("<eidea:message key="common.warn.deleted.success"/>");
                                 $scope.updateList(data.data);

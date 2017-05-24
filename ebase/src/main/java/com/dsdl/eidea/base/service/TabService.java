@@ -16,6 +16,7 @@ import java.util.List;
  */
 public interface TabService {
 	PaginationResult<TabPo> getTabListByPaging(Search search,QueryParams queryParams);
+	PaginationResult<TabPo> getTabListByWindowId(Search search,Integer id);
 	TabPo getTab(Integer id);
 	void saveTab(TabPo tab);
 	void deletes(Integer[] ids);

@@ -21,7 +21,7 @@
             .config(['$routeProvider', function ($routeProvider) {
                 $routeProvider
                         .when('/list', {templateUrl: '<c:url value="/sys/workflow/model/list.tpl.jsp"/>'})
-                        .when('/create',{templateUrl:'<c:url value="/sys/workflow/model/create.tpl.jsp"/>'})
+                        .when('/edit',{templateUrl:'<c:url value="/sys/workflow/model/create.tpl.jsp"/>'})
                         .otherwise({redirectTo: '/list'});
             }]);
     app.controller('listCtrl', function ($scope,$rootScope, $http) {
@@ -40,6 +40,19 @@
                     }
 
                 });
+        $scope.deploy=function(modelId)
+        {
+            $http.get("<c:url value="/sys/model/deploy/"/>"+modelId)
+                    .success(function (response) {
+                        if (response.success) {
+                            bootbox.alert("部署工作流成功");
+                        }
+                        else {
+                            bootbox.alert(response.message);
+                        }
+
+                    });
+        }
         $scope.updateList = function (data) {
             $scope.allList = data;
             $scope.queryParams.totalRecords  = $scope.allList.length;
@@ -68,6 +81,44 @@
             }
             return false;
         }
+        $scope.selectAll = function () {
+            $scope.pageChanged($scope.delFlag);
+        }
+        $scope.deleteRecord = function () {
+            bootbox.confirm({
+                message: "<eidea:message key="common.warn.confirm.deletion"/>",
+                buttons: {
+                    confirm: {
+                        label: '<eidea:label key="common.button.yes"/>',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: '<eidea:label key="common.button.no"/>',
+                        className: 'btn-danger'
+                    }
+                },
+                callback: function (result) {
+                    if (result) {
+                        var ids = [];
+                        for (var i = 0; i < $scope.modelList.length; i++) {
+                            if ($scope.modelList[i].delFlag) {
+                                ids.push($scope.modelList[i].id);
+                            }
+                        }
+                        $http.post("<c:url value="/sys/model/delete"/>",ids).success(function (data) {
+                            if (data.success) {
+                                bootbox.alert("<eidea:message key="common.warn.deleted.success"/>");
+                                $scope.updateList(data.data);
+                            }
+                            else {
+                                bootbox.alert(data.message);
+                            }
+
+                        });
+                    }
+                }
+            });
+        };
         $scope.removeModel=function(modelId)
         {
             bootbox.confirm({
@@ -84,7 +135,9 @@
                 },
                 callback: function (result) {
                     if (result) {
-                        $http.post("<c:url value="/sys/model/delete/"/>"+modelId).success(function (data) {
+                        var ids = [];
+                        ids.push(modelId);
+                        $http.post("<c:url value="/sys/model/delete/"/>",ids).success(function (data) {
                             if (data.success) {
                                 bootbox.alert("<eidea:message key="common.warn.deleted.success"/>");
                                 $scope.updateList(data.data);
@@ -118,6 +171,7 @@
     });
     app.controller("createCtrl",function($scope,$http){
         $scope.canAdd=PrivilegeService.hasPrivilege('add');
+        $scope.canSave=PrivilegeService.hasPrivilege('add');
         $scope.model={"name":"","key":"","description":""};
         $scope.create=function () {
             $scope.model={};

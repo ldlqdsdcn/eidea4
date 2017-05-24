@@ -40,6 +40,24 @@ public class FieldValidatorServiceImpl  implements	FieldValidatorService {
 		}
     	return paginationResult;
     }
+	public PaginationResult<FieldValidatorPo> getFieldValidatorListByFieldId(Search search,Integer fieldId)
+	{
+		QueryParams queryParams = new QueryParams();
+		search.setFirstResult(queryParams.getFirstResult());
+		search.setMaxResults(queryParams.getPageSize());
+		search.addFilterEqual("fieldId",fieldId);
+		PaginationResult<FieldValidatorPo> paginationResult = null;
+		if (queryParams.isInit()) {
+			SearchResult<FieldValidatorPo> searchResult = fieldValidatorDao.searchAndCount(search);
+			paginationResult = PaginationResult.pagination(searchResult.getResult(), searchResult.getTotalCount(), queryParams.getPageNo(), queryParams.getPageSize());
+		}
+		else
+		{
+			List<FieldValidatorPo> fieldValidatorPoList = fieldValidatorDao.search(search);
+			paginationResult = PaginationResult.pagination(fieldValidatorPoList, queryParams.getTotalRecords(), queryParams.getPageNo(), queryParams.getPageSize());
+		}
+		return paginationResult;
+	}
 
     public FieldValidatorPo getFieldValidator(Integer id)
 	{

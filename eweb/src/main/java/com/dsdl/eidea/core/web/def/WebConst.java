@@ -15,6 +15,7 @@ public class WebConst {
     public static final String PAGE_MODULE_ID="pageModuleId";
     public static final String PRIVILEGES = "privileges";
     public static final String SESSION_RESOURCE = "userResource";
+    public static final String SESSION_LANGUAGE="language";
     public static final String ORG_IDS = "orgIdList";
     /**
      * token header 权限验证

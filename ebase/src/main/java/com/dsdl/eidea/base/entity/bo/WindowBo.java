@@ -18,7 +18,11 @@ public class WindowBo {
     /**
      * 窗体名称
      */
-    private String WindowName;
+    private String windowName;
+    /**
+     * 窗体描述
+     */
+    private String description;
     /**
      * 窗体帮助信息
      */

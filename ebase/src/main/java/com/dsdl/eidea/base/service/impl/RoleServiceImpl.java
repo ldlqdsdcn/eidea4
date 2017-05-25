@@ -146,8 +146,8 @@ public class RoleServiceImpl implements RoleService {
         rolePo.setSysRoleOrgaccesses(roleOrgaccessPoList);
 
         roleDao.saveForLog(rolePo);
-       /* roleBo.setId(rolePo.getId());
-        accountService.saveRole(rolePo.getId());*/
+        roleBo.setId(rolePo.getId());
+        accountService.saveRole(rolePo.getId());
     }
 
     @Override

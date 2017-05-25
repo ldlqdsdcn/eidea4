@@ -1,6 +1,5 @@
 package com.dsdl.eidea.base.entity.bo;
 
-import com.dsdl.eidea.base.entity.po.FieldPo;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -32,5 +31,5 @@ public class TabBo {
     /**
      * 字段列表
      */
-    private List<FieldPo> fieldList;
+    private List<FieldBo> fieldList;
 }

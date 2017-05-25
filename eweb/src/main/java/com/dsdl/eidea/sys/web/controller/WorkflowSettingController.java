@@ -227,7 +227,6 @@ public class WorkflowSettingController {
      * @throws UnsupportedEncodingException
      * @throws XMLStreamException
      */
-    //TODO 转换模型成功 删除当前process
     @RequestMapping(value = "/process/convert-to-model/{processDefinitionId}",method = RequestMethod.GET)
     @ResponseBody
     public JsonResult<Map<String,Object>> convertToModel(@PathVariable("processDefinitionId") String processDefinitionId)

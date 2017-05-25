@@ -6,9 +6,13 @@
 */
 package com.dsdl.eidea.base.service.impl;
 
+import com.dsdl.eidea.base.entity.bo.TabBo;
 import com.dsdl.eidea.base.entity.bo.WindowBo;
 import com.dsdl.eidea.base.entity.po.FieldPo;
 import com.dsdl.eidea.base.entity.po.TabPo;
+import com.dsdl.eidea.base.entity.po.WindowTrlPo;
+import com.dsdl.eidea.base.service.TabService;
+import com.dsdl.eidea.base.service.WindowTrlService;
 import com.dsdl.eidea.core.spring.annotation.DataAccess;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,10 +31,12 @@ import java.util.List;
 public class WindowServiceImpl  implements	WindowService {
 	@DataAccess(entity =WindowPo.class)
 	private CommonDao<WindowPo,Integer> windowDao;
-	@DataAccess(entity =TabPo.class)
-	private CommonDao<TabPo,Integer> tabDao;
 	@DataAccess(entity =FieldPo.class)
 	private CommonDao<FieldPo,Integer> fieldDao;
+	@DataAccess(entity =WindowTrlPo.class)
+	private CommonDao<WindowTrlPo,Integer> windowTrlDao;
+	@Autowired
+	private TabService tabService;
 	public PaginationResult<WindowPo> getWindowListByPaging(Search search,QueryParams queryParams)
     {
 		search.setFirstResult(queryParams.getFirstResult());
@@ -64,7 +70,25 @@ public class WindowServiceImpl  implements	WindowService {
 	@Override
 	public WindowBo getWindowBo(Integer id,String lang) {
 		WindowPo windowPo=windowDao.find(id);
-		return null;
+		Search search=new Search();
+		search.addFilterEqual("windowId",id);
+		search.addFilterEqual("lang",lang);
+		WindowTrlPo windowTrlPo=windowTrlDao.searchUnique(search);
+		WindowBo windowBo=new WindowBo();
+		windowBo.setWindowId(windowPo.getId());
+		if(windowTrlPo!=null)
+		{
+			windowBo.setHelp(windowTrlPo.getHelp());
+			windowBo.setWindowName(windowTrlPo.getName());
+		}
+		else
+		{
+			windowBo.setWindowName(windowPo.getName());
+			windowBo.setHelp("");
+		}
+		List<TabBo> tabBoList=tabService.getTabBoListByWindowId(windowPo.getId(),lang);
+		windowBo.setTabList(tabBoList);
+		return windowBo;
 	}
 	@Override
 	public boolean findExistWindowByName(String name){

@@ -32,10 +32,10 @@ public class ActivitiTaskTest {
     @Test
     public void testGetTask()
     {
+        repositoryService.createDeployment().addClasspathResource("diagrams/leave.bpmn").name("leave").category("leave").deploy();
         Map<String, Object> variables = new HashMap<>();
-        variables.put("name","李群");
-        ProcessInstance processInstance=runtimeService.startProcessInstanceByKey("leave","3",variables);
-
+        variables.put("username","liqun");
+        ProcessInstance processInstance=runtimeService.startProcessInstanceByKey("leave","14",variables);
         System.out.println(processInstance.getProcessInstanceId());
         List<Task> taskList=taskService.createTaskQuery().processInstanceId(processInstance.getId()).active().list();
         System.out.println(taskList.size());
@@ -57,9 +57,7 @@ public class ActivitiTaskTest {
             {
                 System.out.println(task.getName());
             }
-
         }
-
     }
     @Test
     public void testDeployWorkflow()
@@ -67,11 +65,10 @@ public class ActivitiTaskTest {
         repositoryService.createDeployment().addClasspathResource("activiti/purchase.bpmn").name("采购审批").category("采购").deploy();
         Map<String, Object> variables = new HashMap<>();
         variables.put("name","李群");
-        ProcessInstance processInstance=runtimeService.startProcessInstanceByKey("purchase","3",variables);
+        ProcessInstance processInstance=runtimeService.startProcessInstanceByKey("purchase","28",variables);
         ProcessInstanceQuery query = runtimeService.createProcessInstanceQuery().processDefinitionKey("purchase").active().orderByProcessInstanceId().desc();
         List<ProcessInstance> list = query.list();
         System.out.println("processInstance list.size="+list.size());
-
         Task task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
         if(task==null)
         {

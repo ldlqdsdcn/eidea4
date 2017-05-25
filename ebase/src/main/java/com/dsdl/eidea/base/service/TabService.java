@@ -5,6 +5,7 @@
 * email:ldlqdsd@126.com
 */
 package com.dsdl.eidea.base.service;
+import com.dsdl.eidea.base.entity.bo.TabBo;
 import com.dsdl.eidea.base.entity.po.TabPo;
 import com.dsdl.eidea.core.dto.PaginationResult;
 import com.dsdl.eidea.core.params.QueryParams;
@@ -20,4 +21,12 @@ public interface TabService {
 	TabPo getTab(Integer id);
 	void saveTab(TabPo tab);
 	void deletes(Integer[] ids);
+
+	/**
+	 * 根据windowId获取Tab 列表
+	 * @param windowId
+	 * @return
+	 */
+	List<TabBo> getTabBoListByWindowId(Integer windowId,String lang);
+
 }

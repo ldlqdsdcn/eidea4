@@ -6,6 +6,8 @@
 */
 package com.dsdl.eidea.base.service.impl;
 
+import com.dsdl.eidea.base.entity.bo.TabBo;
+import com.dsdl.eidea.base.entity.po.TabTrlPo;
 import com.dsdl.eidea.core.spring.annotation.DataAccess;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,8 @@ import com.dsdl.eidea.core.params.QueryParams;
 import com.googlecode.genericdao.search.SearchResult;
 import com.googlecode.genericdao.search.Search;
 import com.dsdl.eidea.core.dao.CommonDao;
+
+import java.util.ArrayList;
 import java.util.List;
 /**
  * @author 刘大磊 2017-05-02 15:43:14
@@ -24,6 +28,8 @@ import java.util.List;
 public class TabServiceImpl  implements	TabService {
 	@DataAccess(entity =TabPo.class)
 	private CommonDao<TabPo,Integer> tabDao;
+	@DataAccess(entity = TabTrlPo.class)
+	private CommonDao<TabTrlPo,Integer> tabTrlDao;
 	public PaginationResult<TabPo> getTabListByPaging(Search search,QueryParams queryParams)
     {
 		search.setFirstResult(queryParams.getFirstResult());
@@ -59,6 +65,37 @@ public class TabServiceImpl  implements	TabService {
 		return paginationResult;
 	}
 
+	public List<TabBo> getTabBoListByWindowId(Integer windowId, String lang)
+	{
+		Search search=new Search();
+		search.addFilterEqual("windowId",windowId);
+		search.addSortAsc("sortno");
+		List<TabPo>tabPoList=tabDao.search(search);
+		List<TabBo> tabBoList=new ArrayList<>();
+		for(TabPo tabPo:tabPoList)
+		{
+			TabBo tabBo=new TabBo();
+			Search trlSearch=new Search();
+			trlSearch.addFilterEqual("tabId",tabPo.getId());
+			trlSearch.addFilterEqual("lang",lang);
+			TabTrlPo tabTrlPo=tabTrlDao.searchUnique(trlSearch);
+			tabBo.setSeqNo(tabPo.getSortno());
+			tabBo.setId(tabPo.getId());
+			if(tabTrlPo!=null)
+			{
+				tabBo.setHelp(tabTrlPo.getHelp());
+				tabBo.setTabName(tabTrlPo.getName());
+			}
+			else
+			{
+				tabBo.setTabName(tabPo.getName());
+				tabBo.setHelp("");
+			}
+			tabBoList.add(tabBo);
+		}
+
+		return tabBoList;
+	}
     public TabPo getTab(Integer id)
 	{
 		return tabDao.find(id);

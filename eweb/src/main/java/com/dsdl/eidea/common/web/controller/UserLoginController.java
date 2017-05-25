@@ -75,13 +75,10 @@ public class UserLoginController {
                 return JsonResult.fail(ResultCode.FAILURE.getCode(), "密码不允许为空！");
             }
         }
-
         Subject subject = SecurityUtils.getSubject();
         UsernamePasswordToken token = new UsernamePasswordToken(loginBo.getUsername(), loginBo.getPassword());
-
         try {
             subject.login(token);
-
             UserBo userBo=userService.getUserByUsername(loginBo.getUsername());
             userInitCommon(loginBo);
             userBo.setCode(loginBo.getCode());

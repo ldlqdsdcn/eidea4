@@ -8,16 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/inc/taglib.jsp" %>
 <div  class="container-fluid" ng-controller="listCtrl">
-    <div class="page-header" >
-        <ol class="breadcrumb">
-            <li><a href="javascript:;"><i class="icon icon-tasks"></i><eidea:label key="leave.title"/></a></li>
-        </ol>
-        <a href="#/edit" class="btn  btn-primary btn-sm" ng-show="canAdd"><eidea:label key="common.button.create"/></a>
-        <button type="button" class="btn  btn-primary btn-sm" id="search_but" data-toggle="modal"
-                data-target="#searchModal"><eidea:label key="common.button.search"/></button>
-        <button type="button" class="btn  btn-primary btn-sm" ng-disabled="!canDelete()"
-                ng-click="deleteRecord()" ng-show="canDel" ><eidea:label key="common.button.delete"/></button>
-    </div>
+    <jsp:include page="/common/common_list_button.jsp"/>
     <div class="row-fluid">
         <div class="span12">
             <table  class="table table-hover table-striped table-condensed">
@@ -57,10 +48,11 @@
                         {{model.userName}}
                     </td>
                     <td>
-                        <a target="_blank" href='<c:url value="/common/activiti/show/trace/"/>{{model.processInstanceId}}'  title="点击查看流程图">{{model.taskName }}</a>
+                        <%--<a target="_blank" href='<c:url value="/common/activiti/show/trace/"/>{{model.processInstanceId}}'  title="点击查看流程图">{{model.taskName }}</a>--%>
+                        <a href='javascript:void (0);'  title="<eidea:label key="leave.title.click.view.flow.chart"/>" ng-click="openImage(model.processInstanceId)">{{model.taskName }}</a>
                     </td>
                     <td>{{model.taskCreateTime }}</td>
-                    <td>{{model.suspended ? "已挂起" : "正常" }}；<b title='流程版本号'>V: {{model.version }}</b></td>
+                    <td>{{model.suspended ? "<eidea:label key="leave.label.suspend"/>" : "<eidea:label key="leave.label.normal"/>" }}；<b title='<eidea:label key="leave.label.process.version"/>'>V: {{model.version }}</b></td>
                     <td>{{model.assignee }}</td>
                 </tr>
                 </tbody>
@@ -73,3 +65,4 @@
         </div>
     </div>
 </div>
+<jsp:include page="/common/common_upload.jsp"/>

@@ -13,7 +13,7 @@ import java.util.List;
  */
 @Getter
 @Setter
-public class FieldBo {
+public class  FieldBo {
     /**
      * 字段属性
      */

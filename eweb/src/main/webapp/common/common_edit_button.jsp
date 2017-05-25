@@ -37,6 +37,11 @@
         <i class="fa fa-copy fa-1x" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.copy"/>
     </button>
     <button type="button" class="btn  btn-primary btn-sm btn-hg"
+            title="<eidea:label key="common.button.application.submit"/>" ng-click="submitApprove()">
+        <i class="fa fa-check-square-o fa-1x" aria-hidden="true"></i>&nbsp;<eidea:label
+            key="common.button.application.submit"/>
+    </button>
+    <button type="button" class="btn  btn-primary btn-sm btn-hg"
             title="<eidea:label key="common.button.auditing"/>">
         <i class="fa fa-gavel fa-1x" aria-hidden="true"></i>&nbsp;<eidea:label
             key="common.button.auditing"/>

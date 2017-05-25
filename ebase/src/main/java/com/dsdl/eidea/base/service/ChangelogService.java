@@ -17,5 +17,5 @@ public interface ChangelogService {
 	 * getChangeLogList:查询log列表
 	 * @return
 	 */
-	List<ChangelogBo> getChangeLogList(Search search);
+	List<ChangelogBo> getChangeLogModelList(Search search);
 }

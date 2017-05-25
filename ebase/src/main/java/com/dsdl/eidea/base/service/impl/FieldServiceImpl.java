@@ -7,6 +7,7 @@
 package com.dsdl.eidea.base.service.impl;
 
 import com.dsdl.eidea.core.spring.annotation.DataAccess;
+import com.googlecode.genericdao.search.Field;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.dsdl.eidea.base.entity.po.FieldPo;
@@ -40,7 +41,34 @@ public class FieldServiceImpl  implements	FieldService {
 		}
     	return paginationResult;
     }
-
+	public PaginationResult<FieldPo> getFieldListByColumnId(Search search,Integer columnId)
+	{
+		QueryParams queryParams = new QueryParams();
+		search.setFirstResult(queryParams.getFirstResult());
+		search.setMaxResults(queryParams.getPageSize());
+		search.addFilterEqual("columnId",columnId);
+		PaginationResult<FieldPo> paginationResult = null;
+		if (queryParams.isInit()) {
+			SearchResult<FieldPo> searchResult = fieldDao.searchAndCount(search);
+			paginationResult = PaginationResult.pagination(searchResult.getResult(), searchResult.getTotalCount(), queryParams.getPageNo(), queryParams.getPageSize());
+		}
+		else
+		{
+			List<FieldPo> fieldPoList = fieldDao.search(search);
+			paginationResult = PaginationResult.pagination(fieldPoList, queryParams.getTotalRecords(), queryParams.getPageNo(), queryParams.getPageSize());
+		}
+		return paginationResult;
+	}
+	public boolean findExistFieldByName(String name){
+		Search search = new Search();
+		search.addFilterEqual("name",name);
+		List<FieldPo> fieldPoList = fieldDao.search(search);
+		if (fieldPoList.size()>0&&fieldPoList!=null){
+			return true;
+		}else{
+			return false;
+		}
+	}
     public FieldPo getField(Integer id)
 	{
 		return fieldDao.find(id);

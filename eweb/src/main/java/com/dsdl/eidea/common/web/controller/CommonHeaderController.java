@@ -201,7 +201,7 @@ public class CommonHeaderController {
         }
         logSearch.addFilterEqual("pk",changelogBo.getTableId());
         if(logSearch.getFilters().size()==2){
-            List<ChangelogBo> changelogBoList=changelogService.getChangeLogList(logSearch);
+            List<ChangelogBo> changelogBoList=changelogService.getChangeLogModelList(logSearch);
             if(changelogBoList != null && changelogBoList.size() > 0){
                 List<TableColumnBo> tableColumnBoList = changelogService.getChangelogHeader(changelogBoList.get(0).getName());
                 ChangelogVo changelogVo = buildChangeLogVo(tableColumnBoList, changelogBoList);

@@ -35,7 +35,7 @@ import java.util.List;
 */ @Controller
 @RequestMapping("/base/window")
 public class WindowController extends BaseController {
-private static final String URI = "window";
+private static final String URI = "core_window";
 @Autowired
 private WindowService windowService;
 @RequestMapping(value = "/showList", method = RequestMethod.GET)
@@ -60,56 +60,67 @@ public JsonResult<PaginationResult<WindowPo>> list(HttpSession session,@RequestB
     public JsonResult<WindowPo> get(Integer id) {
         WindowPo windowPo = null;
         if (id == null) {
-        return JsonResult.fail(ErrorCodes.VALIDATE_PARAM_ERROR.getCode(),getMessage("common.errror.get_object",getLabel("window.title")));
+            return JsonResult.fail(ErrorCodes.VALIDATE_PARAM_ERROR.getCode(), getMessage("common.errror.get_object", getLabel("window.title")));
         } else {
-        windowPo = windowService.getWindow(id);
+            windowPo = windowService.getWindow(id);
         }
         return JsonResult.success(windowPo);
-        }
+    }
 
-        @RequiresPermissions("add")
-        @RequestMapping(value = "/create", method = RequestMethod.GET)
-        @ResponseBody
-        public JsonResult<WindowPo> create() {
-            WindowPo windowPo = new WindowPo();
-            return JsonResult.success(windowPo);
-            }
+    @RequiresPermissions("add")
+    @RequestMapping(value = "/create", method = RequestMethod.GET)
+    @ResponseBody
+    public JsonResult<WindowPo> create() {
+        WindowPo windowPo = new WindowPo();
+        return JsonResult.success(windowPo);
+    }
 
     /**
-    * @param windowPo
-    * @return
-    */
+     * @param windowPo
+     * @return
+     */
     @RequiresPermissions("add")
     @RequestMapping(value = "/saveForCreated", method = RequestMethod.POST)
     @ResponseBody
     public JsonResult<WindowPo> saveForCreate(@Validated @RequestBody WindowPo windowPo) {
+        if (windowService.findExistWindowByName(windowPo.getName())){
+            return JsonResult.fail(ErrorCodes.VALIDATE_PARAM_ERROR.getCode(),getMessage("window.error.name.exist"));
+        }
         windowService.saveWindow(windowPo);
         return get(windowPo.getId());
-        }
+    }
 
-        @RequiresPermissions("update")
-        @RequestMapping(value = "/saveForUpdated", method = RequestMethod.POST)
-        @ResponseBody
-        public JsonResult<WindowPo> saveForUpdate(@Validated @RequestBody WindowPo windowPo) {
+    @RequiresPermissions("update")
+    @RequestMapping(value = "/saveForUpdated", method = RequestMethod.POST)
+    @ResponseBody
+    public JsonResult<WindowPo> saveForUpdate(@Validated @RequestBody WindowPo windowPo) {
 
-            if(windowPo.getId() == null){
+        if (windowPo.getId() == null) {
             return JsonResult.fail(ErrorCodes.VALIDATE_PARAM_ERROR.getCode(), getMessage("common.errror.pk.required"));
+        }
+        if (windowService.findExistWindowByName(windowPo.getName())){
+            if (windowService.getExistWindowByName(windowPo.getName()).getId()==windowPo.getId()){
+                windowService.saveWindow(windowPo);
+            }else{
+                return JsonResult.fail(ErrorCodes.VALIDATE_PARAM_ERROR.getCode(),getMessage("window.error.name.exist"));
             }
+        }else{
             windowService.saveWindow(windowPo);
-            return get(windowPo.getId());
-            }
+        }
+        return get(windowPo.getId());
+    }
 
     @RequiresPermissions("delete")
     @RequestMapping(value = "/deletes", method = RequestMethod.POST)
     @ResponseBody
 
     public JsonResult<PaginationResult<WindowPo>> deletes(@RequestBody DeleteParams<Integer> deleteParams, HttpSession session) {
-    if (deleteParams.getIds() == null||deleteParams.getIds().length == 0)  {
-                return JsonResult.fail(ErrorCodes.VALIDATE_PARAM_ERROR.getCode(), getMessage("common.error.delete.failure",getMessage("window.title")));
-                }
-            windowService.deletes(deleteParams.getIds());
-                return list(session,deleteParams.getQueryParams());
+        if (deleteParams.getIds() == null || deleteParams.getIds().length == 0) {
+            return JsonResult.fail(ErrorCodes.VALIDATE_PARAM_ERROR.getCode(), getMessage("common.error.delete.failure", getMessage("window.title")));
         }
+        windowService.deletes(deleteParams.getIds());
+        return list(session, deleteParams.getQueryParams());
+    }
 
 
 }

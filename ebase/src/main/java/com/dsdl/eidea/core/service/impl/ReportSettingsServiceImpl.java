@@ -58,12 +58,12 @@ public class ReportSettingsServiceImpl implements ReportSettingsService,ReportSe
         {
             reportSettingsPo.setInit(temp.getInit());
         }
-        return reportSettingsDao.save(reportSettingsPo);
+        return reportSettingsDao.saveForLog(reportSettingsPo);
     }
 
     @Override
     public void deletes(String[] keys) {
-        reportSettingsDao.removeByIds(keys);
+        reportSettingsDao.removeByIdsForLog(keys);
     }
 
     @Override

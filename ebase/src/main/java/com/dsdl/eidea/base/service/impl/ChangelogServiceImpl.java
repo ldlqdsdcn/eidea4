@@ -87,7 +87,7 @@ public class ChangelogServiceImpl implements ChangelogService {
 	}
 
 	@Override
-	public List<ChangelogBo> getChangeLogList(Search search) {
+	public List<ChangelogBo> getChangeLogModelList(Search search) {
 		List<ChangelogPo> changelogPoList=changelogDao.search(search);
 		List<ChangelogBo> changelogBoList=modelMapper.map(changelogPoList,new TypeToken<List<ChangelogBo>>(){}.getType());
 		for(int i=0;i<changelogBoList.size();i++){

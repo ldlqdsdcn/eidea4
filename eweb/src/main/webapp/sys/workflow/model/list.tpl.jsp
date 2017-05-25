@@ -1,38 +1,31 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/inc/taglib.jsp" %>
 <div  class="container-fluid" ng-controller="listCtrl">
-    <div class="page-header" >
-        <ol class="breadcrumb">
-            <li><a href="javascript:;"><i class="icon icon-tasks"></i><eidea:label key="leave.title"/></a></li>
-        </ol>
-
-        <a href="#/create" class="btn  btn-primary btn-sm" ng-show="canAdd"><eidea:label key="common.button.create"/></a>
-        <button type="button" class="btn  btn-primary btn-sm" id="search_but" data-toggle="modal"
-                data-target="#searchModal"><eidea:label key="common.button.search"/></button>
-        <button type="button" class="btn  btn-primary btn-sm" ng-disabled="!canDelete()"
-                ng-click="deleteRecord()" ng-show="canDel" ><eidea:label key="common.button.delete"/></button>
-    </div>
+    <jsp:include page="/common/common_list_button.jsp"/>
     <div class="row-fluid">
         <div class="span12">
             <table  class="table table-hover table-striped table-condensed">
                 <thead>
                 <tr>
-
+                    <th><input type="checkbox" name="selectAll" style="margin:0px;" ng-change="selectAll()"  ng-model="delFlag"></th>
                     <th><%--序号--%><eidea:label key="base.serialNumber"/></th>
-                    <th>ID</th>
-                    <th>KEY</th>
-                    <th>Name</th>
-                    <th>Version</th>
-                    <th>创建时间</th>
-                    <th>最后更新时间</th>
-                    <th>元数据</th>
+                    <th><%--ID--%><eidea:label key="workflow.model.column.id"/></th>
+                    <th><%--KEY--%><eidea:label key="workflow.model.column.key"/></th>
+                    <th><%--Name--%><eidea:label key="workflow.model.column.name"/></th>
+                    <th><%--Version--%><eidea:label key="workflow.model.column.version"/></th>
+                    <th><%--创建时间--%><eidea:label key="workflow.model.column.createtime"/></th>
+                    <th><%--最后更新时间--%><eidea:label key="workflow.model.column.lastupdatetime"/></th>
+                    <th><%--元数据--%><eidea:label key="workflow.model.column.metadata"/></th>
                     <th><%--编辑--%><eidea:label key="common.button.edit"/></th>
                 </tr>
                 </thead>
                 <tbody>
 
                 <tr ng-repeat="model in modelList track by $index" ng-class-even="success">
-                        <td>{{(queryParams.pageNo-1)*queryParams.pageSize+$index+1}}</td>
+                    <td>
+                        <input type="checkbox" ng-model="model.delFlag">
+                    </td>
+                    <td>{{(queryParams.pageNo-1)*queryParams.pageSize+$index+1}}</td>
                     <td>
                         {{model.id}}
                     </td>
@@ -56,13 +49,19 @@
                         {{model.metaInfo}}
                     </td>
                     <td>
-                        导出(<a href="<c:url value="/sys/model/export"/>/{{model.id}}/bpmn" target="_blank">BPMN</a>
-                        |&nbsp;<a href="<c:url value="/sys/model/export"/>/{{model.id}}/json" target="_blank">JSON</a>
+                        <%--导出--%><eidea:label key="workflow.model.label.expert"/>(<a href="<c:url value="/sys/model/export"/>/{{model.id}}/bpmn">
+                            <%--BPMN--%><eidea:label key="workflow.model.label.bpmn"/></a>
+                        |&nbsp;<a href="<c:url value="/sys/model/export"/>/{{model.id}}/json">
+                            <%--JSON--%><eidea:label key="workflow.model.label.json"/></a>
                         )
-                         <button class="btn btn-primary btn-xs" ng-click="deploy(model.id)">部署</button>
-                         <a  href="<c:url value="/sys/workflow/modeler.jsp"/>?modelId={{model.id}}" class="btn btn-primary btn-xs"><eidea:label key="common.button.edit"/><%--编辑--%></a>
+                         <button class="btn btn-primary btn-xs" ng-click="deploy(model.id)">
+                             <i class="fa fa-desktop" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.deploy"/><%--部署--%>
+                         </button>
+                         <a  href="<c:url value="/sys/workflow/modeler.jsp"/>?modelId={{model.id}}" class="btn btn-primary btn-xs">
+                             <i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.edit"/><%--编辑--%>
+                         </a>
 
-                         <button class="btn btn-danger btn-xs" ng-click="removeModel(model.id)"><eidea:label key="common.button.delete"/></button>
+                         <%--<button class="btn btn-danger btn-xs" ng-click="removeModel(model.id)"><eidea:label key="common.button.delete"/></button>--%>
                     </td>
                 </tr>
                 </tbody>

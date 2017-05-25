@@ -1,11 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/inc/taglib.jsp" %>
-<div  class="container-fluid" ng-controller="listCtrl">
+<div  class="container-fluid" ng-controller="listWindowTrlCtrl">
     <div class="page-header" >
-        <ol class="breadcrumb">
-            <li><a href="javascript:;"><i class="icon icon-tasks"></i><eidea:label key="windowTrl.title"/></a></li>
-        </ol>
-        <a href="#/edit" class="btn  btn-primary btn-sm" ng-show="canAdd"><eidea:label key="common.button.create"/></a>
+        <button type="button" class="btn btn-primary btn-sm" ng-show="canAdd" ng-click="createWindowTrl()"><eidea:label key="common.button.create"/></button>
         <button type="button" class="btn  btn-primary btn-sm" id="search_but" data-toggle="modal"
                 data-target="#searchModal"><eidea:label key="common.button.search"/></button>
         <button type="button" class="btn  btn-primary btn-sm" ng-disabled="!canDelete()"
@@ -49,7 +46,7 @@
                         {{model.help}}
                     </td>
                     <td>
-                        <a class="btn btn-primary btn-xs" href="#/edit?id={{model.id}}"><eidea:label key="common.button.edit"/><%--编辑--%></a>
+                       <button type="button" class="btn btn-primary btn-xs" ng-click="editWindowTrl(model.id)"><eidea:label key="common.button.edit"/></button>
                     </td>
                 </tr>
                 </tbody>

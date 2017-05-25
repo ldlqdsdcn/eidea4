@@ -62,11 +62,11 @@ public class DatadictServiceImpl implements DatadictService {
     }
 
     public void saveDatadict(DatadictPo datadict) {
-        datadictDao.save(datadict);
+        datadictDao.saveForLog(datadict);
     }
 
     public void deletes(Integer[] ids) {
-        datadictDao.removeByIds(ids);
+        datadictDao.removeByIdsForLog(ids);
     }
 
     public boolean findExistCode(String code) {

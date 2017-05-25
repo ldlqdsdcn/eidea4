@@ -22,7 +22,7 @@ public class RolePo implements java.io.Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", unique = true, nullable = false)
 	private Integer id;
-
+	@Column(name = "no")
 	private String no;
 	@Column(name = "name", unique = true, nullable = false, length = 45)
 	private String name;

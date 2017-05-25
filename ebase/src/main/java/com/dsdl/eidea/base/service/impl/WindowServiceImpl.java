@@ -54,17 +54,34 @@ public class WindowServiceImpl  implements	WindowService {
 	}
     public void saveWindow(WindowPo window)
 	{
-		windowDao.save(window);
+		windowDao.saveForLog(window);
 	}
     public void deletes(Integer[] ids)
 	{
-		windowDao.removeByIds(ids);
+		windowDao.removeByIdsForLog(ids);
 	}
 
 	@Override
 	public WindowBo getWindowBo(Integer id,String lang) {
 		WindowPo windowPo=windowDao.find(id);
-
 		return null;
+	}
+	@Override
+	public boolean findExistWindowByName(String name){
+		Search search = new Search();
+		search.addFilterEqual("name",name);
+		List<WindowPo> windowPoList = windowDao.search(search);
+		if (windowPoList.size()>0&&windowPoList!=null){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	@Override
+	public WindowPo getExistWindowByName(String name){
+		Search search = new Search();
+		search.addFilterEqual("name",name);
+		WindowPo windowPo = windowDao.searchUnique(search);
+		return windowPo;
 	}
 }

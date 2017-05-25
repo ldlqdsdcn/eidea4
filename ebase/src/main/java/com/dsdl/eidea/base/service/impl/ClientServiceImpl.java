@@ -82,12 +82,12 @@ public class ClientServiceImpl implements ClientService {
 
     public void save(ClientBo clientBo) {
         ClientPo clientPo = modelMapper.map(clientBo, ClientPo.class);
-        clientDao.save(clientPo);
+        clientDao.saveForLog(clientPo);
         clientBo.setId(clientPo.getId());
     }
 
     public void deletes(Integer[] ids) {
-        clientDao.removeByIds(ids);
+        clientDao.removeByIdsForLog(ids);
     }
 
     public List<ClientBo> getClientListForActivated() {

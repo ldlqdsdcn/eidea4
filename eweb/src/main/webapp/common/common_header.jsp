@@ -6,6 +6,9 @@
                     $window.location.reload();
                 }
             }
+            $('a').each(function(){
+                $(this).attr("ondragstart","return false");
+            });
         },
         editInit:function ($scope,$http,$window,$timeout, Upload,directoryUrl) {
             $scope.commonEditHeader=function (type) {
@@ -129,6 +132,9 @@
                     message: message,
                 });
             }
+            $('a').each(function(){
+                $(this).attr("ondragstart","return false");
+            });
         }
     }
 </script>

@@ -45,7 +45,15 @@ public class SearchServiceImpl implements SearchService {
     @Autowired
     private SearchColumnDao searchColumnDao;
     private ModelMapper modelMapper = new ModelMapper();
-
+    public SearchServiceImpl()
+    {
+        modelMapper.addMappings(new PropertyMap<SearchColumnPo, SearchColumnBo>() {
+            @Override
+            protected void configure() {
+                map().setLabelKey(source.getCoreLabel().getKey());
+            }
+        });
+    }
     @Override
     public PaginationResult<SearchBo> findList(Search search, QueryParams queryParams) {
         search.setFirstResult(queryParams.getFirstResult());
@@ -70,14 +78,9 @@ public class SearchServiceImpl implements SearchService {
     }
 
     private SearchBo convertPoToBo(SearchPo searchPo) {
-        ModelMapper modelMapper = new ModelMapper();
 
-        modelMapper.addMappings(new PropertyMap<SearchColumnPo, SearchColumnBo>() {
-            @Override
-            protected void configure() {
-                map().setLabelKey(source.getCoreLabel().getKey());
-            }
-        });
+
+
         SearchBo searchBo = modelMapper.map(searchPo, SearchBo.class);
         List<SearchColumnBo> searchColumnBoList = modelMapper.map(searchPo.getCoreSearchColumns(), new TypeToken<List<SearchColumnBo>>() {
         }.getType());
@@ -125,7 +128,7 @@ public class SearchServiceImpl implements SearchService {
         }
         searchPo.setCoreSearchColumns(searchColumnPoList);
 
-        searchDao.save(searchPo);
+        searchDao.saveForLog(searchPo);
         searchBo.setId(searchPo.getId());
 
         return searchBo;
@@ -143,7 +146,7 @@ public class SearchServiceImpl implements SearchService {
     }
 
     public void deleteSearches(Integer[] ids) {
-        searchDao.removeByIds(ids);
+        searchDao.removeByIdsForLog(ids);
     }
 
     public List<CommonSearchResult> getCommonSearchListByColumnId(Integer columnId) {

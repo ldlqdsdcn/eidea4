@@ -138,7 +138,7 @@ public class TableServiceImpl implements TableService {
             e.setTablePo(tablePo);
         });
         tablePo.setCoreTableColumns(tableColumnPoList);
-        tableDao.save(tablePo);
+        tableDao.saveForLog(tablePo);
         return modelMapper.map(tablePo, TableBo.class);
     }
 
@@ -196,7 +196,7 @@ public class TableServiceImpl implements TableService {
 
         }
         table.setCoreTableColumns(tableColumnPoList);
-        tableDao.save(table);
+        tableDao.saveForLog(table);
     }
 
     public List<TableBo> getTableBoListForOutLog() {

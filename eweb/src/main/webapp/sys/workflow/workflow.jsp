@@ -12,6 +12,7 @@
     <title>工作流</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <%@include file="/inc/inc_ang_js_css.jsp" %>
+    <%@include file="/common/common_header.jsp" %>
 </head>
 <body>
 <div ng-view class="content" ng-app='myApp'></div>
@@ -25,7 +26,7 @@
                         .when('/edit', {templateUrl: '<c:url value="/sys/workflow/workflow/edit.tpl.jsp"/>'})
                         .otherwise({redirectTo: '/list'});
             }]);
-    app.controller('listCtrl', function ($scope,$rootScope, $http) {
+    app.controller('listCtrl', function ($rootScope,$scope,$http,$window) {
         $scope.allList = [];
         $scope.modelList = [];
         $scope.delFlag = false;
@@ -125,8 +126,47 @@
             $rootScope.listQueryParams = $scope.queryParams;
         }
         $scope.pageChanged();
+        //修改激活/挂起/转换为Model
+        $scope.updateSuspended=function (message,url,id) {
+            bootbox.confirm({
+                message: message,
+                buttons: {
+                    confirm: {
+                        label: '<eidea:label key="common.button.yes"/>',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: '<eidea:label key="common.button.no"/>',
+                        className: 'btn-danger'
+                    }
+                },
+                callback: function (result) {
+                    if(result){
+                        $http.get(url+id).success(function (response) {
+                            bootbox.alert({
+                                buttons: {
+                                    ok: {
+                                        label: '<i class="fa fa-close" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.confirm"/>',
+                                        className: 'btn-primary'
+                                    }
+                                },
+                                message: response.data.message
+                            });
+                            if(response.data.processDefinitionList != null){
+                                $scope.modelList=response.data.processDefinitionList;
+                            }
+                        });
+                    }
+                }
+            });
+        }
+        $scope.openImage=function (id) {
+            $("#imageShowModal").modal("show");
+            $("#imageShow").attr("src",'<c:url value="/sys/workflow/resource/read"/>?processDefinitionId='+id+'&resourceType=image');
+        }
+        buttonHeader.listInit($scope,$window);
     });
-    app.controller('editCtrl', function ($scope,$rootScope,$http, $routeParams, $timeout ,$location, Upload) {
+    app.controller('editCtrl', function ($routeParams,$scope, $http,$window,$timeout, Upload) {
         //工作流上传
         $scope.$watch('files', function (files) {
             $scope.formUpload = false;
@@ -156,16 +196,18 @@
                 //上传成功
                 bootbox.alert({
                     buttons: {
-                        ok: {//TODO 需要国际化确实
-                            label: '<i class="fa fa-close" aria-hidden="true"></i>&nbsp;确认',
+                        ok: {
+                            label: '<i class="fa fa-close" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.confirm"/>',
                             className: 'btn-primary'
                         }
                     },
-                    message: '<eidea:message key="common.upload.success"/>', callback: function() {
-                        //TODO 看看有没有通过angularjs 路由直接跳转回list界面
-                      window.location.href="<c:url value="/sys/workflow/showList"/>";
+                    message: '<eidea:message key="common.upload.success"/>'
+                    , callback: function() {
+                      /*window.location.href="<c:url value="/sys/workflow/showList"/>";*/
+                      $window.path("/list");
                     }
                 });
+//                $location.path("/list");
             }).error(function (data, status, headers, config) {
                 //上传失败
                 console.log('error status: ' + status);

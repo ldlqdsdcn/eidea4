@@ -47,10 +47,10 @@ public class HelpServiceImpl  implements	HelpService {
 	}
     public void saveHelp(HelpPo help)
 	{
-		helpDao.save(help);
+		helpDao.saveForLog(help);
 	}
     public void deletes(Integer[] ids)
 	{
-		helpDao.removeByIds(ids);
+		helpDao.removeByIdsForLog(ids);
 	}
 }

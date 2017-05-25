@@ -18,6 +18,11 @@
                         <input type="text" class="form-control" id="name" placeholder="<eidea:message key="login.input.name"/>" ng-model="roleBo.name"
                                required ng-minlength="2" ng-maxlength="100">
                     </div>
+                <div class="form-group">
+                    <label for="no">no</label>
+                    <input type="text" class="form-control" id="no" ng-disabled="roleBo.id!=null&&roleBo.id!=''" placeholder="<eidea:message key="role.number"/>" ng-model="roleBo.no"
+                           required ng-minlength="2" ng-maxlength="20">
+                </div>
                     <div class="form-group">
                         <label for="remark">remark</label>
                         <input type="text" class="form-control" id="remark" placeholder="<eidea:message key="base.input.remark"/>" ng-model="roleBo.remark"

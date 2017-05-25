@@ -9,7 +9,7 @@
                     &times;
                 </button>
                 <h4 class="modal-title" id="myModalLabel">
-                    附件上传
+                    <%--附件上传--%><eidea:label key="common.title.attachment.upload"/>
                 </h4>
             </div>
             <div class="modal-body">
@@ -84,7 +84,7 @@
                     &times;
                 </button>
                 <h4 class="modal-title" id="changeLogo">
-                    操作日志
+                    <%--操作日志--%><eidea:label key="common.title.operation.log"/>
                 </h4>
             </div>
             <div class="modal-body">
@@ -110,24 +110,45 @@
                         </div>
                         <div>
                             <p><eidea:label key="changelog.operation.list"/></p>
-                            <table id="international_list"
-                                   class="table table-hover table-bordered">
-                                <thead>
-                                <tr>
-                                    <th ng-repeat="model in changelogVo.header track by $index">{{model}}</th>
-                                </tr>
-                                </thead>
-                                <tbody>
+                            <div style="overflow:auto;">
+                                <table id="international_list"
+                                       class="table table-hover table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th ng-repeat="model in changelogVo.header track by $index">{{model}}</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
 
-                                <tr ng-repeat="model in changelogVo.bodyList track by $index">
-                                    <td ng-repeat="column in model track by $index">{{column}}</td>
-                                </tr>
+                                    <tr ng-repeat="model in changelogVo.bodyList track by $index">
+                                        <td ng-repeat="column in model track by $index">{{column}}</td>
+                                    </tr>
 
-                                </tbody>
-                            </table>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--模态框显示图片-->
+<!--工作流图片模态框-->
+<div class="modal fade modal-fail" id="imageShowModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="imageShowModalLabel">
+                    <%--图片预览--%><eidea:label key="workflow.title.picture.preview"/>
+                </h4>
+            </div>
+            <div class="modal-body">
+                <img id="imageShow" style="width:800px;"/>
             </div>
         </div>
     </div>

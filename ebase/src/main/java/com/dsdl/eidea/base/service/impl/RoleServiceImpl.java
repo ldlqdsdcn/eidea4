@@ -133,7 +133,7 @@ public class RoleServiceImpl implements RoleService {
         for (RoleOrgaccessBo roleOrgaccessBo : roleOrgaccessBoList) {
             if (!roleOrgaccessBo.isChecked()) {
                 if (roleOrgaccessBo.getId() != null) {
-                    roleOrgaccessDao.removeById(roleOrgaccessBo.getId());
+                    roleOrgaccessDao.removeByIdForLog(roleOrgaccessBo.getId());
                 }
             } else {
                 RoleOrgaccessPo po = new RoleOrgaccessPo();
@@ -146,14 +146,14 @@ public class RoleServiceImpl implements RoleService {
         rolePo.setSysRoleOrgaccesses(roleOrgaccessPoList);
 
         roleDao.saveForLog(rolePo);
-        roleBo.setId(rolePo.getId());
-        accountService.saveRole(rolePo.getId());
+       /* roleBo.setId(rolePo.getId());
+        accountService.saveRole(rolePo.getId());*/
     }
 
     @Override
     public boolean findExistRole(String no) {
         Search search = new Search();
-        search.addFilterEqual("name", no);
+        search.addFilterEqual("no", no);
         List<RolePo> clientPoList = roleDao.search(search);
         if (clientPoList.size() > 0) {
             return true;

@@ -12,19 +12,20 @@
     <title><%--用户Session--%><eidea:label key="leave.title"/></title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <%@include file="/inc/inc_ang_js_css.jsp" %>
+    <%@include file="/common/common_header.jsp" %>
 </head>
 <body>
 <div ng-app='myApp' ng-view class="content"></div>
 </body>
 <script type="text/javascript">
-    var app = angular.module('myApp', ['ngRoute', 'ui.bootstrap', 'jcs-autoValidate'])
+    var app = angular.module('myApp', ['ngFileUpload','ngRoute', 'ui.bootstrap', 'jcs-autoValidate'])
             .config(['$routeProvider', function ($routeProvider) {
                 $routeProvider
                         .when('/list', {templateUrl: '<c:url value="/sys/workflow/model/list.tpl.jsp"/>'})
-                        .when('/create',{templateUrl:'<c:url value="/sys/workflow/model/create.tpl.jsp"/>'})
+                        .when('/edit',{templateUrl:'<c:url value="/sys/workflow/model/create.tpl.jsp"/>'})
                         .otherwise({redirectTo: '/list'});
             }]);
-    app.controller('listCtrl', function ($scope,$rootScope, $http) {
+    app.controller('listCtrl', function ($rootScope,$scope,$http,$window) {
         $scope.allList = [];
         $scope.modelList = [];
         $scope.delFlag = false;
@@ -81,6 +82,44 @@
             }
             return false;
         }
+        $scope.selectAll = function () {
+            $scope.pageChanged($scope.delFlag);
+        }
+        $scope.deleteRecord = function () {
+            bootbox.confirm({
+                message: "<eidea:message key="common.warn.confirm.deletion"/>",
+                buttons: {
+                    confirm: {
+                        label: '<eidea:label key="common.button.yes"/>',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: '<eidea:label key="common.button.no"/>',
+                        className: 'btn-danger'
+                    }
+                },
+                callback: function (result) {
+                    if (result) {
+                        var ids = [];
+                        for (var i = 0; i < $scope.modelList.length; i++) {
+                            if ($scope.modelList[i].delFlag) {
+                                ids.push($scope.modelList[i].id);
+                            }
+                        }
+                        $http.post("<c:url value="/sys/model/delete"/>",ids).success(function (data) {
+                            if (data.success) {
+                                bootbox.alert("<eidea:message key="common.warn.deleted.success"/>");
+                                $scope.updateList(data.data);
+                            }
+                            else {
+                                bootbox.alert(data.message);
+                            }
+
+                        });
+                    }
+                }
+            });
+        };
         $scope.removeModel=function(modelId)
         {
             bootbox.confirm({
@@ -97,7 +136,9 @@
                 },
                 callback: function (result) {
                     if (result) {
-                        $http.post("<c:url value="/sys/model/delete/"/>"+modelId).success(function (data) {
+                        var ids = [];
+                        ids.push(modelId);
+                        $http.post("<c:url value="/sys/model/delete/"/>",ids).success(function (data) {
                             if (data.success) {
                                 bootbox.alert("<eidea:message key="common.warn.deleted.success"/>");
                                 $scope.updateList(data.data);
@@ -128,9 +169,12 @@
             $rootScope.listQueryParams = $scope.queryParams;
         }
         $scope.pageChanged();
+
+        buttonHeader.listInit($scope,$window);
     });
-    app.controller("createCtrl",function($scope,$http){
+    app.controller("createCtrl",function($routeParams,$scope, $http,$window,$timeout, Upload){
         $scope.canAdd=PrivilegeService.hasPrivilege('add');
+        $scope.canSave=PrivilegeService.hasPrivilege('add');
         $scope.model={"name":"","key":"","description":""};
         $scope.create=function () {
             $scope.model={};
@@ -138,6 +182,7 @@
         $scope.saveNext=function () {
             window.location.href="<c:url value="/sys/model/create"/>?name="+$scope.model.name+"&key="+$scope.model.key+"&description="+$scope.model.description;
         }
+        buttonHeader.editInit($scope,$http,$window,$timeout, Upload,"/sys");
     });
     app.run([
         'bootstrap3ElementModifier',

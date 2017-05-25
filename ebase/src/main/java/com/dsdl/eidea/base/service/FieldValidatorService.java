@@ -16,6 +16,7 @@ import java.util.List;
  */
 public interface FieldValidatorService {
 	PaginationResult<FieldValidatorPo> getFieldValidatorListByPaging(Search search,QueryParams queryParams);
+	PaginationResult<FieldValidatorPo> getFieldValidatorListByFieldId(Search search,Integer fieldId);
 	FieldValidatorPo getFieldValidator(Integer id);
 	void saveFieldValidator(FieldValidatorPo fieldValidator);
 	void deletes(Integer[] ids);

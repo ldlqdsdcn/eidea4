@@ -9,6 +9,7 @@
     <title><%--用户Session--%><eidea:label key="leave.title"/></title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <%@include file="/inc/inc_ang_js_css.jsp" %>
+    <%@include file="/common/common_header.jsp" %>
 </head>
 <body>
 <div ng-app='myApp' ng-view class="content"></div>
@@ -17,141 +18,144 @@
 </jsp:include>
 </body>
 <script type="text/javascript">
-    var app = angular.module('myApp', ['ngRoute', 'ui.bootstrap', 'jcs-autoValidate'])
+    var app = angular.module('myApp', ['ngFileUpload','ngRoute', 'ui.bootstrap', 'jcs-autoValidate'])
             .config(['$routeProvider', function ($routeProvider) {
                 $routeProvider
                         .when('/list', {templateUrl: '<c:url value="/test/leave/list.tpl.jsp"/>'})
                         .when('/edit', {templateUrl: '<c:url value="/test/leave/edit.tpl.jsp"/>'})
                         .otherwise({redirectTo: '/list'});
             }]);
-app.controller('listCtrl', function ($scope,$rootScope, $http) {
-$scope.allList = [];
-$scope.modelList = [];
-$scope.delFlag = false;
-$scope.canDel=PrivilegeService.hasPrivilege('delete');
-$scope.canAdd=PrivilegeService.hasPrivilege('add');
-$http.get("<c:url value="/test/leave/list"/>")
-.success(function (response) {
-if (response.success) {
-$scope.updateList(response.data);
-}
-else {
-bootbox.alert(response.message);
-}
+    app.controller('listCtrl', function ($rootScope,$scope,$http,$window) {
+        $scope.allList = [];
+        $scope.modelList = [];
+        $scope.delFlag = false;
+        $scope.canDel=PrivilegeService.hasPrivilege('delete');
+        $scope.canAdd=PrivilegeService.hasPrivilege('add');
+        $http.get("<c:url value="/test/leave/list"/>")
+        .success(function (response) {
+        if (response.success) {
+        $scope.updateList(response.data);
+        }
+        else {
+        bootbox.alert(response.message);
+        }
 
-});
-$scope.updateList = function (data) {
-$scope.allList = data;
-$scope.queryParams.totalRecords  = $scope.allList.length;
-$scope.modelList.length = 0;
-$scope.pageChanged();
-};
-$scope.pageChanged = function (delF) {
-var bgn = ($scope.queryParams.pageNo - 1) * $scope.queryParams.pageSize;
-var end = bgn +  $scope.queryParams.pageSize;
-$scope.modelList.length = 0;
-if (delF == null) {
-delF = false;
-}
-for (var i = bgn; i < end && i < $scope.allList.length; i++) {
-var item = $scope.allList[i];
-item.delFlag = delF;
-$scope.modelList.push(item);
+        });
+        $scope.updateList = function (data) {
+        $scope.allList = data;
+        $scope.queryParams.totalRecords  = $scope.allList.length;
+        $scope.modelList.length = 0;
+        $scope.pageChanged();
+        };
+        $scope.pageChanged = function (delF) {
+        var bgn = ($scope.queryParams.pageNo - 1) * $scope.queryParams.pageSize;
+        var end = bgn +  $scope.queryParams.pageSize;
+        $scope.modelList.length = 0;
+        if (delF == null) {
+        delF = false;
+        }
+        for (var i = bgn; i < end && i < $scope.allList.length; i++) {
+        var item = $scope.allList[i];
+        item.delFlag = delF;
+        $scope.modelList.push(item);
 
-}
-}
-$scope.canDelete = function () {
-for (var i = 0; i < $scope.modelList.length; i++) {
-if ($scope.modelList[i].delFlag) {
-return true;
-}
-}
-return false;
-}
-$scope.selectAll = function () {
-$scope.pageChanged($scope.delFlag);
-}
-$scope.deleteRecord = function () {
+        }
+        }
+        $scope.canDelete = function () {
+        for (var i = 0; i < $scope.modelList.length; i++) {
+        if ($scope.modelList[i].delFlag) {
+        return true;
+        }
+        }
+        return false;
+        }
+        $scope.selectAll = function () {
+        $scope.pageChanged($scope.delFlag);
+        }
+        $scope.deleteRecord = function () {
 
-bootbox.confirm({
-message: "<eidea:message key="common.warn.confirm.deletion"/>",
-buttons: {
-confirm: {
-label: '<eidea:label key="common.button.yes"/>',
-className: 'btn-success'
-},
-cancel: {
-label: '<eidea:label key="common.button.no"/>',
-className: 'btn-danger'
-}
-},
-callback: function (result) {
-if (result) {
-var ids = [];
-for (var i = 0; i < $scope.modelList.length; i++) {
-if ($scope.modelList[i].delFlag) {
-ids.push($scope.modelList[i].id);
-}
-}
-$http.post("<c:url value="/test/leave/deletes"/>", ids).success(function (data) {
-if (data.success) {
-bootbox.alert("<eidea:message key="common.warn.deleted.success"/>");
-$scope.updateList(data.data);
-}
-else {
-bootbox.alert(data.message);
-}
+        bootbox.confirm({
+        message: "<eidea:message key="common.warn.confirm.deletion"/>",
+        buttons: {
+        confirm: {
+        label: '<eidea:label key="common.button.yes"/>',
+        className: 'btn-success'
+        },
+        cancel: {
+        label: '<eidea:label key="common.button.no"/>',
+        className: 'btn-danger'
+        }
+        },
+        callback: function (result) {
+        if (result) {
+        var ids = [];
+        for (var i = 0; i < $scope.modelList.length; i++) {
+        if ($scope.modelList[i].delFlag) {
+        ids.push($scope.modelList[i].id);
+        }
+        }
+        $http.post("<c:url value="/test/leave/deletes"/>", ids).success(function (data) {
+        if (data.success) {
+        bootbox.alert("<eidea:message key="common.warn.deleted.success"/>");
+        $scope.updateList(data.data);
+        }
+        else {
+        bootbox.alert(data.message);
+        }
 
-});
-}
-}
-});
-};
-//可现实分页item数量
-$scope.maxSize =${pagingSettingResult.pagingButtonSize};
-if ($rootScope.listQueryParams != null) {
-$rootScope.queryParams = $scope.listQueryParams;
-$rootScope.queryParams.init = true;
-}
-else {
-$scope.queryParams = {
-pageSize:${pagingSettingResult.perPageSize},//每页显示记录数
-pageNo: 1, //当前页
-totalRecords: 0,//记录数
-init: true
-};
-$rootScope.listQueryParams = $scope.queryParams;
-}
-$scope.pageChanged();
-});
-    app.controller('editCtrl', function ($scope, $http, $routeParams) {
-        /**
-         * 日期时间选择控件
-         * bootstrap-datetime 24小时时间是hh
-         */
-        $('.bootstrap-datetime').datetimepicker({
-            language:  'zh-CN',
+        });
+        }
+        }
+        });
+        };
+        //可现实分页item数量
+        $scope.maxSize =${pagingSettingResult.pagingButtonSize};
+        if ($rootScope.listQueryParams != null) {
+        $rootScope.queryParams = $scope.listQueryParams;
+        $rootScope.queryParams.init = true;
+        }
+        else {
+        $scope.queryParams = {
+        pageSize:${pagingSettingResult.perPageSize},//每页显示记录数
+        pageNo: 1, //当前页
+        totalRecords: 0,//记录数
+        init: true
+        };
+        $rootScope.listQueryParams = $scope.queryParams;
+        }
+        $scope.pageChanged();
+
+        buttonHeader.listInit($scope,$window);
+    });
+    app.controller('editCtrl', function ($routeParams,$scope, $http,$window,$timeout, Upload) {
+        $("#bgnTime").datetimepicker({
             format: 'yyyy-mm-dd hh:ii:ss',
-            weekStart: 1,
-            todayBtn:  1,
+            language: 'zh-CN',
             autoclose: 1,
-            todayHighlight: 1,
-            startView: 2,
-            forceParse: 0,
+            todayBtn:  1,
             showMeridian: 1,
-            clearBtn: true
+            clearBtn:true
+        }).on("click",function(){
+            if($scope.leavePo.endTime == null){
+                $("#bgnTime").datetimepicker("setEndDate","2099-01-01 00:00:00");
+            }else{
+                $("#bgnTime").datetimepicker("setEndDate",$scope.leavePo.endTime);
+            }
         });
-        /**
-         * 日期选择控件
-         */
-        $('.bootstrap-date').datepicker({
-            language:  'zh-CN',
-            format: 'yyyy-mm-dd',
+        $("#endTime").datetimepicker({
+            format: 'yyyy-mm-dd hh:ii:ss',
+            language: 'zh-CN',
             autoclose: 1,
             todayBtn:  1,
+            showMeridian: 1,
             clearBtn:true
+        }).on("click",function(){
+            if($scope.leavePo.bgnTime == null){
+                $("#endTime").datetimepicker("setStartDate","1900-01-01 00:00:00");
+            }else{
+                $("#endTime").datetimepicker("setStartDate",$scope.leavePo.bgnTime);
+            }
         });
-
         $scope.message = '';
         $scope.leavePo = {};
         $scope.canAdd=PrivilegeService.hasPrivilege('add');
@@ -163,6 +167,7 @@ $scope.pageChanged();
                 .success(function (response) {
                     if (response.success) {
                         $scope.leavePo = response.data;
+                        $scope.tableId=$scope.leavePo.id;
                         $scope.canSave=(PrivilegeService.hasPrivilege('add')&&$scope.leavePo.id==null)||PrivilegeService.hasPrivilege('update');
                     }
                     else {
@@ -194,7 +199,7 @@ $scope.pageChanged();
         $scope.submitApprove=function () {
             $http.post('<c:url value="/test/leave/saveForApprove/"/>', $scope.leavePo).success(function (data) {
                 if (data.success) {
-                    $scope.message = "提交申请成功";
+                    $scope.message = "<eidea:message key="leave.label.application.submit.success"/>";
 
                 }
                 else {
@@ -223,6 +228,7 @@ $scope.pageChanged();
             });
         }
 
+        buttonHeader.editInit($scope,$http,$window,$timeout, Upload,"/base");
     });
     app.run([
         'bootstrap3ElementModifier',

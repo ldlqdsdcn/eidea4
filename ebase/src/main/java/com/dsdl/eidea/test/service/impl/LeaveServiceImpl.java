@@ -89,11 +89,11 @@ public class LeaveServiceImpl implements LeaveService {
     }
 
     public void saveLeave(LeavePo leave) {
-        leaveDao.save(leave);
+        leaveDao.saveForLog(leave);
     }
 
     public void deletes(Integer[] ids) {
-        leaveDao.removeByIds(ids);
+        leaveDao.removeByIdsForLog(ids);
     }
 
     public List<LeavePo> getTodoLeaveList(String userId) {

@@ -130,7 +130,7 @@ public class MessageServiceImpl implements MessageService {
         }
         messagePo.setCoreMessageTrls(messageTrlPoList);
 
-        return messageDao.save(messagePo);
+        return messageDao.saveForLog(messagePo);
     }
 
     @Override
@@ -139,7 +139,7 @@ public class MessageServiceImpl implements MessageService {
         for (String key : keys) {
             DbResourceBundle.removeMessage(key);
         }
-        messageDao.removeByIds(keys);
+        messageDao.removeByIdsForLog(keys);
     }
 
 

@@ -34,4 +34,10 @@ public interface TableService {
      * @return
      */
     List<TableBo> getTableBoListForOutLog();
+
+    /**
+     * findAllTableBoList:查询所有的table表
+     * @return
+     */
+    List<TableBo> findAllTableBoList(Search search);
 }

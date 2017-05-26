@@ -260,7 +260,7 @@ public class UserServiceImpl implements UserService {
     public UserSessionBo saveUserSessionBo(UserSessionBo userSessionBo) {
         UserSessionPo userSessionPo = modelMapper.map(userSessionBo, UserSessionPo.class);
         userSessionPo.setUserPo(userDao.find(userSessionBo.getUserId()));
-        userSessionDao.save(userSessionPo);
+        userSessionDao.saveForLog(userSessionPo);
         userSessionBo.setId(userSessionPo.getId());
         return userSessionBo;
     }

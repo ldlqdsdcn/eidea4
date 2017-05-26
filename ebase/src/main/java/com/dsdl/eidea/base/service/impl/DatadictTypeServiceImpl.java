@@ -47,11 +47,11 @@ public class DatadictTypeServiceImpl implements DatadictTypeService {
     }
 
     public void saveDatadictType(DatadictTypePo datadictType) {
-        datadictTypeDao.save(datadictType);
+        datadictTypeDao.saveForLog(datadictType);
     }
 
     public void deletes(Integer[] ids) {
-        datadictTypeDao.removeByIds(ids);
+        datadictTypeDao.removeByIdsForLog(ids);
     }
 
     @Override

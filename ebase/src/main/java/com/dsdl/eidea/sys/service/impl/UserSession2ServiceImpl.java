@@ -32,10 +32,10 @@ public class UserSession2ServiceImpl  implements	UserSession2Service {
 	}
     public void saveUserSession2(UserSession2Po userSession2)
 	{
-		userSession2Dao.save(userSession2);
+		userSession2Dao.saveForLog(userSession2);
 	}
     public void deletes(Integer[] ids)
 	{
-		userSession2Dao.removeByIds(ids);
+		userSession2Dao.removeByIdsForLog(ids);
 	}
 }

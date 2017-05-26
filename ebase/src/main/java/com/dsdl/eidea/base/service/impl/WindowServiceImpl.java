@@ -60,11 +60,11 @@ public class WindowServiceImpl  implements	WindowService {
 	}
     public void saveWindow(WindowPo window)
 	{
-		windowDao.save(window);
+		windowDao.saveForLog(window);
 	}
     public void deletes(Integer[] ids)
 	{
-		windowDao.removeByIds(ids);
+		windowDao.removeByIdsForLog(ids);
 	}
 
 	@Override

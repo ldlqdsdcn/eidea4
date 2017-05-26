@@ -133,7 +133,7 @@ public class RoleServiceImpl implements RoleService {
         for (RoleOrgaccessBo roleOrgaccessBo : roleOrgaccessBoList) {
             if (!roleOrgaccessBo.isChecked()) {
                 if (roleOrgaccessBo.getId() != null) {
-                    roleOrgaccessDao.removeById(roleOrgaccessBo.getId());
+                    roleOrgaccessDao.removeByIdForLog(roleOrgaccessBo.getId());
                 }
             } else {
                 RoleOrgaccessPo po = new RoleOrgaccessPo();

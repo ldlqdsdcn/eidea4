@@ -88,7 +88,7 @@ public class LabelServiceImpl implements LabelService {
             }
         });
         labelPo.setLabelTrls(labelTrlPoList);
-        labelDao.save(labelPo);
+        labelDao.saveForLog(labelPo);
     }
 
     @Override
@@ -107,7 +107,7 @@ public class LabelServiceImpl implements LabelService {
         for (String key : codes) {
             DbResourceBundle.removeLabel(key);
         }
-        labelDao.removeByIds(codes);
+        labelDao.removeByIdsForLog(codes);
     }
 
     @Override

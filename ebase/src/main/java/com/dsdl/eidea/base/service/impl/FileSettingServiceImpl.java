@@ -51,11 +51,11 @@ public class FileSettingServiceImpl  implements	FileSettingService {
 	}
     public void saveFileSetting(FileSettingPo fileSetting)
 	{
-		fileSettingDao.save(fileSetting);
+		fileSettingDao.saveForLog(fileSetting);
 	}
     public void deletes(Integer[] ids)
 	{
-		fileSettingDao.removeByIds(ids);
+		fileSettingDao.removeByIdsForLog(ids);
 	}
 
 	@Override

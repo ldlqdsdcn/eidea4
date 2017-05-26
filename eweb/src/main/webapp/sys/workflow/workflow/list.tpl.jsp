@@ -62,21 +62,4 @@
         </div>
     </div>
 </div>
-<!--工作流图片模态框-->
-<div class="modal fade modal-fail" id="workflowImageModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                    &times;
-                </button>
-                <h4 class="modal-title" id="myModalLabel">
-                    <%--图片预览--%><eidea:label key="workflow.title.picture.preview"/>
-                </h4>
-            </div>
-            <div class="modal-body">
-                <img id="workflowImage"/>
-            </div>
-        </div>
-    </div>
-</div>
+<jsp:include page="/common/common_upload.jsp"/>

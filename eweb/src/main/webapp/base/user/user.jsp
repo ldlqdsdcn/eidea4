@@ -13,7 +13,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <%@include file="/inc/inc_ang_js_css.jsp" %>
     <script type='text/javascript' src="<c:url value="/js/md5.min.js"/>"></script>
-
+    <%@include file="/common/common_header.jsp" %>
 </head>
 <body>
 <div ng-app='myApp' ng-view class="container-fluid"></div>
@@ -28,7 +28,7 @@
                 .when('/edit', {templateUrl: '<c:url value="/base/user/edit.tpl.jsp"/>'})
                 .otherwise({redirectTo: '/list'});
     }]);
-    app.controller('listCtrl', function ($scope,$rootScope, $http) {
+    app.controller('listCtrl', function ($rootScope,$scope,$http,$window) {
         $scope.modelList = [];
         $scope.delFlag = false;
         $scope.isLoading=true;
@@ -120,8 +120,9 @@
 
         $scope.pageChanged();
 
+        buttonHeader.listInit($scope,$window);
     });
-    app.controller('editCtrl', function ($scope, $rootScope, $http, $routeParams,$timeout, Upload) {
+    app.controller('editCtrl', function ($routeParams,$scope, $http,$window,$timeout, Upload) {
         $scope.canAdd=PrivilegeService.hasPrivilege('add');
         $scope.canSave=false;
         //用户编辑
@@ -132,6 +133,7 @@
         $http.post(url).success(function (data) {
             if (data.success) {
                 $scope.userBo = data.data;
+                $scope.tableId=$scope.userBo.id;
                 if ($routeParams.id == null) {
                     $scope.userBo.init='N';
                 }
@@ -292,104 +294,7 @@
             }
         };
 
-        //附件上传
-        $scope.showAttachment=function () {
-            if($scope.userBo.id != null){
-                $("#attachmentModal").modal('show');
-                $scope.tableId=$scope.userBo.id;
-                $scope.directoryUrl="/base";
-                $http.post("<c:url value="/common/attachmentList"/>",{"tableId":$scope.tableId,"uri":"${uri}","directoryUrl":$scope.directoryUrl}).success(function (data) {
-                    if (data.success) {
-                        $scope.attachmentList = data.data;
-                    }else {
-                        $scope.alert(data.message);
-                    }
-                });
-            }else {
-                $scope.alert("<eidea:message key="common.upload.before.save.success"/>");
-            }
-        }
-        $scope.$watch('files', function (files) {
-            $scope.formUpload = false;
-            if (files != null) {
-                if (!angular.isArray(files)) {
-                    $timeout(function () {
-                        $scope.files = files = [files];
-                    });
-                    return;
-                }
-            }
-        });
-        $scope.attachmentUpload=function () {
-            if($scope.files==null){
-                $scope.alert('<eidea:message key="common.upload.select.attachment"/>');return;
-            }
-            for (var i = 0; i < $scope.files.length; i++) {
-                $scope.errorMsg = null;
-                (function (f) {
-                    $scope.upload(f, true);
-                })($scope.files[i])
-                ;
-            }
-        }
-        $scope.upload = function (file) {
-            $scope.canUpload=true;
-            file.upload =Upload.upload({
-                //服务端接收
-                url: "<c:url value="/common/attachmentUpload"/>",
-                data: {'fileKeyword':$scope.commonFileBo==null?null:$scope.commonFileBo.fileKeyword,"fileAbstract":$scope.commonFileBo==null?null:$scope.commonFileBo.fileAbstract,
-                    "directoryUrl":$scope.directoryUrl,"tableId":$scope.tableId,"uri":"${uri}"},
-                //上传的文件
-                file: file
-            }).success(function (data, status, headers, config) {
-                //上传成功
-                $scope.alert('<eidea:message key="common.upload.success"/>');
-                $scope.attachmentList = data.data;
-                $scope.commonFileBo=null;
-                $scope.files=null;
-                $scope.canUpload=false;
-            }).error(function (data, status, headers, config) {
-                //上传失败
-                console.log('error status: ' + status);
-            });
-        };
-        $scope.attachmentDelete=function (id) {
-            bootbox.confirm({
-                message: "<eidea:message key="common.warn.confirm.deletion"/>",
-                buttons: {
-                    confirm: {
-                        label: '<eidea:label key="common.button.yes"/>',
-                        className: 'btn-success'
-                    },
-                    cancel: {
-                        label: '<eidea:label key="common.button.no"/>',
-                        className: 'btn-danger'
-                    }
-                }, callback: function (result) {
-                    if (result) {
-                        $http.post("<c:url value="/common/attachmentDelete"/>",{"id":id,"tableId":$scope.tableId,"uri":"${uri}","directoryUrl":$scope.directoryUrl}).success(function (data) {
-                            if (data.success) {
-                                $scope.alert('<eidea:message key="common.upload.delete.success"/>');
-                                $scope.attachmentList = data.data;
-                            }else {
-                                $scope.message = data.message;
-                            }
-                        });
-                    }
-                }
-            });
-        }
-        $scope.alert=function(message) {
-            bootbox.alert({
-                buttons: {
-                    ok: {
-                        label: '<i class="fa fa-close" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.closed"/>',
-                        className: 'btn-primary'
-                    }
-                },
-                message: message,
-            });
-        }
+        buttonHeader.editInit($scope,$http,$window,$timeout, Upload,"/base");
     });
     app.run([
         'bootstrap3ElementModifier',

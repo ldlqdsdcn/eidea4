@@ -72,7 +72,7 @@ public class PageMenuServiceImpl implements PageMenuService {
 
     @Override
     public void deleteMenuById(Integer[] ids) {
-        pageMenuDao.removeByIds(ids);
+        pageMenuDao.removeByIdsForLog(ids);
     }
 
     @Override
@@ -89,7 +89,7 @@ public class PageMenuServiceImpl implements PageMenuService {
             pageMenuTrlPoList.add(pageMenuTrl);
         }
         pageMenuPo.setPageMenuTrlPoList(pageMenuTrlPoList);
-        pageMenuDao.save(pageMenuPo);
+        pageMenuDao.saveForLog(pageMenuPo);
         pageMenuBo.setId(pageMenuPo.getId());
 
     }

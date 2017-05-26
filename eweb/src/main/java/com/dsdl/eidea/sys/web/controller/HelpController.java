@@ -35,7 +35,7 @@ import java.util.List;
 */ @Controller
 @RequestMapping("/sys/help")
 public class HelpController extends BaseController {
-private static final String URI = "help";
+private static final String URI = "sys_help";
 @Autowired
 private HelpService helpService;
 @RequestMapping(value = "/showList", method = RequestMethod.GET)

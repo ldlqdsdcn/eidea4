@@ -128,7 +128,7 @@ public class SearchServiceImpl implements SearchService {
         }
         searchPo.setCoreSearchColumns(searchColumnPoList);
 
-        searchDao.save(searchPo);
+        searchDao.saveForLog(searchPo);
         searchBo.setId(searchPo.getId());
 
         return searchBo;
@@ -146,7 +146,7 @@ public class SearchServiceImpl implements SearchService {
     }
 
     public void deleteSearches(Integer[] ids) {
-        searchDao.removeByIds(ids);
+        searchDao.removeByIdsForLog(ids);
     }
 
     public List<CommonSearchResult> getCommonSearchListByColumnId(Integer columnId) {

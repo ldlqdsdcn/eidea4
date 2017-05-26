@@ -39,4 +39,5 @@
             </div>
         </div>
     </form>
+    <jsp:include page="/common/common_upload.jsp"/>
 </div>

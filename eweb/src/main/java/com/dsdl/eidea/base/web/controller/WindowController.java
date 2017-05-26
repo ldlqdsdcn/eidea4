@@ -35,7 +35,7 @@ import java.util.List;
 */ @Controller
 @RequestMapping("/base/window")
 public class WindowController extends BaseController {
-private static final String URI = "window";
+private static final String URI = "core_window";
 @Autowired
 private WindowService windowService;
 @RequestMapping(value = "/showList", method = RequestMethod.GET)

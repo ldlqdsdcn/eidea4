@@ -70,7 +70,9 @@ public JsonResult<List<LeavePo>> list(HttpSession session) {
         @RequestMapping(value = "/create", method = RequestMethod.GET)
         @ResponseBody
         public JsonResult<LeavePo> create() {
+            UserBo userBo=(UserBo) request.getSession().getAttribute(WebConst.SESSION_LOGINUSER);
             LeavePo leavePo = new LeavePo();
+            leavePo.setLeaveUserId(userBo.getId());
             return JsonResult.success(leavePo);
             }
 

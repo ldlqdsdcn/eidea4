@@ -163,12 +163,12 @@ public class UserServiceImpl implements UserService {
         List<UserPo> userPoList = userDao.search(search);
         if (userPoList != null && userPoList.size() > 0) {
             if (userPoList.get(0).getId().equals(userBo.getId())) {
-                return true;
-            } else {
                 return false;
+            } else {
+                return true;
             }
         } else {
-            return true;
+            return false;
         }
     }
 

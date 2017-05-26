@@ -25,6 +25,7 @@
 				 /login.jsp=anon
 				/login=anon
 				/languages=anon
+				/common/addCookie=anon
 				/common/changeLanguage=anon
 				/doLogin=anon
 				/common/frameLogin.jsp=anon

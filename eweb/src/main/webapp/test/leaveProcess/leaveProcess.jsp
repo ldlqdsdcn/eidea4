@@ -12,6 +12,7 @@
     <title><%--用户Session--%><eidea:label key="leave.title"/></title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <%@include file="/inc/inc_ang_js_css.jsp" %>
+    <%@include file="/common/common_header.jsp" %>
 </head>
 <body>
 <div ng-app='myApp' ng-view class="content"></div>
@@ -20,14 +21,14 @@
 </jsp:include>
 </body>
 <script type="text/javascript">
-    var app = angular.module('myApp', ['ngRoute', 'ui.bootstrap', 'jcs-autoValidate'])
+    var app = angular.module('myApp', ['ngFileUpload','ngRoute', 'ui.bootstrap', 'jcs-autoValidate'])
             .config(['$routeProvider', function ($routeProvider) {
                 $routeProvider
                         .when('/list', {templateUrl: '<c:url value="/test/leaveProcess/list.tpl.jsp"/>'})
                         .otherwise({redirectTo: '/list'});
 
             }]);
-    app.controller('listCtrl', function ($scope,$rootScope, $http) {
+    app.controller('listCtrl', function ($rootScope,$scope,$http,$window) {
         $scope.allList = [];
         $scope.modelList = [];
         $scope.delFlag = false;
@@ -126,8 +127,14 @@
             $rootScope.listQueryParams = $scope.queryParams;
         }
         $scope.pageChanged();
+
+        $scope.openImage=function (id) {
+            $("#imageShowModal").modal("show");
+            $("#imageShow").attr("src",'<c:url value="/common/activiti/process/trace/auto/"/>'+id);
+        }
+        buttonHeader.listInit($scope,$window);
     });
-    app.controller('editCtrl', function ($scope, $http, $routeParams) {
+    app.controller('editCtrl', function ($routeParams,$scope, $http,$window,$timeout, Upload) {
         /**
          * 日期时间选择控件
          * bootstrap-datetime 24小时时间是hh
@@ -166,6 +173,7 @@
                 .success(function (response) {
                     if (response.success) {
                         $scope.leavePo = response.data;
+                        $scope.tableId=$scope.leavePo.id;
                         $scope.canSave=(PrivilegeService.hasPrivilege('add')&&$scope.leavePo.id==null)||PrivilegeService.hasPrivilege('update');
                     }
                     else {
@@ -197,7 +205,7 @@
         $scope.submitApprove=function () {
             $http.post('<c:url value="/test/leave/saveForApprove/"/>', $scope.leavePo).success(function (data) {
                 if (data.success) {
-                    $scope.message = "提交申请成功";
+                    $scope.message = "<eidea:label key="leave.label.application.submit.success"/>";
 
                 }
                 else {
@@ -225,6 +233,8 @@
                 bootbox.alert(response);
             });
         }
+
+        buttonHeader.editInit($scope,$http,$window,$timeout, Upload,"/base");
 
     });
     app.run([

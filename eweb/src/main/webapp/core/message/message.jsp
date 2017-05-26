@@ -5,6 +5,7 @@
     <title>消息设置</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <%@include file="/inc/inc_ang_js_css.jsp" %>
+    <%@include file="/common/common_header.jsp" %>
 </head>
 <body>
 <div ng-app='myApp' ng-view class="container-fluid"></div>
@@ -14,14 +15,14 @@
 </body>
 
 <script type="text/javascript">
-    var app = angular.module('myApp', ['ngRoute', 'ui.bootstrap', 'jcs-autoValidate'])
+    var app = angular.module('myApp', ['ngFileUpload','ngRoute', 'ui.bootstrap', 'jcs-autoValidate'])
             .config(['$routeProvider', function ($routeProvider) {
                 $routeProvider
                         .when('/list', {templateUrl: '<c:url value="/core/message/list.tpl.jsp"/>'})
                         .when('/edit', {templateUrl: '<c:url value="/core/message/edit.tpl.jsp"/>'})
                         .otherwise({redirectTo: '/list'});
             }]);
-    app.controller('listCtrl', function ($scope,$rootScope,$http) {
+    app.controller('listCtrl', function ($rootScope,$scope,$http,$window) {
         $scope.modelList = [];
         $scope.delFlag = false;
         $scope.isLoading=true;
@@ -113,8 +114,9 @@
 
         $scope.pageChanged();
 
+        buttonHeader.listInit($scope,$window);
     });
-    app.controller('editCtrl', function ($scope,$rootScope,$http, $routeParams) {
+    app.controller('editCtrl', function ($routeParams,$scope, $http,$window,$timeout, Upload) {
         $scope.message= '';
         $scope.messageBo = {};
         $scope.canAdd = PrivilegeService.hasPrivilege('add');
@@ -127,6 +129,7 @@
                 .success(function (response) {
                     if (response.success) {
                         $scope.messageBo = response.data;
+                        $scope.tableId=$scope.messageBo.key;
                         $scope.canSave = (PrivilegeService.hasPrivilege('add') && $scope.messageBo.created) || PrivilegeService.hasPrivilege('update');
                     }
                     else {
@@ -168,18 +171,8 @@
                 bootbox.alert(response);
             });
         }
-        //附件上传
-        $scope.showAttachment=function () {
-            bootbox.alert({
-                buttons: {
-                    ok: {
-                        label: '<i class="fa fa-close" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.closed"/>',
-                        className: 'btn-primary'
-                    }
-                },
-                message: '<eidea:message key="common.upload.does.not.required"/>',
-            });
-        }
+
+        buttonHeader.editInit($scope,$http,$window,$timeout, Upload,"/core");
     });
     app.run([
         'bootstrap3ElementModifier',

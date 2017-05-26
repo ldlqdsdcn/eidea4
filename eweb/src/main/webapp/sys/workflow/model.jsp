@@ -12,19 +12,20 @@
     <title><%--用户Session--%><eidea:label key="leave.title"/></title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <%@include file="/inc/inc_ang_js_css.jsp" %>
+    <%@include file="/common/common_header.jsp" %>
 </head>
 <body>
 <div ng-app='myApp' ng-view class="content"></div>
 </body>
 <script type="text/javascript">
-    var app = angular.module('myApp', ['ngRoute', 'ui.bootstrap', 'jcs-autoValidate'])
+    var app = angular.module('myApp', ['ngFileUpload','ngRoute', 'ui.bootstrap', 'jcs-autoValidate'])
             .config(['$routeProvider', function ($routeProvider) {
                 $routeProvider
                         .when('/list', {templateUrl: '<c:url value="/sys/workflow/model/list.tpl.jsp"/>'})
                         .when('/edit',{templateUrl:'<c:url value="/sys/workflow/model/create.tpl.jsp"/>'})
                         .otherwise({redirectTo: '/list'});
             }]);
-    app.controller('listCtrl', function ($scope,$rootScope, $http) {
+    app.controller('listCtrl', function ($rootScope,$scope,$http,$window) {
         $scope.allList = [];
         $scope.modelList = [];
         $scope.delFlag = false;
@@ -168,8 +169,10 @@
             $rootScope.listQueryParams = $scope.queryParams;
         }
         $scope.pageChanged();
+
+        buttonHeader.listInit($scope,$window);
     });
-    app.controller("createCtrl",function($scope,$http){
+    app.controller("createCtrl",function($routeParams,$scope, $http,$window,$timeout, Upload){
         $scope.canAdd=PrivilegeService.hasPrivilege('add');
         $scope.canSave=PrivilegeService.hasPrivilege('add');
         $scope.model={"name":"","key":"","description":""};
@@ -179,6 +182,7 @@
         $scope.saveNext=function () {
             window.location.href="<c:url value="/sys/model/create"/>?name="+$scope.model.name+"&key="+$scope.model.key+"&description="+$scope.model.description;
         }
+        buttonHeader.editInit($scope,$http,$window,$timeout, Upload,"/sys");
     });
     app.run([
         'bootstrap3ElementModifier',

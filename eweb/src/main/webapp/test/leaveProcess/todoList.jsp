@@ -13,20 +13,12 @@
     <title><%--用户Session--%><eidea:label key="leave.title"/></title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <%@include file="/inc/inc_ang_js_css.jsp" %>
+    <%@include file="/common/common_header.jsp" %>
 </head>
 <body>
 <div ng-app='myApp' ng-view class="content">
     <div  class="container-fluid" ng-controller="listCtrl">
-        <div class="page-header" >
-            <ol class="breadcrumb">
-                <li><a href="javascript:;"><i class="icon icon-tasks"></i><eidea:label key="leave.title"/></a></li>
-            </ol>
-            <a href="#/edit" class="btn  btn-primary btn-sm" ng-show="canAdd"><eidea:label key="common.button.create"/></a>
-            <button type="button" class="btn  btn-primary btn-sm" id="search_but" data-toggle="modal"
-                    data-target="#searchModal"><eidea:label key="common.button.search"/></button>
-            <button type="button" class="btn  btn-primary btn-sm" ng-disabled="!canDelete()"
-                    ng-click="deleteRecord()" ng-show="canDel" ><eidea:label key="common.button.delete"/></button>
-        </div>
+        <jsp:include page="/common/common_list_button.jsp"/>
         <div class="row-fluid">
             <div class="span12">
                 <table  class="table table-hover table-striped table-condensed">
@@ -39,10 +31,10 @@
                         <th><%--开始时间--%><eidea:label key="test.leave.label.bgnTime"/></th>
                         <th><%--结束时间--%><eidea:label key="test.leave.label.endTime"/></th>
                         <th><%--leaveUserId--%><eidea:label key="test.leave.label.leaveUserId"/></th>
-                        <th>状态</th>
-                        <th>任务创建时间</th>
-                        <th>suspended</th>
-                        <th>assignee</th>
+                        <th><%--状态--%><eidea:label key="test.leave.label.state"/></th>
+                        <th><%--任务创建时间--%><eidea:label key="test.leave.label.task.creation.time"/></th>
+                        <th><%--suspended--%><eidea:label key="test.leave.label.suspended"/></th>
+                        <th><%--assignee--%><eidea:label key="test.leave.label.assignee"/></th>
 
                         <th><%--编辑--%><eidea:label key="common.button.edit"/></th>
                     </tr>
@@ -70,18 +62,25 @@
                             {{model.userName}}
                         </td>
                         <td>
-                            <a target="_blank" href='<c:url value="/common/activiti/show/trace/"/>{{model.processInstanceId}}'  title="点击查看流程图">{{model.taskName }}</a>
+                            <%--<a target="_blank" href='<c:url value="/common/activiti/show/trace/"/>{{model.processInstanceId}}'  title="<eidea:label key="leave.title.click.view.flow.chart"/>">{{model.taskName }}</a>--%>
+                                <a href='javascript:void(0);'  title="<eidea:label key="leave.title.click.view.flow.chart"/>" ng-click="openImage(model.processInstanceId)">{{model.taskName }}</a>
                         </td>
                         <td>{{model.taskCreateTime }}</td>
-                        <td>{{model.suspended ? "已挂起" : "正常" }}；<b title='流程版本号'>V: {{model.version }}</b></td>
+                        <td>{{model.suspended ? "<eidea:label key="leave.label.suspend"/>" : "<eidea:label key="leave.label.normal"/>" }}；<b title='<eidea:label key="leave.label.process.version"/>'>V: {{model.version }}</b></td>
                         <td>{{model.assignee }}</td>
                         <td ng-show="model.assignee!=null&&model.assignee!=''">
 
-                            <button class="btn btn-primary btn-sm" ng-click="approve(model.taskId)">同意</button>
-                            <button class="btn btn-primary btn-sm" ng-click="reject(model.taskId)">拒绝</button>
+                            <button class="btn btn-primary btn-sm" ng-click="approve(model.taskId)"><%--同意--%>
+                                <i class="fa fa-check fa-1x" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.agree"/>
+                            </button>
+                            <button class="btn btn-primary btn-sm" ng-click="reject(model.taskId)"><%--拒绝--%>
+                                <i class="fa fa-close fa-1x" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.refuse"/>
+                            </button>
                         </td>
                         <td ng-show="model.assignee==null||model.assignee==''">
-                            <button class="btn btn-primary btn-sm" ng-click="claim(model.taskId)">签收</button>
+                            <button class="btn btn-primary btn-sm" ng-click="claim(model.taskId)"><%--签收--%>
+                                <i class="fa fa-pencil fa-1x" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.sign"/>
+                            </button>
                         </td>
                     </tr>
                     </tbody>
@@ -94,15 +93,15 @@
             </div>
         </div>
     </div>
-
+    <jsp:include page="/common/common_upload.jsp"/>
 </div>
 <jsp:include page="/common/searchPage">
     <jsp:param name="uri" value="${uri}"/>
 </jsp:include>
 </body>
 <script type="text/javascript">
-    var app = angular.module('myApp', ['ui.bootstrap', 'jcs-autoValidate']);
-    app.controller('listCtrl', function ($scope,$rootScope, $http) {
+    var app = angular.module('myApp', ['ngFileUpload','ui.bootstrap', 'jcs-autoValidate']);
+    app.controller('listCtrl', function ($rootScope,$scope,$http,$window) {
         $scope.allList = [];
         $scope.modelList = [];
         $scope.delFlag = false;
@@ -148,45 +147,92 @@
         }
         $scope.approve=function(taskId)
         {
-            $http.post("<c:url value="/test/leaveProcess/complete/"/>"+taskId+"/"+true).success(function (data) {
-                if (data.success) {
-                    bootbox.alert({"message":"审批通过","callback": function() {
+            bootbox.confirm({
+                message: "<eidea:message key="leave.process.confirm.consent.audit"/>",
+                buttons: {
+                    confirm: {
+                        label: '<eidea:label key="common.button.yes"/>',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: '<eidea:label key="common.button.no"/>',
+                        className: 'btn-danger'
+                    }
+                }, callback: function (result) {
+                    if (result) {
+                        $http.post("<c:url value="/test/leaveProcess/complete/"/>"+taskId+"/"+true).success(function (data) {
+                            if (data.success) {
+                                bootbox.alert({"message":"<eidea:message key="leave.msg.approval"/>","callback": function() {
 
-                        window.location.href="<c:url value="/test/leaveProcess/showTodoList"/>";
-                    }});
-                }
-                else {
-                    bootbox.alert(data.message);
-                }
+                                    window.location.href="<c:url value="/test/leaveProcess/showTodoList"/>";
+                                }});
+                            }
+                            else {
+                                bootbox.alert(data.message);
+                            }
 
+                        });
+                    }
+                }
             });
         };
         $scope.reject=function(taskId)
         {
-            $http.post("<c:url value="/test/leaveProcess/complete/"/>"+taskId+"/"+false).success(function (data) {
-                if (data.success) {
-                    bootbox.alert({"message":"审批拒绝","callback": function() {
-                        window.location.href="<c:url value="/test/leaveProcess/showTodoList"/>";
-                    }});
-                }
-                else {
-                    bootbox.alert(data.message);
-                }
+            bootbox.confirm({
+                message: "<eidea:message key="leave.process.confirm.refusal.audit"/>",
+                buttons: {
+                    confirm: {
+                        label: '<eidea:label key="common.button.yes"/>',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: '<eidea:label key="common.button.no"/>',
+                        className: 'btn-danger'
+                    }
+                }, callback: function (result) {
+                    if (result) {
+                        $http.post("<c:url value="/test/leaveProcess/complete/"/>"+taskId+"/"+false).success(function (data) {
+                            if (data.success) {
+                                bootbox.alert({"message":"<eidea:message key="leave.msg.approval.reject"/>","callback": function() {
+                                    window.location.href="<c:url value="/test/leaveProcess/showTodoList"/>";
+                                }});
+                            }
+                            else {
+                                bootbox.alert(data.message);
+                            }
 
+                        });
+                    }
+                }
             });
         }
         $scope.claim=function(taskId)
         {
-            $http.post("<c:url value="/test/leaveProcess/taskClaim/"/>"+taskId+"").success(function (data) {
-                if (data.success) {
-                    bootbox.alert({"message":"签收成功","callback": function() {
-                        window.location.href="<c:url value="/test/leaveProcess/showTodoList"/>";
-                    }});
+            bootbox.confirm({
+                message: "<eidea:message key="leave.process.confirm.confirm.sign"/>",
+                buttons: {
+                    confirm: {
+                        label: '<eidea:label key="common.button.yes"/>',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: '<eidea:label key="common.button.no"/>',
+                        className: 'btn-danger'
+                    }
+                }, callback: function (result) {
+                    if (result) {
+                        $http.post("<c:url value="/test/leaveProcess/taskClaim/"/>"+taskId+"").success(function (data) {
+                            if (data.success) {
+                                bootbox.alert({"message":"<eidea:message key="leave.msg.sign.success"/>","callback": function() {
+                                    window.location.href="<c:url value="/test/leaveProcess/showTodoList"/>";
+                                }});
+                            }
+                            else {
+                                bootbox.alert(data.message);
+                            }
+                        });
+                    }
                 }
-                else {
-                    bootbox.alert(data.message);
-                }
-
             });
         };
         $scope.selectAll = function () {
@@ -244,6 +290,11 @@
             $rootScope.listQueryParams = $scope.queryParams;
         }
         $scope.pageChanged();
+        $scope.openImage=function (id) {
+            $("#imageShowModal").modal("show");
+            $("#imageShow").attr("src",'<c:url value="/common/activiti/process/trace/auto/"/>'+id);
+        }
+        buttonHeader.listInit($scope,$window);
     });
 </script>
 </html>

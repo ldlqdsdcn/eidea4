@@ -53,15 +53,6 @@ Date: 2017-05-08 09:55:07
                                 <input type="text" class="form-control" id="token" placeholder="<eidea:message key="common.please.input"><eidea:param value="sys.userSession2.label.token" type="label"/></eidea:message>" ng-model="userSession2Po.token" >
 
                     </div>
-
-
-                    <div class="form-group">
-                        <p class="text-right">
-                            <button type="reset" ng-click="create()"  class="btn btn-default btn-sm" ng-show="canAdd"><%--新建--%><eidea:label key="common.button.create"/></button>
-                            <button type="submit" class="btn btn-default btn-sm" ng-show="canSave"><%--保存--%><eidea:label key="common.button.save"/></button>
-                            <a href="#/list" class="btn btn-default btn-sm"><%--返回--%><eidea:label key="common.button.back"/></a>
-                        </p>
-                    </div>
                     <div class="form-group">
                         <p class="text-center" style="color: red">
                             {{message}}

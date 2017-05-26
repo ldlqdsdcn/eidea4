@@ -12,4 +12,10 @@ public interface ChangelogService {
 	PaginationResult<ChangelogBo> getChangelogList(Search search, QueryParams queryParams);
 	ChangelogBo getChangelogBo(Integer id);
 	List<TableColumnBo> getChangelogHeader(String tableName);
+
+	/**
+	 * getChangeLogList:查询log列表
+	 * @return
+	 */
+	List<ChangelogBo> getChangeLogModelList(Search search);
 }

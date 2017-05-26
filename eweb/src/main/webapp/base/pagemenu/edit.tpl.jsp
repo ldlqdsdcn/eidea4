@@ -16,23 +16,23 @@
                     <tr>
                         <td class="control-label"><eidea:label key="dymenuForm.label.sequence"/></td>
                         <td class="form-group"><input type="number" class="form-control" id="seqNo" placeholder="<eidea:message key="login.input.order"/>" ng-model="pageMenuBo.seqNo" required ng-minlength="1" ng-maxlength="10" min="0" ng-pattern="/^\d+$/"></td>
-                        <td class="control-label">name</td><td class="form-group"> <input type="text" class="form-control" id="name" placeholder="<eidea:message key="login.input.name"/>" ng-model="pageMenuBo.name" required ng-minlength="2" ng-maxlength="100"></td>
+                        <td class="control-label"><eidea:label key="base.field.label.name"/></td><td class="form-group"> <input type="text" class="form-control" id="name" placeholder="<eidea:message key="login.input.name"/>" ng-model="pageMenuBo.name" required ng-minlength="2" ng-maxlength="100"></td>
                     </tr>
                     <tr>
-                        <td class="control-label"> url</td><td colspan="3" class="form-group"> <input type="text" class="form-control" id="url" placeholder="<eidea:message key="login.input.url"/>" ng-model="pageMenuBo.url"   ng-maxlength="500"></td>
+                        <td class="control-label"><eidea:label key="base.pagemenu.label.url"/></td><td colspan="3" class="form-group"> <input type="text" class="form-control" id="url" placeholder="<eidea:message key="login.input.url"/>" ng-model="pageMenuBo.url"   ng-maxlength="500"></td>
                     </tr>
                     <tr>
-                        <td  class="control-label">icon</td>
-                        <td class="form-group">  <input type="text" class="form-control" id="icon" placeholder="<eidea:label key="dymenuForm.label.icon"/>" ng-model="pageMenuBo.icon"   ng-maxlength="100"></td>
+                        <td  class="control-label"><eidea:label key="base.pagemenu.label.icon"/></td>
+                        <td class="form-group"><input type="text" class="form-control" id="icon" placeholder="<eidea:label key="dymenuForm.label.icon"/>" ng-model="pageMenuBo.icon"   ng-maxlength="100"></td>
                         <td class="control-label"> <eidea:label key="dymenuForm.label.menutype"/></td>
                         <td class="form-group"> <select class="form-control"  ng-model="pageMenuBo.menuType" ng-options="id for (id,name) in menuTypeList"/></td>
                     </tr>
                     <tr>
-                        <td class="control-label">  remark</td>
+                        <td class="control-label"><eidea:label key="base.datadict.label.remark"/></td>
                         <td class="form-group" colspan="3"> <input type="text" class="form-control" id="remark" placeholder="<eidea:message key="login.input.remark"/>" ng-model="pageMenuBo.remark"   ng-maxlength="500"></td>
                     </tr>
                     <tr>
-                        <td class="control-label"> <eidea:label key="module.label.parentmenu"/></td>
+                        <td class="control-label"><eidea:label key="module.label.parentmenu"/></td>
                         <td  class="form-group"><select class="form-control" ng-model="pageMenuBo.parentMenuId" ng-options="parentMenu.id as parentMenu.name for parentMenu in pageMenuBoList"/></td>
                         <td class="control-label"> <eidea:label key="base.whetherEffective"/></td><td class="form-group"> <input type="checkbox" id="isactive"   ng-true-value="'Y'" ng-false-value="'N'" ng-model="pageMenuBo.isactive" ></td>
                     </tr>

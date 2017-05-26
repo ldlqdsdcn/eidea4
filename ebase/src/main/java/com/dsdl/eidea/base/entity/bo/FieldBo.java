@@ -13,7 +13,16 @@ import java.util.List;
  */
 @Getter
 @Setter
-public class  FieldBo {
+public class FieldBo {
+    private Integer id;
+    /**
+     * 字段名
+     */
+    private String name;
+    /**
+     * 字段帮助信息
+     */
+    private String help;
     /**
      * 字段属性
      */

@@ -9,6 +9,7 @@
     <title><%--窗体--%><eidea:label key="window.title"/></title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <%@include file="/inc/inc_ang_js_css.jsp" %>
+    <%@include file="/common/common_header.jsp" %>
 </head>
 <body>
 <div ng-app='myApp'  class="content" ui-view></div>
@@ -17,7 +18,7 @@
 </jsp:include>
 </body>
 <script type="text/javascript">
-    var app = angular.module('myApp',['ui.router','ui.bootstrap','jcs-autoValidate'])
+    var app = angular.module('myApp',['ngFileUpload','ngRoute','ui.router','ui.bootstrap','jcs-autoValidate'])
         .config(['$stateProvider','$urlRouterProvider',function ($stateProvider,$urlRouterProvider) {
             $urlRouterProvider.otherwise('/list');
             $stateProvider
@@ -78,7 +79,7 @@
                     templateUrl:'<c:url value="/base/fieldValidator/edit.tpl.jsp"/> '
                 })
         }]);
-    app.controller('listCtrl', function ($scope,$http) {
+    app.controller('listCtrl', function ($rootScope,$scope,$http,$window) {
         $scope.modelList = [];
         $scope.delFlag = false;
         $scope.isLoading = true;
@@ -163,8 +164,10 @@
             init: true
         };
         $scope.pageChanged();
+
+        buttonHeader.listInit($scope,$window);
     });
-    app.controller('editCtrl', function ($scope, $http,$rootScope,$stateParams) {
+    app.controller('editCtrl', function ($rootScope,$stateParams,$routeParams,$scope, $http,$window,$timeout, Upload) {
         /**
          * 日期时间选择控件
          * bootstrap-datetime 24小时时间是hh
@@ -203,6 +206,7 @@
             .success(function (response) {
                 if (response.success) {
                     $scope.windowPo = response.data;
+                    $scope.tableId=$scope.windowPo.id;
                     $scope.getClientList();
                     $scope.getOrgList();
                     $scope.canSave = (PrivilegeService.hasPrivilege('add') && $scope.windowPo.id == null) || PrivilegeService.hasPrivilege('update');
@@ -271,8 +275,7 @@
                 bootbox.alert(data.message);
             })
         }
-
-
+        buttonHeader.editInit($scope,$http,$window,$timeout, Upload,"/base");
     });
     app.controller('tabCtrl',function ($scope,$rootScope,$state) {
         $scope.windowEdit=function(){

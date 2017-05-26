@@ -43,13 +43,13 @@ public class DirectoryServiceImpl implements DirectoryService {
 
     @Override
     public void deleteDirectoryById(Integer[] ids) {
-        directoryDao.removeByIds(ids);
+        directoryDao.removeByIdsForLog(ids);
     }
 
     @Override
     public void save(DirectoryBo directoryBo) {
         DirectoryPo  directoryPo = modelMapper.map(directoryBo,DirectoryPo.class);
-        directoryDao.save(directoryPo);
+        directoryDao.saveForLog(directoryPo);
         directoryBo.setId(directoryPo.getId());
 
     }

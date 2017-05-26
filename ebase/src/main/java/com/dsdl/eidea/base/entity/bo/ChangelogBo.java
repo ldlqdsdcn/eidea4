@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class ChangelogBo {
+public class ChangelogBo extends CommonUploadBo{
 	private Integer id;
 	private String tableName;
 	private String poClass;

@@ -60,11 +60,11 @@ public class CommonFileServiceImpl  implements	CommonFileService {
 	}
     public void saveCommonFile(CommonFilePo commonFile)
 	{
-		commonFileDao.save(commonFile);
+		commonFileDao.saveForLog(commonFile);
 	}
     public void deletes(Integer[] ids)
 	{
-		commonFileDao.removeByIds(ids);
+		commonFileDao.removeByIdsForLog(ids);
 	}
 
 	@Override
@@ -91,13 +91,13 @@ public class CommonFileServiceImpl  implements	CommonFileService {
 		commonFilePo.setFileIshidden(commonFileBo.getFileIshidden());
 		commonFilePo.setCreated(commonFileBo.getCreated());
 		commonFilePo.setCommonFileSettingId(commonFileBo.getCommonFileSettingId());
-		commonFileDao.save(commonFilePo);
+		commonFileDao.saveForLog(commonFilePo);
 		FileRelationPo fileRelationPo=new FileRelationPo();
 		fileRelationPo.setTableName(commonFileBo.getUri());
 		fileRelationPo.setFileId(commonFilePo.getId());
-		fileRelationPo.setTableId(commonFileBo.getTableId());
+		fileRelationPo.setTableId(Integer.parseInt(commonFileBo.getTableId()));
 		fileRelationPo.setCreated(commonFileBo.getCreated());
-		commonFileRelationDao.save(fileRelationPo);
+		commonFileRelationDao.saveForLog(fileRelationPo);
 	}
 
 	@Override
@@ -106,8 +106,8 @@ public class CommonFileServiceImpl  implements	CommonFileService {
 		search.addFilterEqual("fileId",commonFileBo.getId());
 		List<FileRelationPo> FileRelationPoList=commonFileRelationDao.search(search);
 		FileRelationPoList.forEach(fileRelationPo -> {
-			commonFileRelationDao.removeById(fileRelationPo.getId());
+			commonFileRelationDao.removeByIdForLog(fileRelationPo.getId());
 		});
-		commonFileDao.removeById(commonFileBo.getId());
+		commonFileDao.removeByIdForLog(commonFileBo.getId());
 	}
 }

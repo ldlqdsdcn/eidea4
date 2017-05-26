@@ -1,8 +1,6 @@
 package com.dsdl.eidea.base.service.impl;
 
-import com.dsdl.eidea.base.dao.IdentityDao;
 import com.dsdl.eidea.base.def.ActivateDef;
-import com.dsdl.eidea.base.entity.bo.UserBo;
 import com.dsdl.eidea.base.entity.po.RolePo;
 import com.dsdl.eidea.base.entity.po.UserPo;
 import com.dsdl.eidea.base.entity.po.UserRolePo;
@@ -16,7 +14,6 @@ import org.activiti.engine.identity.Group;
 import org.activiti.engine.identity.User;
 import org.activiti.engine.identity.UserQuery;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,8 +31,6 @@ public class AccountServiceImpl implements AccountService {
     private CommonDao<RolePo, Integer> roleDao;
     @DataAccess(entity = UserPo.class)
     private CommonDao<UserPo, Integer> userDao;
-    @Autowired
-    private IdentityDao identityDao;
 
     /**
      * 保存用户信息，并且同步用户信息到activiti的identity.User和identify.Group

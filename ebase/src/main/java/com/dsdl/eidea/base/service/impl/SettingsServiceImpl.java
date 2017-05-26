@@ -46,11 +46,11 @@ public class SettingsServiceImpl implements SettingsService {
     }
 
     public void saveSettings(SettingsPo settings) {
-        settingsDao.save(settings);
+        settingsDao.saveForLog(settings);
     }
 
     public void deletes(String[] keys) {
-        settingsDao.removeByIds(keys);
+        settingsDao.removeByIdsForLog(keys);
     }
 
     @Override

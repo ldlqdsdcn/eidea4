@@ -98,7 +98,7 @@ public class LeaveProcessController {
         Map<String, Object> variables = new HashMap<>();
         variables.put("deptLeaderPass", deptLeaderPass);
         try {
-            taskService.complete(taskId);
+            taskService.complete(taskId,variables);
         } catch (Exception e) {
             e.printStackTrace();
         }

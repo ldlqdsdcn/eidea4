@@ -12,6 +12,7 @@
     <title>工作流</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <%@include file="/inc/inc_ang_js_css.jsp" %>
+    <%@include file="/common/common_header.jsp" %>
 </head>
 <body>
 <div ng-view class="content" ng-app='myApp'></div>
@@ -25,7 +26,7 @@
                         .when('/edit', {templateUrl: '<c:url value="/sys/workflow/workflow/edit.tpl.jsp"/>'})
                         .otherwise({redirectTo: '/list'});
             }]);
-    app.controller('listCtrl', function ($scope,$rootScope, $http) {
+    app.controller('listCtrl', function ($rootScope,$scope,$http,$window) {
         $scope.allList = [];
         $scope.modelList = [];
         $scope.delFlag = false;
@@ -160,11 +161,12 @@
             });
         }
         $scope.openImage=function (id) {
-            $("#workflowImageModal").modal("show");
-            $("#workflowImage").attr("src",'<c:url value="/sys/workflow/resource/read"/>?processDefinitionId='+id+'&resourceType=image');
+            $("#imageShowModal").modal("show");
+            $("#imageShow").attr("src",'<c:url value="/sys/workflow/resource/read"/>?processDefinitionId='+id+'&resourceType=image');
         }
+        buttonHeader.listInit($scope,$window);
     });
-    app.controller('editCtrl', function ($scope,$rootScope,$http, $routeParams, $timeout ,$location, Upload) {
+    app.controller('editCtrl', function ($routeParams,$scope, $http,$window,$timeout, Upload) {
         //工作流上传
         $scope.$watch('files', function (files) {
             $scope.formUpload = false;
@@ -200,11 +202,12 @@
                         }
                     },
                     message: '<eidea:message key="common.upload.success"/>'
-/*                    , callback: function() {
-                      window.location.href="<c:url value="/sys/workflow/showList"/>";
-                    }*/
+                    , callback: function() {
+                      /*window.location.href="<c:url value="/sys/workflow/showList"/>";*/
+                      $window.path("/list");
+                    }
                 });
-                $location.path("/list");
+//                $location.path("/list");
             }).error(function (data, status, headers, config) {
                 //上传失败
                 console.log('error status: ' + status);

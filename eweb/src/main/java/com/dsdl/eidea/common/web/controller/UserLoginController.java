@@ -23,10 +23,7 @@ import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.IncorrectCredentialsException;
-import org.apache.shiro.authc.LockedAccountException;
-import org.apache.shiro.authc.UnknownAccountException;
-import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authc.*;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -75,22 +72,21 @@ public class UserLoginController {
                 return JsonResult.fail(ResultCode.FAILURE.getCode(), "密码不允许为空！");
             }
         }
-
         Subject subject = SecurityUtils.getSubject();
         UsernamePasswordToken token = new UsernamePasswordToken(loginBo.getUsername(), loginBo.getPassword());
-
         try {
             subject.login(token);
-
             UserBo userBo=userService.getUserByUsername(loginBo.getUsername());
             userInitCommon(loginBo);
             userBo.setCode(loginBo.getCode());
             userInit(userBo, false, request);
             return JsonResult.success("登录成功");
         } catch (IncorrectCredentialsException | UnknownAccountException e) {
-            return JsonResult.fail(ErrorCodes.NO_LOGIN.getCode(), "用户名或密码错误，请重新输入");
+            return JsonResult.fail(ErrorCodes.NO_LOGIN.getCode(), "密码错误，请重新输入");
         } catch (LockedAccountException e) {
             return JsonResult.fail(ErrorCodes.NO_LOGIN.getCode(), "该用户已经被禁用");
+        }catch (AuthenticationException e){
+            return JsonResult.fail(ErrorCodes.NO_LOGIN.getCode(), "用户名错误，请重新输入");
         }
 
 

@@ -76,14 +76,14 @@ public class OrgServiceImpl implements OrgService {
         OrgPo orgPo = modelMapper.map(orgBo, OrgPo.class);
         orgPo.setSysClient(clientPo);
 
-        orgDao.save(orgPo);
+        orgDao.saveForLog(orgPo);
         orgBo.setId(orgPo.getId());
     }
 
     @Override
     public void deletes(Integer[] ids) {
 
-        orgDao.removeByIds(ids);
+        orgDao.removeByIdsForLog(ids);
     }
 
     @Override

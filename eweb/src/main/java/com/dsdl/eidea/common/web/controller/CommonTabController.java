@@ -1,5 +1,6 @@
 package com.dsdl.eidea.common.web.controller;
 
+import com.dsdl.eidea.base.entity.bo.FieldBo;
 import com.dsdl.eidea.base.entity.bo.FieldInListPageBo;
 import com.dsdl.eidea.base.service.FieldService;
 import com.dsdl.eidea.base.service.TabService;
@@ -60,9 +61,17 @@ public class CommonTabController {
      * @return
      */
     @RequestMapping("/showForm/{tabId}")
-    public ModelAndView showFormPage(@PathVariable("tabId") Integer tabId) {
-        ModelAndView modelAndView = new ModelAndView();
+    public ModelAndView showFormPage(@PathVariable("tabId") Integer tabId,HttpSession session) {
+        ModelAndView modelAndView = new ModelAndView("/common/edit/edit");
+        String lang = (String) session.getAttribute(WebConst.SESSION_LANGUAGE);
+        fieldService.getFormPageFieldList(tabId,lang);
         return modelAndView;
+    }
+    @RequestMapping("/get/{tabId}/{recordId}")
+    public JsonResult<List<FieldBo>>  edit(@PathVariable("tabId") Integer tabId,@PathVariable("recordId") Integer recordId)
+    {
+
+        return null;
     }
 }
 

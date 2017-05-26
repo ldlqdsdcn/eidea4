@@ -8,6 +8,7 @@ package com.dsdl.eidea.base.service.impl;
 
 import com.dsdl.eidea.base.entity.bo.FieldBo;
 import com.dsdl.eidea.base.entity.bo.FieldInListPageBo;
+import com.dsdl.eidea.base.entity.bo.FieldValueBo;
 import com.dsdl.eidea.base.entity.po.FieldTrlPo;
 import com.dsdl.eidea.base.entity.po.TabPo;
 import com.dsdl.eidea.base.exception.ServiceException;
@@ -149,22 +150,34 @@ public class FieldServiceImpl  implements	FieldService {
 
 	@Override
 	public List<FieldBo> getFormPageFieldList(Integer tabId,String lang) {
-		return null;
-	}
-	@Override
-	public PaginationResult<Map<String, String>> getDataList(Integer tabId, QueryParams queryParams) {
 		Search search=new Search();
 		search.addFilterEqual("isdisplaygrid","Y");
 		search.addSortAsc("seqnogrid");
 		search.addSortAsc("seqNo");
+		search.addFilterEqual("tabId",tabId);
+		List<FieldPo> fieldPoList=fieldDao.search(search);
+		List<FieldBo> fieldBoList=new ArrayList<>();
+
+
+
+		return fieldBoList;
+	}
+	@Override
+	public PaginationResult<Map<String, String>> getDataList(Integer tabId, QueryParams queryParams) {
+
 		TabPo tabPo=tabDao.find(tabId);
 		TablePo tablePo=tableDao.find(tabPo.getTableId());
 		String tableName=tablePo.getTableName();
 
-		List<FieldPo> fieldPoList=fieldDao.search(search);
 		StringBuilder stringBuilder=new StringBuilder();
 		boolean isBegin=true;
 		List<FieldColumn> fieldColumnList=new ArrayList<>();
+		Search search=new Search();
+		search.addFilterEqual("isdisplaygrid","Y");
+		search.addSortAsc("seqnogrid");
+		search.addSortAsc("seqNo");
+		search.addFilterEqual("tabId",tabId);
+		List<FieldPo> fieldPoList=fieldDao.search(search);
 		for(FieldPo fieldPo:fieldPoList)
 		{
 			TableColumnPo tableColumnPo=tableColumnDao.find(fieldPo.getColumnId());
@@ -247,6 +260,24 @@ public class FieldServiceImpl  implements	FieldService {
 		PaginationResult paginationResult = PaginationResult.pagination(resultList, count, queryParams.getPageNo(), queryParams.getPageSize());
 		return paginationResult;
 	}
+
+	@Override
+	public List<FieldValueBo> getDataForm(Integer tabId, Integer recordId) {
+		TabPo tabPo=tabDao.find(tabId);
+		TablePo tablePo=tableDao.find(tabPo.getTableId());
+		Search search=new Search();
+		search.addSortAsc("seqNo");
+		search.addFilterEqual("tabId",tabId);
+
+		List<FieldPo> fieldPoList=fieldDao.search(search);
+		List<FieldValueBo> fieldValueBoList=new ArrayList<>();
+		for(FieldPo fieldPo:fieldPoList)
+		{
+			FieldValueBo fieldValueBo=new FieldValueBo();
+		}
+		return null;
+	}
+
 	class FieldColumn{
 		private Integer fieldId;
 		private FieldPo fieldPo;

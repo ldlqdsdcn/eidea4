@@ -7,6 +7,7 @@
 package com.dsdl.eidea.base.service;
 import com.dsdl.eidea.base.entity.bo.FieldBo;
 import com.dsdl.eidea.base.entity.bo.FieldInListPageBo;
+import com.dsdl.eidea.base.entity.bo.FieldValueBo;
 import com.dsdl.eidea.base.entity.po.FieldPo;
 import com.dsdl.eidea.core.dto.PaginationResult;
 import com.dsdl.eidea.core.params.QueryParams;
@@ -42,9 +43,16 @@ public interface FieldService {
     /**
      *
      * @param tabId
-     * @param bgn
-     * @param size
+     * @param queryParams
      * @return
      */
 	PaginationResult<Map<String, String>> getDataList(Integer tabId,  QueryParams queryParams);
+
+	/**
+	 * 根据tabId和record获取记录
+	 * @param tabId
+	 * @param recordId
+	 * @return
+	 */
+	List<FieldValueBo> getDataForm(Integer tabId,Integer recordId);
 }

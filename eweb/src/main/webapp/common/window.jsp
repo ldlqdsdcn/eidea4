@@ -12,7 +12,7 @@
     <title><c:out value="${windowBo.windowName}"/> </title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <%@include file="/inc/inc_ang_js_css_dynamic.jsp" %>
-    <%@include file="/common/common_header.jsp" %>
+
 </head>
 <body >
 <div ng-app='myApp'  class="content">
@@ -23,7 +23,7 @@
             </c:forEach>
         </uib-tabset>
     </div>
-    <div ng-app='myApp'   class="tab-content vertical-tab-content" ui-view></div>
+    <div ng-app='myApp'  class="tab-content vertical-tab-content" ui-view></div>
     </div>
 
 

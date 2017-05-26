@@ -5,8 +5,9 @@ package com.dsdl.eidea.core.def;
  */
 public class EideaConst {
     /*****************************************************
-     * 常用占位符
-     *****************************************************
+     *                                                   *
+     *  常用SQL占位符                                     *
+     ****************************************************
     /**
      * 当前用户的OrgId
      */
@@ -32,4 +33,12 @@ public class EideaConst {
      * 常用来替换查询界面输入的值
      */
     public static final String EXPRESS_VALUE="@value@";
+    /**
+     * 工作流变量，通用关键字
+     * 审批通过 值为 true
+     * 审批拒绝 值为 false
+     */
+    public static final String BPM_AGREE="approved";
+
+
 }

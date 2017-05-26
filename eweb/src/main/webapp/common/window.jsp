@@ -9,7 +9,7 @@
 <%@include file="/inc/taglib.jsp" %>
 <html>
 <head>
-    <title><c:out value="${windowPo.name}"/> </title>
+    <title><c:out value="${windowBo.name}"/> </title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <%@include file="/inc/inc_ang_js_css.jsp" %>
 </head>
@@ -17,20 +17,14 @@
 <div ng-app='myApp'  class="content" ui-view>
     <div ng-controller="tabCtrl" class="nav nav-tab vertical-tab">
         <uib-tabset vertical="true" active="active" type="tabs">
-            <uib-tab index="0" heading="<ediea:label key="window.title"/>" select="windowEdit()"></uib-tab>
-            <uib-tab index="1" heading="<ediea:label key="windowTrl.title"/>" select="windowTrlList()"></uib-tab>
-            <uib-tab index="2" heading="<ediea:label key="tab.title"/>" select="tabList()"></uib-tab>
-            <uib-tab index="3" heading="<eidea:label key="tabTrl.title"/> " select="tabTrlList()"
-                     disable="!tabTrlBtnShow"></uib-tab>
-            <uib-tab index="4" heading="<eidea:label key="field.title"/> " select="fieldList()"
-                     disable="!fieldBtnShow"></uib-tab>
-            <uib-tab index="5" heading="<eidea:label key="fieldTrl.title"/> " select="fieldTrlList()"
-                     disable="!fieldTrlBtnShow"></uib-tab>
-            <uib-tab index="6" heading="<eidea:label key="fieldValidator.title"/> " select="fieldValidatorList()"
-                     disable="!fieldValidatorBtnShow"></uib-tab>
+            <c:forEach items="${windowBo.tabList}" var="tab" varStatus="status">
+            <uib-tab index="${status.index}" heading="${tab.name}"  select="fieldList()"></uib-tab>
+            </c:forEach>
         </uib-tabset>
     </div>
+    <div ui-view class="tab-content vertical-tab-content" >
 
+    </div>
 
 
 </div>
@@ -40,8 +34,7 @@
 </body>
 <script type="text/javascript">
     var app = angular.module('myApp',['ui.router','ui.bootstrap','jcs-autoValidate'])
-            .config(['$stateProvider','$urlRouterProvider',function ($stateProvider,$urlRouterProvider) {
-                $urlRouterProvider.otherwise('/list');
+            .config(['$stateProvider',function ($stateProvider) {
                 $stateProvider
                         .state('list', {
                             url:'/list',

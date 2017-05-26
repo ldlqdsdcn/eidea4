@@ -6,7 +6,10 @@
 */
 package com.dsdl.eidea.base.service.impl;
 
+import com.dsdl.eidea.base.entity.bo.FieldBo;
+import com.dsdl.eidea.base.entity.bo.FieldInListPageBo;
 import com.dsdl.eidea.base.entity.bo.TabBo;
+import com.dsdl.eidea.base.entity.po.FieldPo;
 import com.dsdl.eidea.base.entity.po.TabTrlPo;
 import com.dsdl.eidea.core.spring.annotation.DataAccess;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +24,8 @@ import com.dsdl.eidea.core.dao.CommonDao;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
 /**
  * @author 刘大磊 2017-05-02 15:43:14
  */
@@ -30,6 +35,8 @@ public class TabServiceImpl  implements	TabService {
 	private CommonDao<TabPo,Integer> tabDao;
 	@DataAccess(entity = TabTrlPo.class)
 	private CommonDao<TabTrlPo,Integer> tabTrlDao;
+
+
 	public PaginationResult<TabPo> getTabListByPaging(Search search,QueryParams queryParams)
     {
 		search.setFirstResult(queryParams.getFirstResult());
@@ -96,7 +103,27 @@ public class TabServiceImpl  implements	TabService {
 
 		return tabBoList;
 	}
-    public TabPo getTab(Integer id)
+
+	@Override
+	public List<FieldInListPageBo> getListPageFiledList(Integer tabId) {
+
+
+
+		return null;
+	}
+
+	@Override
+	public List<FieldBo> getFormPageFieldList(Integer tabId) {
+		return null;
+	}
+
+	@Override
+	public PaginationResult<Map<String, String>> getTabList(Search search, QueryParams queryParams, Integer tabId, String lang) {
+
+		return null;
+	}
+
+	public TabPo getTab(Integer id)
 	{
 		return tabDao.find(id);
 	}

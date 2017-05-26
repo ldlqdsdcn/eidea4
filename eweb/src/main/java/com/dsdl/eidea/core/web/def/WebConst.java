@@ -21,27 +21,5 @@ public class WebConst {
      * token header 权限验证
      */
     public static final String HEADER_TOKEN = "token";
-    /*****************************************************
-     * 常用占位符
-     */
-    /**
-     * 当前用户的OrgId
-     */
-    public static final String EXPRESS_ORG_ID = "@UserOrgId@";
-    /**
-     * 当前用户的clientId
-     */
-    public static final String EXPRESS_CLIENT_ID = "@UserClientId@";
-    /**
-     * 当前用户的 userId
-     */
-    public static final String EXPRESS_USER_ID = "@UserId@";
-    /**
-     * 当前时间
-     */
-    public static final String EXPRESS_CURRENT_TIME = "@CurrentTime@";
-    /**
-     * 当前日期
-     */
-    public static final String EXPRESS_CURRENT_DATE = "@CurrentDate@";
+
 }

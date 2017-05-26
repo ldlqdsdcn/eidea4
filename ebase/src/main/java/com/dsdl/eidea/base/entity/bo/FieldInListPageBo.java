@@ -8,31 +8,22 @@ import lombok.Setter;
 import java.util.List;
 
 /**
- * Created by 刘大磊 on 2017/5/3 16:23.
- * 字段类
+ * Created by 刘大磊 on 2017/5/25 15:51.
  */
 @Getter
 @Setter
-public class FieldBo {
+public class FieldInListPageBo {
     private Integer id;
     /**
      * 字段名
      */
     private String name;
     /**
-     * 字段帮助信息
+     * 字段描述
      */
-    private String help;
-    /**
-     * 字段属性
-     */
-    private FieldPo fieldPo;
+    private String description;
     /**
      * 字段值
      */
-    private Object fieldValue;
-    /**
-     * 字段验证
-     */
-    private List<FieldValidatorPo> fieldValidatorList;
+    private String fieldValue;
 }

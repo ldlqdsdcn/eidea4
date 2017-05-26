@@ -46,5 +46,5 @@ public interface FieldService {
      * @param size
      * @return
      */
-    List<Map<String, String>> getDataList(Integer tabId, int bgn, int size);
+	PaginationResult<Map<String, String>> getDataList(Integer tabId,  QueryParams queryParams);
 }

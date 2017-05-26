@@ -7,19 +7,20 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/inc/taglib.jsp" %>
-<div  class="container-fluid" ng-controller="listCtrl">
-    <div class="page-header" >
-    </div>
+<div  class="container-fluid" ng-controller="tab${tabId}listCtrl">
+    <jsp:include page="/common/common_list_button.jsp"/>
     <div class="row-fluid">
         <div class="span12">
             <table  class="table table-hover table-striped table-condensed">
                 <thead>
                 <tr>
+                    <th>编号</th>
                     <c:forEach items="${fieldInListPageBoList}" var="item">
                     <th>
                         <c:out value="${item.name}"/>
                     </th>
                     </c:forEach>
+                    <th>操作</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -33,7 +34,7 @@
                     </c:forEach>
                     <td>
                         <a class="btn btn-primary btn-xs" href="#/edit?id={{model.id<c:out value="${item.id}"/>}}">
-                            <i class="fa fa-search fa-1x" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.view"/></a>
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.edit"/></a>
                     </td>
                 </tr>
                 <tr>

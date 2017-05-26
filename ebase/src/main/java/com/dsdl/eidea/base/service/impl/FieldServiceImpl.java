@@ -44,7 +44,7 @@ public class FieldServiceImpl  implements	FieldService {
 	private static String SELECT_KEY=" select ";
 	private static String FROM_KEY=" from ";
 	private static String WHERE_KEY=" where ";
-	private static String LIMIT_KEY=" limit(%d,%d) ";
+	private static String LIMIT_KEY=" limit %d,%d ";
 	private static String COLUMN_SPLIT_KEY=",";
 	@DataAccess(entity =FieldPo.class)
 	private CommonDao<FieldPo,Integer> fieldDao;
@@ -121,6 +121,7 @@ public class FieldServiceImpl  implements	FieldService {
 		List<FieldInListPageBo> fieldInListPageBoList=new ArrayList<>();
 		Search search=new Search();
 		search.addFilterEqual("isdisplaygrid","Y");
+		search.addFilterEqual("tabId",tabId);
 		search.addSortAsc("seqnogrid");
 		search.addSortAsc("seqNo");
 		List<FieldPo> fieldPoList=fieldDao.search(search);
@@ -130,13 +131,18 @@ public class FieldServiceImpl  implements	FieldService {
 			fieldInListPageBo.setId(fieldPo.getId());
 			Search trlSearch=new Search();
 			trlSearch.addFilterEqual("lang",lang);
-			trlSearch.addFilterEqual("tabId",fieldPo.getId());
+			trlSearch.addFilterEqual("fieldId",fieldPo.getId());
 			FieldTrlPo fieldTrlPo=fieldTrlDao.searchUnique(trlSearch);
 			if (fieldTrlPo!=null)
 			{
 				fieldInListPageBo.setName(fieldTrlPo.getName());
-				fieldInListPageBoList.add(fieldInListPageBo);
+
 			}
+			else
+			{
+				fieldInListPageBo.setName(fieldPo.getName());
+			}
+			fieldInListPageBoList.add(fieldInListPageBo);
 		}
 		return fieldInListPageBoList;
 	}
@@ -146,7 +152,7 @@ public class FieldServiceImpl  implements	FieldService {
 		return null;
 	}
 	@Override
-	public List<Map<String, String>> getDataList(Integer tabId, int bgn, int size) {
+	public PaginationResult<Map<String, String>> getDataList(Integer tabId, QueryParams queryParams) {
 		Search search=new Search();
 		search.addFilterEqual("isdisplaygrid","Y");
 		search.addSortAsc("seqnogrid");
@@ -179,10 +185,35 @@ public class FieldServiceImpl  implements	FieldService {
 			stringBuilder.append(tableColumnPo.getColumnName());
 
 		}
-		String sql=SELECT_KEY+stringBuilder.toString()+FROM_KEY+tableName+String.format(LIMIT_KEY,bgn,size);
+		String sql=SELECT_KEY+stringBuilder.toString()+FROM_KEY+tableName+String.format(LIMIT_KEY,queryParams.getFirstResult(),queryParams.getPageSize());
+		String countSql=SELECT_KEY+" count(*) "+FROM_KEY+tableName;
+		int count=0;
+		try
+		{
+			Connection countConnection=dataSource.getConnection();
+			Statement countStatement=countConnection.createStatement();
+			ResultSet countResultSet=countStatement.executeQuery(countSql);
+			while (countResultSet.next())
+			{
+				count=countResultSet.getInt(1);
+			}
+			countResultSet.close();
+			countStatement.close();
+			countConnection.close();
+		}
+		catch (Exception e)
+		{
+			throw new ServiceException("获取统计数量出错",e);
+		}
+
+
+
 		List<Map<String,String>> resultList=new ArrayList<>();
 		try
 		{
+
+
+
 			Connection connection=dataSource.getConnection();
 			Statement statement=connection.createStatement();
 			ResultSet resultSet=statement.executeQuery(sql);
@@ -199,9 +230,13 @@ public class FieldServiceImpl  implements	FieldService {
 					//TODO暂时先不考虑数据类型
 					String value= resultSet.getString(fieldColumn.columnName);
 					resultMap.put("id"+fieldColumn.fieldId,value);
-					resultList.add(resultMap);
+
 				}
+				resultList.add(resultMap);
 			}
+			resultSet.close();
+			statement.close();
+			connection.close();
 
 
 		}
@@ -209,8 +244,8 @@ public class FieldServiceImpl  implements	FieldService {
 		{
 			throw new ServiceException("查询列表信息出错",e);
 		}
-
-		return resultList;
+		PaginationResult paginationResult = PaginationResult.pagination(resultList, count, queryParams.getPageNo(), queryParams.getPageSize());
+		return paginationResult;
 	}
 	class FieldColumn{
 		private Integer fieldId;

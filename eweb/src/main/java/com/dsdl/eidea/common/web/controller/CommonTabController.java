@@ -3,8 +3,10 @@ package com.dsdl.eidea.common.web.controller;
 import com.dsdl.eidea.base.entity.bo.FieldInListPageBo;
 import com.dsdl.eidea.base.service.FieldService;
 import com.dsdl.eidea.base.service.TabService;
+import com.dsdl.eidea.core.dto.PaginationResult;
 import com.dsdl.eidea.core.params.QueryParams;
 import com.dsdl.eidea.core.web.def.WebConst;
+import com.dsdl.eidea.core.web.result.JsonResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,19 +37,20 @@ public class CommonTabController {
      * @return
      */
     @RequestMapping("/showList/{tabId}")
-    public ModelAndView showListPage(@PathVariable("tabId") Integer tabId,HttpSession session) {
+    public ModelAndView showListPage(@PathVariable("tabId") Integer tabId, HttpSession session) {
         ModelAndView modelAndView = new ModelAndView("/common/edit/list");
-        String lang=(String)session.getAttribute(WebConst.SESSION_LANGUAGE);
-        List<FieldInListPageBo> fieldInListPageBoList=fieldService.getListPageFiledList(tabId,lang);
-        modelAndView.addObject("fieldInListPageBoList",fieldInListPageBoList);
+        String lang = (String) session.getAttribute(WebConst.SESSION_LANGUAGE);
+        List<FieldInListPageBo> fieldInListPageBoList = fieldService.getListPageFiledList(tabId, lang);
+        modelAndView.addObject("tabId", tabId);
+        modelAndView.addObject("fieldInListPageBoList", fieldInListPageBoList);
         return modelAndView;
     }
 
     @RequestMapping("/list/{tabId}")
     @ResponseBody
-    public List<Map<String, String>> list(@PathVariable("tabId") Integer tabId, @RequestBody QueryParams queryParams) {
-        List<Map<String, String>> list = fieldService.getDataList(tabId, queryParams.getFirstResult(), queryParams.getPageSize());
-        return list;
+    public JsonResult<PaginationResult<Map<String, String>>> list(@PathVariable("tabId") Integer tabId, @RequestBody QueryParams queryParams) {
+        PaginationResult list = fieldService.getDataList(tabId, queryParams);
+        return JsonResult.success(list);
     }
 
     /**

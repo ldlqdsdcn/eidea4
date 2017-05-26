@@ -26,7 +26,7 @@
                 .when('/editDetail', {templateUrl: '<c:url value="/base/datadict/edit.tpl.jsp"/>'})
                 .otherwise({redirectTo: '/list'});
         }]);
-    app.controller('listCtrl', function ($scope, $http,$routeParams) {
+    app.controller('listCtrl', function ($scope, $http) {
         $scope.modelList = [];
         $scope.delFlag = false;
         $scope.isLoading = true;
@@ -112,7 +112,7 @@
         $scope.pageChanged();
         buttonHeader.listInit($scope,$window);
     });
-    app.controller('editCtrl', function ($scope,$http, $stateParams, $timeout, Upload) {
+    app.controller('editCtrl', function ($scope,$http, $stateParams,$window,$timeout, Upload) {
         $scope.message = '';
         $scope.datadictTypePo = {};
         $scope.canAdd = PrivilegeService.hasPrivilege('add');

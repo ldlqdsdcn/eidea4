@@ -24,28 +24,12 @@ public interface TabService {
 	TabPo getTab(Integer id);
 	void saveTab(TabPo tab);
 	void deletes(Integer[] ids);
-
 	/**
 	 * 根据windowId获取Tab 列表
 	 * @param windowId
 	 * @return
 	 */
 	List<TabBo> getTabBoListByWindowId(Integer windowId,String lang);
-
-	/**
-	 * 根据tabID 查询出编辑页面字段列表
-	 * @param tabId
-	 * @return
-	 */
-	List<FieldInListPageBo> getListPageFiledList(Integer tabId);
-
-	/**
-	 * 根据tabid查询出form页面字段列表
-	 * @param tabId
-	 * @return
-	 */
-	List<FieldBo> getFormPageFieldList(Integer tabId);
-
 	/**
 	 * 根据tab_id,语言，获取数据
 	 * @param search

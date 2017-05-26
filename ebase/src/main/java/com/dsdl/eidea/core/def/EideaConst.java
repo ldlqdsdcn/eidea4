@@ -6,7 +6,7 @@ package com.dsdl.eidea.core.def;
 public class EideaConst {
     /*****************************************************
      * 常用占位符
-     */
+     *****************************************************
     /**
      * 当前用户的OrgId
      */
@@ -27,4 +27,9 @@ public class EideaConst {
      * 当前日期
      */
     public static final String EXPRESS_CURRENT_DATE = "@CurrentDate@";
+    /**
+     * 页面输入值占位符
+     * 常用来替换查询界面输入的值
+     */
+    public static final String EXPRESS_VALUE="@value@";
 }

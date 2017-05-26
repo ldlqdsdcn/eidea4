@@ -117,9 +117,7 @@
             };
             $rootScope.listQueryParams = $scope.queryParams;
         }
-
         $scope.pageChanged();
-
         buttonHeader.listInit($scope,$window);
     });
     app.controller('editCtrl', function ($routeParams,$scope, $http,$window,$timeout, Upload) {

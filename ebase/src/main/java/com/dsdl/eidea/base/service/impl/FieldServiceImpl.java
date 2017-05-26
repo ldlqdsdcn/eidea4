@@ -10,6 +10,7 @@ import com.dsdl.eidea.base.entity.bo.FieldBo;
 import com.dsdl.eidea.base.entity.bo.FieldInListPageBo;
 import com.dsdl.eidea.base.entity.po.FieldTrlPo;
 import com.dsdl.eidea.base.entity.po.TabPo;
+import com.dsdl.eidea.base.exception.ServiceException;
 import com.dsdl.eidea.core.def.FieldInputType;
 import com.dsdl.eidea.core.entity.po.TableColumnPo;
 import com.dsdl.eidea.core.entity.po.TablePo;
@@ -26,6 +27,7 @@ import com.googlecode.genericdao.search.Search;
 import com.dsdl.eidea.core.dao.CommonDao;
 
 import javax.sql.DataSource;
+import javax.sql.rowset.serial.SerialException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -178,6 +180,7 @@ public class FieldServiceImpl  implements	FieldService {
 
 		}
 		String sql=SELECT_KEY+stringBuilder.toString()+FROM_KEY+tableName+String.format(LIMIT_KEY,bgn,size);
+		List<Map<String,String>> resultList=new ArrayList<>();
 		try
 		{
 			Connection connection=dataSource.getConnection();
@@ -193,10 +196,10 @@ public class FieldServiceImpl  implements	FieldService {
 					/**
 					 * 如果是普通输入类型
 					 */
-					if(fieldColumn.fieldPo.getInputType()==FieldInputType.INPUT.getKey())
-					{
-
-					}
+					//TODO暂时先不考虑数据类型
+					String value= resultSet.getString(fieldColumn.columnName);
+					resultMap.put("id"+fieldColumn.fieldId,value);
+					resultList.add(resultMap);
 				}
 			}
 
@@ -204,10 +207,10 @@ public class FieldServiceImpl  implements	FieldService {
 		}
 		catch (Exception e)
 		{
-
+			throw new ServiceException("查询列表信息出错",e);
 		}
 
-		return null;
+		return resultList;
 	}
 	class FieldColumn{
 		private Integer fieldId;

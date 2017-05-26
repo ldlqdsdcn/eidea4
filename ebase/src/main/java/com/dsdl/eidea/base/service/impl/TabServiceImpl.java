@@ -104,18 +104,7 @@ public class TabServiceImpl  implements	TabService {
 		return tabBoList;
 	}
 
-	@Override
-	public List<FieldInListPageBo> getListPageFiledList(Integer tabId) {
 
-
-
-		return null;
-	}
-
-	@Override
-	public List<FieldBo> getFormPageFieldList(Integer tabId) {
-		return null;
-	}
 
 	@Override
 	public PaginationResult<Map<String, String>> getTabList(Search search, QueryParams queryParams, Integer tabId, String lang) {

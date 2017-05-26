@@ -1,5 +1,6 @@
 package com.dsdl.eidea.common.web.controller;
 
+import com.dsdl.eidea.base.entity.bo.TabBo;
 import com.dsdl.eidea.base.entity.bo.WindowBo;
 import com.dsdl.eidea.base.service.WindowService;
 import com.dsdl.eidea.core.web.def.WebConst;
@@ -26,7 +27,9 @@ public class CommonWindowController {
         ModelAndView modelAndView = new ModelAndView("/common/window");
         String language=(String)session.getAttribute(WebConst.SESSION_LANGUAGE);
         WindowBo windowBo =  windowService.getWindowBo(windowId, language);
+        TabBo tabBo=windowBo.getTabList().get(0);
         modelAndView.addObject("windowBo", windowBo);
+        modelAndView.addObject("tabBo", tabBo);
         return modelAndView;
     }
 

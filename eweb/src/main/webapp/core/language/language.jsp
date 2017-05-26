@@ -35,22 +35,6 @@
         $scope.isLoading=true;
         $scope.canDel=PrivilegeService.hasPrivilege('delete');
         $scope.canAdd=PrivilegeService.hasPrivilege('add');
-        $http.post("<c:url value="/core/language/list"/>",$scope.queryParams).success(function (response) {
-            $scope.isLoading=false;
-            if (response.success) {
-                $scope.updateList(response.data);
-            } else {
-                bootbox.alert({
-                    buttons:{
-                        ok:{
-                            label: '<i class="fa fa-close" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.closed"/>',
-                            className: 'btn-primary'
-                        }
-                    },
-                    message: response.message
-                })
-            }
-        });
         $scope.updateList = function (result) {
             $scope.modelList = result.data;
             $scope.queryParams.totalRecords = result.totalRecords;

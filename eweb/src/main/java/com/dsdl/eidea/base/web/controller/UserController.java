@@ -100,7 +100,7 @@ public class UserController {
     public JsonResult<UserBo> saveUserForCreated(@Validated @RequestBody UserBo userBo, HttpSession session) {
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
         if (userService.findExistByUsername(userBo.getUsername())) {
-            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("pagemenu.connection.point"));
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("common.connection.point"));
         }
         userService.saveUser(userBo);
         return getUser(userBo.getId(), session);
@@ -115,12 +115,12 @@ public class UserController {
             return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("common.primary_key.isempty"));
         }
         UserBo userBoBase=userService.getUser(userBo.getId());
-        boolean isTrue=userService.getExistUserName(userBo);
+        boolean userHasExist =userService.getExistUserName(userBo);
         if (userBoBase.getUsername().equals(userBo.getUsername())){
             userService.saveUser(userBo);
             return getUser(userBo.getId(), session);
-        }else if(!isTrue){
-            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("pagemenu.connection.point"));
+        }else if(userHasExist ){
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("common.connection.point"));
         }else{
             userService.saveUser(userBo);
             return getUser(userBo.getId(), session);
@@ -169,7 +169,7 @@ public class UserController {
     @ResponseBody
     @RequiresPermissions(value = "view")
     public JsonResult<Boolean> getExistUserName(@RequestBody UserBo userBo, HttpSession session) {
-        boolean flag = true;
+        boolean flag = false;
         UserResource resource = (UserResource) session.getAttribute(WebConst.SESSION_RESOURCE);
         if (userBo.getUsername() == null || userBo.getUsername().equals("")) {
             return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), resource.getMessage("logon.name.isnot.empty"));

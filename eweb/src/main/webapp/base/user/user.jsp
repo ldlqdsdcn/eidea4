@@ -152,7 +152,7 @@
         $scope.getExistUserName = function () {
             $http.post("<c:url value="/base/user/getExistUserName"/>", $scope.userBo).success(function (data) {
                 if (data.success) {
-                    if (data.data) {
+                    if (!data.data) {
                         userName = true;
                         $scope.message = "";
                     } else {

@@ -82,7 +82,7 @@
             return false;
         }
         $scope.pageChanged = function () {
-            $http.post("<c:url value="/common/tab/list/${tab.id}"/>", $scope.queryParams)
+            $http.post("<c:url value="/general/tab/list/${tab.id}"/>", $scope.queryParams)
                     .success(function (response) {
                         $scope.isLoading = false;
                         if (response.success) {

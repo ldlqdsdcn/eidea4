@@ -27,7 +27,7 @@ public final class CommonEditController {
     @RequestMapping("/showList/{windowId}")
     public ModelAndView showList(@PathVariable("windowId") Integer windowId)
     {
-        ModelAndView modelAndView=new ModelAndView("/common/edit/list");
+        ModelAndView modelAndView=new ModelAndView("general/list");
 
         return modelAndView;
     }

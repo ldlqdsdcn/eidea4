@@ -10,8 +10,6 @@ import com.dsdl.eidea.core.web.def.WebConst;
 import com.dsdl.eidea.core.web.result.JsonResult;
 import com.dsdl.eidea.general.bo.FieldStructureBo;
 import com.dsdl.eidea.general.bo.TabFormStructureBo;
-import com.dsdl.eidea.general.bo.TabFormValueBo;
-import com.googlecode.genericdao.search.Field;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,7 +42,7 @@ public class GeneralTabController {
      */
     @RequestMapping("/showList/{tabId}")
     public ModelAndView showListPage(@PathVariable("tabId") Integer tabId, HttpSession session) {
-        ModelAndView modelAndView = new ModelAndView("/common/edit/list");
+        ModelAndView modelAndView = new ModelAndView("general/list");
         String lang = (String) session.getAttribute(WebConst.SESSION_LANGUAGE);
         List<FieldInListPageBo> fieldInListPageBoList = fieldService.getListPageFiledList(tabId, lang);
         modelAndView.addObject("tabId", tabId);
@@ -67,7 +65,7 @@ public class GeneralTabController {
      */
     @RequestMapping("/showForm/{tabId}")
     public ModelAndView showFormPage(@PathVariable("tabId") Integer tabId,HttpSession session) {
-        ModelAndView modelAndView = new ModelAndView("/common/edit/edit");
+        ModelAndView modelAndView = new ModelAndView("general/edit");
         String lang = (String) session.getAttribute(WebConst.SESSION_LANGUAGE);
         TabFormStructureBo tabFormStructureBo=fieldService.getFormPageFieldList(tabId,lang);
         modelAndView.addObject("tabFormStructureBo",tabFormStructureBo);

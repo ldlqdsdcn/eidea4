@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/inc/taglib.jsp" %>
 <div  class="container-fluid" ng-controller="tab${tabId}listCtrl">
-    <jsp:include page="/common/inc/list_button.jsp"/>
+    <jsp:include page="/general/inc/list_button.jsp"/>
     <div class="row-fluid">
         <div class="span12">
             <table  class="table table-hover table-striped table-condensed">
@@ -33,8 +33,9 @@
                         </td>
                     </c:forEach>
                     <td>
-                        <a class="btn btn-primary btn-xs" href="#/edit?id={{model.id<c:out value="${item.id}"/>}}">
-                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.edit"/></a>
+                        <a class="btn btn-primary btn-xs" href="#/tab${tab.id}edit?id={{model.id<c:out value="${item.id}"/>}}">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.edit"/>
+                        </a>
                     </td>
                 </tr>
                 <tr>

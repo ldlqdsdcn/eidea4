@@ -50,15 +50,6 @@
     <script src='<c:url value="/js/html5shiv.min.js"/>' type="text/javascript"></script>
     <script src='<c:url value="/js/respond.min.js"/>' type="text/javascript"></script>
     <![endif]-->
-    <script type="text/javascript">
-
-        function resizeIframe(obj) {
-            obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
-        }
-        function gotoUrl(url) {
-            document.getElementById('content').src=url;
-        }
-    </script>
 </head>
 <%UserBo user=(UserBo)session.getAttribute("loginUser"); %>
 <body class="nav-md gun_dong">
@@ -112,7 +103,7 @@
                             </a>
                             <ul class="dropdown-menu dropdown-usermenu pull-right">
                                 <li><a href="javascript:void(0);" data-toggle="modal" data-target="#changePasswordModal"><eidea:label key="index.change_password"/></a></li>
-                                <li><a href="javascript:gotoUrl('<c:url value="/common/profile.jsp"/>');"><eidea:label key="index.profile"/></a></li>
+                                <li><a href="javascript:void(0);" onclick="gotoUrl()"><eidea:label key="index.profile"/></a></li>
                                 <li>
                                     <a href="javascript:;">
                                         <span class="badge bg-red pull-right"><eidea:label key="index.proportion"/></span>
@@ -175,7 +166,8 @@
                 <!-- Nav tabs -->
                 <ul class="nav nav-tabs" role="tablist">
                     <li role="presentation" class="active">
-                        <a href="#home" aria-controls="home" role="tab" data-toggle="tab"><eidea:label key="common.button.home.page"/></a></li>
+                        <a href="#home" aria-controls="home" role="tab" data-toggle="tab"><eidea:label key="common.button.home.page"/></a>
+                    </li>
                 </ul>
                 <!-- Tab panes -->
                 <div class="tab-content">
@@ -216,6 +208,44 @@
             window.parent.location.href = "<c:url value="/common/changeLanguageCode"/>?language="+languageCode;
         }
     });
+</script>
+<script type="text/javascript">
+
+    function resizeIframe(obj) {
+        obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+    }
+    function gotoUrl() {
+        var flag=false;
+        $(".nav-tabs").find("li").each(function () {
+            if(this.id == "tab_tab_persionSettging"){
+                flag=true;
+                $(this).attr("class","active");
+            }else if(this.className == "active"){
+                $(this).attr("class","");
+            }
+        })
+        $(".tab-content").find("div").each(function () {
+            if(this.id == "tab_persionSettging"){
+                $(this).attr("class","tab-pane active");
+            }else {
+                $(this).attr("class","tab-pane");
+            }
+        })
+        if(flag){
+            return false;
+        }
+        var bufferLi=new StringBuffer();
+        var bufferDiv=new StringBuffer();
+        bufferLi.append('<li id="tab_tab_persionSettging" role="presentation" class="active">')
+                .append('<a href="#tab_persionSettging" aria-controls="tab_persionSettging" role="tab" data-toggle="tab"><eidea:label key="index.profile"/></a>')
+                .append('<i class="close-tab glyphicon glyphicon-remove"></i>')
+                .append('</li>');
+        bufferDiv.append('<div role="tabpanel" class="tab-pane active" id="tab_persionSettging">')
+                .append('<iframe src="<c:url value="/common/profile.jsp"/>" width="100%" height="100%"  frameborder="0"></iframe>')
+                .append('</div>');
+        $(".nav-tabs").append(bufferLi.toString());
+        $(".tab-content").append(bufferDiv.toString());
+    }
 </script>
 <script type="text/javascript">
     /**

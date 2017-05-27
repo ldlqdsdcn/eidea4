@@ -85,7 +85,8 @@ public class UserCenterController {
      */
     @RequestMapping(value = "/updateProfile", method = RequestMethod.POST)
     @ResponseBody
-    public JsonResult<UserProfileVo> updateProfile(UserBo userBo, HttpServletRequest request) {
+    public JsonResult<UserProfileVo> updateProfile(@RequestBody UserBo userBo, HttpServletRequest request) {
+        userService.saveUserForProfile(userBo);
         return getProfile(request);
     }
 

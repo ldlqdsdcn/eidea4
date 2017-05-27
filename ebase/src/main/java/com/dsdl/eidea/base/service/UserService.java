@@ -89,4 +89,9 @@ public interface UserService {
      * @return
      */
     UserBo getUserByUsername(String username);
+
+    /**
+     * saveUserForProfile:修改个人设置信息
+     */
+    void saveUserForProfile(UserBo userBo);
 }

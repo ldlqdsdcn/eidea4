@@ -6,32 +6,28 @@
  */
 package com.dsdl.eidea.base.service.impl;
 
-import com.dsdl.eidea.base.entity.bo.FieldBo;
 import com.dsdl.eidea.base.entity.bo.FieldInListPageBo;
 import com.dsdl.eidea.base.entity.bo.FieldValueBo;
+import com.dsdl.eidea.base.entity.po.FieldPo;
 import com.dsdl.eidea.base.entity.po.FieldTrlPo;
 import com.dsdl.eidea.base.entity.po.FieldValidatorPo;
 import com.dsdl.eidea.base.entity.po.TabPo;
 import com.dsdl.eidea.base.exception.ServiceException;
-import com.dsdl.eidea.core.def.FieldInputType;
+import com.dsdl.eidea.base.service.FieldService;
+import com.dsdl.eidea.core.dao.CommonDao;
+import com.dsdl.eidea.core.dto.PaginationResult;
 import com.dsdl.eidea.core.entity.po.TableColumnPo;
 import com.dsdl.eidea.core.entity.po.TablePo;
+import com.dsdl.eidea.core.params.QueryParams;
 import com.dsdl.eidea.core.spring.annotation.DataAccess;
 import com.dsdl.eidea.general.bo.FieldStructureBo;
 import com.dsdl.eidea.general.bo.TabFormStructureBo;
-import com.googlecode.genericdao.search.Field;
+import com.googlecode.genericdao.search.Search;
+import com.googlecode.genericdao.search.SearchResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.dsdl.eidea.base.entity.po.FieldPo;
-import com.dsdl.eidea.base.service.FieldService;
-import com.dsdl.eidea.core.dto.PaginationResult;
-import com.dsdl.eidea.core.params.QueryParams;
-import com.googlecode.genericdao.search.SearchResult;
-import com.googlecode.genericdao.search.Search;
-import com.dsdl.eidea.core.dao.CommonDao;
 
 import javax.sql.DataSource;
-import javax.sql.rowset.serial.SerialException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -265,19 +261,67 @@ public class FieldServiceImpl implements FieldService {
     }
 
     @Override
-    public List<FieldValueBo> getDataForm(Integer tabId, Integer recordId) {
+    public Map<String, String> getDataForm(Integer tabId, Integer recordId) {
         TabPo tabPo = tabDao.find(tabId);
         TablePo tablePo = tableDao.find(tabPo.getTableId());
+        TableColumnPo tableColumnPo=tableColumnDao.find(tabPo.getTableColumnId());
+
         Search search = new Search();
         search.addSortAsc("seqNo");
         search.addFilterEqual("tabId", tabId);
-
+        StringBuilder stringBuilder=new StringBuilder();
         List<FieldPo> fieldPoList = fieldDao.search(search);
-        List<FieldValueBo> fieldValueBoList = new ArrayList<>();
-        for (FieldPo fieldPo : fieldPoList) {
-            FieldValueBo fieldValueBo = new FieldValueBo();
+        List<FieldColumn> fieldColumnList = new ArrayList<>();
+        boolean isBegin = true;
+        for(FieldPo fieldPo:fieldPoList)
+        {
+            FieldColumn fieldColumn = new FieldColumn();
+            fieldColumn.fieldId = fieldPo.getId();
+            fieldColumn.fieldPo = fieldPo;
+            fieldColumn.columnName = tableColumnPo.getColumnName();
+            fieldColumnList.add(fieldColumn);
+            if(isBegin)
+            {
+                isBegin=false;
+            }
+            else
+            {
+                stringBuilder.append(COLUMN_SPLIT_KEY);
+            }
+            stringBuilder.append(tableColumnPo.getColumnName());
         }
-        return null;
+        Map<String, String> resultMap = new HashMap<>();
+        String sql = SELECT_KEY + stringBuilder.toString() + FROM_KEY + tablePo.getTableName() + WHERE_KEY+ tableColumnPo.getColumnName()+"="+recordId;
+        try {
+
+
+            Connection connection = dataSource.getConnection();
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+
+            while (resultSet.next()) {
+
+
+                for (FieldColumn fieldColumn : fieldColumnList) {
+                    /**
+                     * 如果是普通输入类型
+                     */
+                    //TODO暂时先不考虑数据类型
+                    String value = resultSet.getString(fieldColumn.columnName);
+                    resultMap.put("id" + fieldColumn.fieldId, value);
+
+                }
+
+            }
+            resultSet.close();
+            statement.close();
+            connection.close();
+
+
+        } catch (Exception e) {
+            throw new ServiceException("查询列表信息出错", e);
+        }
+        return resultMap;
     }
 
     class FieldColumn {

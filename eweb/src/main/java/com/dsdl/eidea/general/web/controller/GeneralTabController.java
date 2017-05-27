@@ -2,6 +2,7 @@ package com.dsdl.eidea.general.web.controller;
 
 import com.dsdl.eidea.base.entity.bo.FieldBo;
 import com.dsdl.eidea.base.entity.bo.FieldInListPageBo;
+import com.dsdl.eidea.base.entity.bo.FieldValueBo;
 import com.dsdl.eidea.base.entity.po.TabPo;
 import com.dsdl.eidea.base.service.FieldService;
 import com.dsdl.eidea.base.service.TabService;
@@ -85,9 +86,10 @@ public class GeneralTabController {
         return JsonResult.success(result);
     }
     @RequestMapping("/get/{tabId}/{recordId}")
-    public JsonResult<List<FieldBo>> edit(@PathVariable("tabId") Integer tabId, @PathVariable("recordId") Integer recordId) {
-
-        return null;
+    @ResponseBody
+    public JsonResult<Map<String, String>> edit(@PathVariable("tabId") Integer tabId, @PathVariable("recordId") Integer recordId) {
+        Map<String, String> result=fieldService.getDataForm(tabId,recordId);
+        return JsonResult.success(result);
     }
 }
 

@@ -56,5 +56,5 @@ public interface FieldService {
 	 * @param recordId
 	 * @return
 	 */
-	List<FieldValueBo> getDataForm(Integer tabId,Integer recordId);
+	Map<String, String> getDataForm(Integer tabId, Integer recordId) ;
 }

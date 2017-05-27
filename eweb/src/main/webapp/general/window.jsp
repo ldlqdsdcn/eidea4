@@ -119,19 +119,16 @@
     app.controller('tab${tab.id}editCtrl', function ($stateParams,$scope, $http,$window,$timeout, Upload) {
         $scope.message = '';
         $scope.model = {};
-         var url = "<c:url value="/general/tab/create/${tabId}/"/>";
-
-
-        alert("id="+$stateParams.id);
+         var url = "<c:url value="/general/tab/create/${tab.id}/"/>";
         if ($stateParams.id != null) {
-            url = "<c:url value="/general/tab/get/${tabId}/"/>" + "?id=" + $routeParams.id;
+            url = "<c:url value="/general/tab/get/${tab.id}/"/>"+ $stateParams.id;
         }
         $http.get(url)
                 .success(function (response) {
                     if (response.success) {
-                        $scope.orgBo = response.data;
-                        $scope.tableId=$scope.orgBo.id;
-                        $scope.canSave=(PrivilegeService.hasPrivilege('add')&&$scope.orgBo.id==null)||PrivilegeService.hasPrivilege('update');
+                        $scope.model = response.data;
+                        $scope.tableId=$scope.model.id;
+
                     }
                     else {
                         bootbox.alert(response.message);
@@ -185,7 +182,7 @@
             });
         }
 
-        buttonHeader.editInit($scope,$http,$window,$timeout, Upload,"/base");
+       // buttonHeader.editInit($scope,$http,$window,$timeout, Upload,"/base");
     });
 </c:forEach>
 

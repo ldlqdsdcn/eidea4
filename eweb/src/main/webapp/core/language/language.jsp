@@ -168,16 +168,6 @@
                 $scope.message = "<eidea:label key="language.code.pattern.error"/>";
                 return false;
             }
-            var code = /^[a-z]{2}$/;
-            if (!code.test($scope.languageBo.languageIso)) {
-                $scope.message = "<eidea:label key="language.iso.pattern.error"/>";
-                return false;
-            }
-            var code = /^[A-Z]{2}$/;
-            if (!code.test($scope.languageBo.countryCode)) {
-                $scope.message = "<eidea:label key="language.country.pattern.error"/>";
-                return false;
-            }
 
             $scope.message="";
             if ($scope.editForm.$valid) {

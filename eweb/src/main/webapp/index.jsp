@@ -190,7 +190,6 @@
 </div>
 <script src='<c:url value="/js/custom.js"/>' type="text/javascript"></script>
 <script type="text/javascript">
-    //$("#content").load("<c:url value="/core/language/showList"/>");
     var app = angular.module('changeLanguageApp', ['ui.bootstrap', 'jcs-autoValidate']);
     app.controller('changeLanguageCtrl',function ($scope,$http) {
         //获取语言列表

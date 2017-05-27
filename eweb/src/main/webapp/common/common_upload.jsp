@@ -14,7 +14,7 @@
             </div>
             <div class="modal-body">
                 <form role="form" name="uploadForm" novalidate ng-submit="attachmentUpload()">
-                    <button type="submit" class="btn  btn-primary btn-sm" title="<eidea:label key="common.button.upload"/>" ng-disabled="canUpload">
+                    <button type="submit" class="btn  btn-primary btn-sm" title="<eidea:label key="common.button.upload"/>" ng-disabled="unableUpload">
                         <i class="fa fa-upload fa-1x" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.upload"/>
                     </button></br>
                     <div class="row-fluid">

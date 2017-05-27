@@ -4,6 +4,7 @@ import com.dsdl.eidea.base.entity.bo.ChangePasswordBo;
 import com.dsdl.eidea.base.entity.bo.UserBo;
 import com.dsdl.eidea.base.entity.bo.UserContent;
 import com.dsdl.eidea.base.service.UserService;
+import com.dsdl.eidea.base.web.vo.UserResource;
 import com.dsdl.eidea.common.web.vo.UserProfileVo;
 import com.dsdl.eidea.core.web.def.WebConst;
 import com.dsdl.eidea.core.web.result.JsonResult;
@@ -36,17 +37,18 @@ public class UserCenterController {
     @RequestMapping(value = "/changePassword", method = RequestMethod.POST)
     @ResponseBody
     public JsonResult<String> changePassword(HttpServletRequest request, @Validated @RequestBody ChangePasswordBo userBo) {
+        UserResource resource = (UserResource) request.getSession().getAttribute(WebConst.SESSION_RESOURCE);
         UserBo user = (UserBo) request.getSession().getAttribute("loginUser");
         if (user == null) {
-            return JsonResult.fail(0, "登录超时");
+            return JsonResult.fail(0, resource.getMessage("change.password.msg.login.timeout"));
         }
-        if (userBo.getOldPassword().equals(user.getPassword())) {
-            return JsonResult.fail(0, "旧密码输入错误");
+        if (!userBo.getOldPassword().equals(user.getPassword())) {
+            return JsonResult.fail(0, resource.getMessage("change.password.msg.old.password.error"));
         }
         UserBo userParam = userService.getUser(user.getId());
         userParam.setPassword(userBo.getPassword());
         userService.saveUser(userParam);
-        return JsonResult.success("修改密码成功");
+        return JsonResult.success(resource.getMessage("change.password.msg.change.success"));
     }
 
     /**

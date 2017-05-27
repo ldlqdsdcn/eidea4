@@ -75,7 +75,7 @@
                 }
             }
             $scope.upload = function (file) {
-                $scope.canUpload=true;
+                $scope.unableUpload=true;
                 file.upload =Upload.upload({
                     //服务端接收
                     url: "<c:url value="/common/attachmentUpload"/>",
@@ -89,7 +89,7 @@
                     $scope.attachmentList = data.data;
                     $scope.commonFileBo=null;
                     $scope.files=null;
-                    $scope.canUpload=false;
+                    $scope.unableUpload=false;
                 }).error(function (data, status, headers, config) {
                     //上传失败
                     console.log('error status: ' + status);

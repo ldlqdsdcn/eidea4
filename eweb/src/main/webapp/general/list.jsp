@@ -33,9 +33,9 @@
                         </td>
                     </c:forEach>
                     <td>
-                        <a class="btn btn-primary btn-xs" href="#/tab${tabId}edit?id={{model.<c:out value="${pk}"/>}}">
+                        <button class="btn btn-primary btn-xs" ng-click="edit(model.${pk})">
                             <i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.edit"/>
-                        </a>
+                        </button>
                     </td>
                 </tr>
                 <tr>

@@ -47,8 +47,8 @@ public class GeneralTabController {
         String lang = (String) session.getAttribute(WebConst.SESSION_LANGUAGE);
         List<FieldInListPageBo> fieldInListPageBoList = fieldService.getListPageFiledList(tabId, lang);
         modelAndView.addObject("tabId", tabId);
-        TabPo tabPo = tabService.getTab(tabId);
-        modelAndView.addObject("pk", "id" + tabPo.getTableColumnId());
+        Integer pkFieldId = tabService.getTabPkFieldId(tabId);
+        modelAndView.addObject("pk", "id" + pkFieldId);
         modelAndView.addObject("fieldInListPageBoList", fieldInListPageBoList);
         return modelAndView;
     }

@@ -43,7 +43,7 @@
                             templateUrl: '<c:url value="/general/tab/showList/${tab.id}"/>'
                         })
                         .state('tab${tab.id}edit', {
-                            url:'/tab${tab.id}edit',
+                            url:'/tab${tab.id}edit?id',
                             templateUrl: '<c:url value="/general/tab/showForm/${tab.id}"/>'
                         })
                         </c:forEach>
@@ -59,7 +59,7 @@
     });
 
 <c:forEach items="${windowBo.tabList}" var="tab">
-    app.controller('tab${tab.id}listCtrl', function ($scope,$http,$rootScope) {
+    app.controller('tab${tab.id}listCtrl', function ($scope,$http,$rootScope,$state) {
         $scope.modelList = [];
         $scope.delFlag = false;
         $scope.isLoading = true;
@@ -94,7 +94,9 @@
 
                     });
         }
-
+        $scope.edit=function (id) {
+            $state.go('tab${tab.id}edit', {'id': id});
+        }
 
 //可现实分页item数量
         $scope.maxSize =10;
@@ -114,12 +116,14 @@
         $scope.pageChanged();
 
     });
-    app.controller('tab${tab.id}editCtrl', function ($routeParams,$scope, $http,$window,$timeout, Upload) {
+    app.controller('tab${tab.id}editCtrl', function ($stateParams,$scope, $http,$window,$timeout, Upload) {
         $scope.message = '';
         $scope.model = {};
-        alert($routeParams.id);
-        var url = "<c:url value="/general/tab/create/${tabId}/"/>";
-        if ($routeParams.id != null) {
+         var url = "<c:url value="/general/tab/create/${tabId}/"/>";
+
+
+        alert("id="+$stateParams.id);
+        if ($stateParams.id != null) {
             url = "<c:url value="/general/tab/get/${tabId}/"/>" + "?id=" + $routeParams.id;
         }
         $http.get(url)

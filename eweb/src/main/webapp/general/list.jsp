@@ -33,7 +33,7 @@
                         </td>
                     </c:forEach>
                     <td>
-                        <a class="btn btn-primary btn-xs" href="#/tab${tab.id}edit?id={{model.id<c:out value="${item.id}"/>}}">
+                        <a class="btn btn-primary btn-xs" href="#/tab${tabId}edit?id={{model.<c:out value="${pk}"/>}}">
                             <i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.edit"/>
                         </a>
                     </td>

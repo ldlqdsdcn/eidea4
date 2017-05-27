@@ -117,6 +117,7 @@
     app.controller('tab${tab.id}editCtrl', function ($routeParams,$scope, $http,$window,$timeout, Upload) {
         $scope.message = '';
         $scope.model = {};
+        alert($routeParams.id);
         var url = "<c:url value="/general/tab/create/${tabId}/"/>";
         if ($routeParams.id != null) {
             url = "<c:url value="/general/tab/get/${tabId}/"/>" + "?id=" + $routeParams.id;

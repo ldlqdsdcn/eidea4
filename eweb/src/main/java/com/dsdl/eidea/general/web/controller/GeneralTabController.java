@@ -2,6 +2,7 @@ package com.dsdl.eidea.general.web.controller;
 
 import com.dsdl.eidea.base.entity.bo.FieldBo;
 import com.dsdl.eidea.base.entity.bo.FieldInListPageBo;
+import com.dsdl.eidea.base.entity.po.TabPo;
 import com.dsdl.eidea.base.service.FieldService;
 import com.dsdl.eidea.base.service.TabService;
 import com.dsdl.eidea.core.dto.PaginationResult;
@@ -46,17 +47,17 @@ public class GeneralTabController {
         String lang = (String) session.getAttribute(WebConst.SESSION_LANGUAGE);
         List<FieldInListPageBo> fieldInListPageBoList = fieldService.getListPageFiledList(tabId, lang);
         modelAndView.addObject("tabId", tabId);
+        TabPo tabPo = tabService.getTab(tabId);
+        modelAndView.addObject("pk", "id" + tabPo.getTableColumnId());
         modelAndView.addObject("fieldInListPageBoList", fieldInListPageBoList);
         return modelAndView;
     }
-
     @RequestMapping("/list/{tabId}")
     @ResponseBody
     public JsonResult<PaginationResult<Map<String, String>>> list(@PathVariable("tabId") Integer tabId, @RequestBody QueryParams queryParams) {
         PaginationResult list = fieldService.getDataList(tabId, queryParams);
         return JsonResult.success(list);
     }
-
     /**
      * 显示tab编辑界面
      *
@@ -64,29 +65,27 @@ public class GeneralTabController {
      * @return
      */
     @RequestMapping("/showForm/{tabId}")
-    public ModelAndView showFormPage(@PathVariable("tabId") Integer tabId,HttpSession session) {
+    public ModelAndView showFormPage(@PathVariable("tabId") Integer tabId, HttpSession session) {
         ModelAndView modelAndView = new ModelAndView("general/edit");
         String lang = (String) session.getAttribute(WebConst.SESSION_LANGUAGE);
-        TabFormStructureBo tabFormStructureBo=fieldService.getFormPageFieldList(tabId,lang);
-        modelAndView.addObject("tabFormStructureBo",tabFormStructureBo);
+        TabFormStructureBo tabFormStructureBo = fieldService.getFormPageFieldList(tabId, lang);
+        modelAndView.addObject("tabId",tabId);
+        modelAndView.addObject("tabFormStructureBo", tabFormStructureBo);
         return modelAndView;
     }
     @RequestMapping("/create/{tabId}")
-    public JsonResult<Map<String,String>> create(@PathVariable("tabId") Integer tabId, HttpSession session)
-    {
+    public JsonResult<Map<String, String>> create(@PathVariable("tabId") Integer tabId, HttpSession session) {
         String lang = (String) session.getAttribute(WebConst.SESSION_LANGUAGE);
-        TabFormStructureBo tabFormStructureBo=fieldService.getFormPageFieldList(tabId,lang);
-        List<FieldStructureBo> fieldStructureBoList=tabFormStructureBo.getFieldStructureBoList();
-        Map<String,String> result=new HashMap<>();
-        for(FieldStructureBo fieldStructureBo:fieldStructureBoList)
-        {
-            result.put("id"+fieldStructureBo.getFieldPo().getId(),null);
+        TabFormStructureBo tabFormStructureBo = fieldService.getFormPageFieldList(tabId, lang);
+        List<FieldStructureBo> fieldStructureBoList = tabFormStructureBo.getFieldStructureBoList();
+        Map<String, String> result = new HashMap<>();
+        for (FieldStructureBo fieldStructureBo : fieldStructureBoList) {
+            result.put("id" + fieldStructureBo.getFieldPo().getId(), null);
         }
         return JsonResult.success(result);
     }
     @RequestMapping("/get/{tabId}/{recordId}")
-    public JsonResult<List<FieldBo>>  edit(@PathVariable("tabId") Integer tabId,@PathVariable("recordId") Integer recordId)
-    {
+    public JsonResult<List<FieldBo>> edit(@PathVariable("tabId") Integer tabId, @PathVariable("recordId") Integer recordId) {
 
         return null;
     }

@@ -11,6 +11,8 @@ import com.dsdl.eidea.base.entity.bo.FieldValueBo;
 import com.dsdl.eidea.base.entity.po.FieldPo;
 import com.dsdl.eidea.core.dto.PaginationResult;
 import com.dsdl.eidea.core.params.QueryParams;
+import com.dsdl.eidea.general.bo.FieldStructureBo;
+import com.dsdl.eidea.general.bo.TabFormStructureBo;
 import com.googlecode.genericdao.search.Search;
 import java.util.List;
 import java.util.Map;
@@ -38,7 +40,7 @@ public interface FieldService {
 	 * @param tabId
 	 * @return
 	 */
-	List<FieldBo> getFormPageFieldList(Integer tabId,String lang);
+	TabFormStructureBo getFormPageFieldList(Integer tabId, String lang);
 
     /**
      *

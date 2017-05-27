@@ -1,4 +1,4 @@
-package com.dsdl.eidea.common.web.controller;
+package com.dsdl.eidea.general.web.controller;
 
 import com.dsdl.eidea.base.entity.bo.FieldBo;
 import com.dsdl.eidea.base.entity.bo.FieldInListPageBo;
@@ -8,6 +8,10 @@ import com.dsdl.eidea.core.dto.PaginationResult;
 import com.dsdl.eidea.core.params.QueryParams;
 import com.dsdl.eidea.core.web.def.WebConst;
 import com.dsdl.eidea.core.web.result.JsonResult;
+import com.dsdl.eidea.general.bo.FieldStructureBo;
+import com.dsdl.eidea.general.bo.TabFormStructureBo;
+import com.dsdl.eidea.general.bo.TabFormValueBo;
+import com.googlecode.genericdao.search.Field;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,8 +29,8 @@ import java.util.Map;
  * Created by 刘大磊 on 2017/5/24 11:08.
  */
 @Controller
-@RequestMapping("/common/tab")
-public class CommonTabController {
+@RequestMapping("/general/tab")
+public class GeneralTabController {
     @Autowired
     private TabService tabService;
     @Autowired
@@ -64,8 +69,22 @@ public class CommonTabController {
     public ModelAndView showFormPage(@PathVariable("tabId") Integer tabId,HttpSession session) {
         ModelAndView modelAndView = new ModelAndView("/common/edit/edit");
         String lang = (String) session.getAttribute(WebConst.SESSION_LANGUAGE);
-        fieldService.getFormPageFieldList(tabId,lang);
+        TabFormStructureBo tabFormStructureBo=fieldService.getFormPageFieldList(tabId,lang);
+        modelAndView.addObject("tabFormStructureBo",tabFormStructureBo);
         return modelAndView;
+    }
+    @RequestMapping("/create/{tabId}")
+    public JsonResult<Map<String,String>> create(@PathVariable("tabId") Integer tabId, HttpSession session)
+    {
+        String lang = (String) session.getAttribute(WebConst.SESSION_LANGUAGE);
+        TabFormStructureBo tabFormStructureBo=fieldService.getFormPageFieldList(tabId,lang);
+        List<FieldStructureBo> fieldStructureBoList=tabFormStructureBo.getFieldStructureBoList();
+        Map<String,String> result=new HashMap<>();
+        for(FieldStructureBo fieldStructureBo:fieldStructureBoList)
+        {
+            result.put("id"+fieldStructureBo.getFieldPo().getId(),null);
+        }
+        return JsonResult.success(result);
     }
     @RequestMapping("/get/{tabId}/{recordId}")
     public JsonResult<List<FieldBo>>  edit(@PathVariable("tabId") Integer tabId,@PathVariable("recordId") Integer recordId)

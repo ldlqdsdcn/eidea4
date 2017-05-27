@@ -1,4 +1,4 @@
-package com.dsdl.eidea.common.web.controller;
+package com.dsdl.eidea.general.web.controller;
 
 import com.dsdl.eidea.base.entity.bo.TabBo;
 import com.dsdl.eidea.base.entity.bo.WindowBo;
@@ -17,14 +17,14 @@ import javax.servlet.http.HttpSession;
  * 窗体信息
  */
 @Controller
-@RequestMapping("/common/window")
-public class CommonWindowController {
+@RequestMapping("/general/window")
+public class GeneralWindowController {
     @Autowired
     private WindowService windowService;
 
     @RequestMapping("/show/{windowId}")
     public ModelAndView getWindow(@PathVariable("windowId") Integer windowId, HttpSession session) {
-        ModelAndView modelAndView = new ModelAndView("/common/window");
+        ModelAndView modelAndView = new ModelAndView("general/window");
         String language=(String)session.getAttribute(WebConst.SESSION_LANGUAGE);
         WindowBo windowBo =  windowService.getWindowBo(windowId, language);
         TabBo tabBo=windowBo.getTabList().get(0);

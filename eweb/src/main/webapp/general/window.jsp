@@ -40,11 +40,11 @@
                         <c:forEach items="${windowBo.tabList}" var="tab">
                         .state('tab${tab.id}list', {
                             url:'/tab${tab.id}list',
-                            templateUrl: '<c:url value="/common/tab/showList/${tab.id}"/>'
+                            templateUrl: '<c:url value="/general/tab/showList/${tab.id}"/>'
                         })
                         .state('tab${tab.id}edit', {
                             url:'/tab${tab.id}edit',
-                            templateUrl: '<c:url value="/common/tab/showForm/${tab.id}"/>'
+                            templateUrl: '<c:url value="/general/tab/showForm/${tab.id}"/>'
                         })
                         </c:forEach>
 
@@ -113,6 +113,74 @@
         }
         $scope.pageChanged();
 
+    });
+    app.controller('tab${tab.id}editCtrl', function ($routeParams,$scope, $http,$window,$timeout, Upload) {
+        $scope.message = '';
+        $scope.model = {};
+        var url = "<c:url value="/general/tab/create/${tabId}/"/>";
+        if ($routeParams.id != null) {
+            url = "<c:url value="/general/tab/get/${tabId}/"/>" + "?id=" + $routeParams.id;
+        }
+        $http.get(url)
+                .success(function (response) {
+                    if (response.success) {
+                        $scope.orgBo = response.data;
+                        $scope.tableId=$scope.orgBo.id;
+                        $scope.canSave=(PrivilegeService.hasPrivilege('add')&&$scope.orgBo.id==null)||PrivilegeService.hasPrivilege('update');
+                    }
+                    else {
+                        bootbox.alert(response.message);
+                    }
+                }).error(function (response) {
+            bootbox.alert(response);
+        });
+        $scope.save = function () {
+            $scope.message="";
+            if ($scope.editForm.$valid) {
+                var postUrl = '<c:url value="/base/org/saveForUpdated"/>';
+                if ($scope.orgBo.id == null) {
+                    postUrl = '<c:url value="/base/org/saveForCreated"/>';
+                }
+                $http.post(postUrl, $scope.orgBo).success(function (data) {
+                    if (data.success) {
+                        $scope.errorCode=-1;
+                        $scope.message = "<eidea:label key="base.save.success"/>";
+                        $scope.orgBo = data.data;
+                    }
+                    else {
+                        $scope.message=data.message;
+                        $scope.errorCode=data.errorCode;
+                        if (data.errorCode == ERROR_VALIDATE_PARAM) {
+                            $scope.errorMessages=data.data;
+                        }
+                        else {
+                            $scope.errorMessages = [data.message];
+                        }
+
+                    }
+
+
+                });
+            }
+        }
+        $scope.create = function () {
+            $scope.message = "";
+            $scope.orgBo = {};
+            var url = "<c:url value="/base/org/create"/>";
+            $http.get(url)
+                    .success(function (response) {
+                        if (response.success) {
+                            $scope.orgBo = response.data;
+                        }
+                        else {
+                            bootbox.alert(response.message);
+                        }
+                    }).error(function (response) {
+                bootbox.alert(response);
+            });
+        }
+
+        buttonHeader.editInit($scope,$http,$window,$timeout, Upload,"/base");
     });
 </c:forEach>
 

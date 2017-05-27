@@ -9,7 +9,7 @@
 <%@include file="/inc/taglib.jsp" %>
 <html>
 <head>
-    <title>工作流</title>
+    <title><%--工作流--%><eidea:label key="workflow.title.workflow"/></title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <%@include file="/inc/inc_ang_js_css.jsp" %>
     <%@include file="/common/common_header.jsp" %>
@@ -162,6 +162,7 @@
         }
         $scope.openImage=function (id) {
             $("#imageShowModal").modal("show");
+            $("#imageShowModalLabel").html('<eidea:label key="workflow.title.picture.preview"/>');
             $("#imageShow").attr("src",'<c:url value="/sys/workflow/resource/read"/>?processDefinitionId='+id+'&resourceType=image');
         }
         buttonHeader.listInit($scope,$window);

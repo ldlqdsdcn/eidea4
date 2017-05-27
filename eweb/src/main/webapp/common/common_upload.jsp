@@ -144,7 +144,7 @@
                     &times;
                 </button>
                 <h4 class="modal-title" id="imageShowModalLabel">
-                    <%--图片预览--%><eidea:label key="workflow.title.picture.preview"/>
+                    <%--工作流预览--%>
                 </h4>
             </div>
             <div class="modal-body">

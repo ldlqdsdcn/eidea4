@@ -292,6 +292,7 @@
         $scope.pageChanged();
         $scope.openImage=function (id) {
             $("#imageShowModal").modal("show");
+            $("#imageShowModalLabel").html('<eidea:label key="to.do.label.take.task"/>');
             $("#imageShow").attr("src",'<c:url value="/common/activiti/process/trace/auto/"/>'+id);
         }
         buttonHeader.listInit($scope,$window);

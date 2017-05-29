@@ -3,7 +3,6 @@
   User: 刘大磊
   Date: 2017/5/3
   Time: 14:48
-  To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/inc/taglib.jsp" %>
@@ -29,7 +28,7 @@
                     <td>{{(queryParams.pageNo-1)*queryParams.pageSize+$index+1}}</td>
                     <c:forEach items="${fieldInListPageBoList}" var="item">
                         <td>
-                            {{model.id<c:out value="${item.id}"/>}}
+                            {{model.id<c:out value="${item.id}"/>${item.pattern}}}
                         </td>
                     </c:forEach>
                     <td>

@@ -1,9 +1,6 @@
 package com.dsdl.eidea.general.web.controller;
 
-import com.dsdl.eidea.base.entity.bo.FieldBo;
 import com.dsdl.eidea.base.entity.bo.FieldInListPageBo;
-import com.dsdl.eidea.base.entity.bo.FieldValueBo;
-import com.dsdl.eidea.base.entity.po.TabPo;
 import com.dsdl.eidea.base.service.FieldService;
 import com.dsdl.eidea.base.service.TabService;
 import com.dsdl.eidea.core.dto.PaginationResult;
@@ -55,7 +52,7 @@ public class GeneralTabController {
     }
     @RequestMapping("/list/{tabId}")
     @ResponseBody
-    public JsonResult<PaginationResult<Map<String, String>>> list(@PathVariable("tabId") Integer tabId, @RequestBody QueryParams queryParams) {
+    public JsonResult<PaginationResult<Map<String, Object>>> list(@PathVariable("tabId") Integer tabId, @RequestBody QueryParams queryParams) {
         PaginationResult list = fieldService.getDataList(tabId, queryParams);
         return JsonResult.success(list);
     }
@@ -87,9 +84,14 @@ public class GeneralTabController {
     }
     @RequestMapping("/get/{tabId}/{recordId}")
     @ResponseBody
-    public JsonResult<Map<String, String>> edit(@PathVariable("tabId") Integer tabId, @PathVariable("recordId") Integer recordId) {
-        Map<String, String> result=fieldService.getDataForm(tabId,recordId);
+    public JsonResult<Map<String, Object>> edit(@PathVariable("tabId") Integer tabId, @PathVariable("recordId") Integer recordId) {
+        Map<String, Object> result=fieldService.getDataForm(tabId,recordId);
         return JsonResult.success(result);
+    }
+    @RequestMapping("/saveForUpdated/{tabId}")
+    public JsonResult<Map<String,String>> saveForUpdated(@PathVariable("tabId") Integer tabId,@RequestBody Map<String,String> model)
+    {
+        return null;
     }
 }
 

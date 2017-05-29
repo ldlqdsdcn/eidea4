@@ -136,6 +136,33 @@
                 }).error(function (response) {
             bootbox.alert(response);
         });
+        /**
+         * 日期时间选择控件
+         * bootstrap-datetime 24小时时间是hh
+         */
+        $('.bootstrap-datetime').datetimepicker({
+            language:  'zh-CN',
+            format: 'yyyy-mm-dd hh:ii:ss',
+            weekStart: 1,
+            todayBtn:  1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 2,
+            forceParse: 0,
+            showMeridian: 1,
+            clearBtn: true
+        });
+        /**
+         * 日期选择控件
+         */
+        $('.bootstrap-date').datepicker({
+            language:  'zh-CN',
+            format: 'yyyy-mm-dd',
+            autoclose: 1,
+            todayBtn:  1,
+            clearBtn:true
+        });
+
         $scope.save = function () {
             $scope.message="";
             if ($scope.editForm.$valid) {

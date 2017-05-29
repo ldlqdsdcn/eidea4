@@ -8,13 +8,13 @@ package com.dsdl.eidea.base.service.impl;
 
 import com.dsdl.eidea.base.entity.bo.FieldInListPageBo;
 import com.dsdl.eidea.base.entity.bo.FieldValueBo;
-import com.dsdl.eidea.base.entity.po.FieldPo;
-import com.dsdl.eidea.base.entity.po.FieldTrlPo;
-import com.dsdl.eidea.base.entity.po.FieldValidatorPo;
-import com.dsdl.eidea.base.entity.po.TabPo;
+import com.dsdl.eidea.base.entity.po.*;
 import com.dsdl.eidea.base.exception.ServiceException;
 import com.dsdl.eidea.base.service.FieldService;
 import com.dsdl.eidea.core.dao.CommonDao;
+import com.dsdl.eidea.core.def.FieldInputType;
+import com.dsdl.eidea.core.def.FieldShowType;
+import com.dsdl.eidea.core.def.JavaDataType;
 import com.dsdl.eidea.core.dto.PaginationResult;
 import com.dsdl.eidea.core.entity.po.TableColumnPo;
 import com.dsdl.eidea.core.entity.po.TablePo;
@@ -24,12 +24,14 @@ import com.dsdl.eidea.general.bo.FieldStructureBo;
 import com.dsdl.eidea.general.bo.TabFormStructureBo;
 import com.googlecode.genericdao.search.Search;
 import com.googlecode.genericdao.search.SearchResult;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,6 +41,7 @@ import java.util.Map;
 /**
  * @author 刘大磊 2017-05-04 13:22:23
  */
+@Slf4j
 @Service("fieldService")
 public class FieldServiceImpl implements FieldService {
     private static String SELECT_KEY = " select ";
@@ -58,6 +61,8 @@ public class FieldServiceImpl implements FieldService {
     private CommonDao<TableColumnPo, Integer> tableColumnDao;
     @DataAccess(entity = FieldValidatorPo.class)
     private CommonDao<FieldValidatorPo, Integer> fieldValidatorDao;
+    @DataAccess(entity = ElementLinkedPo.class)
+    private CommonDao<ElementLinkedPo, Integer> elementLinkedDao;
     @Autowired
     private DataSource dataSource;
 
@@ -131,12 +136,26 @@ public class FieldServiceImpl implements FieldService {
             trlSearch.addFilterEqual("lang", lang);
             trlSearch.addFilterEqual("fieldId", fieldPo.getId());
             FieldTrlPo fieldTrlPo = fieldTrlDao.searchUnique(trlSearch);
+            TableColumnPo tableColumnPo = tableColumnDao.find(fieldPo.getColumnId());
+            JavaDataType dataType = JavaDataType.getJavaDataTypeByKey(tableColumnPo.getDataType());
+            FieldInputType fieldInputType = FieldInputType.getFieldInputTypeByKey(fieldPo.getInputType());
+            fieldInListPageBo.setDataType(dataType);
+            fieldInListPageBo.setFieldInputType(fieldInputType);
             if (fieldTrlPo != null) {
                 fieldInListPageBo.setName(fieldTrlPo.getName());
-
             } else {
                 fieldInListPageBo.setName(fieldPo.getName());
             }
+            if (dataType == JavaDataType.DATE) {
+                if (fieldInputType == FieldInputType.DATEPICKER) {
+                    fieldInListPageBo.setPattern("|date:\"yyyy-MM-dd\"");
+                } else if (fieldInputType == FieldInputType.DATETIMEPICKER) {
+                    fieldInListPageBo.setPattern("|date:\"yyyy-MM-dd HH:mm:ss\"");
+                }
+
+            }
+
+
             fieldInListPageBoList.add(fieldInListPageBo);
         }
         return fieldInListPageBoList;
@@ -164,6 +183,8 @@ public class FieldServiceImpl implements FieldService {
                 fieldTrlPo.setDescription(fieldPo.getDescription());
                 fieldTrlPo.setHelp("");
             }
+            FieldInputType fieldInputType = FieldInputType.getFieldInputTypeByKey(fieldPo.getInputType());
+            fieldStructureBo.setFieldInputType(fieldInputType);
             fieldStructureBo.setFieldPo(fieldPo);
             fieldStructureBo.setFieldTrlPo(fieldTrlPo);
             Search fieldValidatorSearch = new Search();
@@ -177,7 +198,7 @@ public class FieldServiceImpl implements FieldService {
     }
 
     @Override
-    public PaginationResult<Map<String, String>> getDataList(Integer tabId, QueryParams queryParams) {
+    public PaginationResult<Map<String, Object>> getDataList(Integer tabId, QueryParams queryParams) {
 
         TabPo tabPo = tabDao.find(tabId);
         TablePo tablePo = tableDao.find(tabPo.getTableId());
@@ -194,11 +215,11 @@ public class FieldServiceImpl implements FieldService {
         List<FieldPo> fieldPoList = fieldDao.search(search);
         for (FieldPo fieldPo : fieldPoList) {
             TableColumnPo tableColumnPo = tableColumnDao.find(fieldPo.getColumnId());
-
             FieldColumn fieldColumn = new FieldColumn();
             fieldColumn.fieldId = fieldPo.getId();
             fieldColumn.fieldPo = fieldPo;
             fieldColumn.columnName = tableColumnPo.getColumnName();
+            fieldColumn.tableColumnPo = tableColumnPo;
             fieldColumnList.add(fieldColumn);
             if (isBegin) {
                 isBegin = false;
@@ -226,102 +247,201 @@ public class FieldServiceImpl implements FieldService {
         }
 
 
-        List<Map<String, String>> resultList = new ArrayList<>();
+        List<List<FieldValueBo>> resultList = new ArrayList<>();
         try {
-
-
             Connection connection = dataSource.getConnection();
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
 
             while (resultSet.next()) {
-
-                Map<String, String> resultMap = new HashMap<>();
-                for (FieldColumn fieldColumn : fieldColumnList) {
-                    /**
-                     * 如果是普通输入类型
-                     */
-                    //TODO暂时先不考虑数据类型
-                    String value = resultSet.getString(fieldColumn.columnName);
-                    resultMap.put("id" + fieldColumn.fieldId, value);
+                List<FieldValueBo> oneRecord = getOneRecord(resultSet, fieldColumnList);
+                resultList.add(oneRecord);
+            }
+            resultSet.close();
+            statement.close();
+            connection.close();
+        } catch (Exception e) {
+            throw new ServiceException("查询列表信息出错", e);
+        }
+        List<Map<String, Object>> resultMapList = new ArrayList<>();
+        for (List<FieldValueBo> fieldValueBoList : resultList) {
+            Map<String, Object> recordMap = new HashMap<>();
+            for (FieldValueBo valueBo : fieldValueBoList) {
+                Object value = null;
+                switch (valueBo.getFieldPo().getShowType()) {
+                    case LINKED:
+                        try {
+                            value = getLinkedValue(valueBo);
+                        } catch (SQLException e) {
+                            log.error("获取关联的数据出错", e);
+                            throw new ServiceException("sql语句错误", e);
+                        }
+                        break;
+                    default:
+                        value = valueBo.getValue();
+                        break;
 
                 }
-                resultList.add(resultMap);
+
+                recordMap.put("id" + valueBo.getFieldPo().getId(), value);
+
+            }
+            resultMapList.add(recordMap);
+        }
+        PaginationResult paginationResult = PaginationResult.pagination(resultMapList, count, queryParams.getPageNo(), queryParams.getPageSize());
+        return paginationResult;
+    }
+
+    private Object getLinkedValue(FieldValueBo fieldValueBo) throws SQLException {
+        Search search = new Search();
+        search.addFilterEqual("elementId", fieldValueBo.getFieldPo().getElementId());
+        ElementLinkedPo elementLinkedPo = elementLinkedDao.searchUnique(search);
+        TablePo tablePo = tableDao.find(elementLinkedPo.getLinkedTableId());
+        TableColumnPo columnKeyPo = tableColumnDao.find(elementLinkedPo.getLinkedColumnId());
+        TableColumnPo columnValuePo = tableColumnDao.find(elementLinkedPo.getLinkedColumnValue());
+        String key = columnKeyPo.getColumnName();
+        String value = columnValuePo.getColumnName();
+        String sql = SELECT_KEY + value + FROM_KEY + tablePo.getTableName() + WHERE_KEY + key + "=" + fieldValueBo.getValue();
+        Object resultValue = null;
+        try {
+            Connection connection = dataSource.getConnection();
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()) {
+                JavaDataType javaDataType = JavaDataType.getJavaDataTypeByKey(columnValuePo.getDataType());
+                resultValue = getValue(resultSet, javaDataType, value);
             }
             resultSet.close();
             statement.close();
             connection.close();
 
-
         } catch (Exception e) {
-            throw new ServiceException("查询列表信息出错", e);
+            log.error("获取关联值出错", e);
+            throw new ServiceException("获取关联值出错", e);
         }
-        PaginationResult paginationResult = PaginationResult.pagination(resultList, count, queryParams.getPageNo(), queryParams.getPageSize());
-        return paginationResult;
+        return resultValue;
+    }
+
+    private Object getValue(ResultSet resultSet, JavaDataType javaDataType, String columnName) throws SQLException {
+        Object value = null;
+        switch (javaDataType) {
+            case DATE:
+                value = resultSet.getTimestamp(columnName);
+                break;
+            case BYTES:
+                value = resultSet.getBytes(columnName);
+                break;
+            case INT:
+                value = resultSet.getInt(columnName);
+                break;
+            case DECIMAL:
+                value = resultSet.getBigDecimal(columnName);
+                break;
+            case DOUBLE:
+                value = resultSet.getDouble(columnName);
+                break;
+            case FLOAT:
+                value = resultSet.getFloat(columnName);
+                break;
+            case LONG:
+                value = resultSet.getLong(columnName);
+                break;
+            case STRING:
+                value = resultSet.getString(columnName);
+                break;
+            case OTHER:
+                value = resultSet.getObject(columnName);
+        }
+        return value;
+    }
+
+    private List<FieldValueBo> getOneRecord(ResultSet resultSet, List<FieldColumn> fieldColumnList) throws SQLException {
+        List<FieldValueBo> resultList = new ArrayList<>();
+        for (FieldColumn fieldColumn : fieldColumnList) {
+            /**
+             * 如果是普通输入类型
+             */
+            //TODO暂时先不考虑数据类型
+            JavaDataType javaDataType = JavaDataType.getJavaDataTypeByKey(fieldColumn.tableColumnPo.getDataType());
+            Object value = getValue(resultSet, javaDataType, fieldColumn.columnName);
+            FieldValueBo fieldValueBo = new FieldValueBo();
+            fieldValueBo.setFieldPo(fieldColumn.fieldPo);
+            fieldValueBo.setValue(value);
+            resultList.add(fieldValueBo);
+        }
+        return resultList;
     }
 
     @Override
-    public Map<String, String> getDataForm(Integer tabId, Integer recordId) {
+    public Map<String, Object> getDataForm(Integer tabId, Integer recordId) {
         TabPo tabPo = tabDao.find(tabId);
         TablePo tablePo = tableDao.find(tabPo.getTableId());
-        TableColumnPo tableColumnPo=tableColumnDao.find(tabPo.getTableColumnId());
+        TableColumnPo tableColumnPo = tableColumnDao.find(tabPo.getTableColumnId());
 
         Search search = new Search();
         search.addSortAsc("seqNo");
         search.addFilterEqual("tabId", tabId);
-        StringBuilder stringBuilder=new StringBuilder();
+        StringBuilder stringBuilder = new StringBuilder();
         List<FieldPo> fieldPoList = fieldDao.search(search);
         List<FieldColumn> fieldColumnList = new ArrayList<>();
         boolean isBegin = true;
-        for(FieldPo fieldPo:fieldPoList)
-        {
+        for (FieldPo fieldPo : fieldPoList) {
             FieldColumn fieldColumn = new FieldColumn();
+            TableColumnPo columnPo = tableColumnDao.find(fieldPo.getColumnId());
             fieldColumn.fieldId = fieldPo.getId();
             fieldColumn.fieldPo = fieldPo;
-            fieldColumn.columnName = tableColumnPo.getColumnName();
+            fieldColumn.columnName = columnPo.getColumnName();
+            fieldColumn.tableColumnPo = columnPo;
             fieldColumnList.add(fieldColumn);
-            if(isBegin)
-            {
-                isBegin=false;
-            }
-            else
-            {
+            if (isBegin) {
+                isBegin = false;
+            } else {
                 stringBuilder.append(COLUMN_SPLIT_KEY);
             }
-            stringBuilder.append(tableColumnPo.getColumnName());
+            stringBuilder.append(fieldColumn.columnName);
         }
-        Map<String, String> resultMap = new HashMap<>();
-        String sql = SELECT_KEY + stringBuilder.toString() + FROM_KEY + tablePo.getTableName() + WHERE_KEY+ tableColumnPo.getColumnName()+"="+recordId;
+        List<FieldValueBo> resultList = null;
+        String sql = SELECT_KEY + stringBuilder.toString() + FROM_KEY + tablePo.getTableName() + WHERE_KEY + tableColumnPo.getColumnName() + "=" + recordId;
         try {
-
-
             Connection connection = dataSource.getConnection();
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
-
             while (resultSet.next()) {
-
-
-                for (FieldColumn fieldColumn : fieldColumnList) {
-                    /**
-                     * 如果是普通输入类型
-                     */
-                    //TODO暂时先不考虑数据类型
-                    String value = resultSet.getString(fieldColumn.columnName);
-                    resultMap.put("id" + fieldColumn.fieldId, value);
-
-                }
-
+                resultList = getOneRecord(resultSet, fieldColumnList);
             }
             resultSet.close();
             statement.close();
             connection.close();
-
-
         } catch (Exception e) {
             throw new ServiceException("查询列表信息出错", e);
         }
+        Map<String, Object> resultMap = new HashMap<>();
+        for (FieldValueBo valueBo : resultList) {
+            Object value = null;
+            switch (valueBo.getFieldPo().getShowType()) {
+                case LINKED:
+                    try {
+                        value = getLinkedValue(valueBo);
+                    } catch (SQLException e) {
+                        log.error("获取关联的数据出错", e);
+                        throw new ServiceException("sql语句错误", e);
+                    }
+                    break;
+                default:
+                    value = valueBo.getValue();
+                    break;
+
+            }
+
+            resultMap.put("id" + valueBo.getFieldPo().getId(), value);
+
+        }
         return resultMap;
+    }
+
+    @Override
+    public Map<String, String> saveForUpdated(Map<String, String> result) {
+        return null;
     }
 
     class FieldColumn {
@@ -329,5 +449,6 @@ public class FieldServiceImpl implements FieldService {
         private FieldPo fieldPo;
         private String columnName;
         private String value;
+        private TableColumnPo tableColumnPo;
     }
 }

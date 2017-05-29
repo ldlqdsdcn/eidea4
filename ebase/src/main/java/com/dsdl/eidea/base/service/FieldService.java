@@ -48,7 +48,7 @@ public interface FieldService {
      * @param queryParams
      * @return
      */
-	PaginationResult<Map<String, String>> getDataList(Integer tabId,  QueryParams queryParams);
+	PaginationResult<Map<String, Object>> getDataList(Integer tabId,  QueryParams queryParams);
 
 	/**
 	 * 根据tabId和record获取记录
@@ -56,5 +56,12 @@ public interface FieldService {
 	 * @param recordId
 	 * @return
 	 */
-	Map<String, String> getDataForm(Integer tabId, Integer recordId) ;
+	Map<String, Object> getDataForm(Integer tabId, Integer recordId) ;
+
+	/**
+	 * 更新操作信息
+	 * @param result
+	 * @return
+	 */
+	Map<String,String> saveForUpdated(Map<String,String> result);
 }

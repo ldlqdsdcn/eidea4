@@ -11,6 +11,5 @@ import lombok.Setter;
 @Setter
 public class FieldValueBo {
     private FieldPo fieldPo;
-    private String key;
-    private String value;
+    private Object value;
 }

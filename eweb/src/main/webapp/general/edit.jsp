@@ -1,4 +1,4 @@
-<%--
+<%@ page import="com.dsdl.eidea.core.def.FieldInputType" %><%--
   Created by IntelliJ IDEA.
   User: 刘大磊
   Date: 2017/5/3
@@ -16,7 +16,27 @@
                 <c:forEach var="fieldStructure" items="${tabFormStructureBo.fieldStructureBoList}">
                 <div class="form-group">
                     <label for="id${fieldStructure.fieldPo.id}">${fieldStructure.fieldTrlPo.name}</label>
-                        <input type="text" class="form-control" id="code" name="code" ng-model="clientBo.no" placeholder="<eidea:message key="common.please.input"><eidea:param value="${fieldStructure.fieldTrlPo.name}" /></eidea:message>" required ng-minlength="2" ng-maxlength="10">
+                    <c:choose>
+                        <c:when test="${fieldStructure.fieldInputType eq FieldInputType.DATEPICKER}">
+                            <div class="input-group date bootstrap-date">
+                                <input type="text" class="form-control"  id="id${fieldStructure.fieldPo.id}" name="id${fieldStructure.fieldPo.id}" placeholder="<eidea:message key="common.please.input"><eidea:param value="${fieldStructure.fieldTrlPo.name}" /></eidea:message>" ng-model="model.id${fieldStructure.fieldPo.id}"
+                                       uib-datepicker-popup="yyyy-MM-dd HH:mm:ss">
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                            </div>
+                        </c:when>
+                        <c:when test="${fieldStructure.fieldInputType eq FieldInputType.DATETIMEPICKER}">
+                            <div class="input-group date bootstrap-datetime">
+                                <input type="text" class="form-control"  id="id${fieldStructure.fieldPo.id}" name="id${fieldStructure.fieldPo.id}" placeholder="<eidea:message key="common.please.input"><eidea:param value="${fieldStructure.fieldTrlPo.name}" /></eidea:message>" ng-model="model.id${fieldStructure.fieldPo.id}"
+                                       uib-datepicker-popup="yyyy-MM-dd HH:mm:ss">
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                            </div>
+                        </c:when>
+                        <c:otherwise>
+                            <input type="text" class="form-control" id="id${fieldStructure.fieldPo.id}" name="id${fieldStructure.fieldPo.id}" ng-model="model.id${fieldStructure.fieldPo.id}" placeholder="<eidea:message key="common.please.input"><eidea:param value="${fieldStructure.fieldTrlPo.name}" /></eidea:message>" required ng-minlength="2" ng-maxlength="10">
+                        </c:otherwise>
+                    </c:choose>
+
+
                 </div>
                 </c:forEach>
                 <div class="form-group">

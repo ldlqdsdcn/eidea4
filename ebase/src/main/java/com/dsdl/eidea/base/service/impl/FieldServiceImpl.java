@@ -13,7 +13,6 @@ import com.dsdl.eidea.base.exception.ServiceException;
 import com.dsdl.eidea.base.service.FieldService;
 import com.dsdl.eidea.core.dao.CommonDao;
 import com.dsdl.eidea.core.def.FieldInputType;
-import com.dsdl.eidea.core.def.FieldShowType;
 import com.dsdl.eidea.core.def.JavaDataType;
 import com.dsdl.eidea.core.dto.PaginationResult;
 import com.dsdl.eidea.core.entity.po.TableColumnPo;
@@ -63,6 +62,8 @@ public class FieldServiceImpl implements FieldService {
     private CommonDao<FieldValidatorPo, Integer> fieldValidatorDao;
     @DataAccess(entity = ElementLinkedPo.class)
     private CommonDao<ElementLinkedPo, Integer> elementLinkedDao;
+    @DataAccess(entity = ElementCheckboxPo.class)
+    private CommonDao<ElementCheckboxPo,Integer> elementCheckboxDao;
     @Autowired
     private DataSource dataSource;
 
@@ -124,7 +125,6 @@ public class FieldServiceImpl implements FieldService {
     public List<FieldInListPageBo> getListPageFiledList(Integer tabId, String lang) {
         List<FieldInListPageBo> fieldInListPageBoList = new ArrayList<>();
         Search search = new Search();
-        search.addFilterEqual("isdisplaygrid", "Y");
         search.addFilterEqual("tabId", tabId);
         search.addSortAsc("seqnogrid");
         search.addSortAsc("seqNo");
@@ -132,6 +132,7 @@ public class FieldServiceImpl implements FieldService {
         for (FieldPo fieldPo : fieldPoList) {
             FieldInListPageBo fieldInListPageBo = new FieldInListPageBo();
             fieldInListPageBo.setId(fieldPo.getId());
+            fieldInListPageBo.setFieldPo(fieldPo);
             Search trlSearch = new Search();
             trlSearch.addFilterEqual("lang", lang);
             trlSearch.addFilterEqual("fieldId", fieldPo.getId());
@@ -152,10 +153,7 @@ public class FieldServiceImpl implements FieldService {
                 } else if (fieldInputType == FieldInputType.DATETIMEPICKER) {
                     fieldInListPageBo.setPattern("|date:\"yyyy-MM-dd HH:mm:ss\"");
                 }
-
             }
-
-
             fieldInListPageBoList.add(fieldInListPageBo);
         }
         return fieldInListPageBoList;
@@ -166,7 +164,6 @@ public class FieldServiceImpl implements FieldService {
         TabFormStructureBo tabFormStructureBo = new TabFormStructureBo();
         List<FieldStructureBo> fieldStructureBoList = new ArrayList<>();
         Search search = new Search();
-        search.addFilterEqual("isdisplaygrid", "Y");
         search.addSortAsc("seqnogrid");
         search.addSortAsc("seqNo");
         search.addFilterEqual("tabId", tabId);
@@ -208,7 +205,6 @@ public class FieldServiceImpl implements FieldService {
         boolean isBegin = true;
         List<FieldColumn> fieldColumnList = new ArrayList<>();
         Search search = new Search();
-        search.addFilterEqual("isdisplaygrid", "Y");
         search.addSortAsc("seqnogrid");
         search.addSortAsc("seqNo");
         search.addFilterEqual("tabId", tabId);
@@ -245,8 +241,6 @@ public class FieldServiceImpl implements FieldService {
         } catch (Exception e) {
             throw new ServiceException("获取统计数量出错", e);
         }
-
-
         List<List<FieldValueBo>> resultList = new ArrayList<>();
         try {
             Connection connection = dataSource.getConnection();

@@ -3,6 +3,7 @@
   User: 刘大磊
   Date: 2017/5/3
   Time: 14:48
+  To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/inc/taglib.jsp" %>
@@ -15,9 +16,11 @@
                 <tr>
                     <th>编号</th>
                     <c:forEach items="${fieldInListPageBoList}" var="item">
+                        <c:if test="${item.fieldPo.isdisplaygrid=='Y'}">
                     <th>
                         <c:out value="${item.name}"/>
                     </th>
+                    </c:if>
                     </c:forEach>
                     <th>操作</th>
                 </tr>
@@ -27,9 +30,13 @@
                 <tr ng-repeat="model in modelList track by $index" ng-class-even="success">
                     <td>{{(queryParams.pageNo-1)*queryParams.pageSize+$index+1}}</td>
                     <c:forEach items="${fieldInListPageBoList}" var="item">
-                        <td>
-                            {{model.id<c:out value="${item.id}"/>${item.pattern}}}
-                        </td>
+                        <c:if test="${item.fieldPo.isdisplaygrid=='Y'}">
+                            <td>
+                                {{model.id<c:out value="${item.id}"/>}}
+                            </td>
+                        </c:if>
+
+
                     </c:forEach>
                     <td>
                         <button class="btn btn-primary btn-xs" ng-click="edit(model.${pk})">

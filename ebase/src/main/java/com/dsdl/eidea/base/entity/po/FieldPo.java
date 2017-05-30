@@ -178,6 +178,19 @@ public class FieldPo implements java.io.Serializable {
     private Integer tabId;
     @Column(name="show_type",nullable = false)
     private FieldShowType showType;
+    /**
+     * 对应的element_id
+     */
     @Column(name = "element_id")
     private Integer elementId;
+    /**
+     * 是否可添加
+     */
+    @Column(name = "isadded")
+    private String isadded;
+    /**
+     * 是否可更新
+     */
+    @Column(name = "isupdated")
+    private String isupdated;
 }

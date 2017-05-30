@@ -20,6 +20,8 @@ public class FieldInListPageBo {
         pattern="";
     }
     private Integer id;
+
+    private FieldPo fieldPo;
     /**
      * 字段名
      */

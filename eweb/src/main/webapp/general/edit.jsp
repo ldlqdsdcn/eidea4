@@ -14,30 +14,51 @@
             <div class="span12">
                 <br>
                 <c:forEach var="fieldStructure" items="${tabFormStructureBo.fieldStructureBoList}">
-                <div class="form-group">
-                    <label for="id${fieldStructure.fieldPo.id}">${fieldStructure.fieldTrlPo.name}</label>
-                    <c:choose>
-                        <c:when test="${fieldStructure.fieldInputType eq FieldInputType.DATEPICKER}">
-                            <div class="input-group date bootstrap-date">
-                                <input type="text" class="form-control"  id="id${fieldStructure.fieldPo.id}" name="id${fieldStructure.fieldPo.id}" placeholder="<eidea:message key="common.please.input"><eidea:param value="${fieldStructure.fieldTrlPo.name}" /></eidea:message>" ng-model="model.id${fieldStructure.fieldPo.id}"
-                                       uib-datepicker-popup="yyyy-MM-dd HH:mm:ss">
-                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-                            </div>
-                        </c:when>
-                        <c:when test="${fieldStructure.fieldInputType eq FieldInputType.DATETIMEPICKER}">
-                            <div class="input-group date bootstrap-datetime">
-                                <input type="text" class="form-control"  id="id${fieldStructure.fieldPo.id}" name="id${fieldStructure.fieldPo.id}" placeholder="<eidea:message key="common.please.input"><eidea:param value="${fieldStructure.fieldTrlPo.name}" /></eidea:message>" ng-model="model.id${fieldStructure.fieldPo.id}"
-                                       uib-datepicker-popup="yyyy-MM-dd HH:mm:ss">
-                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-                            </div>
-                        </c:when>
-                        <c:otherwise>
-                            <input type="text" class="form-control" id="id${fieldStructure.fieldPo.id}" name="id${fieldStructure.fieldPo.id}" ng-model="model.id${fieldStructure.fieldPo.id}" placeholder="<eidea:message key="common.please.input"><eidea:param value="${fieldStructure.fieldTrlPo.name}" /></eidea:message>" required ng-minlength="2" ng-maxlength="10">
-                        </c:otherwise>
-                    </c:choose>
+                    <c:if test="${fieldStructure.fieldPo.isDisplayed=='Y'}">
+                        <div class="form-group">
+                            <label for="id${fieldStructure.fieldPo.id}">${fieldStructure.fieldTrlPo.name}</label>
+                            <c:choose>
+                                <c:when test="${fieldStructure.fieldInputType eq FieldInputType.DATEPICKER}">
+                                    <c:choose>
+                                        <c:when test="${fieldStructure.fieldPo.isreadonly=='Y'}">
+                                            <input type="date" class="form-control" id="id${fieldStructure.fieldPo.id}" name="id${fieldStructure.fieldPo.id}" value="{{model.id${fieldStructure.fieldPo.id}|date:'yyyy-MM-dd'}}"   readonly>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <div class="input-group date bootstrap-date">
+                                                <input type="date" class="form-control"  id="id${fieldStructure.fieldPo.id}" name="id${fieldStructure.fieldPo.id}" placeholder="<eidea:message key="common.please.input"><eidea:param value="${fieldStructure.fieldTrlPo.name}" /></eidea:message>" ng-model="model.id${fieldStructure.fieldPo.id}"
+                                                       uib-datepicker-popup="yyyy-MM-dd HH:mm:ss">
+                                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                            </div>
+                                        </c:otherwise>
+                                    </c:choose>
+
+                                </c:when>
+                                <c:when test="${fieldStructure.fieldInputType eq FieldInputType.DATETIMEPICKER}">
+                                    <c:choose>
+                                        <c:when test="${fieldStructure.fieldPo.isreadonly=='Y'}">
+                                            <input type="datetime" class="form-control" id="id${fieldStructure.fieldPo.id}" name="id${fieldStructure.fieldPo.id}" value="{{model.id${fieldStructure.fieldPo.id}|date:'yyyy-MM-dd HH:mm:ss'}}"   readonly>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <div class="input-group date bootstrap-datetime">
+                                                <input type="datetime" class="form-control"  id="id${fieldStructure.fieldPo.id}" name="id${fieldStructure.fieldPo.id}" placeholder="<eidea:message key="common.please.input"><eidea:param value="${fieldStructure.fieldTrlPo.name}" /></eidea:message>" ng-model="model.id${fieldStructure.fieldPo.id}"
+                                                       uib-datepicker-popup="yyyy-MM-dd HH:mm:ss">
+                                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                            </div>
+                                        </c:otherwise>
+                                    </c:choose>
+
+                                </c:when>
+                                <c:otherwise>
+                                    <input type="text" class="form-control" id="id${fieldStructure.fieldPo.id}" name="id${fieldStructure.fieldPo.id}" ng-model="model.id${fieldStructure.fieldPo.id}" placeholder="<eidea:message key="common.please.input"><eidea:param value="${fieldStructure.fieldTrlPo.name}" /></eidea:message>"
+                                        ${fieldStructure.fieldPo.isreadonly=='Y'?'readonly':''} >
+                                </c:otherwise>
+                            </c:choose>
 
 
-                </div>
+                        </div>
+
+                    </c:if>
+
                 </c:forEach>
                 <div class="form-group">
                     <p class="text-center" style="color: red">

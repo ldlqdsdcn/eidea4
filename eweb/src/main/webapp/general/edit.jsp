@@ -48,6 +48,9 @@
                                     </c:choose>
 
                                 </c:when>
+                                <c:when test="${fieldStructure.fieldInputType eq FieldInputType.CHECKBOX}">
+                                    <input type="checkbox" ng-true-value="'${fieldStructure.trueValue}'" ng-false-value="'${fieldStructure.falseValue}'" ng-model="model.id${fieldStructure.fieldPo.id}" name="id${fieldStructure.fieldPo.id}">
+                                </c:when>
                                 <c:otherwise>
                                     <input type="text" class="form-control" id="id${fieldStructure.fieldPo.id}" name="id${fieldStructure.fieldPo.id}" ng-model="model.id${fieldStructure.fieldPo.id}" placeholder="<eidea:message key="common.please.input"><eidea:param value="${fieldStructure.fieldTrlPo.name}" /></eidea:message>"
                                         ${fieldStructure.fieldPo.isreadonly=='Y'?'readonly':''} >

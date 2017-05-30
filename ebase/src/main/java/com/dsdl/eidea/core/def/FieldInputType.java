@@ -13,7 +13,7 @@ public enum FieldInputType {
      * 输入自动完成
      * 目前还不支持
      */
-    AUTO_COMPLISH(6, "自动完成"), NUMBER(7, "数值"), EMAIL(8, "邮件"),CHECKBOX(9,"复选框");
+    AUTO_COMPLISH(6, "自动完成"), NUMBER(7, "数值"), EMAIL(8, "邮件"),CHECKBOX(9,"复选框"),CHECKBOXES(10,"复选多选框");
     private static Map<Integer, FieldInputType> FIELD_INPUT_TYPE_MAP = new HashMap<>();
 
     static {

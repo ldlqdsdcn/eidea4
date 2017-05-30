@@ -32,8 +32,13 @@ public class FieldStructureBo {
      * 字段验证
      */
     private List<FieldValidatorPo> fieldValidatorPoList;
-
-
-
+    /**
+     * 当输入类型为checkbox时该值有用
+     */
+    private String trueValue;
+    /**
+     * 当输入类型为checkbox时该值有用
+     */
+    private String falseValue;
 
 }

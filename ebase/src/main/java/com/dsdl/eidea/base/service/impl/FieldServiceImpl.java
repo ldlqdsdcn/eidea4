@@ -188,6 +188,16 @@ public class FieldServiceImpl implements FieldService {
             fieldValidatorSearch.addFilterEqual("fieldId", fieldPo.getId());
             List<FieldValidatorPo> fieldValidatorPoList = fieldValidatorDao.search(fieldValidatorSearch);
             fieldStructureBo.setFieldValidatorPoList(fieldValidatorPoList);
+
+            if(FieldInputType.CHECKBOX==fieldInputType)
+            {
+                Search checkSearch=new Search();
+                checkSearch.addFilterEqual("elementId",fieldPo.getElementId());
+                ElementCheckboxPo elementCheckboxPo=elementCheckboxDao.searchUnique(checkSearch);
+                fieldStructureBo.setFalseValue(elementCheckboxPo.getUncheckedValue());
+                fieldStructureBo.setTrueValue(elementCheckboxPo.getCheckedValue());
+            }
+
             fieldStructureBoList.add(fieldStructureBo);
         }
         tabFormStructureBo.setFieldStructureBoList(fieldStructureBoList);

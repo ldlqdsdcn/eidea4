@@ -9,7 +9,7 @@
                 <tr>
                     <th><input type="checkbox" name="selectAll" style="margin:0px;" ng-change="selectAll()"
                                ng-model="delFlag"></th>
-                    <th>id</th>
+                    <th><eidea:label key="base.serialNumber"/></th>
                     <th><eidea:label key="loginlog.label.loginname"/></th>
                     <th><eidea:label key="user.username"/></th>
                     <th><eidea:label key="operator.column.init"/></th>

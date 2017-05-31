@@ -25,7 +25,7 @@
             <props>
                 <prop key="hibernate.dialect">${jdbc.cargo.connection.dialect}</prop>
                 <!--<prop key="hibernate.hbm2ddl.auto">update</prop>-->
-                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.show_sql">false</prop>
                 <prop key="hiberante.format_sql">true</prop>
                 <prop key="hibernate.autoReconnect">true</prop>
                 <!-- Enable Hibernate's automatic session context management      -->

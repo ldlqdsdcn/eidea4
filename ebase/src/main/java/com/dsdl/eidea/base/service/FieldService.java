@@ -8,12 +8,15 @@ package com.dsdl.eidea.base.service;
 import com.dsdl.eidea.base.entity.bo.FieldBo;
 import com.dsdl.eidea.base.entity.bo.FieldInListPageBo;
 import com.dsdl.eidea.base.entity.bo.FieldValueBo;
+import com.dsdl.eidea.base.entity.bo.UserBo;
 import com.dsdl.eidea.base.entity.po.FieldPo;
 import com.dsdl.eidea.core.dto.PaginationResult;
 import com.dsdl.eidea.core.params.QueryParams;
 import com.dsdl.eidea.general.bo.FieldStructureBo;
 import com.dsdl.eidea.general.bo.TabFormStructureBo;
 import com.googlecode.genericdao.search.Search;
+
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -56,12 +59,19 @@ public interface FieldService {
 	 * @param recordId
 	 * @return
 	 */
-	Map<String, Object> getDataForm(Integer tabId, Integer recordId) ;
+	Map<String, Object> getDataForm(Integer tabId, Serializable recordId) ;
 
 	/**
-	 * 更新操作信息
-	 * @param result
+	 * 修改记录
+	 * @param param
 	 * @return
 	 */
-	Map<String,String> saveForUpdated(Map<String,String> result);
+	Map<String,Object> saveForUpdated(Integer tabId, Map<String,Object> param, UserBo userBo);
+
+	/**
+	 * 添加记录
+	 * @param param
+	 * @return
+	 */
+	Map<String,Object> saveForCreated(Integer tabId,Map<String,Object> param);
 }

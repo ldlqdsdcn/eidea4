@@ -8,6 +8,7 @@ package com.dsdl.eidea.base.service.impl;
 
 import com.dsdl.eidea.base.entity.bo.FieldInListPageBo;
 import com.dsdl.eidea.base.entity.bo.FieldValueBo;
+import com.dsdl.eidea.base.entity.bo.UserBo;
 import com.dsdl.eidea.base.entity.po.*;
 import com.dsdl.eidea.base.exception.ServiceException;
 import com.dsdl.eidea.base.service.FieldService;
@@ -28,14 +29,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.InputStream;
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.sql.*;
+import java.util.*;
+import java.util.Date;
 
 /**
  * @author 刘大磊 2017-05-04 13:22:23
@@ -48,6 +47,9 @@ public class FieldServiceImpl implements FieldService {
     private static String WHERE_KEY = " where ";
     private static String LIMIT_KEY = " limit %d,%d ";
     private static String COLUMN_SPLIT_KEY = ",";
+    private static String UPDATE_KEY = " update ";
+    private static String SET_KEY = " set ";
+    private static String SQL_EQUAL_KEY = "=";
     @DataAccess(entity = FieldPo.class)
     private CommonDao<FieldPo, Integer> fieldDao;
     @DataAccess(entity = FieldTrlPo.class)
@@ -63,7 +65,7 @@ public class FieldServiceImpl implements FieldService {
     @DataAccess(entity = ElementLinkedPo.class)
     private CommonDao<ElementLinkedPo, Integer> elementLinkedDao;
     @DataAccess(entity = ElementCheckboxPo.class)
-    private CommonDao<ElementCheckboxPo,Integer> elementCheckboxDao;
+    private CommonDao<ElementCheckboxPo, Integer> elementCheckboxDao;
     @Autowired
     private DataSource dataSource;
 
@@ -189,11 +191,10 @@ public class FieldServiceImpl implements FieldService {
             List<FieldValidatorPo> fieldValidatorPoList = fieldValidatorDao.search(fieldValidatorSearch);
             fieldStructureBo.setFieldValidatorPoList(fieldValidatorPoList);
 
-            if(FieldInputType.CHECKBOX==fieldInputType)
-            {
-                Search checkSearch=new Search();
-                checkSearch.addFilterEqual("elementId",fieldPo.getElementId());
-                ElementCheckboxPo elementCheckboxPo=elementCheckboxDao.searchUnique(checkSearch);
+            if (FieldInputType.CHECKBOX == fieldInputType) {
+                Search checkSearch = new Search();
+                checkSearch.addFilterEqual("elementId", fieldPo.getElementId());
+                ElementCheckboxPo elementCheckboxPo = elementCheckboxDao.searchUnique(checkSearch);
                 fieldStructureBo.setFalseValue(elementCheckboxPo.getUncheckedValue());
                 fieldStructureBo.setTrueValue(elementCheckboxPo.getCheckedValue());
             }
@@ -377,11 +378,10 @@ public class FieldServiceImpl implements FieldService {
     }
 
     @Override
-    public Map<String, Object> getDataForm(Integer tabId, Integer recordId) {
+    public Map<String, Object> getDataForm(Integer tabId, Serializable recordId) {
         TabPo tabPo = tabDao.find(tabId);
         TablePo tablePo = tableDao.find(tabPo.getTableId());
         TableColumnPo tableColumnPo = tableColumnDao.find(tabPo.getTableColumnId());
-
         Search search = new Search();
         search.addSortAsc("seqNo");
         search.addFilterEqual("tabId", tabId);
@@ -434,17 +434,123 @@ public class FieldServiceImpl implements FieldService {
                 default:
                     value = valueBo.getValue();
                     break;
-
             }
-
             resultMap.put("id" + valueBo.getFieldPo().getId(), value);
-
         }
         return resultMap;
     }
 
     @Override
-    public Map<String, String> saveForUpdated(Map<String, String> result) {
+    public Map<String, Object> saveForUpdated(Integer tabId, Map<String, Object> param, UserBo userBo) {
+        TabPo tabPo = tabDao.find(tabId);
+        TablePo tablePo = tableDao.find(tabPo.getId());
+        String tableName = tablePo.getTableName();
+        Map<String, FieldPo> tableColumnPoMap = new HashMap<>();
+        Set<String> keys = param.keySet();
+        List<FieldColumn> values = new ArrayList<>();
+        StringBuilder updateSqlBuilder = new StringBuilder();
+        updateSqlBuilder.append(UPDATE_KEY);
+        updateSqlBuilder.append(tableName);
+        updateSqlBuilder.append(SET_KEY);
+        boolean isBgn = true;
+        Serializable pkValue = null;
+        TableColumnPo pkTablePo = tableColumnDao.find(tabPo.getTableColumnId());
+        for (String key : keys) {
+            String idKey = key.replace("id", "");
+            Integer fieldId = Integer.parseInt(idKey);
+            if (fieldId.equals(tabPo.getTableColumnId())) {
+                pkValue = (Serializable) param.get(key);
+                continue;
+            }
+            if (isBgn) {
+                updateSqlBuilder.append(COLUMN_SPLIT_KEY);
+            } else {
+                isBgn = false;
+            }
+            FieldPo fieldPo = fieldDao.find(fieldId);
+            TableColumnPo tableColumnPo = fieldPo.getTableColumnPo();
+            updateSqlBuilder.append("'").append(tableColumnPo.getColumnName()).append("'").append(SQL_EQUAL_KEY);
+            updateSqlBuilder.append("?");
+            tableColumnPoMap.put(key, fieldPo);
+            FieldColumn fieldColumn = new FieldColumn();
+            fieldColumn.fieldPo = fieldPo;
+            fieldColumn.value = param.get(key);
+            values.add(fieldColumn);
+        }
+        updateSqlBuilder.append(WHERE_KEY);
+        updateSqlBuilder.append(pkTablePo.getColumnName())
+                .append(SQL_EQUAL_KEY).append("?");
+        String updateSql = updateSqlBuilder.toString();
+        Connection conn = null;
+        try {
+            conn = dataSource.getConnection();
+        } catch (SQLException e) {
+            throw new ServiceException("获取conn出错", e);
+        }
+        log.debug(updateSql);
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = conn.prepareStatement(updateSql);
+        } catch (SQLException e) {
+            throw new ServiceException("获取PreparedStatement出错", e);
+        }
+
+        for (int i = 0; i < values.size(); i++) {
+            FieldColumn fieldColumn = values.get(i);
+            TableColumnPo tableColumnPo = fieldColumn.fieldPo.getTableColumnPo();
+            JavaDataType dataType = JavaDataType.getJavaDataTypeByKey(tableColumnPo.getDataType());
+            setPreparedStatement(i+1,fieldColumn.value,preparedStatement,dataType);
+        }
+        JavaDataType dataType = JavaDataType.getJavaDataTypeByKey(pkTablePo.getDataType());
+        setPreparedStatement(values.size(),pkValue,preparedStatement,dataType);
+        try {
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            log.error(updateSql,e);
+            throw new ServiceException("执行更新操作失败",e);
+        }
+        return getDataForm(tabId,pkValue);
+    }
+    private void setPreparedStatement(int index,Object value,PreparedStatement preparedStatement,JavaDataType dataType)
+    {
+        try {
+            switch (dataType) {
+                case INT:
+                    preparedStatement.setInt(index, (int) value);
+                    break;
+                case DECIMAL:
+                    preparedStatement.setBigDecimal(index, (BigDecimal) value);
+                    break;
+                case LONG:
+                    preparedStatement.setLong(index, (long) value);
+                    break;
+                case STRING:
+                    preparedStatement.setString(index, (String) value);
+                    break;
+                case DATE:
+                    Date date = (Date) value;
+                    Timestamp timestamp = new Timestamp(date.getTime());
+                    preparedStatement.setTimestamp(index, timestamp);
+                    break;
+                case DOUBLE:
+                    preparedStatement.setDouble(index, (double) value);
+                    break;
+                case FLOAT:
+                    preparedStatement.setDouble(index, (float) value);
+                    break;
+                case BYTES:
+                    preparedStatement.setBinaryStream(index, (InputStream) value);
+                    break;
+                case OTHER:
+                    preparedStatement.setString(index, value.toString());
+                    break;
+            }
+        } catch (SQLException e) {
+            log.error("执行更新操作失败",e);
+            throw new ServiceException("执行更新操作失败",e);
+        }
+    }
+    public Map<String, Object> saveForCreated(Integer tabId, Map<String, Object> param) {
         return null;
     }
 
@@ -452,7 +558,7 @@ public class FieldServiceImpl implements FieldService {
         private Integer fieldId;
         private FieldPo fieldPo;
         private String columnName;
-        private String value;
+        private Object value;
         private TableColumnPo tableColumnPo;
     }
 }

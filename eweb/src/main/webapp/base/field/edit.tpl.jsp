@@ -7,7 +7,7 @@ Date: 2017-05-04 13:22:23
 <div class="container-fluid" ng-controller="editFieldCtrl">
     <div ui-view ng-show="fieldTrlListShow||fieldValidatorListShow"></div>
     <form role="form" name="editForm" novalidate ng-submit="save()" ng-show="fieldEditShow" class="form-horizontal form-label-left input_mask">
-        <table class="table v-table-borderless">
+        <table class="table table-borderless">
             <tr>
                 <td class="control-label"><%--seqNo--%><eidea:label key="base.field.label.seqNo"/></td>
                 <td class="form-group"><input type="text" class="form-control" id="seqNo"
@@ -146,7 +146,7 @@ Date: 2017-05-04 13:22:23
                     <eidea:label key="common.button.create"/></button>
                 <button type="submit" class="btn btn-default btn-sm" ng-show="canSave"><%--保存--%><eidea:label
                         key="common.button.save"/></button>
-                <button type="button" class="btn btn-default btn-sm" ng-click="backFieldList()"><eidea:label
+                <button type="button" class="btn btn-default btn-sm" ng-click="back()"><eidea:label
                         key="common.button.back"/></button>
             </p>
         </div>

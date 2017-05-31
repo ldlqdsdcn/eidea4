@@ -2,7 +2,7 @@
 <%@ include file="/inc/taglib.jsp" %>
 <div  class="container-fluid" ng-controller="listFieldCtrl">
     <div class="page-header" >
-        <button type="button" class="btn btn-primary btn-sm" ng-show="canAdd" ng-click="createField()"><eidea:label key="common.button.create"/></button>
+        <button type="button" class="btn btn-primary btn-sm" ng-show="canAdd" ng-click="create()"><eidea:label key="common.button.create"/></button>
         <button type="button" class="btn  btn-primary btn-sm" id="search_but" data-toggle="modal"
                 data-target="#searchModal"><eidea:label key="common.button.search"/></button>
         <button type="button" class="btn  btn-primary btn-sm" ng-disabled="!canDelete()"
@@ -39,8 +39,6 @@
                     <th><%--isprinted--%><eidea:label key="base.field.label.isprinted"/></th>
                     <th><%--isallowcopy--%><eidea:label key="base.field.label.isallowcopy"/></th>
                     <th><%--isreport--%><eidea:label key="base.field.label.isreport"/></th>
-                    <th><%--tabId--%><eidea:label key="base.field.label.tabId"/></th>
-                    <th><%--elementId--%><eidea:label key="base.field.label.elementId"/></th>
                     <th><%--编辑--%><eidea:label key="common.button.edit"/></th>
                 </tr>
                 </thead>
@@ -124,13 +122,7 @@
                         {{model.isreport}}
                     </td>
                     <td>
-                        {{model.tabId}}
-                    </td>
-                    <td>
-                        {{model.elementId}}
-                    </td>
-                    <td>
-                        <button type="button" class="btn btn-primary btn-xs" ng-click="editField(model.id)"><eidea:label key="common.button.edit"/></button>
+                        <button type="button" class="btn btn-primary btn-xs" ng-click="edit(model.id)"><eidea:label key="common.button.edit"/></button>
                     </td>
                 </tr>
                 </tbody>

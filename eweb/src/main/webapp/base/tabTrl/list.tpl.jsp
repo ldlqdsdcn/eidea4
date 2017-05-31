@@ -2,7 +2,7 @@
 <%@ include file="/inc/taglib.jsp" %>
 <div  class="container-fluid" ng-controller="listTabTrlCtrl">
     <div class="page-header" >
-        <button type="button" class="btn btn-primary btn-sm" ng-show="canAdd" ng-click="createTabTrl()"><eidea:label key="common.button.create"/></button>
+        <button type="button" class="btn btn-primary btn-sm" ng-show="canAdd" ng-click="create()"><eidea:label key="common.button.create"/></button>
         <button type="button" class="btn  btn-primary btn-sm" id="search_but" data-toggle="modal"
                 data-target="#searchModal"><eidea:label key="common.button.search"/></button>
         <button type="button" class="btn  btn-primary btn-sm" ng-disabled="!canDelete()"
@@ -46,7 +46,7 @@
                         {{model.help}}
                     </td>
                     <td>
-                        <button type="button" class="btn btn-primary btn-xs" ng-click="editTabTrl(model.id)"><eidea:label key="common.button.edit"/></button>
+                        <button type="button" class="btn btn-primary btn-xs" ng-click="edit(model.id)"><eidea:label key="common.button.edit"/></button>
                     </td>
                 </tr>
                 </tbody>

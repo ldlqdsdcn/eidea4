@@ -635,13 +635,13 @@
             init: true
         };
         $scope.pageChanged();
-        $scope.editItem=function (id) {
+        $scope.editItem=function (id,columnId) {
             $rootScope.tabTrlBtnShow=true;
             $rootScope.fieldBtnShow=true;
-          $state.go('windowEdit.edittab',{tabId:id})
+          $state.go('windowEdit.edittab',{tabid:id,columnId:columnId})
         }
         $scope.createItem=function () {
-            $state.go('windowEdit.edittab',{tabId:null})
+            $state.go('windowEdit.edittab',{tabid:null})
         }
     });
     app.controller('editTabCtrl', function ($scope, $http,$rootScope,$stateParams,$state) {
@@ -675,8 +675,8 @@
         $scope.tabPo = {};
         $scope.canAdd = PrivilegeService.hasPrivilege('add');
         var url = "<c:url value="/base/tab/create"/>";
-        if ($stateParams.tabId != null) {
-            url = "<c:url value="/base/tab/get"/>" + "?id=" + $stateParams.tabId;
+        if ($stateParams.tabid != null) {
+            url = "<c:url value="/base/tab/get"/>" + "?id=" + $stateParams.tabid;
         }
         $http.get(url)
             .success(function (response) {
@@ -790,7 +790,7 @@
             return false;
         }
         $scope.pageChanged = function () {
-            $http.post("<c:url value="/base/tabTrl/tabTrlList"/>", $stateParams.tabId)
+            $http.post("<c:url value="/base/tabTrl/tabTrlList"/>", $stateParams.tabid)
                 .success(function (response) {
                     $scope.isLoading = false;
                     if (response.success) {
@@ -976,7 +976,7 @@
             return false;
         };
         $scope.pageChanged = function () {
-            $http.post("<c:url value="/base/field/fieldList"/>", $stateParams.tabId)
+            $http.post("<c:url value="/base/field/fieldList"/>", $stateParams.columnId)
                 .success(function (response) {
                     $scope.isLoading = false;
                     if (response.success) {

@@ -54,7 +54,7 @@ Date: 2017-05-02 15:46:44
                         <eidea:label key="common.button.create"/></button>
                         <button type="submit" class="btn btn-default btn-sm" ng-show="canSave"><%--保存--%><eidea:label
                                 key="common.button.save"/></button>
-                        <button type="button" class="btn btn-default btn-sm" ng-click="backFieldTrlList()"><eidea:label key="common.button.back"/></button>
+                        <button type="button" class="btn btn-default btn-sm" ng-click="back()"><eidea:label key="common.button.back"/></button>
                     </p>
                 </div>
                 <div class="form-group">

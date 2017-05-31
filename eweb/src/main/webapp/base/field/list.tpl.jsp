@@ -17,30 +17,10 @@
                     <th><%--序号--%><eidea:label key="base.serialNumber"/></th>
                     <th><%--seqNo--%><eidea:label key="base.field.label.seqNo"/></th>
                     <th><%--名称--%><eidea:label key="base.field.label.name"/></th>
-                    <th><%--fieldName--%><eidea:label key="base.field.label.fieldName"/></th>
-                    <th><%--columnId--%><eidea:label key="base.field.label.columnId"/></th>
-                    <th><%--required--%><eidea:label key="base.field.label.required"/></th>
+                    <th><%--字段名--%><eidea:label key="base.field.label.fieldName"/></th>
                     <th><%--是否有效--%><eidea:label key="base.field.label.isactive"/></th>
-                    <th><%--创建时间--%><eidea:label key="base.field.label.created"/></th>
-                    <th><%--创建人--%><eidea:label key="base.field.label.createdby"/></th>
-                    <th><%--修改时间--%><eidea:label key="base.field.label.updated"/></th>
-                    <th><%--修改人--%><eidea:label key="base.field.label.updatedby"/></th>
-                    <th><%--description--%><eidea:label key="base.field.label.description"/></th>
                     <th><%--inputType--%><eidea:label key="base.field.label.inputType"/></th>
                     <th><%--isDisplayed--%><eidea:label key="base.field.label.isDisplayed"/></th>
-                    <th><%--displayedlogic--%><eidea:label key="base.field.label.displayedlogic"/></th>
-                    <th><%--displaylength--%><eidea:label key="base.field.label.displaylength"/></th>
-                    <th><%--isreadonly--%><eidea:label key="base.field.label.isreadonly"/></th>
-                    <th><%--issameline--%><eidea:label key="base.field.label.issameline"/></th>
-                    <th><%--isencrypted--%><eidea:label key="base.field.label.isencrypted"/></th>
-                    <th><%--defaultvalue--%><eidea:label key="base.field.label.defaultvalue"/></th>
-                    <th><%--isdisplaygrid--%><eidea:label key="base.field.label.isdisplaygrid"/></th>
-                    <th><%--seqnogrid--%><eidea:label key="base.field.label.seqnogrid"/></th>
-                    <th><%--isprinted--%><eidea:label key="base.field.label.isprinted"/></th>
-                    <th><%--isallowcopy--%><eidea:label key="base.field.label.isallowcopy"/></th>
-                    <th><%--isreport--%><eidea:label key="base.field.label.isreport"/></th>
-                    <th><%--tabId--%><eidea:label key="base.field.label.tabId"/></th>
-                    <th><%--elementId--%><eidea:label key="base.field.label.elementId"/></th>
                     <th><%--编辑--%><eidea:label key="common.button.edit"/></th>
                 </tr>
                 </thead>
@@ -61,73 +41,13 @@
                         {{model.fieldName}}
                     </td>
                     <td>
-                        {{model.columnId}}
-                    </td>
-                    <td>
-                        {{model.required}}
-                    </td>
-                    <td>
                         {{model.isactive}}
-                    </td>
-                    <td>
-                        {{model.created|date:"yyyy-MM-dd HH:mm:ss"}}
-                    </td>
-                    <td>
-                        {{model.createdby}}
-                    </td>
-                    <td>
-                        {{model.updated|date:"yyyy-MM-dd HH:mm:ss"}}
-                    </td>
-                    <td>
-                        {{model.updatedby}}
-                    </td>
-                    <td>
-                        {{model.description}}
                     </td>
                     <td>
                         {{model.inputType}}
                     </td>
                     <td>
                         {{model.isDisplayed}}
-                    </td>
-                    <td>
-                        {{model.displayedlogic}}
-                    </td>
-                    <td>
-                        {{model.displaylength}}
-                    </td>
-                    <td>
-                        {{model.isreadonly}}
-                    </td>
-                    <td>
-                        {{model.issameline}}
-                    </td>
-                    <td>
-                        {{model.isencrypted}}
-                    </td>
-                    <td>
-                        {{model.defaultvalue}}
-                    </td>
-                    <td>
-                        {{model.isdisplaygrid}}
-                    </td>
-                    <td>
-                        {{model.seqnogrid}}
-                    </td>
-                    <td>
-                        {{model.isprinted}}
-                    </td>
-                    <td>
-                        {{model.isallowcopy}}
-                    </td>
-                    <td>
-                        {{model.isreport}}
-                    </td>
-                    <td>
-                        {{model.tabId}}
-                    </td>
-                    <td>
-                        {{model.elementId}}
                     </td>
                     <td>
                         <button type="button" class="btn btn-primary btn-xs" ng-click="edit(model.id)"><eidea:label key="common.button.edit"/></button>

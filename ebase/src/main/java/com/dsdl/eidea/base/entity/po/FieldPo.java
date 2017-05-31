@@ -11,6 +11,7 @@ import java.util.Date;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+import com.dsdl.eidea.base.init.StatusAttributeConverter;
 import com.dsdl.eidea.core.def.FieldShowType;
 import com.dsdl.eidea.core.entity.po.TableColumnPo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -99,7 +100,8 @@ public class FieldPo implements java.io.Serializable {
      * 输入类型
      **/
     @Column(name = "[input_type]", nullable = false, length = 11)
-    private Integer inputType;
+    @Convert(converter = StatusAttributeConverter.class)
+    private String inputType;
     /**
      * 是否显示
      **/
@@ -195,6 +197,9 @@ public class FieldPo implements java.io.Serializable {
      */
     @Column(name = "isupdated")
     private String isupdated;
+
+    @Column(name = "autowired_value",length = 2000)
+    private String autowiredValue;
     @JsonIgnore
     @JoinColumn(name = "column_id", updatable = false, insertable = false)
     @ManyToOne(fetch = FetchType.LAZY)

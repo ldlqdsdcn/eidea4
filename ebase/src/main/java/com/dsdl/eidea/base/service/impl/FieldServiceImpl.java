@@ -85,7 +85,7 @@ public class FieldServiceImpl implements FieldService {
         QueryParams queryParams = new QueryParams();
         search.setFirstResult(queryParams.getFirstResult());
         search.setMaxResults(queryParams.getPageSize());
-        search.addFilterEqual("columnId", tabId);
+        search.addFilterEqual("tabId", tabId);
         PaginationResult<FieldPo> paginationResult = null;
         if (queryParams.isInit()) {
             SearchResult<FieldPo> searchResult = fieldDao.searchAndCount(search);

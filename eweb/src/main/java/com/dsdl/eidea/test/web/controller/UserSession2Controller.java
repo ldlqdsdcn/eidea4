@@ -29,7 +29,8 @@ import java.util.List;
 
 /**
 * Created by 刘大磊 on 2017-05-08 09:55:07.
-*/ @Controller
+*/
+@Controller
 @RequestMapping("/sys/userSession2")
 public class UserSession2Controller extends BaseController {
 private static final String URI = "userSession2";

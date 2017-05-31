@@ -43,7 +43,7 @@
                     templateUrl:'<c:url value="/base/tab/list.tpl.jsp"/> '
                 })
                 .state('windowEdit.edittab',{
-                    url:'/edittab?tabid&columnId',
+                    url:'/edittab?tabId',
                     templateUrl:'<c:url value="/base/tab/edit.tpl.jsp"/> '
                 })
                 .state('windowEdit.edittab.listTabTrl',{
@@ -635,13 +635,13 @@
             init: true
         };
         $scope.pageChanged();
-        $scope.edit=function (id,columnId) {
+        $scope.edit=function (id) {
             $rootScope.tabTrlBtnShow=true;
             $rootScope.fieldBtnShow=true;
-          $state.go('windowEdit.edittab',{tabid:id,columnId:columnId})
+          $state.go('windowEdit.edittab',{tabId:id})
         }
         $scope.create=function () {
-            $state.go('windowEdit.edittab',{tabid:null})
+            $state.go('windowEdit.edittab',{tabId:null})
         }
     });
     app.controller('editTabCtrl', function ($scope, $http,$rootScope,$stateParams,$state) {
@@ -675,8 +675,8 @@
         $scope.tabPo = {};
         $scope.canAdd = PrivilegeService.hasPrivilege('add');
         var url = "<c:url value="/base/tab/create"/>";
-        if ($stateParams.tabid != null) {
-            url = "<c:url value="/base/tab/get"/>" + "?id=" + $stateParams.tabid;
+        if ($stateParams.tabId != null) {
+            url = "<c:url value="/base/tab/get"/>" + "?id=" + $stateParams.tabId;
         }
         $http.get(url)
             .success(function (response) {
@@ -790,7 +790,7 @@
             return false;
         }
         $scope.pageChanged = function () {
-            $http.post("<c:url value="/base/tabTrl/tabTrlList"/>", $stateParams.tabid)
+            $http.post("<c:url value="/base/tabTrl/tabTrlList"/>", $stateParams.tabId)
                 .success(function (response) {
                     $scope.isLoading = false;
                     if (response.success) {
@@ -906,8 +906,8 @@
             bootbox.alert(response);
         });
         $scope.save = function () {
-            var tabid=/^[0-9]+$/
-            if (!tabid.test($scope.tabTrlPo.tabId)){
+            var tabId=/^[0-9]+$/
+            if (!tabId.test($scope.tabTrlPo.tabId)){
                 $scope.message="<eidea:label key="base.window.id.type.error"/> ";
                 return false;
             }
@@ -947,7 +947,7 @@
                 bootbox.alert(response);
             });
         }
-        $scope.backTabTrlList=function () {
+        $scope.back=function () {
             $state.go('windowEdit.edittab.listTabTrl');
         }
     });
@@ -976,7 +976,7 @@
             return false;
         };
         $scope.pageChanged = function () {
-            $http.post("<c:url value="/base/field/fieldList"/>", $stateParams.columnId)
+            $http.post("<c:url value="/base/field/fieldList"/>", $stateParams.tabId)
                 .success(function (response) {
                     $scope.isLoading = false;
                     if (response.success) {

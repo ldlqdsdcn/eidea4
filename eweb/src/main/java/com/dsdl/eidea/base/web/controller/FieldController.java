@@ -65,9 +65,9 @@ public class FieldController extends BaseController {
     @RequestMapping(value = "/fieldList", method = RequestMethod.POST)
     @ResponseBody
     @RequiresPermissions("view")
-    public JsonResult<PaginationResult<FieldPo>> fieldList(HttpSession session, @RequestBody Integer columnId) {
+    public JsonResult<PaginationResult<FieldPo>> fieldList(HttpSession session, @RequestBody Integer tabId) {
         Search search = SearchHelper.getSearchParam(URI, session);
-        PaginationResult<FieldPo> paginationResult = fieldService.getFieldListByColumnId(search, columnId);
+        PaginationResult<FieldPo> paginationResult = fieldService.getFieldListByTabId(search, tabId);
         return JsonResult.success(paginationResult);
     }
 

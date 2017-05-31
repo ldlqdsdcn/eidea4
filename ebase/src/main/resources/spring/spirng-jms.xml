@@ -4,7 +4,7 @@
        xsi:schemaLocation="http://activemq.apache.org/schema/core
        http://activemq.apache.org/schema/core/activemq-core.xsd
        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
-    <amq:connectionFactory id="connectionFactory" brokerURL="tcp://localhost:61616"/>
+    <amq:connectionFactory id="connectionFactory" brokerURL="tcp://192.168.0.57:61616"/>
     <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
         <property name="connectionFactory" ref="connectionFactory"/>
     </bean>

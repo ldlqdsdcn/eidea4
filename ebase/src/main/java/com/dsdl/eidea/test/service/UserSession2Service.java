@@ -4,8 +4,8 @@
 * 电话：13336390671
 * email:ldlqdsd@126.com
 */
-package com.dsdl.eidea.sys.service;
-import com.dsdl.eidea.sys.entity.po.UserSession2Po;
+package com.dsdl.eidea.test.service;
+import com.dsdl.eidea.test.entity.po.UserSession2Po;
 import com.googlecode.genericdao.search.ISearch;
 import java.util.List;
 

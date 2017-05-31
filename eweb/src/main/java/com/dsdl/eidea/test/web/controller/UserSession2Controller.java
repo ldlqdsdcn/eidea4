@@ -4,10 +4,10 @@
 * 电话：13336390671
 * email:ldlqdsd@126.com
 */
-package com.dsdl.eidea.sys.web.controller;
+package com.dsdl.eidea.test.web.controller;
 
-import com.dsdl.eidea.sys.entity.po.UserSession2Po;
-import com.dsdl.eidea.sys.service.UserSession2Service;
+import com.dsdl.eidea.test.entity.po.UserSession2Po;
+import com.dsdl.eidea.test.service.UserSession2Service;
 import com.dsdl.eidea.core.web.controller.BaseController;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import com.dsdl.eidea.core.web.def.WebConst;

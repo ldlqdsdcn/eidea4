@@ -5,7 +5,7 @@
 * 电话：13336390671
 * email:ldlqdsd@126.com
 */
-package com.dsdl.eidea.sys.entity.po;
+package com.dsdl.eidea.test.entity.po;
 
 import java.util.Date;
 import javax.persistence.*;
@@ -18,7 +18,7 @@ import lombok.Setter;
 **/
 @Getter
 @Setter
-@Entity(name = "sys_user_session2")
+@Entity(name = "test_user_session2")
 public class UserSession2Po implements java.io.Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "[id]")

@@ -7,7 +7,7 @@ import javax.persistence.AttributeConverter;
 /**
  * Created by 车东明 on 2017/5/31.
  */
-public class StatusAttributeConverter implements AttributeConverter<String,Integer> {
+public class InputTypeConverter implements AttributeConverter<String,Integer> {
     /**
      * 将实体属性x转化为y存入数据库中
      * @param desc

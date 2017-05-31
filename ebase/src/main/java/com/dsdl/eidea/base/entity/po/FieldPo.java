@@ -11,7 +11,8 @@ import java.util.Date;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
-import com.dsdl.eidea.base.init.StatusAttributeConverter;
+import com.dsdl.eidea.base.def.BoolChar;
+import com.dsdl.eidea.base.init.InputTypeConverter;
 import com.dsdl.eidea.core.def.FieldShowType;
 import com.dsdl.eidea.core.entity.po.TableColumnPo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -100,15 +101,14 @@ public class FieldPo implements java.io.Serializable {
      * 输入类型
      **/
     @Column(name = "[input_type]", nullable = false, length = 11)
-    @Convert(converter = StatusAttributeConverter.class)
+    @Convert(converter = InputTypeConverter.class)
     private String inputType;
     /**
      * 是否显示
      **/
-    @Column(name = "[is_displayed]", length = 1, nullable = false)
-    @Length(min = 1, max = 1, message = "error.isdisplayed.length")
-    @NotBlank(message = "error.displayed.not.null")
-    private String isDisplayed;
+    @Column(name = "[is_displayed]", nullable = false)
+    @Enumerated(EnumType.ORDINAL)
+    private BoolChar isDisplayed;
     /**
      * 显示逻辑
      **/

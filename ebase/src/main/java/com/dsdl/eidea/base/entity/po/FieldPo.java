@@ -12,6 +12,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 import com.dsdl.eidea.core.def.FieldShowType;
+import com.dsdl.eidea.core.entity.po.TableColumnPo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
@@ -53,7 +55,7 @@ public class FieldPo implements java.io.Serializable {
     /**
      * 列id
      **/
-    @Column(name = "[column_id]", length = 11)
+    @Column(name = "column_id", length = 11)
     private Integer columnId;
     /**
      * 是否必填
@@ -193,4 +195,8 @@ public class FieldPo implements java.io.Serializable {
      */
     @Column(name = "isupdated")
     private String isupdated;
+    @JsonIgnore
+    @JoinColumn(name = "column_id", updatable = false, insertable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    private TableColumnPo tableColumnPo;
 }

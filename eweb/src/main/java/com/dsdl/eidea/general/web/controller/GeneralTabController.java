@@ -88,8 +88,30 @@ public class GeneralTabController {
         Map<String, Object> result=fieldService.getDataForm(tabId,recordId);
         return JsonResult.success(result);
     }
+
+    /**
+     *
+     * @param tabId
+     * @param model
+     * @return
+     */
     @RequestMapping("/saveForUpdated/{tabId}")
-    public JsonResult<Map<String,String>> saveForUpdated(@PathVariable("tabId") Integer tabId,@RequestBody Map<String,String> model)
+    @ResponseBody
+    public JsonResult<Map<String,Object>> saveForUpdated(@PathVariable("tabId") Integer tabId,@RequestBody Map<String,Object> model)
+    {
+        
+        return null;
+    }
+
+    /**
+     *
+     * @param tabId
+     * @param model
+     * @return
+     */
+    @RequestMapping("/saveForCreated/{tabId}")
+    @ResponseBody
+    public JsonResult<Map<String,Object>> saveForCreated(@PathVariable("tabId") Integer tabId,@RequestBody Map<String,Object> model)
     {
         return null;
     }

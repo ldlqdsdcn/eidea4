@@ -59,9 +59,16 @@ public interface FieldService {
 	Map<String, Object> getDataForm(Integer tabId, Integer recordId) ;
 
 	/**
-	 * 更新操作信息
-	 * @param result
+	 * 修改记录
+	 * @param param
 	 * @return
 	 */
-	Map<String,String> saveForUpdated(Map<String,String> result);
+	Map<String,Object> saveForUpdated(Integer tabId,Map<String,Object> param);
+
+	/**
+	 * 添加记录
+	 * @param param
+	 * @return
+	 */
+	Map<String,Object> saveForCreated(Integer tabId,Map<String,Object> param);
 }

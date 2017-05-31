@@ -28,14 +28,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.sql.*;
+import java.util.*;
 
 /**
  * @author 刘大磊 2017-05-04 13:22:23
@@ -48,6 +42,9 @@ public class FieldServiceImpl implements FieldService {
     private static String WHERE_KEY = " where ";
     private static String LIMIT_KEY = " limit %d,%d ";
     private static String COLUMN_SPLIT_KEY = ",";
+    private static String UPDATE_KEY=" update ";
+    private static String SET_KEY=" set ";
+    private static String SQL_EQUAL_KEY="=";
     @DataAccess(entity = FieldPo.class)
     private CommonDao<FieldPo, Integer> fieldDao;
     @DataAccess(entity = FieldTrlPo.class)
@@ -381,7 +378,6 @@ public class FieldServiceImpl implements FieldService {
         TabPo tabPo = tabDao.find(tabId);
         TablePo tablePo = tableDao.find(tabPo.getTableId());
         TableColumnPo tableColumnPo = tableColumnDao.find(tabPo.getTableColumnId());
-
         Search search = new Search();
         search.addSortAsc("seqNo");
         search.addFilterEqual("tabId", tabId);
@@ -434,20 +430,79 @@ public class FieldServiceImpl implements FieldService {
                 default:
                     value = valueBo.getValue();
                     break;
-
             }
-
             resultMap.put("id" + valueBo.getFieldPo().getId(), value);
-
         }
         return resultMap;
     }
 
     @Override
-    public Map<String, String> saveForUpdated(Map<String, String> result) {
+    public Map<String, Object> saveForUpdated(Integer tabId,Map<String, Object> param) {
+        TabPo tabPo=tabDao.find(tabId);
+        TablePo tablePo=tableDao.find(tabPo.getId());
+        String tableName=tablePo.getTableName();
+        Map<String,FieldPo> tableColumnPoMap=new HashMap<>();
+        Set<String> keys=param.keySet();
+        List<Object> values=new ArrayList<>();
+        StringBuilder updateSqlBuilder=new StringBuilder();
+        updateSqlBuilder.append(UPDATE_KEY);
+        updateSqlBuilder.append(tableName);
+        updateSqlBuilder.append(SET_KEY);
+        boolean isBgn=true;
+        Object pkValue=null;
+        TableColumnPo pkTablePo=tableColumnDao.find(tabPo.getTableColumnId());
+        for(String key:keys)
+        {
+            String idKey=key.replace("id","");
+            Integer fieldId=Integer.parseInt(idKey);
+            if(fieldId.equals(tabPo.getTableColumnId()))
+            {
+                pkValue=param.get(key);
+                continue;
+            }
+            if(isBgn)
+            {
+                updateSqlBuilder.append(COLUMN_SPLIT_KEY);
+            }
+            else
+            {
+                isBgn=false;
+            }
+            FieldPo fieldPo=fieldDao.find(fieldId);
+            TableColumnPo tableColumnPo=tableColumnDao.find(fieldPo.getColumnId());
+            updateSqlBuilder.append("'").append(tableColumnPo.getColumnName()).append("'").append(SQL_EQUAL_KEY);
+            updateSqlBuilder.append("?");
+            tableColumnPoMap.put(key,fieldPo);
+            values.add(param.get(key));
+        }
+        updateSqlBuilder.append(WHERE_KEY);
+        updateSqlBuilder.append(pkTablePo.getColumnName())
+                .append(SQL_EQUAL_KEY).append("?");
+        String updateSql=updateSqlBuilder.toString();
+        Connection conn= null;
+        try {
+            conn = dataSource.getConnection();
+        } catch (SQLException e) {
+           throw new ServiceException("获取conn出错",e);
+        }
+        log.debug(updateSql);
+        PreparedStatement preparedStatement=null;
+        try {
+            preparedStatement=conn.prepareStatement(updateSql);
+        } catch (SQLException e) {
+            throw new ServiceException("获取PreparedStatement出错",e);
+        }
+
+        for(int i=0;i<values.size();i++)
+        {
+
+        }
         return null;
     }
-
+    public Map<String,Object> saveForCreated(Integer tabId,Map<String,Object> param)
+    {
+        return null;
+    }
     class FieldColumn {
         private Integer fieldId;
         private FieldPo fieldPo;

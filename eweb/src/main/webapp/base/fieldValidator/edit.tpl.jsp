@@ -6,7 +6,7 @@ Date: 2017-05-02 15:49:09
 <%@ include file="/inc/taglib.jsp" %>
 <div class="container-fluid" ng-controller="editFieldValidatorCtrl">
     <form role="form" name="editForm" novalidate ng-submit="save()" class="form-horizontal form-label-left input_mask">
-        <table class="table v-table-borderless">
+        <table class="table table-borderless">
             <tr>
                 <td class="control-label"><%--fieldId--%><eidea:label key="base.fieldValidator.label.fieldId"/></td>
                 <td class="form-group"><input type="text" class="form-control" id="fieldId"
@@ -73,7 +73,7 @@ Date: 2017-05-02 15:49:09
                 <button type="submit" class="btn btn-default btn-sm" ng-show="canSave"><%--保存--%><eidea:label
                         key="common.button.save"/></button>
                 <button type="button" class="btn btn-default btn-sm" ng-show="canSave"
-                        ng-click="backFieldValidatorList()"><eidea:label key="common.button.back"/></button>
+                        ng-click="back()"><eidea:label key="common.button.back"/></button>
             </p>
         </div>
         <div class="form-group">

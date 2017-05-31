@@ -27,7 +27,7 @@ Date: 2017-05-02 15:41:30
         <form role="form" name="editForm" novalidate ng-submit="save()"
               class="form-horizontal form-label-left input_mask">
             <jsp:include page="/common/common_edit_button.jsp"/>
-            <table class="table v-table-borderless">
+            <table class="table table-borderless">
                 <tr>
                     <td class="control-label"><eidea:label key="base.window.label.name"/></td>
                     <td class="form-group">

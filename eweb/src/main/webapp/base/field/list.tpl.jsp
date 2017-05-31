@@ -39,6 +39,8 @@
                     <th><%--isprinted--%><eidea:label key="base.field.label.isprinted"/></th>
                     <th><%--isallowcopy--%><eidea:label key="base.field.label.isallowcopy"/></th>
                     <th><%--isreport--%><eidea:label key="base.field.label.isreport"/></th>
+                    <th><%--tabId--%><eidea:label key="base.field.label.tabId"/></th>
+                    <th><%--elementId--%><eidea:label key="base.field.label.elementId"/></th>
                     <th><%--编辑--%><eidea:label key="common.button.edit"/></th>
                 </tr>
                 </thead>
@@ -120,6 +122,12 @@
                     </td>
                     <td>
                         {{model.isreport}}
+                    </td>
+                    <td>
+                        {{model.tabId}}
+                    </td>
+                    <td>
+                        {{model.elementId}}
                     </td>
                     <td>
                         <button type="button" class="btn btn-primary btn-xs" ng-click="editField(model.id)"><eidea:label key="common.button.edit"/></button>

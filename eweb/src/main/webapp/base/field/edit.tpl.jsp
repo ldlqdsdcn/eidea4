@@ -133,6 +133,12 @@ Date: 2017-05-04 13:22:23
                 <td class="form-group"><input type="checkbox" id="isreport" ng-true-value="'Y'" ng-false-value="'N'"
                                               ng-model="fieldPo.isreport"></td>
             </tr>
+            <tr>
+                <td class="control-label"><%--tabId--%><eidea:label key="base.field.label.tabId"/></td>
+                <td class="form-group"><input type="text" id="tabId" ng-model="fieldPo.tabId" placeholder="<eidea:message key="common.please.input"><eidea:param value="base.field.label.tabId"/></eidea:message> " ng-minlength="1" ng-maxlength="11"> </td>
+                <td class="control-label"><%--elementId--%><eidea:label key="base.field.label.elementId"/></td>
+                <td class="form-group"><input type="text" id="elementId" ng-model="fieldPo.elementId" placeholder="<eidea:message key="common.please.input"><eidea:param value="base.field.label.elementId"/></eidea:message>" ng-minlength="1" ng-maxlength="11"> </td>
+            </tr>
         </table>
         <div class="form-group">
             <p class="text-right">

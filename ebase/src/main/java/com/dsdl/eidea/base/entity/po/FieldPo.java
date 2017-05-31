@@ -170,4 +170,15 @@ public class FieldPo implements java.io.Serializable {
     @Length(min = 1,max = 1,message = "error.isreport.length")
     @NotBlank(message = "error.isreport.not.null")
     private String isreport;
+    /**
+     * tabId
+     */
+    @Column(name="[tab_id]",length = 11,nullable = false)
+    @NotNull()
+    private Integer tabId;
+    /**
+     * elementId
+     */
+    @Column(name = "[element_id]",length = 11)
+    private Integer elementId;
 }

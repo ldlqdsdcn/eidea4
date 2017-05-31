@@ -166,15 +166,16 @@
         $scope.save = function () {
             $scope.message="";
             if ($scope.editForm.$valid) {
-                var postUrl = '<c:url value="/base/org/saveForUpdated"/>';
-                if ($scope.orgBo.id == null) {
-                    postUrl = '<c:url value="/base/org/saveForCreated"/>';
+                var postUrl = '<c:url value="/general/tab/saveForUpdated/${tab.id}"/>';
+                alert(JSON.stringify($scope.model));
+                if ($scope.model.id${tab.pkFieldId} == null) {
+                    postUrl = '<c:url value="/general/tab/saveForCreated/${tab.id}"/>';
                 }
-                $http.post(postUrl, $scope.orgBo).success(function (data) {
+                $http.post(postUrl, $scope.model).success(function (data) {
                     if (data.success) {
                         $scope.errorCode=-1;
                         $scope.message = "<eidea:label key="base.save.success"/>";
-                        $scope.orgBo = data.data;
+                        $scope.model = data.data;
                     }
                     else {
                         $scope.message=data.message;
@@ -195,7 +196,7 @@
         $scope.create = function () {
             $scope.message = "";
             $scope.orgBo = {};
-            var url = "<c:url value="/base/org/create"/>";
+            var url = "<c:url value="/general/tab/create/${tab.id}"/>";
             $http.get(url)
                     .success(function (response) {
                         if (response.success) {

@@ -13,6 +13,7 @@ import com.dsdl.eidea.base.entity.po.*;
 import com.dsdl.eidea.base.exception.ServiceException;
 import com.dsdl.eidea.base.service.FieldService;
 import com.dsdl.eidea.core.dao.CommonDao;
+import com.dsdl.eidea.core.def.EideaConst;
 import com.dsdl.eidea.core.def.FieldInputType;
 import com.dsdl.eidea.core.def.JavaDataType;
 import com.dsdl.eidea.core.dto.PaginationResult;
@@ -29,6 +30,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
+import java.awt.geom.Arc2D;
+import java.awt.peer.FileDialogPeer;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -271,24 +274,26 @@ public class FieldServiceImpl implements FieldService {
         List<Map<String, Object>> resultMapList = new ArrayList<>();
         for (List<FieldValueBo> fieldValueBoList : resultList) {
             Map<String, Object> recordMap = new HashMap<>();
+
             for (FieldValueBo valueBo : fieldValueBoList) {
                 Object value = null;
+                recordMap.put("id" + valueBo.getFieldPo().getId(), valueBo.getValue());
                 switch (valueBo.getFieldPo().getShowType()) {
                     case LINKED:
                         try {
                             value = getLinkedValue(valueBo);
+                            recordMap.put("idLinked" + valueBo.getFieldPo().getId(), value);
                         } catch (SQLException e) {
                             log.error("获取关联的数据出错", e);
                             throw new ServiceException("sql语句错误", e);
                         }
                         break;
                     default:
-                        value = valueBo.getValue();
-                        break;
+                         break;
 
                 }
 
-                recordMap.put("id" + valueBo.getFieldPo().getId(), value);
+
 
             }
             resultMapList.add(recordMap);
@@ -421,21 +426,20 @@ public class FieldServiceImpl implements FieldService {
         }
         Map<String, Object> resultMap = new HashMap<>();
         for (FieldValueBo valueBo : resultList) {
-            Object value = null;
+            resultMap.put("id" + valueBo.getFieldPo().getId(), valueBo.getValue());
             switch (valueBo.getFieldPo().getShowType()) {
                 case LINKED:
                     try {
-                        value = getLinkedValue(valueBo);
+                        resultMap.put("idLinked" + valueBo.getFieldPo().getId(), getLinkedValue(valueBo));
                     } catch (SQLException e) {
                         log.error("获取关联的数据出错", e);
                         throw new ServiceException("sql语句错误", e);
                     }
                     break;
                 default:
-                    value = valueBo.getValue();
                     break;
             }
-            resultMap.put("id" + valueBo.getFieldPo().getId(), value);
+
         }
         return resultMap;
     }
@@ -443,9 +447,36 @@ public class FieldServiceImpl implements FieldService {
     @Override
     public Map<String, Object> saveForUpdated(Integer tabId, Map<String, Object> param, UserBo userBo) {
         TabPo tabPo = tabDao.find(tabId);
-        TablePo tablePo = tableDao.find(tabPo.getId());
+        TablePo tablePo = tableDao.find(tabPo.getTableId());
         String tableName = tablePo.getTableName();
         Map<String, FieldPo> tableColumnPoMap = new HashMap<>();
+        Search search=new Search();
+        search.addFilterEqual("tabId",tabId);
+        List<FieldPo> tableColumnPoList=fieldDao.search(search);
+        for(FieldPo fieldPo:tableColumnPoList)
+        {
+            if(fieldPo.getAutowiredValue()!=null)
+            {
+                switch (fieldPo.getAutowiredValue())
+                {
+                    case EideaConst.EXPRESS_CLIENT_ID:
+                        param.put("id"+fieldPo.getId(),userBo.getClientId());
+                        break;
+                    case EideaConst.EXPRESS_ORG_ID:
+                        param.put("id"+fieldPo.getId(),userBo.getOrgId());
+                        break;
+                    case EideaConst.EXPRESS_USER_ID:
+                        param.put("id"+fieldPo.getId(),userBo.getId());
+                        break;
+                    case EideaConst.EXPRESS_CURRENT_DATE:
+                    case EideaConst.EXPRESS_CURRENT_TIME:
+                        param.put("id"+fieldPo.getId(),new Date());
+                        break;
+
+                }
+            }
+        }
+
         Set<String> keys = param.keySet();
         List<FieldColumn> values = new ArrayList<>();
         StringBuilder updateSqlBuilder = new StringBuilder();
@@ -455,21 +486,35 @@ public class FieldServiceImpl implements FieldService {
         boolean isBgn = true;
         Serializable pkValue = null;
         TableColumnPo pkTablePo = tableColumnDao.find(tabPo.getTableColumnId());
+
+
+
+
+
         for (String key : keys) {
+            if(key.contains("Linked"))
+            {
+                continue;
+            }
             String idKey = key.replace("id", "");
             Integer fieldId = Integer.parseInt(idKey);
-            if (fieldId.equals(tabPo.getTableColumnId())) {
+            FieldPo fieldPo = fieldDao.find(fieldId);
+            if (fieldPo.getColumnId().equals(tabPo.getTableColumnId())) {
                 pkValue = (Serializable) param.get(key);
                 continue;
             }
             if (isBgn) {
-                updateSqlBuilder.append(COLUMN_SPLIT_KEY);
-            } else {
                 isBgn = false;
+            } else {
+
+                updateSqlBuilder.append(COLUMN_SPLIT_KEY);
             }
-            FieldPo fieldPo = fieldDao.find(fieldId);
+
             TableColumnPo tableColumnPo = fieldPo.getTableColumnPo();
-            updateSqlBuilder.append("'").append(tableColumnPo.getColumnName()).append("'").append(SQL_EQUAL_KEY);
+            //updateSqlBuilder.append("'");
+            updateSqlBuilder  .append(tableColumnPo.getColumnName())
+                    //.append("'")
+                    .append(SQL_EQUAL_KEY);
             updateSqlBuilder.append("?");
             tableColumnPoMap.put(key, fieldPo);
             FieldColumn fieldColumn = new FieldColumn();
@@ -502,7 +547,7 @@ public class FieldServiceImpl implements FieldService {
             setPreparedStatement(i+1,fieldColumn.value,preparedStatement,dataType);
         }
         JavaDataType dataType = JavaDataType.getJavaDataTypeByKey(pkTablePo.getDataType());
-        setPreparedStatement(values.size(),pkValue,preparedStatement,dataType);
+        setPreparedStatement(values.size()+1,pkValue,preparedStatement,dataType);
         try {
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -516,26 +561,50 @@ public class FieldServiceImpl implements FieldService {
         try {
             switch (dataType) {
                 case INT:
+                    if(value instanceof String)
+                    {
+                        value=Integer.parseInt((String)value);
+                    }
                     preparedStatement.setInt(index, (int) value);
                     break;
                 case DECIMAL:
+                    if(value instanceof String)
+                    {
+                        value=new BigDecimal((String)value);
+                    }
                     preparedStatement.setBigDecimal(index, (BigDecimal) value);
                     break;
                 case LONG:
+                    if(value instanceof String)
+                    {
+                        value=Long.parseLong((String)value);
+                    }
                     preparedStatement.setLong(index, (long) value);
                     break;
                 case STRING:
                     preparedStatement.setString(index, (String) value);
                     break;
                 case DATE:
+                    if(value instanceof Long)
+                    {
+                        value=new Date((Long) value);
+                    }
                     Date date = (Date) value;
                     Timestamp timestamp = new Timestamp(date.getTime());
                     preparedStatement.setTimestamp(index, timestamp);
                     break;
                 case DOUBLE:
+                    if(value instanceof String)
+                    {
+                        value=Double.parseDouble((String)value);
+                    }
                     preparedStatement.setDouble(index, (double) value);
                     break;
                 case FLOAT:
+                    if(value instanceof String)
+                    {
+                        value= Float.parseFloat((String)value);
+                    }
                     preparedStatement.setDouble(index, (float) value);
                     break;
                 case BYTES:

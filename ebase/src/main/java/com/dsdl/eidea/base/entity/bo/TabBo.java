@@ -29,6 +29,10 @@ public class TabBo {
      */
     private Integer seqNo;
     /**
+     * 主键id
+     */
+    private Integer pkFieldId;
+    /**
      * 字段列表
      */
     private List<FieldBo> fieldList;

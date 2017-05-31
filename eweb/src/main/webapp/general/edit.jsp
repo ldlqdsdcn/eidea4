@@ -1,4 +1,6 @@
-<%@ page import="com.dsdl.eidea.core.def.FieldInputType" %><%--
+<%@ page import="com.dsdl.eidea.core.def.FieldInputType" %>
+<%@ page import="com.dsdl.eidea.core.def.FieldShowType" %>
+<%--
   Created by IntelliJ IDEA.
   User: 刘大磊
   Date: 2017/5/3
@@ -52,12 +54,19 @@
                                     <input type="checkbox" ng-true-value="'${fieldStructure.trueValue}'" ng-false-value="'${fieldStructure.falseValue}'" ng-model="model.id${fieldStructure.fieldPo.id}" name="id${fieldStructure.fieldPo.id}">
                                 </c:when>
                                 <c:otherwise>
-                                    <input type="text" class="form-control" id="id${fieldStructure.fieldPo.id}" name="id${fieldStructure.fieldPo.id}" ng-model="model.id${fieldStructure.fieldPo.id}" placeholder="<eidea:message key="common.please.input"><eidea:param value="${fieldStructure.fieldTrlPo.name}" /></eidea:message>"
-                                        ${fieldStructure.fieldPo.isreadonly=='Y'?'readonly':''} >
+                                    <c:choose>
+                                        <c:when test="${fieldStructure.fieldPo.showType eq FieldShowType.LINKED}">
+                                            <input type="text" class="form-control" id="idLinked${fieldStructure.fieldPo.id}" name="idLinked${fieldStructure.fieldPo.id}" ng-model="model.idLinked${fieldStructure.fieldPo.id}" placeholder="<eidea:message key="common.please.input"><eidea:param value="${fieldStructure.fieldTrlPo.name}" /></eidea:message>"
+                                                ${fieldStructure.fieldPo.isreadonly=='Y'?'readonly':''} >
+                                        </c:when>
+                                        <c:otherwise>
+                                            <input type="text" class="form-control" id="id${fieldStructure.fieldPo.id}" name="id${fieldStructure.fieldPo.id}" ng-model="model.id${fieldStructure.fieldPo.id}" placeholder="<eidea:message key="common.please.input"><eidea:param value="${fieldStructure.fieldTrlPo.name}" /></eidea:message>"
+                                                ${fieldStructure.fieldPo.isreadonly=='Y'?'readonly':''} >
+                                        </c:otherwise>
+                                    </c:choose>
+
                                 </c:otherwise>
                             </c:choose>
-
-
                         </div>
 
                     </c:if>

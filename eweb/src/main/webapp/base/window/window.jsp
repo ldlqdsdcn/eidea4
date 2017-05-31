@@ -451,10 +451,10 @@
             init: true
         };
         $scope.pageChanged();
-        $scope.editWindowTrl=function(id){
+        $scope.edit=function(id){
             $state.go('windowEdit.windowTrlEdit',{windowTrlId:id})
         }
-        $scope.createWindowTrl=function(){
+        $scope.create=function(){
             $state.go('windowEdit.windowTrlEdit',{windowTrlId:null})
         }
     });
@@ -547,7 +547,7 @@
                 bootbox.alert(response);
             });
         }
-        $scope.backWindowTrlList=function () {
+        $scope.back=function () {
             $state.go('windowEdit.windowTrlList');
         }
     });
@@ -635,12 +635,12 @@
             init: true
         };
         $scope.pageChanged();
-        $scope.editItem=function (id,columnId) {
+        $scope.edit=function (id,columnId) {
             $rootScope.tabTrlBtnShow=true;
             $rootScope.fieldBtnShow=true;
           $state.go('windowEdit.edittab',{tabid:id,columnId:columnId})
         }
-        $scope.createItem=function () {
+        $scope.create=function () {
             $state.go('windowEdit.edittab',{tabid:null})
         }
     });
@@ -761,7 +761,7 @@
                 bootbox.alert(data.message);
             })
         }
-        $scope.backItemList=function () {
+        $scope.back=function () {
             $state.go('windowEdit.tablist',{id:$stateParams.id});
         }
     });
@@ -851,10 +851,10 @@
             init: true
         };
         $scope.pageChanged();
-        $scope.editTabTrl=function (id) {
+        $scope.edit=function (id) {
             $state.go('windowEdit.edittab.editTabTrl',{tabTrlId:id});
         }
-        $scope.createTabTrl=function () {
+        $scope.create=function () {
             $state.go('windowEdit.edittab.editTabTrl',{tabTrlId:null});
         }
     });
@@ -1035,12 +1035,12 @@
             init: true
         };
         $scope.pageChanged();
-        $scope.editField=function (id) {
+        $scope.edit=function (id) {
             $rootScope.fieldTrlBtnShow=true;
             $rootScope.fieldValidatorBtnShow=true;
             $state.go('windowEdit.edittab.editField',{field:id})
         }
-        $scope.createField=function () {
+        $scope.create=function () {
             $state.go('windowEdit.edittab.editField',{field:null})
         }
     });
@@ -1145,7 +1145,7 @@
                 bootbox.alert(response);
             });
         }
-        $scope.backFieldList=function () {
+        $scope.back=function () {
             $state.go('windowEdit.edittab.listField');
         }
     });
@@ -1235,10 +1235,10 @@
             init: true
         };
         $scope.pageChanged();
-        $scope.editFieldTrl=function (id) {
+        $scope.edit=function (id) {
             $state.go('windowEdit.edittab.editField.editFieldTrl',{fieldTrlId:id})
         }
-        $scope.createFieldTrl=function () {
+        $scope.create=function () {
             $state.go('windowEdit.edittab.editField.editFieldTrl',{fieldTrlId:null})
         }
     });
@@ -1331,7 +1331,7 @@
                 bootbox.alert(response);
             });
         }
-    $scope.backFieldTrlList=function () {
+    $scope.back=function () {
         $state.go('windowEdit.edittab.editField.listFieldTrl');
     }
     });
@@ -1421,10 +1421,10 @@
             init: true
         };
         $scope.pageChanged();
-        $scope.editFieldValidator=function (id) {
+        $scope.edit=function (id) {
             $state.go('windowEdit.edittab.editField.editFieldValidator',{fieldValidatorId:id});
         }
-        $scope.createFieldValidator=function () {
+        $scope.create=function () {
             $state.go('windowEdit.edittab.editField.editFieldValidator',{fieldValidatorId:null});
         }
     });
@@ -1512,7 +1512,7 @@
                 bootbox.alert(response);
             });
         }
-    $scope.backFieldValidatorList=function () {
+    $scope.back=function () {
         $state.go('windowEdit.edittab.editField.listFieldValidator')
     }
     });

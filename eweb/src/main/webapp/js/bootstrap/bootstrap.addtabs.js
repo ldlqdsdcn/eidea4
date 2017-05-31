@@ -17,11 +17,11 @@
         target: '.nav-tabs',
         contextmenu: true, //是否使用右键菜单
         local: {
-            'refreshLabel': '刷新此标签',
-            'closeThisLabel': '关闭此标签',
-            'closeOtherLabel': '关闭其他标签',
-            'closeLeftLabel': '关闭左侧标签',
-            'closeRightLabel': '关闭右侧标签'
+            'refreshLabel': $("#refreshTabs").val(),
+            'closeThisLabel': $("#closeTabs").val(),
+            'closeOtherLabel': $("#otherTabs").val(),
+            'closeLeftLabel': $("#leftTabs").val(),
+            'closeRightLabel': $("#rightTabs").val()
         },
         callback: function () { //关闭后回调函数
         }
@@ -58,15 +58,17 @@
             $('<i>', {
                 'class': 'glyphicon ' + icon
             })
-            ).append(text);
+        ).append(text);
     }
 
     _pop = function (id, e, mouse) {
         $('body').find('#popMenu').remove();
-        var refresh = e.attr('id') ? _createMenu('refresh', 'glyphicon-refresh', settings.local.refreshLabel) : '';
-        var remove = e.attr('id') ? _createMenu('remove', 'glyphicon-remove', settings.local.closeThisLabel) : '';
-        var left = e.prev('li').attr('id') ? _createMenu('remove-left', 'glyphicon-chevron-left', settings.local.closeLeftLabel) : '';
-        var right = e.next('li').attr('id') ? _createMenu('remove-right', 'glyphicon-chevron-right', settings.local.closeRightLabel) : '';
+        if(id != "home"){
+            var refresh = e.attr('id') ? _createMenu('refresh', 'glyphicon-refresh', settings.local.refreshLabel) : '';
+            var remove = e.attr('id') ? _createMenu('remove', 'glyphicon-remove', settings.local.closeThisLabel) : '';
+            var left = e.prev('li').attr('id') ? _createMenu('remove-left', 'glyphicon-chevron-left', settings.local.closeLeftLabel) : '';
+            var right = e.next('li').attr('id') ? _createMenu('remove-right', 'glyphicon-chevron-right', settings.local.closeRightLabel) : '';
+        }
         var popHtml = $('<ul>', {
             'aria-controls': id,
             'class': 'rightMenu list-group',
@@ -247,7 +249,7 @@
                     'data-toggle': 'tab',
                     'ondragstart':'return false'
                 }).html(opts.title)
-                );
+            );
 
             //是否允许关闭
             if (settings.close) {
@@ -343,16 +345,16 @@
                 $('<i>', {
                     'class': "glyphicon glyphicon-align-justify"
                 })
-                ).append(
+            ).append(
                 $('<b>', {
                     'class': 'caret'
                 })
-                )
-            ).append(
+            )
+        ).append(
             $('<ul>', {
                 'class': "dropdown-menu"
             })
-            )
+        )
 
 
         $('body').find('.nav-tabs').each(function () {

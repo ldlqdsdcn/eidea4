@@ -22,7 +22,7 @@ import java.util.Map;
  */
 public interface FieldService {
 	PaginationResult<FieldPo> getFieldListByPaging(Search search,QueryParams queryParams);
-	PaginationResult<FieldPo> getFieldListByColumnId(Search search,Integer columnId);
+	PaginationResult<FieldPo> getFieldListByTabId(Search search,Integer tabId);
 	boolean findExistFieldByName(String name);
 	FieldPo getField(Integer id);
 	void saveField(FieldPo field);

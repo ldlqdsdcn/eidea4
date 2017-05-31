@@ -4,13 +4,13 @@
 * 电话：13336390671
 * email:ldlqdsd@126.com
 */
-package com.dsdl.eidea.sys.service.impl;
+package com.dsdl.eidea.test.service.impl;
 
 import com.dsdl.eidea.core.spring.annotation.DataAccess;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.dsdl.eidea.sys.entity.po.UserSession2Po;
-import com.dsdl.eidea.sys.service.UserSession2Service;
+import com.dsdl.eidea.test.entity.po.UserSession2Po;
+import com.dsdl.eidea.test.service.UserSession2Service;
 import com.googlecode.genericdao.search.ISearch;
 import com.dsdl.eidea.core.dao.CommonDao;
 import java.util.List;

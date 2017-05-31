@@ -35,6 +35,8 @@ public class TabServiceImpl  implements	TabService {
 	private CommonDao<TabPo,Integer> tabDao;
 	@DataAccess(entity = TabTrlPo.class)
 	private CommonDao<TabTrlPo,Integer> tabTrlDao;
+	@DataAccess(entity = FieldPo.class)
+	private CommonDao<FieldPo,Integer> fieldDao;
 
 
 	public PaginationResult<TabPo> getTabListByPaging(Search search,QueryParams queryParams)
@@ -110,6 +112,16 @@ public class TabServiceImpl  implements	TabService {
 	public PaginationResult<Map<String, String>> getTabList(Search search, QueryParams queryParams, Integer tabId, String lang) {
 
 		return null;
+	}
+
+	@Override
+	public Integer getTabPkFieldId(Integer tabId) {
+		TabPo tabPo=tabDao.find(tabId);
+		Search search=new Search();
+		search.addFilterEqual("tabId",tabId);
+		search.addFilterEqual("columnId",tabPo.getTableColumnId());
+		FieldPo fieldPo=fieldDao.searchUnique(search);
+		return fieldPo.getId();
 	}
 
 	public TabPo getTab(Integer id)

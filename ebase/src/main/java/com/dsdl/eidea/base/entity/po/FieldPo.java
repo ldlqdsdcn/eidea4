@@ -11,6 +11,7 @@ import java.util.Date;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+import com.dsdl.eidea.core.def.FieldShowType;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
@@ -171,14 +172,25 @@ public class FieldPo implements java.io.Serializable {
     @NotBlank(message = "error.isreport.not.null")
     private String isreport;
     /**
-     * tabId
+     * 对应的tab信息
      */
-    @Column(name="[tab_id]",length = 11,nullable = false)
-    @NotNull()
+    @Column(name = "tab_id", nullable = false)
     private Integer tabId;
+    @Column(name="show_type",nullable = false)
+    private FieldShowType showType;
     /**
-     * elementId
+     * 对应的element_id
      */
-    @Column(name = "[element_id]",length = 11)
+    @Column(name = "element_id")
     private Integer elementId;
+    /**
+     * 是否可添加
+     */
+    @Column(name = "isadded")
+    private String isadded;
+    /**
+     * 是否可更新
+     */
+    @Column(name = "isupdated")
+    private String isupdated;
 }

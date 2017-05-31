@@ -38,4 +38,11 @@ public interface TabService {
 	 * @return
 	 */
 	PaginationResult<Map<String,String>> getTabList(Search search,QueryParams queryParams,Integer tabId,String lang);
+
+	/**
+	 * 根据tabid 获取tab页面主键 field id
+	 * @param tabId
+	 * @return
+	 */
+	Integer getTabPkFieldId(Integer tabId);
 }

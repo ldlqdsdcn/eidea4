@@ -42,7 +42,7 @@ import java.util.*;
 @Slf4j
 @RestController
 public class UserLoginController {
-    private Gson gson=new Gson();
+    private Gson gson = new Gson();
     private static final Logger logger = Logger.getLogger(UserLoginController.class);
     @Autowired
     private UserService userService;
@@ -76,7 +76,7 @@ public class UserLoginController {
         UsernamePasswordToken token = new UsernamePasswordToken(loginBo.getUsername(), loginBo.getPassword());
         try {
             subject.login(token);
-            UserBo userBo=userService.getUserByUsername(loginBo.getUsername());
+            UserBo userBo = userService.getUserByUsername(loginBo.getUsername());
             userInitCommon(loginBo);
             userBo.setCode(loginBo.getCode());
             userInit(userBo, false, request);
@@ -85,12 +85,9 @@ public class UserLoginController {
             return JsonResult.fail(ErrorCodes.NO_LOGIN.getCode(), "密码错误，请重新输入");
         } catch (LockedAccountException e) {
             return JsonResult.fail(ErrorCodes.NO_LOGIN.getCode(), "该用户已经被禁用");
-        }catch (AuthenticationException e){
+        } catch (AuthenticationException e) {
             return JsonResult.fail(ErrorCodes.NO_LOGIN.getCode(), "用户名错误，请重新输入");
         }
-
-
-
 
 
     }
@@ -130,6 +127,9 @@ public class UserLoginController {
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
+        if (session.getAttribute(WebConst.SESSION_LANGUAGE) == null) {
+            session.setAttribute(WebConst.SESSION_LANGUAGE, request.getLocale().toString());
+        }
         Map<String, List<OperatorDef>> privilegesMap = userService.getUserPrivileges(loginUser.getId());
         String token = userService.generateToken(loginUser);
         UserSessionBo userSessionBo = new UserSessionBo();
@@ -154,7 +154,7 @@ public class UserLoginController {
             UserResource userResource = new UserResource(locale, dbResourceBundle);
             session.setAttribute(WebConst.SESSION_RESOURCE, userResource);
         }
-        String leftMenuStr = pageMenuService.getLeftMenuListByUserId(loginUser.getId(), contextPath,locale.toString());
+        String leftMenuStr = pageMenuService.getLeftMenuListByUserId(loginUser.getId(), contextPath, locale.toString());
         session.setAttribute(WebConst.SESSION_LEFTMENU, leftMenuStr);
 
     }

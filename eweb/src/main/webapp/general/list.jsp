@@ -7,19 +7,22 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/inc/taglib.jsp" %>
-<div  class="container-fluid" ng-controller="listCtrl">
-    <div class="page-header" >
-    </div>
+<div  class="container-fluid" ng-controller="tab${tabId}listCtrl">
+    <jsp:include page="/general/inc/list_button.jsp"/>
     <div class="row-fluid">
         <div class="span12">
             <table  class="table table-hover table-striped table-condensed">
                 <thead>
                 <tr>
+                    <th>编号</th>
                     <c:forEach items="${fieldInListPageBoList}" var="item">
+                        <c:if test="${item.fieldPo.isdisplaygrid=='Y'}">
                     <th>
                         <c:out value="${item.name}"/>
                     </th>
+                    </c:if>
                     </c:forEach>
+                    <th>操作</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -27,13 +30,18 @@
                 <tr ng-repeat="model in modelList track by $index" ng-class-even="success">
                     <td>{{(queryParams.pageNo-1)*queryParams.pageSize+$index+1}}</td>
                     <c:forEach items="${fieldInListPageBoList}" var="item">
-                        <td>
-                            {{model.id<c:out value="${item.id}"/>}}
-                        </td>
+                        <c:if test="${item.fieldPo.isdisplaygrid=='Y'}">
+                            <td>
+                                {{model.id<c:out value="${item.id}"/>}}
+                            </td>
+                        </c:if>
+
+
                     </c:forEach>
                     <td>
-                        <a class="btn btn-primary btn-xs" href="#/edit?id={{model.id<c:out value="${item.id}"/>}}">
-                            <i class="fa fa-search fa-1x" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.view"/></a>
+                        <button class="btn btn-primary btn-xs" ng-click="edit(model.${pk})">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.edit"/>
+                        </button>
                     </td>
                 </tr>
                 <tr>

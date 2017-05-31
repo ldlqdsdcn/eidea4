@@ -7,9 +7,12 @@
 package com.dsdl.eidea.base.service;
 import com.dsdl.eidea.base.entity.bo.FieldBo;
 import com.dsdl.eidea.base.entity.bo.FieldInListPageBo;
+import com.dsdl.eidea.base.entity.bo.FieldValueBo;
 import com.dsdl.eidea.base.entity.po.FieldPo;
 import com.dsdl.eidea.core.dto.PaginationResult;
 import com.dsdl.eidea.core.params.QueryParams;
+import com.dsdl.eidea.general.bo.FieldStructureBo;
+import com.dsdl.eidea.general.bo.TabFormStructureBo;
 import com.googlecode.genericdao.search.Search;
 import java.util.List;
 import java.util.Map;
@@ -37,14 +40,28 @@ public interface FieldService {
 	 * @param tabId
 	 * @return
 	 */
-	List<FieldBo> getFormPageFieldList(Integer tabId,String lang);
+	TabFormStructureBo getFormPageFieldList(Integer tabId, String lang);
 
     /**
      *
      * @param tabId
-     * @param bgn
-     * @param size
+     * @param queryParams
      * @return
      */
-    List<Map<String, String>> getDataList(Integer tabId, int bgn, int size);
+	PaginationResult<Map<String, Object>> getDataList(Integer tabId,  QueryParams queryParams);
+
+	/**
+	 * 根据tabId和record获取记录
+	 * @param tabId
+	 * @param recordId
+	 * @return
+	 */
+	Map<String, Object> getDataForm(Integer tabId, Integer recordId) ;
+
+	/**
+	 * 更新操作信息
+	 * @param result
+	 * @return
+	 */
+	Map<String,String> saveForUpdated(Map<String,String> result);
 }

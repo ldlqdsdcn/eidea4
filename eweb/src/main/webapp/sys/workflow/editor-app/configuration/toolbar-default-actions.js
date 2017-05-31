@@ -326,7 +326,7 @@ var SaveModelCtrl = [ '$rootScope', '$scope', '$http', '$route', '$location',
 
     $scope.saveAndClose = function () {
     	$scope.save(function() {
-    		window.location.href = "./";
+    		window.location.href = ACTIVITI.CONFIG.contextRoot+"/sys/model/showList";
     	});
     };
     $scope.save = function (successCallback) {
@@ -417,7 +417,7 @@ var SaveModelCtrl = [ '$rootScope', '$scope', '$http', '$route', '$location',
                 if (successCallback) {
                     successCallback();
                 }
-
+                alert("保存成功");
             })
             .error(function (data, status, headers, config) {
                 $scope.error = {};

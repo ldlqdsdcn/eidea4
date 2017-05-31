@@ -204,8 +204,7 @@
                     },
                     message: '<eidea:message key="common.upload.success"/>'
                     , callback: function() {
-                      /*window.location.href="<c:url value="/sys/workflow/showList"/>";*/
-                      $window.path("/list");
+                            $window.location.href="<c:url value="/sys/workflow/showList"/>";
                     }
                 });
 //                $location.path("/list");

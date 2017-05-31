@@ -195,7 +195,7 @@ public class CommonHeaderController {
         List<TableBo> tableBoList=tableService.findAllTableBoList(search);
         Search logSearch=new Search();
         for(TableBo tableBo:tableBoList){
-            if(tableBo.getTableName().replaceAll("_","").toLowerCase().equals(changelogBo.getUri().replaceAll("_","").toLowerCase())){
+            if(tableBo.getTableName().replaceAll("_","").equalsIgnoreCase(changelogBo.getUri().replaceAll("_",""))){
                 logSearch.addFilterEqual("tablePo.id",tableBo.getId());break;
             }
         }

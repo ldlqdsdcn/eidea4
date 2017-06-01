@@ -8,6 +8,7 @@ package com.dsdl.eidea.test.web.controller;
 
 import com.dsdl.eidea.base.entity.bo.UserBo;
 import com.dsdl.eidea.base.entity.bo.UserSessionBo;
+import com.dsdl.eidea.base.service.UserService;
 import com.dsdl.eidea.test.entity.po.LeavePo;
 import com.dsdl.eidea.test.service.LeaveService;
 import com.dsdl.eidea.core.web.controller.BaseController;
@@ -37,6 +38,8 @@ public class LeaveController extends BaseController {
 private static final String URI = "leave";
 @Autowired
 private LeaveService leaveService;
+    @Autowired
+    private UserService userService;
 @RequestMapping(value = "/showList", method = RequestMethod.GET)
 @RequiresPermissions("view")
 public ModelAndView showList() {
@@ -61,7 +64,9 @@ public JsonResult<List<LeavePo>> list(HttpSession session) {
         if (id == null) {
         return JsonResult.fail(ErrorCodes.VALIDATE_PARAM_ERROR.getCode(),getMessage("common.errror.get_object",getLabel("leave.title")));
         } else {
-        leavePo = leaveService.getLeave(id);
+            leavePo = leaveService.getLeave(id);
+            UserBo userBo=userService.getUser(leavePo.getLeaveUserId());
+            leavePo.setUserName(userBo.getName());
         }
         return JsonResult.success(leavePo);
         }
@@ -72,6 +77,7 @@ public JsonResult<List<LeavePo>> list(HttpSession session) {
         public JsonResult<LeavePo> create() {
             UserBo userBo=(UserBo) request.getSession().getAttribute(WebConst.SESSION_LOGINUSER);
             LeavePo leavePo = new LeavePo();
+            leavePo.setUserName(userBo.getName());
             leavePo.setLeaveUserId(userBo.getId());
             return JsonResult.success(leavePo);
             }

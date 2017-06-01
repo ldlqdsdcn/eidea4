@@ -5,7 +5,7 @@
             title="<eidea:label key="common.button.create"/>"><%--新建--%>
         <i class="fa fa-file-o fa-1x" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.create"/>
     </button>
-    <button type="submit" class="btn btn-primary btn-sm btn-hg" ng-show="canSave"
+    <button type="submit" class="btn btn-primary btn-sm btn-hg"
             title="<eidea:label key="common.button.save"/>"><%--保存--%>
         <i class="fa fa-save fa-1x" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.save"/>
     </button>

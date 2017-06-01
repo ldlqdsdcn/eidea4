@@ -146,8 +146,10 @@ Date: 2017-05-04 13:22:23
             </tr>
             <tr>
                 <td class="control-label"><%--自动填充值--%><eidea:label key="base.field.label.autowiredValue"/></td>
-                <td class="form-group" colspan="3"><input type="text" class="form-control" id="autowired" ng-model="fieldPo.autowiredValue" placeholder="<eidea:message key="common.please.input">
+                <td class="form-group"><input type="text" class="form-control" id="autowired" ng-model="fieldPo.autowiredValue" placeholder="<eidea:message key="common.please.input">
                                                         <eidea:param value="base.field.label.autowiredValue" type="label"/></eidea:message> " ng-maxlength="2000"> </td>
+                <td class="control-label"><%--显示类型--%><eidea:label key="base.field.label.showType"/></td>
+                <td class="form-group"><select class="form-control" id="showType" ng-model="fieldPo.showType" ng-options="option.value as option.desc for option in showTypeList"></select> </td>
             </tr>
         </table>
         <div class="form-group">

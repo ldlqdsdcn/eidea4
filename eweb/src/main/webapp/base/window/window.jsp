@@ -1083,6 +1083,14 @@
                 bootbox.alert(response.message);
             }
         });
+        $http.get("<c:url value="/base/field/selectShowType"/> ").success(function (response) {
+            if(response.success){
+                var selectShowType=$.parseJSON(response.data);
+                $scope.showTypeList=selectShowType.fieldShowType;
+            }else{
+                bootbox.alert(response.message);
+            }
+        })
         var url = "<c:url value="/base/field/create"/>";
         if ($stateParams.field != null) {
             url = "<c:url value="/base/field/get"/>" + "?id=" + $stateParams.field;

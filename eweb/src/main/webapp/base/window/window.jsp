@@ -1298,7 +1298,7 @@
             bootbox.alert(response);
         });
         $scope.save = function () {
-            var field=/^[0-9]+&/
+            var field=/^[0-9]+$/;
             if (!field.test($scope.fieldTrlPo.fieldId)){
                 $scope.message="<eidea:label key="base.field.id.type.error"/> ";
                 return false;

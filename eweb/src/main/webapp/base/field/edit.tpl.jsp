@@ -23,7 +23,7 @@ Date: 2017-05-04 13:22:23
                 <td class="form-group"><input type="checkbox" id="required" ng-true-value="'TRUE'" ng-false-value="'FALSE'"
                                               ng-model="fieldPo.required"></td>
                 <td class="control-label"><%--是否有效--%><eidea:label key="base.field.label.isactive"/></td>
-                <td class="form-group"><input id="isactive" type="checkbox" ng-true-value="'TRUE'" ng-false-value="'FALSE'"
+                <td class="form-group"><input id="isactive" type="checkbox" ng-true-value="'Y'" ng-false-value="'N'"
                                               ng-model="fieldPo.isactive"></td>
             </tr>
             <tr>

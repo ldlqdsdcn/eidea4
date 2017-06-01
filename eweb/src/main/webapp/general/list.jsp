@@ -26,11 +26,12 @@
                 </tr>
                 </thead>
                 <tbody>
-
+                <c:set var="columnCount" value="0"></c:set>
                 <tr ng-repeat="model in modelList track by $index" ng-class-even="success">
                     <td>{{(queryParams.pageNo-1)*queryParams.pageSize+$index+1}}</td>
                     <c:forEach items="${fieldInListPageBoList}" var="item">
                         <c:if test="${item.fieldPo.isdisplaygrid=='Y'}">
+                            <c:set var="columnCount" value="${columnCount+1}"></c:set>
                             <td>
                                 {{model.id<c:out value="${item.id}"/>}}
                             </td>
@@ -45,8 +46,8 @@
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="6" class="text-center" ng-show="isLoading">
-                        <i class='fa fa-spinner fa-pulse loading'></i>&nbsp;<eidea:message key="login.msg.logining"/>
+                    <td colspan="${columnCount+2}" class="text-center" ng-show="isLoading">
+                        <i class='fa fa-spinner fa-pulse loading'></i>&nbsp;<eidea:message key="common.msg.loading"/>
                     </td>
                 </tr>
                 </tbody>

@@ -9,6 +9,7 @@ package com.dsdl.eidea.base.entity.po;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -24,6 +25,7 @@ import java.util.Date;
 @Getter
 @Setter
 @Entity(name = "core_field_validator")
+@org.hibernate.annotations.Cache(usage= CacheConcurrencyStrategy.READ_ONLY)
 public class FieldValidatorPo implements java.io.Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "[id]")

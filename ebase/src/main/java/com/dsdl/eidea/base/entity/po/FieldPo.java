@@ -16,6 +16,7 @@ import com.dsdl.eidea.core.entity.po.TableColumnPo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -27,6 +28,7 @@ import org.hibernate.validator.constraints.NotBlank;
 @Getter
 @Setter
 @Entity(name = "core_field")
+@org.hibernate.annotations.Cache(usage= CacheConcurrencyStrategy.READ_ONLY)
 public class FieldPo implements java.io.Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "[id]", length = 11, nullable = false, unique = true)

@@ -125,19 +125,19 @@ public class FieldPo implements java.io.Serializable {
      **/
     @Column(name = "[isreadonly]", length = 1)
     @Length(max = 1, message = "error.isreadonly.length")
-    private String isreadonly;
+    private BoolChar isreadonly;
     /**
      * 是否同行显示
      **/
     @Column(name = "[issameline]", length = 1)
     @Length(max = 1, message = "error.issameline.length")
-    private String issameline;
+    private BoolChar issameline;
     /**
      * 是否加密
      **/
     @Column(name = "[isencrypted]", length = 1)
     @Length(max = 1, message = "error.isencrypted.length")
-    private String isencrypted;
+    private BoolChar isencrypted;
     /**
      * 默认值
      **/
@@ -149,7 +149,7 @@ public class FieldPo implements java.io.Serializable {
      **/
     @Column(name = "[isdisplaygrid]", length = 1)
     @Length(max = 1, message = "error.isdisplaygrid.length")
-    private String isdisplaygrid;
+    private BoolChar isdisplaygrid;
     /**
      * 表格排序 如果没有则用seq_no
      **/
@@ -161,20 +161,20 @@ public class FieldPo implements java.io.Serializable {
     @Column(name = "[isprinted]", nullable = false, length = 255)
     @Length(min = 1, max = 255, message = "error.isprinted.length")
     @NotBlank(message = "error.isprinted.not.null")
-    private String isprinted;
+    private BoolChar isprinted;
     /**
      * 是否允许复制
      **/
     @Column(name = "[isallowcopy]", length = 1)
     @Length(max = 1, message = "error.isallowcopy.length")
-    private String isallowcopy;
+    private BoolChar isallowcopy;
     /**
      * 是否导出报表
      */
     @Column(name = "[isreport]", length = 1, nullable = false)
     @Length(min = 1, max = 1, message = "error.isreport.length")
     @NotBlank(message = "error.isreport.not.null")
-    private String isreport;
+    private BoolChar isreport;
     /**
      * 对应的tab信息
      */

@@ -47,10 +47,13 @@ public class GeneralTabController {
         ModelAndView modelAndView = new ModelAndView("general/list");
         String lang = (String) session.getAttribute(WebConst.SESSION_LANGUAGE);
         List<FieldInListPageBo> fieldInListPageBoList = fieldService.getListPageFiledList(tabId, lang);
+        modelAndView.addObject("fieldInListPageBoList", fieldInListPageBoList);
+
+
         modelAndView.addObject("tabId", tabId);
         Integer pkFieldId = tabService.getTabPkFieldId(tabId);
         modelAndView.addObject("pk", "id" + pkFieldId);
-        modelAndView.addObject("fieldInListPageBoList", fieldInListPageBoList);
+
         return modelAndView;
     }
 
@@ -82,7 +85,7 @@ public class GeneralTabController {
     public JsonResult<Map<String, Object>> create(@PathVariable("tabId") Integer tabId, HttpSession session) {
         String lang = (String) session.getAttribute(WebConst.SESSION_LANGUAGE);
         UserBo userBo = WebUtil.getUserBoInSession(session);
-        Map<String, Object> result = fieldService.getNewObject(tabId,lang,userBo);
+        Map<String, Object> result = fieldService.getNewObject(tabId, lang, userBo);
         return JsonResult.success(result);
     }
 
@@ -95,6 +98,7 @@ public class GeneralTabController {
 
     /**
      * 保存更新
+     *
      * @param tabId
      * @param model
      * @return
@@ -116,8 +120,8 @@ public class GeneralTabController {
     @ResponseBody
     public JsonResult<Map<String, Object>> saveForCreated(@PathVariable("tabId") Integer tabId, @RequestBody Map<String, Object> model, HttpServletRequest request) {
         UserBo userBo = WebUtil.getUserBoInSession(request);
-
-        return null;
+        Map<String, Object> result = fieldService.saveForCreated(tabId, model, userBo);
+        return JsonResult.success(result);
     }
 }
 

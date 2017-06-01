@@ -79,7 +79,7 @@ public class AccountServiceImpl implements AccountService {
         Group group=null;
         if(groupList.size()==0)
         {
-            group=identityService.newGroup(rolePo.getNo());
+            group=identityService.newGroup(rolePo.getId().toString());
         }
         else
         {

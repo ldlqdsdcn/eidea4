@@ -112,32 +112,42 @@
         buttonHeader.listInit($scope,$window);
     });
     app.controller('editCtrl', function ($routeParams,$scope, $http,$window,$timeout, Upload) {
-        /**
-         * 日期时间选择控件
-         * bootstrap-datetime 24小时时间是hh
-         */
-        $('.bootstrap-datetime').datetimepicker({
-            language:  'zh-CN',
+        $("#fileCreated").datetimepicker({
             format: 'yyyy-mm-dd hh:ii:ss',
-            weekStart: 1,
-            todayBtn:  1,
+            language: 'zh-CN',
             autoclose: 1,
-            todayHighlight: 1,
-            startView: 2,
-            forceParse: 0,
+            todayBtn:  1,
             showMeridian: 1,
-            clearBtn: true
+            clearBtn:true
+        }).on("click",function(){
+            if($scope.commonFilePo.fileUpdated == null){
+                $("#fileCreated").datetimepicker("setEndDate","2099-01-01 00:00:00");
+            }else{
+                $("#fileCreated").datetimepicker("setEndDate",formatLongDate($scope.commonFilePo.fileUpdated,'yyyy-MM-dd HH:mm:ss'));
+            }
         });
-        /**
-         * 日期选择控件
-         */
-        $('.bootstrap-date').datepicker({
-            language:  'zh-CN',
-            format: 'yyyy-mm-dd',
+        $("#fileUpdated").datetimepicker({
+            format: 'yyyy-mm-dd hh:ii:ss',
+            language: 'zh-CN',
             autoclose: 1,
             todayBtn:  1,
+            showMeridian: 1,
             clearBtn:true
+        }).on("click",function(){
+            if($scope.commonFilePo.fileCreated == null){
+                $("#fileUpdated").datetimepicker("setStartDate","1900-01-01 00:00:00");
+            }else{
+                $("#fileUpdated").datetimepicker("setStartDate",formatLongDate($scope.commonFilePo.fileCreated,'yyyy-MM-dd HH:mm:ss'));
+            }
         });
+        $("#created").datetimepicker({
+            format: 'yyyy-mm-dd hh:ii:ss',
+            language: 'zh-CN',
+            autoclose: 1,
+            todayBtn:  1,
+            showMeridian: 1,
+            clearBtn:true
+        })
 
         $scope.message = '';
         $scope.commonFilePo = {};

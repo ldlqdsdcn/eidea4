@@ -139,7 +139,7 @@
             if($scope.leavePo.endTime == null){
                 $("#bgnTime").datetimepicker("setEndDate","2099-01-01 00:00:00");
             }else{
-                $("#bgnTime").datetimepicker("setEndDate",$scope.leavePo.endTime);
+                $("#bgnTime").datetimepicker("setEndDate",formatLongDate($scope.leavePo.endTime,'yyyy-MM-dd HH:mm:ss'));
             }
         });
         $("#endTime").datetimepicker({
@@ -153,7 +153,7 @@
             if($scope.leavePo.bgnTime == null){
                 $("#endTime").datetimepicker("setStartDate","1900-01-01 00:00:00");
             }else{
-                $("#endTime").datetimepicker("setStartDate",$scope.leavePo.bgnTime);
+                $("#endTime").datetimepicker("setStartDate",formatLongDate($scope.leavePo.bgnTime,'yyyy-MM-dd HH:mm:ss'));
             }
         });
         $scope.message = '';

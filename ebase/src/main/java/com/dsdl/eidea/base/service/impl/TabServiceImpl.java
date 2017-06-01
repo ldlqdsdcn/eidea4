@@ -89,6 +89,11 @@ public class TabServiceImpl  implements	TabService {
 			trlSearch.addFilterEqual("lang",lang);
 			TabTrlPo tabTrlPo=tabTrlDao.searchUnique(trlSearch);
 			tabBo.setSeqNo(tabPo.getSortno());
+			Search pkFieldSearch=new Search();
+			pkFieldSearch.addFilterEqual("tabId",tabPo.getId());
+			pkFieldSearch.addFilterEqual("columnId",tabPo.getTableColumnId());
+			FieldPo pk=fieldDao.searchUnique(pkFieldSearch);
+			tabBo.setPkFieldId(pk.getId());
 			tabBo.setId(tabPo.getId());
 			if(tabTrlPo!=null)
 			{

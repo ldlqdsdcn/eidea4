@@ -1,3 +1,4 @@
+<%@ page import="com.dsdl.eidea.core.def.FieldShowType" %>
 <%--
   Created by IntelliJ IDEA.
   User: 刘大磊
@@ -7,6 +8,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/inc/taglib.jsp" %>
+<%%>
 <div  class="container-fluid" ng-controller="tab${tabId}listCtrl">
     <jsp:include page="/general/inc/list_button.jsp"/>
     <div class="row-fluid">
@@ -33,7 +35,15 @@
                         <c:if test="${item.fieldPo.isdisplaygrid=='Y'}">
                             <c:set var="columnCount" value="${columnCount+1}"></c:set>
                             <td>
-                                {{model.id<c:out value="${item.id}"/>}}
+                                <c:choose>
+                                    <c:when test="${item.fieldPo.showType eq FieldShowType.LINKED}">
+                                        {{model.idLinked<c:out value="${item.id}"/>}}
+                                    </c:when>
+                                    <c:otherwise>
+                                        {{model.id<c:out value="${item.id}"/>}}
+                                    </c:otherwise>
+                                </c:choose>
+
                             </td>
                         </c:if>
 

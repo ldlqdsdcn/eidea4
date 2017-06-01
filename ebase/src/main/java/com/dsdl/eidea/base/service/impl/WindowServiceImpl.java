@@ -86,6 +86,7 @@ public class WindowServiceImpl  implements	WindowService {
 			windowBo.setWindowName(windowPo.getName());
 			windowBo.setHelp("");
 		}
+
 		List<TabBo> tabBoList=tabService.getTabBoListByWindowId(windowPo.getId(),lang);
 		windowBo.setTabList(tabBoList);
 		return windowBo;

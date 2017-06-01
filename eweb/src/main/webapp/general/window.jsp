@@ -12,7 +12,7 @@
     <title><c:out value="${windowBo.windowName}"/> </title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <%@include file="/inc/inc_ang_js_css_dynamic.jsp" %>
-
+    <%@include file="/general/inc/header_buttons.jsp" %>
 </head>
 <body >
 <div ng-app='myApp'  class="content">
@@ -25,8 +25,6 @@
     </div>
     <div ng-app='myApp'  class="tab-content vertical-tab-content" ui-view></div>
     </div>
-
-
 </div>
 <jsp:include page="/common/searchPage">
     <jsp:param name="uri" value="${uri}"/>
@@ -59,7 +57,7 @@
     });
 
 <c:forEach items="${windowBo.tabList}" var="tab">
-    app.controller('tab${tab.id}listCtrl', function ($scope,$http,$rootScope,$state) {
+    app.controller('tab${tab.id}listCtrl', function ($scope,$http,$rootScope,$state,$window) {
         $scope.modelList = [];
         $scope.delFlag = false;
         $scope.isLoading = true;
@@ -94,6 +92,7 @@
 
                     });
         }
+
         $scope.edit=function (id) {
             $state.go('tab${tab.id}edit', {'id': id});
         }
@@ -114,6 +113,7 @@
             $rootScope.listQueryParams = $scope.queryParams;
         }
         $scope.pageChanged();
+        buttonHeader.listInit($scope,$window);
 
     });
     app.controller('tab${tab.id}editCtrl', function ($stateParams,$scope, $http,$window,$timeout, Upload) {
@@ -128,7 +128,6 @@
                     if (response.success) {
                         $scope.model = response.data;
                         $scope.tableId=$scope.model.id;
-
                     }
                     else {
                         bootbox.alert(response.message);
@@ -167,7 +166,6 @@
             $scope.message="";
             if ($scope.editForm.$valid) {
                 var postUrl = '<c:url value="/general/tab/saveForUpdated/${tab.id}"/>';
-                alert(JSON.stringify($scope.model));
                 if ($scope.model.id${tab.pkFieldId} == null) {
                     postUrl = '<c:url value="/general/tab/saveForCreated/${tab.id}"/>';
                 }
@@ -186,10 +184,7 @@
                         else {
                             $scope.errorMessages = [data.message];
                         }
-
                     }
-
-
                 });
             }
         }
@@ -210,7 +205,7 @@
             });
         }
 
-       // buttonHeader.editInit($scope,$http,$window,$timeout, Upload,"/base");
+        buttonHeader.editInit($scope,$http,$window,$timeout, Upload,"/general");
     });
 </c:forEach>
 

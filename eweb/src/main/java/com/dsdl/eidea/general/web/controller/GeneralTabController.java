@@ -78,14 +78,11 @@ public class GeneralTabController {
     }
 
     @RequestMapping("/create/{tabId}")
-    public JsonResult<Map<String, String>> create(@PathVariable("tabId") Integer tabId, HttpSession session) {
+    @ResponseBody
+    public JsonResult<Map<String, Object>> create(@PathVariable("tabId") Integer tabId, HttpSession session) {
         String lang = (String) session.getAttribute(WebConst.SESSION_LANGUAGE);
-        TabFormStructureBo tabFormStructureBo = fieldService.getFormPageFieldList(tabId, lang);
-        List<FieldStructureBo> fieldStructureBoList = tabFormStructureBo.getFieldStructureBoList();
-        Map<String, String> result = new HashMap<>();
-        for (FieldStructureBo fieldStructureBo : fieldStructureBoList) {
-            result.put("id" + fieldStructureBo.getFieldPo().getId(), null);
-        }
+        UserBo userBo = WebUtil.getUserBoInSession(session);
+        Map<String, Object> result = fieldService.getNewObject(tabId,lang,userBo);
         return JsonResult.success(result);
     }
 
@@ -119,6 +116,7 @@ public class GeneralTabController {
     @ResponseBody
     public JsonResult<Map<String, Object>> saveForCreated(@PathVariable("tabId") Integer tabId, @RequestBody Map<String, Object> model, HttpServletRequest request) {
         UserBo userBo = WebUtil.getUserBoInSession(request);
+
         return null;
     }
 }

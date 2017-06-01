@@ -2,8 +2,8 @@
 <%----%>
 <%@ include file="/inc/taglib.jsp" %>
 <div class="page-header button-css">
-    <a href="#/edit" class="btn  btn-primary btn-sm btn-hg" ng-show="canAdd" title="<eidea:label key="common.button.create"/>"><%--新建--%>
-        <i class="fa fa-file-o fa-1x" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.create"/></a>
+    <button ng-click="edit()" class="btn  btn-primary btn-sm btn-hg" title="<eidea:label key="common.button.create"/>"><%--新建--%>
+        <i class="fa fa-file-o fa-1x" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.create"/></button>
     <button type="button" class="btn  btn-primary btn-sm btn-hg" id="search_but" data-toggle="modal"
             data-target="#searchModal" title="<eidea:label key="common.button.search"/>"><%--查找--%>
         <i class="fa fa-search fa-1x" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.search"/>

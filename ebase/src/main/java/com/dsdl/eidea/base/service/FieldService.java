@@ -74,4 +74,11 @@ public interface FieldService {
 	 * @return
 	 */
 	Map<String,Object> saveForCreated(Integer tabId,Map<String,Object> param);
+
+	/**
+	 * 新建对象
+	 * @param tabId
+	 * @return
+	 */
+	Map<String,Object> getNewObject(Integer tabId,String lang, UserBo userBo);
 }

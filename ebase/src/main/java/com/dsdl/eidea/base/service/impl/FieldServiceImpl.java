@@ -6,6 +6,7 @@
  */
 package com.dsdl.eidea.base.service.impl;
 
+import com.dsdl.eidea.base.entity.bo.FieldBo;
 import com.dsdl.eidea.base.entity.bo.FieldInListPageBo;
 import com.dsdl.eidea.base.entity.bo.FieldValueBo;
 import com.dsdl.eidea.base.entity.bo.UserBo;
@@ -15,6 +16,7 @@ import com.dsdl.eidea.base.service.FieldService;
 import com.dsdl.eidea.core.dao.CommonDao;
 import com.dsdl.eidea.core.def.EideaConst;
 import com.dsdl.eidea.core.def.FieldInputType;
+import com.dsdl.eidea.core.def.FieldShowType;
 import com.dsdl.eidea.core.def.JavaDataType;
 import com.dsdl.eidea.core.dto.PaginationResult;
 import com.dsdl.eidea.core.entity.po.TableColumnPo;
@@ -30,8 +32,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
-import java.awt.geom.Arc2D;
-import java.awt.peer.FileDialogPeer;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -226,7 +226,6 @@ public class FieldServiceImpl implements FieldService {
         for (FieldPo fieldPo : fieldPoList) {
             TableColumnPo tableColumnPo = tableColumnDao.find(fieldPo.getColumnId());
             FieldColumn fieldColumn = new FieldColumn();
-            fieldColumn.fieldId = fieldPo.getId();
             fieldColumn.fieldPo = fieldPo;
             fieldColumn.columnName = tableColumnPo.getColumnName();
             fieldColumn.tableColumnPo = tableColumnPo;
@@ -280,19 +279,14 @@ public class FieldServiceImpl implements FieldService {
                 recordMap.put("id" + valueBo.getFieldPo().getId(), valueBo.getValue());
                 switch (valueBo.getFieldPo().getShowType()) {
                     case LINKED:
-                        try {
-                            value = getLinkedValue(valueBo);
-                            recordMap.put("idLinked" + valueBo.getFieldPo().getId(), value);
-                        } catch (SQLException e) {
-                            log.error("获取关联的数据出错", e);
-                            throw new ServiceException("sql语句错误", e);
-                        }
+                        value = getLinkedValue(valueBo);
+                        recordMap.put("idLinked" + valueBo.getFieldPo().getId(), value);
+
                         break;
                     default:
-                         break;
+                        break;
 
                 }
-
 
 
             }
@@ -302,7 +296,7 @@ public class FieldServiceImpl implements FieldService {
         return paginationResult;
     }
 
-    private Object getLinkedValue(FieldValueBo fieldValueBo) throws SQLException {
+    private Object getLinkedValue(FieldValueBo fieldValueBo) {
         Search search = new Search();
         search.addFilterEqual("elementId", fieldValueBo.getFieldPo().getElementId());
         ElementLinkedPo elementLinkedPo = elementLinkedDao.searchUnique(search);
@@ -397,7 +391,6 @@ public class FieldServiceImpl implements FieldService {
         for (FieldPo fieldPo : fieldPoList) {
             FieldColumn fieldColumn = new FieldColumn();
             TableColumnPo columnPo = tableColumnDao.find(fieldPo.getColumnId());
-            fieldColumn.fieldId = fieldPo.getId();
             fieldColumn.fieldPo = fieldPo;
             fieldColumn.columnName = columnPo.getColumnName();
             fieldColumn.tableColumnPo = columnPo;
@@ -429,12 +422,7 @@ public class FieldServiceImpl implements FieldService {
             resultMap.put("id" + valueBo.getFieldPo().getId(), valueBo.getValue());
             switch (valueBo.getFieldPo().getShowType()) {
                 case LINKED:
-                    try {
-                        resultMap.put("idLinked" + valueBo.getFieldPo().getId(), getLinkedValue(valueBo));
-                    } catch (SQLException e) {
-                        log.error("获取关联的数据出错", e);
-                        throw new ServiceException("sql语句错误", e);
-                    }
+                    resultMap.put("idLinked" + valueBo.getFieldPo().getId(), getLinkedValue(valueBo));
                     break;
                 default:
                     break;
@@ -450,27 +438,24 @@ public class FieldServiceImpl implements FieldService {
         TablePo tablePo = tableDao.find(tabPo.getTableId());
         String tableName = tablePo.getTableName();
         Map<String, FieldPo> tableColumnPoMap = new HashMap<>();
-        Search search=new Search();
-        search.addFilterEqual("tabId",tabId);
-        List<FieldPo> tableColumnPoList=fieldDao.search(search);
-        for(FieldPo fieldPo:tableColumnPoList)
-        {
-            if(fieldPo.getAutowiredValue()!=null)
-            {
-                switch (fieldPo.getAutowiredValue())
-                {
+        Search search = new Search();
+        search.addFilterEqual("tabId", tabId);
+        List<FieldPo> tableColumnPoList = fieldDao.search(search);
+        for (FieldPo fieldPo : tableColumnPoList) {
+            if (fieldPo.getAutowiredValue() != null) {
+                switch (fieldPo.getAutowiredValue()) {
                     case EideaConst.EXPRESS_CLIENT_ID:
-                        param.put("id"+fieldPo.getId(),userBo.getClientId());
+                        param.put("id" + fieldPo.getId(), userBo.getClientId());
                         break;
                     case EideaConst.EXPRESS_ORG_ID:
-                        param.put("id"+fieldPo.getId(),userBo.getOrgId());
+                        param.put("id" + fieldPo.getId(), userBo.getOrgId());
                         break;
                     case EideaConst.EXPRESS_USER_ID:
-                        param.put("id"+fieldPo.getId(),userBo.getId());
+                        param.put("id" + fieldPo.getId(), userBo.getId());
                         break;
                     case EideaConst.EXPRESS_CURRENT_DATE:
                     case EideaConst.EXPRESS_CURRENT_TIME:
-                        param.put("id"+fieldPo.getId(),new Date());
+                        param.put("id" + fieldPo.getId(), new Date());
                         break;
 
                 }
@@ -488,12 +473,8 @@ public class FieldServiceImpl implements FieldService {
         TableColumnPo pkTablePo = tableColumnDao.find(tabPo.getTableColumnId());
 
 
-
-
-
         for (String key : keys) {
-            if(key.contains("Linked"))
-            {
+            if (key.contains("Linked")) {
                 continue;
             }
             String idKey = key.replace("id", "");
@@ -512,7 +493,7 @@ public class FieldServiceImpl implements FieldService {
 
             TableColumnPo tableColumnPo = fieldPo.getTableColumnPo();
             //updateSqlBuilder.append("'");
-            updateSqlBuilder  .append(tableColumnPo.getColumnName())
+            updateSqlBuilder.append(tableColumnPo.getColumnName())
                     //.append("'")
                     .append(SQL_EQUAL_KEY);
             updateSqlBuilder.append("?");
@@ -544,40 +525,37 @@ public class FieldServiceImpl implements FieldService {
             FieldColumn fieldColumn = values.get(i);
             TableColumnPo tableColumnPo = fieldColumn.fieldPo.getTableColumnPo();
             JavaDataType dataType = JavaDataType.getJavaDataTypeByKey(tableColumnPo.getDataType());
-            setPreparedStatement(i+1,fieldColumn.value,preparedStatement,dataType);
+            setPreparedStatement(i + 1, fieldColumn.value, preparedStatement, dataType);
         }
         JavaDataType dataType = JavaDataType.getJavaDataTypeByKey(pkTablePo.getDataType());
-        setPreparedStatement(values.size()+1,pkValue,preparedStatement,dataType);
+        setPreparedStatement(values.size() + 1, pkValue, preparedStatement, dataType);
         try {
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            log.error(updateSql,e);
-            throw new ServiceException("执行更新操作失败",e);
+            log.error(updateSql, e);
+            throw new ServiceException("执行更新操作失败", e);
         }
-        return getDataForm(tabId,pkValue);
+        return getDataForm(tabId, pkValue);
     }
-    private void setPreparedStatement(int index,Object value,PreparedStatement preparedStatement,JavaDataType dataType)
-    {
+
+    private void setPreparedStatement(int index, Object value, PreparedStatement preparedStatement, JavaDataType dataType) {
         try {
             switch (dataType) {
                 case INT:
-                    if(value instanceof String)
-                    {
-                        value=Integer.parseInt((String)value);
+                    if (value instanceof String) {
+                        value = Integer.parseInt((String) value);
                     }
                     preparedStatement.setInt(index, (int) value);
                     break;
                 case DECIMAL:
-                    if(value instanceof String)
-                    {
-                        value=new BigDecimal((String)value);
+                    if (value instanceof String) {
+                        value = new BigDecimal((String) value);
                     }
                     preparedStatement.setBigDecimal(index, (BigDecimal) value);
                     break;
                 case LONG:
-                    if(value instanceof String)
-                    {
-                        value=Long.parseLong((String)value);
+                    if (value instanceof String) {
+                        value = Long.parseLong((String) value);
                     }
                     preparedStatement.setLong(index, (long) value);
                     break;
@@ -585,25 +563,22 @@ public class FieldServiceImpl implements FieldService {
                     preparedStatement.setString(index, (String) value);
                     break;
                 case DATE:
-                    if(value instanceof Long)
-                    {
-                        value=new Date((Long) value);
+                    if (value instanceof Long) {
+                        value = new Date((Long) value);
                     }
                     Date date = (Date) value;
                     Timestamp timestamp = new Timestamp(date.getTime());
                     preparedStatement.setTimestamp(index, timestamp);
                     break;
                 case DOUBLE:
-                    if(value instanceof String)
-                    {
-                        value=Double.parseDouble((String)value);
+                    if (value instanceof String) {
+                        value = Double.parseDouble((String) value);
                     }
                     preparedStatement.setDouble(index, (double) value);
                     break;
                 case FLOAT:
-                    if(value instanceof String)
-                    {
-                        value= Float.parseFloat((String)value);
+                    if (value instanceof String) {
+                        value = Float.parseFloat((String) value);
                     }
                     preparedStatement.setDouble(index, (float) value);
                     break;
@@ -615,20 +590,70 @@ public class FieldServiceImpl implements FieldService {
                     break;
             }
         } catch (SQLException e) {
-            log.error("执行更新操作失败",e);
-            throw new ServiceException("执行更新操作失败",e);
+            log.error("执行更新操作失败", e);
+            throw new ServiceException("执行更新操作失败", e);
         }
     }
+
     public Map<String, Object> saveForCreated(Integer tabId, Map<String, Object> param) {
-        
+
         return null;
     }
 
+    public Map<String, Object> getNewObject(Integer tabId, String lang, UserBo userBo) {
+        TabFormStructureBo tabFormStructureBo = getFormPageFieldList(tabId, lang);
+        List<FieldStructureBo> fieldStructureBoList = tabFormStructureBo.getFieldStructureBoList();
+        Map<String, Object> result = new HashMap<>();
+        for (FieldStructureBo fieldStructureBo : fieldStructureBoList) {
+            String defaultValue = fieldStructureBo.getFieldPo().getDefaultvalue();
+            if (defaultValue == null) {
+                result.put("id" + fieldStructureBo.getFieldPo().getId(), null);
+            } else {
+                Object value = null;
+                switch (defaultValue) {
+                    case EideaConst.EXPRESS_CLIENT_ID: {
+                        value = userBo.getClientId();
+                        break;
+                    }
+                    case EideaConst.EXPRESS_ORG_ID: {
+                        value = userBo.getOrgId();
+                        break;
+                    }
+                    case EideaConst.EXPRESS_USER_ID: {
+                        value = userBo.getId();
+                        break;
+                    }
+                    case EideaConst.EXPRESS_CURRENT_DATE:
+                    case EideaConst.EXPRESS_CURRENT_TIME: {
+                        value = new Date();
+                        break;
+                    }
+                    default: {
+                        value = null;
+                    }
+                }
+                result.put("id" + fieldStructureBo.getFieldPo().getId(), value);
+                if (value != null) {
+                    if (fieldStructureBo.getFieldPo().getShowType() == FieldShowType.LINKED) {
+                        FieldValueBo fieldValueBo = new FieldValueBo();
+                        fieldValueBo.setFieldPo(fieldStructureBo.getFieldPo());
+                        fieldValueBo.setValue(value);
+                        Object linkedValue = getLinkedValue(fieldValueBo);
+                        result.put("idLinked" + fieldStructureBo.getFieldPo().getId(), linkedValue);
+                    }
+                }
+            }
+
+
+        }
+        return result;
+    }
+
     class FieldColumn {
-        private Integer fieldId;
         private FieldPo fieldPo;
         private String columnName;
         private Object value;
         private TableColumnPo tableColumnPo;
     }
+
 }

@@ -64,8 +64,6 @@ public class FieldPo implements java.io.Serializable {
      * 是否必填
      **/
     @Column(name = "[required]", length = 1)
-    @NotBlank(message = "error.required.not.null")
-    @Length(min = 1, max = 1, message = "error.required.length")
     @Convert(converter = BoolCharConverter.class)
     private BoolChar required;
     /**
@@ -126,21 +124,18 @@ public class FieldPo implements java.io.Serializable {
      * 是否只读
      **/
     @Column(name = "[isreadonly]", length = 1)
-    @Length(max = 1, message = "error.isreadonly.length")
     @Convert(converter = BoolCharConverter.class)
     private BoolChar isreadonly;
     /**
      * 是否同行显示
      **/
     @Column(name = "[issameline]", length = 1)
-    @Length(max = 1, message = "error.issameline.length")
     @Convert(converter = BoolCharConverter.class)
     private BoolChar issameline;
     /**
      * 是否加密
      **/
     @Column(name = "[isencrypted]", length = 1)
-    @Length(max = 1, message = "error.isencrypted.length")
     @Convert(converter = BoolCharConverter.class)
     private BoolChar isencrypted;
     /**
@@ -153,7 +148,6 @@ public class FieldPo implements java.io.Serializable {
      * 是否在列表中显示
      **/
     @Column(name = "[isdisplaygrid]", length = 1)
-    @Length(max = 1, message = "error.isdisplaygrid.length")
     @Convert(converter = BoolCharConverter.class)
     private BoolChar isdisplaygrid;
     /**
@@ -165,23 +159,18 @@ public class FieldPo implements java.io.Serializable {
      * 是否允许打印
      */
     @Column(name = "[isprinted]", nullable = false, length = 255)
-    @Length(min = 1, max = 255, message = "error.isprinted.length")
-    @NotBlank(message = "error.isprinted.not.null")
     @Convert(converter = BoolCharConverter.class)
     private BoolChar isprinted;
     /**
      * 是否允许复制
      **/
     @Column(name = "[isallowcopy]", length = 1)
-    @Length(max = 1, message = "error.isallowcopy.length")
     @Convert(converter = BoolCharConverter.class)
     private BoolChar isallowcopy;
     /**
      * 是否导出报表
      */
     @Column(name = "[isreport]", length = 1, nullable = false)
-    @Length(min = 1, max = 1, message = "error.isreport.length")
-    @NotBlank(message = "error.isreport.not.null")
     @Convert(converter = BoolCharConverter.class)
     private BoolChar isreport;
     /**

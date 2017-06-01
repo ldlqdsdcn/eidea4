@@ -12,6 +12,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 import com.dsdl.eidea.base.def.BoolChar;
+import com.dsdl.eidea.base.init.BoolCharConverter;
 import com.dsdl.eidea.base.init.InputTypeConverter;
 import com.dsdl.eidea.core.def.FieldShowType;
 import com.dsdl.eidea.core.entity.po.TableColumnPo;
@@ -65,7 +66,8 @@ public class FieldPo implements java.io.Serializable {
     @Column(name = "[required]", length = 1)
     @NotBlank(message = "error.required.not.null")
     @Length(min = 1, max = 1, message = "error.required.length")
-    private String required;
+    @Convert(converter = BoolCharConverter.class)
+    private BoolChar required;
     /**
      * 是否有效
      **/
@@ -107,7 +109,7 @@ public class FieldPo implements java.io.Serializable {
      * 是否显示
      **/
     @Column(name = "[is_displayed]", nullable = false)
-    @Enumerated(EnumType.ORDINAL)
+    @Convert(converter = BoolCharConverter.class)
     private BoolChar isDisplayed;
     /**
      * 显示逻辑
@@ -125,18 +127,21 @@ public class FieldPo implements java.io.Serializable {
      **/
     @Column(name = "[isreadonly]", length = 1)
     @Length(max = 1, message = "error.isreadonly.length")
+    @Convert(converter = BoolCharConverter.class)
     private BoolChar isreadonly;
     /**
      * 是否同行显示
      **/
     @Column(name = "[issameline]", length = 1)
     @Length(max = 1, message = "error.issameline.length")
+    @Convert(converter = BoolCharConverter.class)
     private BoolChar issameline;
     /**
      * 是否加密
      **/
     @Column(name = "[isencrypted]", length = 1)
     @Length(max = 1, message = "error.isencrypted.length")
+    @Convert(converter = BoolCharConverter.class)
     private BoolChar isencrypted;
     /**
      * 默认值
@@ -149,6 +154,7 @@ public class FieldPo implements java.io.Serializable {
      **/
     @Column(name = "[isdisplaygrid]", length = 1)
     @Length(max = 1, message = "error.isdisplaygrid.length")
+    @Convert(converter = BoolCharConverter.class)
     private BoolChar isdisplaygrid;
     /**
      * 表格排序 如果没有则用seq_no
@@ -161,12 +167,14 @@ public class FieldPo implements java.io.Serializable {
     @Column(name = "[isprinted]", nullable = false, length = 255)
     @Length(min = 1, max = 255, message = "error.isprinted.length")
     @NotBlank(message = "error.isprinted.not.null")
+    @Convert(converter = BoolCharConverter.class)
     private BoolChar isprinted;
     /**
      * 是否允许复制
      **/
     @Column(name = "[isallowcopy]", length = 1)
     @Length(max = 1, message = "error.isallowcopy.length")
+    @Convert(converter = BoolCharConverter.class)
     private BoolChar isallowcopy;
     /**
      * 是否导出报表
@@ -174,6 +182,7 @@ public class FieldPo implements java.io.Serializable {
     @Column(name = "[isreport]", length = 1, nullable = false)
     @Length(min = 1, max = 1, message = "error.isreport.length")
     @NotBlank(message = "error.isreport.not.null")
+    @Convert(converter = BoolCharConverter.class)
     private BoolChar isreport;
     /**
      * 对应的tab信息
@@ -191,12 +200,14 @@ public class FieldPo implements java.io.Serializable {
      * 是否可添加
      */
     @Column(name = "isadded")
-    private String isadded;
+    @Convert(converter = BoolCharConverter.class)
+    private BoolChar isadded;
     /**
      * 是否可更新
      */
     @Column(name = "isupdated")
-    private String isupdated;
+    @Convert(converter = BoolCharConverter.class)
+    private BoolChar isupdated;
 
     @Column(name = "autowired_value",length = 2000)
     private String autowiredValue;

@@ -16,7 +16,8 @@
             <table  class="table table-hover table-striped table-condensed">
                 <thead>
                 <tr>
-                    <th>编号</th>
+                    <th><input type="checkbox" name="selectAll" style="margin:0px;" ng-change="selectAll()"  ng-model="delFlag"></th>
+                    <th><eidea:label key="base.serialNumber"/></th>
                     <c:forEach items="${fieldInListPageBoList}" var="item">
                         <c:if test="${item.fieldPo.isdisplaygrid=='Y'}">
                     <th>
@@ -30,6 +31,9 @@
                 <tbody>
                 <c:set var="columnCount" value="0"></c:set>
                 <tr ng-repeat="model in modelList track by $index" ng-class-even="success">
+                    <td>
+                        <input type="checkbox" ng-model="model.delFlag">
+                    </td>
                     <td>{{(queryParams.pageNo-1)*queryParams.pageSize+$index+1}}</td>
                     <c:forEach items="${fieldInListPageBoList}" var="item">
                         <c:if test="${item.fieldPo.isdisplaygrid=='Y'}">
@@ -43,11 +47,8 @@
                                         {{model.id<c:out value="${item.id}"/>}}
                                     </c:otherwise>
                                 </c:choose>
-
                             </td>
                         </c:if>
-
-
                     </c:forEach>
                     <td>
                         <button class="btn btn-primary btn-xs" ng-click="edit(model.${pk})">
@@ -56,7 +57,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="${columnCount+2}" class="text-center" ng-show="isLoading">
+                    <td colspan="${columnCount+3}" class="text-center" ng-show="isLoading">
                         <i class='fa fa-spinner fa-pulse loading'></i>&nbsp;<eidea:message key="common.msg.loading"/>
                     </td>
                 </tr>

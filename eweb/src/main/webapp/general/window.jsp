@@ -96,8 +96,42 @@
         $scope.edit=function (id) {
             $state.go('tab${tab.id}edit', {'id': id});
         }
-
-//可现实分页item数量
+        //批量删除
+        $scope.deleteRecord = function () {
+            bootbox.confirm({
+                message: "<eidea:message key="common.warn.confirm.deletion"/>",
+                buttons: {
+                    confirm: {
+                        label: '<eidea:label key="common.button.yes"/>',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: '<eidea:label key="common.button.no"/>',
+                        className: 'btn-danger'
+                    }
+                }, callback: function (result) {
+                    if (result) {
+                        var ids = [];
+                        for (var i = 0; i < $scope.modelList.length; i++) {
+                            if ($scope.modelList[i].delFlag) {
+                                ids.push($scope.modelList[i].id${tab.pkFieldId});
+                            }
+                        }
+                        $scope.queryParams.init = true;
+                        var param = {"queryParams": $scope.queryParams, "ids": ids};
+                        $http.post("<c:url value="/general/tab/deletes/${tab.id}"/>", param).success(function (data) {
+                            if (data.success) {
+                                $scope.updateList(data.data);
+                                bootbox.alert("<eidea:message key="module.deleted.success"/>");
+                            } else {
+                                bootbox.alert(data.message);
+                            }
+                        });
+                    }
+                }
+            });
+        };
+        //可现实分页item数量
         $scope.maxSize =10;
         if ($rootScope.listQueryParams != null) {
             $rootScope.queryParams = $scope.listQueryParams;

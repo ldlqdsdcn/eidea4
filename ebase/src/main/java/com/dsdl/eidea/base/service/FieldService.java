@@ -81,4 +81,11 @@ public interface FieldService {
 	 * @return
 	 */
 	Map<String,Object> getNewObject(Integer tabId,String lang, UserBo userBo);
+
+	/**
+	 * 删除记录
+	 * @param tabId
+	 * @param ids
+	 */
+	void deleteList(Integer tabId,Object[] ids);
 }

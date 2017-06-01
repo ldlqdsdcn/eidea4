@@ -5,6 +5,7 @@ import com.dsdl.eidea.base.entity.bo.UserBo;
 import com.dsdl.eidea.base.service.FieldService;
 import com.dsdl.eidea.base.service.TabService;
 import com.dsdl.eidea.core.dto.PaginationResult;
+import com.dsdl.eidea.core.params.DeleteParams;
 import com.dsdl.eidea.core.params.QueryParams;
 import com.dsdl.eidea.core.web.def.WebConst;
 import com.dsdl.eidea.core.web.result.JsonResult;
@@ -21,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -122,6 +124,17 @@ public class GeneralTabController {
         UserBo userBo = WebUtil.getUserBoInSession(request);
         Map<String, Object> result = fieldService.saveForCreated(tabId, model, userBo);
         return JsonResult.success(result);
+    }
+
+    /**
+     * @param tabId
+     * @return
+     */
+    @RequestMapping("/deletes/{tabId}")
+    @ResponseBody
+    public JsonResult<PaginationResult<Map<String, Object>>> deletes(@PathVariable("tabId") Integer tabId, @RequestBody DeleteParams<Object> deleteParams) {
+        fieldService.deleteList(tabId, deleteParams.getIds());
+        return list(tabId, deleteParams.getQueryParams());
     }
 }
 

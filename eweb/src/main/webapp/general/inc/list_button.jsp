@@ -8,8 +8,8 @@
             data-target="#searchModal" title="<eidea:label key="common.button.search"/>"><%--查找--%>
         <i class="fa fa-search fa-1x" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.search"/>
     </button>
-    <button type="button" class="btn  btn-primary btn-sm btn-hg" ng-disabled="!canDelete()"
-            ng-click="deleteRecord()" ng-show="canDel" title="<eidea:label key="common.button.delete"/>"><%--删除--%>
+    <button type="button" class="btn  btn-primary btn-sm btn-hg" ng-click="deleteRecord()" title="<eidea:label key="common.button.delete"/>">
+        <%--删除--%>
         <i class="fa fa-trash-o fa-1x" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.delete"/>
     </button>
     <div class="btn-group">

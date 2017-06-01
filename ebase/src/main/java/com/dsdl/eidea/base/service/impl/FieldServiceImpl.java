@@ -50,6 +50,7 @@ public class FieldServiceImpl implements FieldService {
     private static String LIMIT_KEY = " limit %d,%d ";
     private static String COLUMN_SPLIT_KEY = ",";
     private static String UPDATE_KEY = " update ";
+    private static String DELETE_KEY = " delete ";
     private static String SET_KEY = " set ";
     private static String SQL_EQUAL_KEY = "=";
     private static String INSERT_KEY = " insert into ";
@@ -700,7 +701,7 @@ public class FieldServiceImpl implements FieldService {
         Object primaryKey = null;
         try {
             Connection conn = dataSource.getConnection();
-            PreparedStatement preparedStatement = conn.prepareStatement(sqlString,Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement preparedStatement = conn.prepareStatement(sqlString, Statement.RETURN_GENERATED_KEYS);
             for (int i = 0; i < values.size(); i++) {
                 int index = i + 1;
                 Object value = values.get(i).value;
@@ -773,6 +774,38 @@ public class FieldServiceImpl implements FieldService {
 
         }
         return result;
+    }
+
+    public void deleteList(Integer tabId, Object[] ids) {
+        TabPo tabPo = tabDao.find(tabId);
+        TablePo tablePo = tableDao.find(tabPo.getTableId());
+        String tableName = tablePo.getTableName();
+        TableColumnPo tableColumnPo = tableColumnDao.find(tabPo.getTableColumnId());
+        String columnName = tableColumnPo.getColumnName();
+        StringBuilder deleteSqlBuilder = new StringBuilder();
+        deleteSqlBuilder.append(DELETE_KEY)
+                .append(FROM_KEY)
+                .append(tableName)
+                .append(WHERE_KEY)
+                .append(columnName)
+                .append(SQL_EQUAL_KEY)
+                .append("?");
+        String deleteSql = deleteSqlBuilder.toString();
+        try {
+            Connection conn = dataSource.getConnection();
+            for (Object id : ids) {
+                PreparedStatement statement = conn.prepareStatement(deleteSql);
+                statement.setObject(1, id);
+                statement.executeUpdate();
+                statement.close();
+            }
+            conn.close();
+
+        } catch (Exception e) {
+            throw new ServiceException("删除记录出错" + deleteSqlBuilder.toString(), e);
+        }
+
+
     }
 
     class FieldColumn {

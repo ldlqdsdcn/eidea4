@@ -55,8 +55,13 @@
     <script src='<c:url value="/js/respond.min.js"/>' type="text/javascript"></script>
     <![endif]-->
 </head>
-<%UserBo user=(UserBo)session.getAttribute("loginUser"); %>
+<%
+    UserBo user=(UserBo)session.getAttribute("loginUser");
+    long systemTimeStamp=System.currentTimeMillis();
+    session.setAttribute("systemTimeStamp",systemTimeStamp);
+%>
 <body class="nav-md gun_dong">
+<input type="hidden" id="systemTimeStamp" value="<%=systemTimeStamp%>">
 <div class="container body">
     <div class="main_container">
         <div class="col-md-3 left_col menu_fixed">
@@ -250,6 +255,19 @@
         $(".nav-tabs").append(bufferLi.toString());
         $(".tab-content").append(bufferDiv.toString());
     }
+    $('body').click(function () {
+        $.ajax({
+            url:"<c:url value="/checkTimeout"/>",
+            data:"systemTimeStamp="+$("#systemTimeStamp").val(),
+            type:"POST",
+            dataType:"JSON",
+            success:function(data){
+                if(data.data){
+                    window.location.href="<c:url value="/login.jsp"></c:url>";
+                }
+            }
+        })
+    })
 </script>
 </body>
 </html>

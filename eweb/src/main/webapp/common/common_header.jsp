@@ -9,6 +9,7 @@
             $('a').each(function(){
                 $(this).attr("ondragstart","return false");
             });
+            buttonHeader.checkTimeOut();
         },
         editInit:function ($scope,$http,$window,$timeout, Upload,directoryUrl) {
             $scope.commonEditHeader=function (type) {
@@ -135,6 +136,22 @@
             $('a').each(function(){
                 $(this).attr("ondragstart","return false");
             });
+            buttonHeader.checkTimeOut();
+        },
+        checkTimeOut:function () {
+            $('body').click(function () {
+                $.ajax({
+                    url:"<c:url value="/checkTimeout"/>",
+                    data:"systemTimeStamp="+window.parent.document.getElementById("systemTimeStamp").value,
+                    type:"POST",
+                    dataType:"JSON",
+                    success:function(data){
+                        if(data.data){
+                            window.parent.location.href="<c:url value="/login.jsp"></c:url>";
+                        }
+                    }
+                })
+            })
         }
     }
 </script>

@@ -194,4 +194,18 @@ public class UserLoginController {
         List<LanguageBo> languageList = languageService.getLanguageForActivated();
         return JsonResult.success(languageList);
     }
+
+    /**
+     * checkTimeout:登录超时检查
+     * @return
+     */
+    @RequestMapping(value = "/checkTimeout", method = RequestMethod.POST)
+    public JsonResult<Boolean> checkTimeout(long systemTimeStamp){
+        HttpSession session=request.getSession();
+        long sessionSystemTimeStamp=(long)session.getAttribute("systemTimeStamp");
+        if(sessionSystemTimeStamp > systemTimeStamp){
+            return JsonResult.success(true);
+        }
+        return JsonResult.success(false);
+    }
 }

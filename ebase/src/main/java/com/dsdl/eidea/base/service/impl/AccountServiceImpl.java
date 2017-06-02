@@ -73,13 +73,12 @@ public class AccountServiceImpl implements AccountService {
     }
     public void saveRole(Integer roleId)
     {
-        String roleIdStr=String.valueOf(roleId);
         RolePo rolePo=roleDao.find(roleId);
-        List<Group> groupList=identityService.createGroupQuery().groupId(roleIdStr).list();
+        List<Group> groupList=identityService.createGroupQuery().groupId(rolePo.getNo()).list();
         Group group=null;
         if(groupList.size()==0)
         {
-            group=identityService.newGroup(rolePo.getId().toString());
+            group=identityService.newGroup(rolePo.getNo());
         }
         else
         {

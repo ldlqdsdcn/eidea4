@@ -39,7 +39,7 @@ Date: 2017-05-02 13:09:39
                         <label for="fileCreated" ><%--fileCreated--%><eidea:label key="base.commonFile.label.fileCreated"/></label>
                                 <div class="input-group date bootstrap-datetime">
                                     <input type="text" class="form-control" id="fileCreated" placeholder="<eidea:message key="common.please.input"><eidea:param value="base.commonFile.label.fileCreated" type="label"/></eidea:message>" ng-model="commonFilePo.fileCreated"
-                                    uib-datepicker-popup="yyyy-MM-dd HH:mm:ss">
+                                    uib-datepicker-popup="yyyy-MM-dd HH:mm:ss" ng-disabled="true">
                                     <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                                 </div>
 
@@ -48,7 +48,7 @@ Date: 2017-05-02 13:09:39
                         <label for="fileUpdated" ><%--fileUpdated--%><eidea:label key="base.commonFile.label.fileUpdated"/></label>
                                 <div class="input-group date bootstrap-datetime">
                                     <input type="text" class="form-control" id="fileUpdated" placeholder="<eidea:message key="common.please.input"><eidea:param value="base.commonFile.label.fileUpdated" type="label"/></eidea:message>" ng-model="commonFilePo.fileUpdated"
-                                    uib-datepicker-popup="yyyy-MM-dd HH:mm:ss">
+                                    uib-datepicker-popup="yyyy-MM-dd HH:mm:ss" ng-disabled="true">
                                     <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                                 </div>
 
@@ -67,7 +67,7 @@ Date: 2017-05-02 13:09:39
                         <label for="created" ><%--创建时间--%><eidea:label key="base.commonFile.label.created"/></label>
                                 <div class="input-group date bootstrap-datetime">
                                     <input type="text" class="form-control" id="created" placeholder="<eidea:message key="common.please.input"><eidea:param value="base.commonFile.label.created" type="label"/></eidea:message>" ng-model="commonFilePo.created"
-                                    uib-datepicker-popup="yyyy-MM-dd HH:mm:ss">
+                                    uib-datepicker-popup="yyyy-MM-dd HH:mm:ss" ng-disabled="true">
                                     <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                                 </div>
 

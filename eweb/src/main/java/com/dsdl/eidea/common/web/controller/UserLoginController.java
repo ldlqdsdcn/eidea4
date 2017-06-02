@@ -62,14 +62,15 @@ public class UserLoginController {
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public JsonResult<String> login(@RequestBody UserBo loginBo) {
+        UserResource resource = (UserResource) request.getSession().getAttribute(WebConst.SESSION_RESOURCE);
         if (loginBo == null) {
-            return JsonResult.fail(ResultCode.FAILURE.getCode(), "用户名或密码不允许为空！");
+            return JsonResult.fail(ResultCode.FAILURE.getCode(), resource.getMessage("user.msg.name.password.is.not.null"));
         } else {
             if (StringUtil.isEmpty(loginBo.getUsername())) {
-                return JsonResult.fail(ResultCode.FAILURE.getCode(), "用户名不允许为空！");
+                return JsonResult.fail(ResultCode.FAILURE.getCode(), resource.getMessage("user.msg.name.is.not.null"));
             }
             if (StringUtil.isEmpty(loginBo.getPassword())) {
-                return JsonResult.fail(ResultCode.FAILURE.getCode(), "密码不允许为空！");
+                return JsonResult.fail(ResultCode.FAILURE.getCode(), resource.getMessage("user.msg.password.is.not.null"));
             }
         }
         Subject subject = SecurityUtils.getSubject();
@@ -80,13 +81,13 @@ public class UserLoginController {
             userInitCommon(loginBo);
             userBo.setCode(loginBo.getCode());
             userInit(userBo, false, request);
-            return JsonResult.success("登录成功");
+            return JsonResult.success(resource.getMessage("user.msg.user.login.successful"));
         } catch (IncorrectCredentialsException | UnknownAccountException e) {
-            return JsonResult.fail(ErrorCodes.NO_LOGIN.getCode(), "密码错误，请重新输入");
+            return JsonResult.fail(ErrorCodes.NO_LOGIN.getCode(), resource.getMessage("user.msg.name.password.is.error"));
         } catch (LockedAccountException e) {
-            return JsonResult.fail(ErrorCodes.NO_LOGIN.getCode(), "该用户已经被禁用");
-        } catch (AuthenticationException e) {
-            return JsonResult.fail(ErrorCodes.NO_LOGIN.getCode(), "用户名错误，请重新输入");
+            return JsonResult.fail(ErrorCodes.NO_LOGIN.getCode(), resource.getMessage("user.msg.user.is.disable"));
+        }catch (AuthenticationException e){
+            return JsonResult.fail(ErrorCodes.NO_LOGIN.getCode(), resource.getMessage("user.msg.name.password.is.error"));
         }
 
 
@@ -167,7 +168,7 @@ public class UserLoginController {
      */
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public ModelAndView logout(HttpSession session) {
-
+        UserResource resource = (UserResource) request.getSession().getAttribute(WebConst.SESSION_RESOURCE);
         session.removeAttribute(WebConst.SESSION_LOGINUSER);
         session.removeAttribute(WebConst.SESSION_USERCONTENT);
         session.removeAttribute(WebConst.SESSION_RESOURCE);
@@ -176,7 +177,7 @@ public class UserLoginController {
         if (subject.isAuthenticated()) {
             subject.logout(); // session 会销毁，在SessionListener监听session销毁，清理权限缓存
             if (log.isDebugEnabled()) {
-                log.debug("用户" + subject.getPrincipal() + "退出登录");
+                log.debug(resource.getMessage("user.msg.user") + subject.getPrincipal() + resource.getMessage("user.msg.user.log.out"));
             }
         }
         ModelAndView modelAndView = new ModelAndView("redirect:/login.jsp");
@@ -192,5 +193,19 @@ public class UserLoginController {
     public JsonResult<List<LanguageBo>> getLanguage() {
         List<LanguageBo> languageList = languageService.getLanguageForActivated();
         return JsonResult.success(languageList);
+    }
+
+    /**
+     * checkTimeout:登录超时检查
+     * @return
+     */
+    @RequestMapping(value = "/checkTimeout", method = RequestMethod.POST)
+    public JsonResult<Boolean> checkTimeout(long systemTimeStamp){
+        HttpSession session=request.getSession();
+        long sessionSystemTimeStamp=(long)session.getAttribute("systemTimeStamp");
+        if(sessionSystemTimeStamp > systemTimeStamp){
+            return JsonResult.success(true);
+        }
+        return JsonResult.success(false);
     }
 }

@@ -2,7 +2,7 @@
 <%@include file="/inc/taglib.jsp" %>
 <html>
 <head>
-    <title>消息设置</title>
+    <title><%--消息设置--%><eidea:label key="message.title.message.settings"/></title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <%@include file="/inc/inc_ang_js_css.jsp" %>
     <%@include file="/common/common_header.jsp" %>

@@ -307,4 +307,11 @@ public class UserServiceImpl implements UserService {
         }
         return userBo;
     }
+
+    @Override
+    public void saveUserForProfile(UserBo userBo) {
+        UserPo userPo=userDao.find(userBo.getId());
+        userPo.setName(userBo.getName());
+        userDao.saveForLog(userPo);
+    }
 }

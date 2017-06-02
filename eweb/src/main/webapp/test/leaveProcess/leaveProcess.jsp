@@ -130,6 +130,7 @@
 
         $scope.openImage=function (id) {
             $("#imageShowModal").modal("show");
+            $("#imageShowModalLabel").html('<eidea:label key="leave.process.label.leave.approval.preview"/>');
             $("#imageShow").attr("src",'<c:url value="/common/activiti/process/trace/auto/"/>'+id);
         }
         buttonHeader.listInit($scope,$window);

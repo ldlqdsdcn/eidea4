@@ -1,4 +1,5 @@
 <%@ page import="com.dsdl.eidea.core.def.FieldShowType" %>
+<%@ page import="com.dsdl.eidea.base.def.BoolChar" %>
 <%--
   Created by IntelliJ IDEA.
   User: 刘大磊
@@ -19,7 +20,7 @@
                     <th><input type="checkbox" name="selectAll" style="margin:0px;" ng-change="selectAll()"  ng-model="delFlag"></th>
                     <th><eidea:label key="base.serialNumber"/></th>
                     <c:forEach items="${fieldInListPageBoList}" var="item">
-                        <c:if test="${item.fieldPo.isdisplaygrid=='Y'}">
+                        <c:if test="${item.fieldPo.isdisplaygrid eq BoolChar.TRUE}">
                     <th>
                         <c:out value="${item.name}"/>
                     </th>
@@ -36,12 +37,18 @@
                     </td>
                     <td>{{(queryParams.pageNo-1)*queryParams.pageSize+$index+1}}</td>
                     <c:forEach items="${fieldInListPageBoList}" var="item">
-                        <c:if test="${item.fieldPo.isdisplaygrid=='Y'}">
+                        <c:if test="${item.fieldPo.isdisplaygrid eq BoolChar.TRUE}">
                             <c:set var="columnCount" value="${columnCount+1}"></c:set>
                             <td>
                                 <c:choose>
-                                    <c:when test="${item.fieldPo.showType eq FieldShowType.LINKED}">
+                                    <c:when test="${item.fieldPo.showType == FieldShowType.LINKED}">
                                         {{model.idLinked<c:out value="${item.id}"/>}}
+                                    </c:when>
+                                    <c:when test="${item.fieldPo.showType == FieldShowType.DATE}">
+                                        {{model.id<c:out value="${item.id}"/>|date:'yyyy-MM-dd HH:mm:ss'}}
+                                    </c:when>
+                                    <c:when test="${item.fieldPo.showType == FieldShowType.DATETIME}">
+                                        {{model.id<c:out value="${item.id}"/>|date:'yyyy-MM-dd HH:mm:ss'}}
                                     </c:when>
                                     <c:otherwise>
                                         {{model.id<c:out value="${item.id}"/>}}

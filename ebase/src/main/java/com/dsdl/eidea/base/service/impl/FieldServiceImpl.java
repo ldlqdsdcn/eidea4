@@ -6,8 +6,10 @@
  */
 package com.dsdl.eidea.base.service.impl;
 
+import com.dsdl.eidea.base.def.BoolChar;
 import com.dsdl.eidea.base.entity.bo.FieldInListPageBo;
 import com.dsdl.eidea.base.entity.bo.FieldValueBo;
+import com.dsdl.eidea.base.entity.bo.SelectItemBo;
 import com.dsdl.eidea.base.entity.bo.UserBo;
 import com.dsdl.eidea.base.entity.po.*;
 import com.dsdl.eidea.base.exception.ServiceException;
@@ -73,6 +75,8 @@ public class FieldServiceImpl implements FieldService {
     private CommonDao<ElementLinkedPo, Integer> elementLinkedDao;
     @DataAccess(entity = ElementCheckboxPo.class)
     private CommonDao<ElementCheckboxPo, Integer> elementCheckboxDao;
+    @DataAccess(entity = ElementSelectPo.class)
+    private CommonDao<ElementSelectPo, Integer> elementSelectDao;
     @Autowired
     private DataSource dataSource;
 
@@ -148,7 +152,7 @@ public class FieldServiceImpl implements FieldService {
             FieldTrlPo fieldTrlPo = fieldTrlDao.searchUnique(trlSearch);
             TableColumnPo tableColumnPo = tableColumnDao.find(fieldPo.getColumnId());
             JavaDataType dataType = JavaDataType.getJavaDataTypeByKey(tableColumnPo.getDataType());
-            FieldInputType fieldInputType = FieldInputType.getFieldInputTypeByKey(fieldPo.getInputType().getKey());
+            FieldInputType fieldInputType = fieldPo.getInputType();
             fieldInListPageBo.setDataType(dataType);
             fieldInListPageBo.setFieldInputType(fieldInputType);
             if (fieldTrlPo != null) {
@@ -500,8 +504,7 @@ public class FieldServiceImpl implements FieldService {
                 pkValue = (Serializable) param.get(key);
                 continue;
             }
-            //TODO 是否能更新
-            if (!"Y".equals(fieldPo.getIsupdated())) {
+            if (fieldPo.getIsupdated() == BoolChar.FALSE) {
                 continue;
             }
             if (isBgn) {
@@ -671,8 +674,7 @@ public class FieldServiceImpl implements FieldService {
             Integer fieldId = Integer.parseInt(idKey);
 
             FieldPo fieldPo = fieldDao.find(fieldId);
-            //TODO
-            if (!"Y".equals(fieldPo.getIsadded())) {
+            if (fieldPo.getIsadded() == BoolChar.FALSE) {
                 continue;
             }
             if (begin) {
@@ -806,6 +808,38 @@ public class FieldServiceImpl implements FieldService {
         }
 
 
+    }
+
+    public List<SelectItemBo> getSelectItemList(Integer fieldId) {
+        FieldPo fieldPo = fieldDao.find(fieldId);
+        Search search = new Search();
+        search.addFilterEqual("elementId", fieldPo.getElementId());
+        JavaDataType javaDataType = JavaDataType.getJavaDataTypeByKey(fieldPo.getTableColumnPo().getDataType());
+        if (fieldPo.getElementId() == null) {
+            throw new ServiceException("field id=" + fieldId + "的字段，element id不能为空");
+        }
+        ElementSelectPo elementSelectPo = elementSelectDao.searchUnique(search);
+        if (elementSelectPo == null) {
+            throw new ServiceException("找不到 element id 为" + fieldPo.getElementId() + "的 ElementSelect 记录");
+        }
+        String sql = elementSelectPo.getSql();
+        List<SelectItemBo> selectItemBoList = new ArrayList<>();
+        try {
+            Connection conn = dataSource.getConnection();
+            Statement statement = conn.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
+            while (rs.next()) {
+                Serializable key = (Serializable) getValue(rs, javaDataType, 1);
+                String value = rs.getString(2);
+                SelectItemBo selectItemBo = new SelectItemBo();
+                selectItemBo.setKey(key);
+                selectItemBo.setValue(value);
+                selectItemBoList.add(selectItemBo);
+            }
+        } catch (Exception e) {
+            throw new ServiceException("获取select list 执行sql出错", e);
+        }
+        return selectItemBoList;
     }
 
     class FieldColumn {

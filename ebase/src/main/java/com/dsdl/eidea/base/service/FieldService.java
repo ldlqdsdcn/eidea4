@@ -5,14 +5,13 @@
 * email:ldlqdsd@126.com
 */
 package com.dsdl.eidea.base.service;
-import com.dsdl.eidea.base.entity.bo.FieldBo;
+
 import com.dsdl.eidea.base.entity.bo.FieldInListPageBo;
-import com.dsdl.eidea.base.entity.bo.FieldValueBo;
+import com.dsdl.eidea.base.entity.bo.SelectItemBo;
 import com.dsdl.eidea.base.entity.bo.UserBo;
 import com.dsdl.eidea.base.entity.po.FieldPo;
 import com.dsdl.eidea.core.dto.PaginationResult;
 import com.dsdl.eidea.core.params.QueryParams;
-import com.dsdl.eidea.general.bo.FieldStructureBo;
 import com.dsdl.eidea.general.bo.TabFormStructureBo;
 import com.googlecode.genericdao.search.Search;
 
@@ -88,4 +87,11 @@ public interface FieldService {
 	 * @param ids
 	 */
 	void deleteList(Integer tabId,Object[] ids);
+
+	/**
+	 * 获取Select选择列表
+	 * @param fieldId
+	 * @return
+	 */
+	List<SelectItemBo> getSelectItemList(Integer fieldId);
 }

@@ -207,6 +207,4 @@ public class FieldPo implements java.io.Serializable {
     @JoinColumn(name = "column_id", updatable = false, insertable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     private TableColumnPo tableColumnPo;
-    @Column(name = "autowired_value")
-    private String autowiredValue;
 }

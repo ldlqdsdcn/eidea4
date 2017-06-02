@@ -1,5 +1,6 @@
 <%@ page import="com.dsdl.eidea.core.def.FieldInputType" %>
 <%@ page import="com.dsdl.eidea.core.def.FieldShowType" %>
+<%@ page import="com.dsdl.eidea.base.def.BoolChar" %>
 <%--
   Created by IntelliJ IDEA.
   User: 刘大磊
@@ -16,13 +17,13 @@
             <div class="span12">
                 <br>
                 <c:forEach var="fieldStructure" items="${tabFormStructureBo.fieldStructureBoList}">
-                    <c:if test="${fieldStructure.fieldPo.isDisplayed=='Y'}">
+                    <c:if test="${fieldStructure.fieldPo.isDisplayed==BoolChar.TRUE}">
                         <div class="form-group">
                             <label for="id${fieldStructure.fieldPo.id}">${fieldStructure.fieldTrlPo.name}</label>
                             <c:choose>
                                 <c:when test="${fieldStructure.fieldInputType eq FieldInputType.DATEPICKER}">
                                     <c:choose>
-                                        <c:when test="${fieldStructure.fieldPo.isreadonly=='Y'}">
+                                        <c:when test="${fieldStructure.fieldPo.isreadonly==BoolChar.TRUE}">
                                             <input type="date" class="form-control" id="id${fieldStructure.fieldPo.id}" name="id${fieldStructure.fieldPo.id}" value="{{model.id${fieldStructure.fieldPo.id}|date:'yyyy-MM-dd'}}"   readonly>
                                         </c:when>
                                         <c:otherwise>
@@ -37,7 +38,7 @@
                                 </c:when>
                                 <c:when test="${fieldStructure.fieldInputType eq FieldInputType.DATETIMEPICKER}">
                                     <c:choose>
-                                        <c:when test="${fieldStructure.fieldPo.isreadonly=='Y'}">
+                                        <c:when test="${fieldStructure.fieldPo.isreadonly==BoolChar.TRUE}">
                                             <input type="datetime" class="form-control" id="id${fieldStructure.fieldPo.id}" name="id${fieldStructure.fieldPo.id}" value="{{model.id${fieldStructure.fieldPo.id}|date:'yyyy-MM-dd HH:mm:ss'}}"   readonly>
                                         </c:when>
                                         <c:otherwise>
@@ -51,17 +52,17 @@
 
                                 </c:when>
                                 <c:when test="${fieldStructure.fieldInputType eq FieldInputType.CHECKBOX}">
-                                    <input type="checkbox" ng-true-value="'${fieldStructure.trueValue}'" ng-false-value="'${fieldStructure.falseValue}'" ng-model="model.id${fieldStructure.fieldPo.id}" name="id${fieldStructure.fieldPo.id}">
+                                    <input type="checkbox" ng-true-value="'${fieldStructure.trueValue}'" ng-false-value="'${fieldStructure.falseValue}'" ng-model="model.id${fieldStructure.fieldPo.id}" name="id${fieldStructure.fieldPo.id}"   ${fieldStructure.fieldPo.isreadonly==BoolChar.TRUE?'disabled':''} >
                                 </c:when>
                                 <c:otherwise>
                                     <c:choose>
                                         <c:when test="${fieldStructure.fieldPo.showType eq FieldShowType.LINKED}">
                                             <input type="text" class="form-control" id="idLinked${fieldStructure.fieldPo.id}" name="idLinked${fieldStructure.fieldPo.id}" ng-model="model.idLinked${fieldStructure.fieldPo.id}" placeholder="<eidea:message key="common.please.input"><eidea:param value="${fieldStructure.fieldTrlPo.name}" /></eidea:message>"
-                                                ${fieldStructure.fieldPo.isreadonly=='Y'?'readonly':''} >
+                                                ${fieldStructure.fieldPo.isreadonly==BoolChar.TRUE?'readonly':''} >
                                         </c:when>
                                         <c:otherwise>
                                             <input type="text" class="form-control" id="id${fieldStructure.fieldPo.id}" name="id${fieldStructure.fieldPo.id}" ng-model="model.id${fieldStructure.fieldPo.id}" placeholder="<eidea:message key="common.please.input"><eidea:param value="${fieldStructure.fieldTrlPo.name}" /></eidea:message>"
-                                                ${fieldStructure.fieldPo.isreadonly=='Y'?'readonly':''} >
+                                                ${fieldStructure.fieldPo.isreadonly==BoolChar.TRUE?'readonly':''} >
                                         </c:otherwise>
                                     </c:choose>
 

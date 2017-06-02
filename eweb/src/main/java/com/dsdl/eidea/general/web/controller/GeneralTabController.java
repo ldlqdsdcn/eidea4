@@ -1,6 +1,7 @@
 package com.dsdl.eidea.general.web.controller;
 
 import com.dsdl.eidea.base.entity.bo.FieldInListPageBo;
+import com.dsdl.eidea.base.entity.bo.SelectItemBo;
 import com.dsdl.eidea.base.entity.bo.UserBo;
 import com.dsdl.eidea.base.service.FieldService;
 import com.dsdl.eidea.base.service.TabService;
@@ -97,7 +98,13 @@ public class GeneralTabController {
         Map<String, Object> result = fieldService.getDataForm(tabId, recordId);
         return JsonResult.success(result);
     }
-
+    @RequestMapping("/getSelectList/{fieldId}")
+    @ResponseBody
+    public JsonResult<List<SelectItemBo>> getSelectList(@PathVariable("fieldId") Integer fieldId)
+    {
+        List<SelectItemBo> selectItemBoList=fieldService.getSelectItemList(fieldId);
+        return JsonResult.success(selectItemBoList);
+    }
     /**
      * 保存更新
      *

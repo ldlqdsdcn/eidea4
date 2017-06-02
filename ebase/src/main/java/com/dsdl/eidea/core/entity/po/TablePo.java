@@ -15,7 +15,7 @@ import java.util.List;
 @Table(name = "core_table", catalog = "e_idea")
 @Getter
 @Setter
-@org.hibernate.annotations.Cache(usage=CacheConcurrencyStrategy.READ_ONLY)
+@org.hibernate.annotations.Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 public class TablePo implements java.io.Serializable {
 
     // Fields

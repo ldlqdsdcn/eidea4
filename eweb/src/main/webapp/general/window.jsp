@@ -253,11 +253,9 @@
                 bootbox.alert(response);
             });
         }
-
         buttonHeader.editInit($scope,$http,$window,$timeout, Upload,"/general");
     });
 </c:forEach>
-
     app.run([
         'bootstrap3ElementModifier',
         function (bootstrap3ElementModifier) {

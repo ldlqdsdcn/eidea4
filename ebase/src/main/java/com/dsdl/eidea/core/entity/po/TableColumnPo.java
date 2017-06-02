@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Table(name = "core_table_column", catalog = "e_idea")
 @Getter
 @Setter
-@org.hibernate.annotations.Cache(usage= CacheConcurrencyStrategy.READ_ONLY)
+@org.hibernate.annotations.Cache(usage= CacheConcurrencyStrategy.READ_WRITE)
 public class TableColumnPo implements java.io.Serializable {
 
 	// Fields

@@ -7,24 +7,15 @@ import javax.persistence.AttributeConverter;
 /**
  * Created by 车东明 on 2017/5/31.
  */
-public class InputTypeConverter implements AttributeConverter<String,Integer> {
+public class InputTypeConverter implements AttributeConverter<FieldInputType,Integer> {
     /**
      * 将实体属性x转化为y存入数据库中
-     * @param desc
+     * @param fieldInputType
      * @return
      */
     @Override
-    public Integer convertToDatabaseColumn(String desc) {
-        try{
-            return Integer.parseInt(desc);//是数字就直接返回
-        }catch (NumberFormatException e){
-            for (FieldInputType fieldInputType: FieldInputType.values()){
-                if (desc.equals(fieldInputType.getDesc())){
-                    return fieldInputType.getKey();
-                }
-            }
-        }
-        throw new RuntimeException("UnkownInputType:"+desc);
+    public Integer convertToDatabaseColumn(FieldInputType fieldInputType) {
+        return fieldInputType.getKey();
     }
 
     /**
@@ -33,10 +24,10 @@ public class InputTypeConverter implements AttributeConverter<String,Integer> {
      * @return
      */
     @Override
-    public String  convertToEntityAttribute(Integer key) {
+    public FieldInputType  convertToEntityAttribute(Integer key) {
         for (FieldInputType type:FieldInputType.values()){
             if (key==type.getKey()){
-                return type.getDesc();
+                return type;
             }
         }
        throw new RuntimeException("UnkownDataBase Key:"+key);

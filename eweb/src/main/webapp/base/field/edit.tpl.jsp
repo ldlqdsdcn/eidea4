@@ -85,7 +85,7 @@ Date: 2017-05-04 13:22:23
                 <td class=" control-label"><%--inputType--%><eidea:label key="base.field.label.inputType"/></td>
                 <td class="form-group"><select class="form-control" id="inputType"
                                                ng-model="fieldPo.inputType"
-                                               ng-options="option.desc as option.desc for option in inputTypeList"
+                                               ng-options="option.value as option.desc for option in inputTypeList"
                                                required></select></td>
                 <td class="control-label"><%--defaultvalue--%><eidea:label key="base.field.label.defaultvalue"/></td>
                 <td class="form-group"><input type="text" class="form-control" id="defaultvalue"

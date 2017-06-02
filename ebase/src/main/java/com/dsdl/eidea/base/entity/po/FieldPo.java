@@ -14,6 +14,7 @@ import javax.validation.constraints.NotNull;
 import com.dsdl.eidea.base.def.BoolChar;
 import com.dsdl.eidea.base.init.BoolCharConverter;
 import com.dsdl.eidea.base.init.InputTypeConverter;
+import com.dsdl.eidea.core.def.FieldInputType;
 import com.dsdl.eidea.core.def.FieldShowType;
 import com.dsdl.eidea.core.entity.po.TableColumnPo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -102,7 +103,7 @@ public class FieldPo implements java.io.Serializable {
      **/
     @Column(name = "[input_type]", nullable = false, length = 11)
     @Convert(converter = InputTypeConverter.class)
-    private String inputType;
+    private FieldInputType inputType;
     /**
      * 是否显示
      **/

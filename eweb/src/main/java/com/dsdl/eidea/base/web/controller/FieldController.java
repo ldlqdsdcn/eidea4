@@ -140,7 +140,7 @@ public class FieldController extends BaseController {
         JsonArray jsonArray = new JsonArray();
         for (FieldInputType fieldInputType:FieldInputType.values()){
             JsonObject jsonObject = new JsonObject();
-            jsonObject.addProperty("key",fieldInputType.getKey());
+            jsonObject.addProperty("value",fieldInputType.name());
             jsonObject.addProperty("desc",fieldInputType.getDesc());
             jsonArray.add(jsonObject);
         }

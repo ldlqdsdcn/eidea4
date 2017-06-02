@@ -5,6 +5,7 @@
   Time: 11:16
   To change this template use File | Settings | File Templates.
 --%>
+<%@ page import="com.dsdl.eidea.core.def.FieldInputType" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/inc/taglib.jsp" %>
 <html>
@@ -169,6 +170,20 @@
                 }).error(function (response) {
             bootbox.alert(response);
         });
+        <c:forEach items="${tab.fieldList}" var="field">
+            <c:if test="${field.inputType eq FieldInputType.SELECT}">
+                $http.get("<c:url value="/general/tab/getSelectList/${field.id}"/>")
+                    .success(function (response) {
+                        if (response.success) {
+                            $scope.selectField${field.id} = response.data;
+                        }
+                        else
+                        {
+                            bootbox.alert(response.message);
+                        }
+                    });
+            </c:if>
+        </c:forEach>
         /**
          * 日期时间选择控件
          * bootstrap-datetime 24小时时间是hh

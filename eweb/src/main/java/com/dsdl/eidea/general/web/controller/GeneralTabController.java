@@ -51,12 +51,9 @@ public class GeneralTabController {
         String lang = (String) session.getAttribute(WebConst.SESSION_LANGUAGE);
         List<FieldInListPageBo> fieldInListPageBoList = fieldService.getListPageFiledList(tabId, lang);
         modelAndView.addObject("fieldInListPageBoList", fieldInListPageBoList);
-
-
         modelAndView.addObject("tabId", tabId);
         Integer pkFieldId = tabService.getTabPkFieldId(tabId);
         modelAndView.addObject("pk", "id" + pkFieldId);
-
         return modelAndView;
     }
 
@@ -98,13 +95,14 @@ public class GeneralTabController {
         Map<String, Object> result = fieldService.getDataForm(tabId, recordId);
         return JsonResult.success(result);
     }
+
     @RequestMapping("/getSelectList/{fieldId}")
     @ResponseBody
-    public JsonResult<List<SelectItemBo>> getSelectList(@PathVariable("fieldId") Integer fieldId)
-    {
-        List<SelectItemBo> selectItemBoList=fieldService.getSelectItemList(fieldId);
+    public JsonResult<List<SelectItemBo>> getSelectList(@PathVariable("fieldId") Integer fieldId) {
+        List<SelectItemBo> selectItemBoList = fieldService.getSelectItemList(fieldId);
         return JsonResult.success(selectItemBoList);
     }
+
     /**
      * 保存更新
      *

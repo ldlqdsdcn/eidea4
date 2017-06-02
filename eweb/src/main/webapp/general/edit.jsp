@@ -21,6 +21,10 @@
                         <div class="form-group">
                             <label for="id${fieldStructure.fieldPo.id}">${fieldStructure.fieldTrlPo.name}</label>
                             <c:choose>
+                                <c:when test="${fieldStructure.fieldInputType eq FieldInputType.SELECT}">
+                                    <select class="form-control" id="id${fieldStructure.fieldPo.id}" name="id${fieldStructure.fieldPo.id}" ng-model="model.id${fieldStructure.fieldPo.id}"
+                                            ng-options="select.key as select.value for select in selectField${fieldStructure.fieldPo.id}" required></select>
+                                </c:when>
                                 <c:when test="${fieldStructure.fieldInputType eq FieldInputType.DATEPICKER}">
                                     <c:choose>
                                         <c:when test="${fieldStructure.fieldPo.isreadonly==BoolChar.TRUE}">

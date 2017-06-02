@@ -43,7 +43,7 @@
                     templateUrl:'<c:url value="/base/tab/list.tpl.jsp"/> '
                 })
                 .state('windowEdit.edittab',{
-                    url:'/edittab?tabid&columnId',
+                    url:'/edittab?tabId',
                     templateUrl:'<c:url value="/base/tab/edit.tpl.jsp"/> '
                 })
                 .state('windowEdit.edittab.listTabTrl',{
@@ -451,10 +451,10 @@
             init: true
         };
         $scope.pageChanged();
-        $scope.editWindowTrl=function(id){
+        $scope.edit=function(id){
             $state.go('windowEdit.windowTrlEdit',{windowTrlId:id})
         }
-        $scope.createWindowTrl=function(){
+        $scope.create=function(){
             $state.go('windowEdit.windowTrlEdit',{windowTrlId:null})
         }
     });
@@ -547,7 +547,7 @@
                 bootbox.alert(response);
             });
         }
-        $scope.backWindowTrlList=function () {
+        $scope.back=function () {
             $state.go('windowEdit.windowTrlList');
         }
     });
@@ -635,13 +635,13 @@
             init: true
         };
         $scope.pageChanged();
-        $scope.editItem=function (id,columnId) {
+        $scope.edit=function (id) {
             $rootScope.tabTrlBtnShow=true;
             $rootScope.fieldBtnShow=true;
-          $state.go('windowEdit.edittab',{tabid:id,columnId:columnId})
+          $state.go('windowEdit.edittab',{tabId:id})
         }
-        $scope.createItem=function () {
-            $state.go('windowEdit.edittab',{tabid:null})
+        $scope.create=function () {
+            $state.go('windowEdit.edittab',{tabId:null})
         }
     });
     app.controller('editTabCtrl', function ($scope, $http,$rootScope,$stateParams,$state) {
@@ -675,8 +675,8 @@
         $scope.tabPo = {};
         $scope.canAdd = PrivilegeService.hasPrivilege('add');
         var url = "<c:url value="/base/tab/create"/>";
-        if ($stateParams.tabid != null) {
-            url = "<c:url value="/base/tab/get"/>" + "?id=" + $stateParams.tabid;
+        if ($stateParams.tabId != null) {
+            url = "<c:url value="/base/tab/get"/>" + "?id=" + $stateParams.tabId;
         }
         $http.get(url)
             .success(function (response) {
@@ -761,7 +761,7 @@
                 bootbox.alert(data.message);
             })
         }
-        $scope.backItemList=function () {
+        $scope.back=function () {
             $state.go('windowEdit.tablist',{id:$stateParams.id});
         }
     });
@@ -790,7 +790,7 @@
             return false;
         }
         $scope.pageChanged = function () {
-            $http.post("<c:url value="/base/tabTrl/tabTrlList"/>", $stateParams.tabid)
+            $http.post("<c:url value="/base/tabTrl/tabTrlList"/>", $stateParams.tabId)
                 .success(function (response) {
                     $scope.isLoading = false;
                     if (response.success) {
@@ -851,10 +851,10 @@
             init: true
         };
         $scope.pageChanged();
-        $scope.editTabTrl=function (id) {
+        $scope.edit=function (id) {
             $state.go('windowEdit.edittab.editTabTrl',{tabTrlId:id});
         }
-        $scope.createTabTrl=function () {
+        $scope.create=function () {
             $state.go('windowEdit.edittab.editTabTrl',{tabTrlId:null});
         }
     });
@@ -906,8 +906,8 @@
             bootbox.alert(response);
         });
         $scope.save = function () {
-            var tabid=/^[0-9]+$/
-            if (!tabid.test($scope.tabTrlPo.tabId)){
+            var tabId=/^[0-9]+$/
+            if (!tabId.test($scope.tabTrlPo.tabId)){
                 $scope.message="<eidea:label key="base.window.id.type.error"/> ";
                 return false;
             }
@@ -947,7 +947,7 @@
                 bootbox.alert(response);
             });
         }
-        $scope.backTabTrlList=function () {
+        $scope.back=function () {
             $state.go('windowEdit.edittab.listTabTrl');
         }
     });
@@ -976,7 +976,7 @@
             return false;
         };
         $scope.pageChanged = function () {
-            $http.post("<c:url value="/base/field/fieldList"/>", $stateParams.columnId)
+            $http.post("<c:url value="/base/field/fieldList"/>", $stateParams.tabId)
                 .success(function (response) {
                     $scope.isLoading = false;
                     if (response.success) {
@@ -1035,12 +1035,12 @@
             init: true
         };
         $scope.pageChanged();
-        $scope.editField=function (id) {
+        $scope.edit=function (id) {
             $rootScope.fieldTrlBtnShow=true;
             $rootScope.fieldValidatorBtnShow=true;
             $state.go('windowEdit.edittab.editField',{field:id})
         }
-        $scope.createField=function () {
+        $scope.create=function () {
             $state.go('windowEdit.edittab.editField',{field:null})
         }
     });
@@ -1083,6 +1083,14 @@
                 bootbox.alert(response.message);
             }
         });
+        $http.get("<c:url value="/base/field/selectShowType"/> ").success(function (response) {
+            if(response.success){
+                var selectShowType=$.parseJSON(response.data);
+                $scope.showTypeList=selectShowType.fieldShowType;
+            }else{
+                bootbox.alert(response.message);
+            }
+        })
         var url = "<c:url value="/base/field/create"/>";
         if ($stateParams.field != null) {
             url = "<c:url value="/base/field/get"/>" + "?id=" + $stateParams.field;
@@ -1145,7 +1153,7 @@
                 bootbox.alert(response);
             });
         }
-        $scope.backFieldList=function () {
+        $scope.back=function () {
             $state.go('windowEdit.edittab.listField');
         }
     });
@@ -1235,10 +1243,10 @@
             init: true
         };
         $scope.pageChanged();
-        $scope.editFieldTrl=function (id) {
+        $scope.edit=function (id) {
             $state.go('windowEdit.edittab.editField.editFieldTrl',{fieldTrlId:id})
         }
-        $scope.createFieldTrl=function () {
+        $scope.create=function () {
             $state.go('windowEdit.edittab.editField.editFieldTrl',{fieldTrlId:null})
         }
     });
@@ -1290,7 +1298,7 @@
             bootbox.alert(response);
         });
         $scope.save = function () {
-            var field=/^[0-9]+&/
+            var field=/^[0-9]+$/;
             if (!field.test($scope.fieldTrlPo.fieldId)){
                 $scope.message="<eidea:label key="base.field.id.type.error"/> ";
                 return false;
@@ -1331,7 +1339,7 @@
                 bootbox.alert(response);
             });
         }
-    $scope.backFieldTrlList=function () {
+    $scope.back=function () {
         $state.go('windowEdit.edittab.editField.listFieldTrl');
     }
     });
@@ -1421,10 +1429,10 @@
             init: true
         };
         $scope.pageChanged();
-        $scope.editFieldValidator=function (id) {
+        $scope.edit=function (id) {
             $state.go('windowEdit.edittab.editField.editFieldValidator',{fieldValidatorId:id});
         }
-        $scope.createFieldValidator=function () {
+        $scope.create=function () {
             $state.go('windowEdit.edittab.editField.editFieldValidator',{fieldValidatorId:null});
         }
     });
@@ -1512,7 +1520,7 @@
                 bootbox.alert(response);
             });
         }
-    $scope.backFieldValidatorList=function () {
+    $scope.back=function () {
         $state.go('windowEdit.edittab.editField.listFieldValidator')
     }
     });

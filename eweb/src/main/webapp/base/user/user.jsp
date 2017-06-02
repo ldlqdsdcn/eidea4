@@ -117,9 +117,7 @@
             };
             $rootScope.listQueryParams = $scope.queryParams;
         }
-
         $scope.pageChanged();
-
         buttonHeader.listInit($scope,$window);
     });
     app.controller('editCtrl', function ($routeParams,$scope, $http,$window,$timeout, Upload) {
@@ -154,7 +152,7 @@
         $scope.getExistUserName = function () {
             $http.post("<c:url value="/base/user/getExistUserName"/>", $scope.userBo).success(function (data) {
                 if (data.success) {
-                    if (data.data) {
+                    if (!data.data) {
                         userName = true;
                         $scope.message = "";
                     } else {
@@ -182,11 +180,11 @@
                 /*密码和确认密码不一致*/
                 return false;
             }
-         /*   var reg = /^1[3|4|5|7|8][0-9]{9}$/;
-            if(!reg.test($scope.userBo.telephone)){
-                $scope.message = "<eidea:label key="telephone.confirm.error"/>";
-                return false;
-            }*/
+         <%--/*   var reg = /^1[3|4|5|7|8][0-9]{9}$/;--%>
+            <%--if(!reg.test($scope.userBo.telephone)){--%>
+                <%--&lt;%&ndash;$scope.message = "<eidea:label key="telephone.confirm.error"/>";&ndash;%&gt;--%>
+                <%--return false;--%>
+            <%--}*/--%>
             var roleIds = [];
             for (var i = 0; i < $scope.roleList.length; i++) {
                 if ($scope.roleList[i].roleDelFlag) {

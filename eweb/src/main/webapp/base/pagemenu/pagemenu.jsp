@@ -129,7 +129,7 @@
         $scope.pageMenuBo = {};
         $scope.canAdd=PrivilegeService.hasPrivilege('add');
         $scope.canSave=false;
-        $scope.menuTypeList={"<eidea:label key="dymenu.label.menufolde"/>":1,"<eidea:label key="dymenuForm.label.type.hyperlink"/>":2};
+        $scope.menuTypeList={"<eidea:label key="dymenu.label.menufolde"/>":1,"<eidea:label key="dymenuForm.label.type.hyperlink"/>":2,"窗体":3};
         var url = "<c:url value="/base/pagemenu/create"/>";
         if ($routeParams.id != null) {
             url = "<c:url value="/base/pagemenu/get"/>" + "?id=" + $routeParams.id;

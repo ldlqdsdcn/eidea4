@@ -2,7 +2,7 @@
 <%@ include file="/inc/taglib.jsp" %>
 <div  class="container-fluid" ng-controller="listTabCtrl">
     <div class="page-header" >
-        <button type="button" class="btn btn-primary btn-sm" ng-show="canAdd" ng-click="createItem()"><eidea:label key="common.button.create"/></button>
+        <button type="button" class="btn btn-primary btn-sm" ng-show="canAdd" ng-click="create()"><eidea:label key="common.button.create"/></button>
         <button type="button" class="btn  btn-primary btn-sm" id="search_but" data-toggle="modal"
                 data-target="#searchModal"><eidea:label key="common.button.search"/></button>
         <button type="button" class="btn  btn-primary btn-sm" ng-disabled="!canDelete()"
@@ -78,7 +78,7 @@
                         {{model.updatedby}}
                     </td>
                     <td>
-                        <button class="btn btn-primary btn-xs" ng-click="editItem(model.id,model.tableColumnId)"><eidea:label key="common.button.edit"/></button>
+                        <button class="btn btn-primary btn-xs" ng-click="edit(model.id)"><eidea:label key="common.button.edit"/></button>
                     </td>
                 </tr>
                 </tbody>

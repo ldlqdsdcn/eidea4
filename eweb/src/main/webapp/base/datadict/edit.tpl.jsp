@@ -6,7 +6,6 @@ Date: 2017-04-26 15:34:59
 <%@ include file="/inc/taglib.jsp" %>
 <div class="container-fluid" ng-controller="editDetailCtrl">
     <form role="form" name="editForm" novalidate  ng-submit="save()">
-        <jsp:include page="/common/common_edit_button.jsp"/>
         <div class="row-fluid">
             <div class="span12">
                 <br>
@@ -36,6 +35,16 @@ Date: 2017-04-26 15:34:59
                                        ng-model="datadictPo.remark" ng-maxlength="200">
 
                     </div>
+                        <div class="form-group">
+                            <p class="text-right">
+                                <button type="reset" ng-click="create()" class="btn btn-default btn-sm" ng-show="canAdd"><%--新建--%>
+                                    <eidea:label key="common.button.create"/></button>
+                                <button type="submit" class="btn btn-default btn-sm" ng-show="canSave"><%--保存--%><eidea:label
+                                        key="common.button.save"/></button>
+                                <button class="btn btn-default btn-sm" ng-click="back()"><eidea:label
+                                        key="common.button.back"/></button>
+                            </p>
+                        </div>
                     <div class="form-group">
                         <p class="text-center" style="color: red">
                             {{message}}

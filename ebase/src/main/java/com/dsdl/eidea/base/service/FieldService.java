@@ -5,12 +5,17 @@
 * email:ldlqdsd@126.com
 */
 package com.dsdl.eidea.base.service;
-import com.dsdl.eidea.base.entity.bo.FieldBo;
+
 import com.dsdl.eidea.base.entity.bo.FieldInListPageBo;
+import com.dsdl.eidea.base.entity.bo.SelectItemBo;
+import com.dsdl.eidea.base.entity.bo.UserBo;
 import com.dsdl.eidea.base.entity.po.FieldPo;
 import com.dsdl.eidea.core.dto.PaginationResult;
 import com.dsdl.eidea.core.params.QueryParams;
+import com.dsdl.eidea.general.bo.TabFormStructureBo;
 import com.googlecode.genericdao.search.Search;
+
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -19,7 +24,7 @@ import java.util.Map;
  */
 public interface FieldService {
 	PaginationResult<FieldPo> getFieldListByPaging(Search search,QueryParams queryParams);
-	PaginationResult<FieldPo> getFieldListByColumnId(Search search,Integer columnId);
+	PaginationResult<FieldPo> getFieldListByTabId(Search search,Integer tabId);
 	boolean findExistFieldByName(String name);
 	FieldPo getField(Integer id);
 	void saveField(FieldPo field);
@@ -37,14 +42,56 @@ public interface FieldService {
 	 * @param tabId
 	 * @return
 	 */
-	List<FieldBo> getFormPageFieldList(Integer tabId,String lang);
+	TabFormStructureBo getFormPageFieldList(Integer tabId, String lang);
 
     /**
      *
      * @param tabId
-     * @param bgn
-     * @param size
+     * @param queryParams
      * @return
      */
-    List<Map<String, String>> getDataList(Integer tabId, int bgn, int size);
+	PaginationResult<Map<String, Object>> getDataList(Integer tabId,  QueryParams queryParams);
+
+	/**
+	 * 根据tabId和record获取记录
+	 * @param tabId
+	 * @param recordId
+	 * @return
+	 */
+	Map<String, Object> getDataForm(Integer tabId, Serializable recordId) ;
+
+	/**
+	 * 修改记录
+	 * @param param
+	 * @return
+	 */
+	Map<String,Object> saveForUpdated(Integer tabId, Map<String,Object> param, UserBo userBo);
+
+	/**
+	 * 添加记录
+	 * @param param
+	 * @return
+	 */
+	Map<String,Object> saveForCreated(Integer tabId,Map<String,Object> param,UserBo userBo);
+
+	/**
+	 * 新建对象
+	 * @param tabId
+	 * @return
+	 */
+	Map<String,Object> getNewObject(Integer tabId,String lang, UserBo userBo);
+
+	/**
+	 * 删除记录
+	 * @param tabId
+	 * @param ids
+	 */
+	void deleteList(Integer tabId,Object[] ids);
+
+	/**
+	 * 获取Select选择列表
+	 * @param fieldId
+	 * @return
+	 */
+	List<SelectItemBo> getSelectItemList(Integer fieldId);
 }

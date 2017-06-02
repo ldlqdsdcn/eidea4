@@ -1,14 +1,12 @@
 package com.dsdl.eidea.base.rest;
 
 import com.dsdl.eidea.api.model.Client;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,6 +15,7 @@ import java.util.Date;
 /**
  * Created by 刘大磊 on 2017/4/13 10:07.
  */
+
 @RestController
 @Api(value = "Client", position = 0, description = "实体信息", consumes = "application/json")
 public class ClientRestController {
@@ -34,6 +33,7 @@ public class ClientRestController {
 
     @ApiOperation(value = "保存实体信息", httpMethod = "GET", response = Client.class, notes = "根据实体的id信息获取实体的详情", produces = MediaType.APPLICATION_JSON_VALUE)
     @RequestMapping("/client/save")
+
     @ApiResponses(value = {@ApiResponse(code = 400, message = "保存实体信息失败")})
     public ResponseEntity<Client> saveClient(Client client) {
         if(client==null||client.getName()==null)

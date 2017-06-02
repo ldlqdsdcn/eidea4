@@ -31,6 +31,7 @@
                     <td>
                         <span ng-if="model.menuType == 1"><eidea:label key="dymenu.label.menufolde"/></span>
                         <span ng-if="model.menuType == 2"><eidea:label key="dymenus.label.type.hyperlink"/></span>
+                        <span ng-if="model.menuType == 3">窗体</span>
                     </td>
                     <td>
                         {{model.icon}}

@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/inc/taglib.jsp" %>
-<div  class="container-fluid" ng-controller="listCtrl">
+<div  class="container-fluid" ng-controller="listDetailCtrl">
     <jsp:include page="/common/common_list_button.jsp"/>
     <div class="row-fluid">
         <div class="span12">
@@ -40,9 +40,7 @@
                         {{model.remark}}
                     </td>
                     <td>
-                        <a class="btn btn-primary btn-xs" href="#/edit?id={{model.id}}">
-                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.edit"/><%--编辑--%>
-                        </a>
+                        <button type="button" class="btn btn-primary btn-xs" ng-click="editDetail(model.id)"><i class="fa fa-pencil-square-o" aria-hidden="true"/><eidea:label key="common.button.edit"/> </button>
                     </td>
                 </tr>
                 </tbody>

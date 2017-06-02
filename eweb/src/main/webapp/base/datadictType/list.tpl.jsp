@@ -36,7 +36,7 @@
                         {{model.isactive}}
                     </td>
                     <td>
-                        <a class="btn btn-primary btn-xs" href="#/edit?id={{model.id}}">
+                        <a class="btn btn-primary btn-xs" href="#/edit?id={{model.id}}&dataType={{model.value}}">
                             <i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.edit"/><%--编辑--%></a>
                     </td>
                 </tr>

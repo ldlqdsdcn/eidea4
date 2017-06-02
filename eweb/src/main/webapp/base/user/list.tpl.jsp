@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/inc/taglib.jsp" %>
 <div  class="container-fluid" ng-controller="listCtrl">
-    <jsp:include page="/common/common_list_button.jsp"/>
+    <%@include file="/common/common_list_button.jsp" %>
     <div class="row-fluid">
         <div class="span12">
             <table  class="table table-hover table-striped table-condensed">
@@ -9,7 +9,7 @@
                 <tr>
                     <th><input type="checkbox" name="selectAll" style="margin:0px;" ng-change="selectAll()"
                                ng-model="delFlag"></th>
-                    <th>id</th>
+                    <th><eidea:label key="base.serialNumber"/></th>
                     <th><eidea:label key="loginlog.label.loginname"/></th>
                     <th><eidea:label key="user.username"/></th>
                     <th><eidea:label key="operator.column.init"/></th>

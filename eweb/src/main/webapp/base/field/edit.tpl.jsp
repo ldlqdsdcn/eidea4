@@ -7,7 +7,7 @@ Date: 2017-05-04 13:22:23
 <div class="container-fluid" ng-controller="editFieldCtrl">
     <div ui-view ng-show="fieldTrlListShow||fieldValidatorListShow"></div>
     <form role="form" name="editForm" novalidate ng-submit="save()" ng-show="fieldEditShow" class="form-horizontal form-label-left input_mask">
-        <table class="table v-table-borderless">
+        <table class="table table-borderless">
             <tr>
                 <td class="control-label"><%--seqNo--%><eidea:label key="base.field.label.seqNo"/></td>
                 <td class="form-group"><input type="text" class="form-control" id="seqNo"
@@ -20,7 +20,7 @@ Date: 2017-05-04 13:22:23
             </tr>
             <tr>
                 <td class="control-label"><%--required--%><eidea:label key="base.field.label.required"/></td>
-                <td class="form-group"><input type="checkbox" id="required" ng-true-value="'Y'" ng-false-value="'N'"
+                <td class="form-group"><input type="checkbox" id="required" ng-true-value="'TRUE'" ng-false-value="'FALSE'"
                                               ng-model="fieldPo.required"></td>
                 <td class="control-label"><%--是否有效--%><eidea:label key="base.field.label.isactive"/></td>
                 <td class="form-group"><input id="isactive" type="checkbox" ng-true-value="'Y'" ng-false-value="'N'"
@@ -74,18 +74,18 @@ Date: 2017-05-04 13:22:23
             </tr>
             <tr>
                 <td class="control-label"><%--issameline--%><eidea:label key="base.field.label.issameline"/></td>
-                <td class="form-group"><input type="checkbox" id="issameline" ng-true-value="'Y'" ng-false-value="'N'"
+                <td class="form-group"><input type="checkbox" id="issameline" ng-true-value="'TRUE'" ng-false-value="'FALSE'"
                                               ng-model="fieldPo.issameline"></td>
 
                 <td class="control-label"><%--isencrypted--%><eidea:label key="base.field.label.isencrypted"/></td>
-                <td class="form-group"><input type="checkbox" id="isencrypted" ng-true-value="'Y'" ng-false-value="'N'"
+                <td class="form-group"><input type="checkbox" id="isencrypted" ng-true-value="'TRUE'" ng-false-value="'FALSE'"
                                               ng-model="fieldPo.isencrypted"></td>
             </tr>
             <tr>
                 <td class=" control-label"><%--inputType--%><eidea:label key="base.field.label.inputType"/></td>
                 <td class="form-group"><select class="form-control" id="inputType"
                                                ng-model="fieldPo.inputType"
-                                               ng-options="option.key as option.desc for option in inputTypeList"
+                                               ng-options="option.value as option.desc for option in inputTypeList"
                                                required></select></td>
                 <td class="control-label"><%--defaultvalue--%><eidea:label key="base.field.label.defaultvalue"/></td>
                 <td class="form-group"><input type="text" class="form-control" id="defaultvalue"
@@ -94,10 +94,10 @@ Date: 2017-05-04 13:22:23
             </tr>
             <tr>
                 <td class="control-label"><%--isDisplayed--%><eidea:label key="base.field.label.isDisplayed"/></td>
-                <td class="form-group"><input type="checkbox" id="isDisplayed" ng-true-value="'Y'" ng-false-value="'N'"
+                <td class="form-group"><input type="checkbox" id="isDisplayed" ng-true-value="'TRUE'" ng-false-value="'FALSE'"
                                               ng-model="fieldPo.isDisplayed"></td>
                 <td class="control-label"><%--isreadonly--%><eidea:label key="base.field.label.isreadonly"/></td>
-                <td class="form-group"><input type="checkbox" id="isreadonly" ng-true-value="'Y'" ng-false-value="'N'"
+                <td class="form-group"><input type="checkbox" id="isreadonly" ng-true-value="'TRUE'" ng-false-value="'FALSE'"
                                               ng-model="fieldPo.isreadonly"></td>
             </tr>
             <tr>
@@ -119,19 +119,37 @@ Date: 2017-05-04 13:22:23
             </tr>
             <tr>
                 <td class="control-label"><%--isdisplaygrid--%><eidea:label key="base.field.label.isdisplaygrid"/></td>
-                <td class="form-group"><input type="checkbox" id="isdisplaygrid" ng-true-value="'Y'"
-                                              ng-false-value="'N'" ng-model="fieldPo.isdisplaygrid"></td>
+                <td class="form-group"><input type="checkbox" id="isdisplaygrid" ng-true-value="'TRUE'" ng-false-value="'FALSE'" ng-model="fieldPo.isdisplaygrid"></td>
                 <td class="control-label"><%--isprinted--%><eidea:label key="base.field.label.isprinted"/></td>
-                <td class="form-group"><input type="checkbox" id="isprinted" ng-true-value="'Y'" ng-false-value="'N'"
+                <td class="form-group"><input type="checkbox" id="isprinted" ng-true-value="'TRUE'" ng-false-value="'FALSE'"
                                               ng-model="fieldPo.isprinted"></td>
             </tr>
             <tr>
                 <td class="control-label"><%--isallowcopy--%><eidea:label key="base.field.label.isallowcopy"/></td>
-                <td class="form-group"><input type="checkbox" id="isallowcopy" ng-true-value="'Y'" ng-false-value="'N'"
+                <td class="form-group"><input type="checkbox" id="isallowcopy" ng-true-value="'TRUE'" ng-false-value="'FALSE'"
                                               ng-model="fieldPo.isallowcopy"></td>
                 <td class="control-label"><%--isreport--%><eidea:label key="base.field.label.isreport"/></td>
-                <td class="form-group"><input type="checkbox" id="isreport" ng-true-value="'Y'" ng-false-value="'N'"
+                <td class="form-group"><input type="checkbox" id="isreport" ng-true-value="'TRUE'" ng-false-value="'FALSE'"
                                               ng-model="fieldPo.isreport"></td>
+            </tr>
+            <tr>
+                <td class="control-label"><%--tabId--%><eidea:label key="base.field.label.tabId"/></td>
+                <td class="form-group"><input type="text" class="form-control" id="tabId" ng-model="fieldPo.tabId" placeholder="<eidea:message key="common.please.input"><eidea:param value="base.field.label.tabId" type="label"/></eidea:message> " ng-minlength="1" ng-maxlength="11"> </td>
+                <td class="control-label"><%--elementId--%><eidea:label key="base.field.label.elementId"/></td>
+                <td class="form-group"><input type="text" class="form-control" id="elementId" ng-model="fieldPo.elementId" placeholder="<eidea:message key="common.please.input"><eidea:param value="base.field.label.elementId" type="label"/></eidea:message>" ng-minlength="1" ng-maxlength="11"> </td>
+            </tr>
+            <tr>
+                <td class="control-label"><%--是否可添加--%><eidea:label key="base.field.label.isadded"/></td>
+                <td class="form-group"><input type="checkbox" id="isadded" ng-model="fieldPo.isadded" ng-true-value="'TRUE'" ng-false-value="'FALSE'"></td>
+                <td class="control-label"><%--是否可更新--%><eidea:label key="base.field.label.isupdated"/> </td>
+                <td class="form-group"><input type="checkbox" id="isupdated" ng-model="fieldPo.isupdated" ng-true-value="'TRUE'" ng-false-value="'FALSE'"></td>
+            </tr>
+            <tr>
+                <td class="control-label"><%--自动填充值--%><eidea:label key="base.field.label.autowiredValue"/></td>
+                <td class="form-group"><input type="text" class="form-control" id="autowired" ng-model="fieldPo.autowiredValue" placeholder="<eidea:message key="common.please.input">
+                                                        <eidea:param value="base.field.label.autowiredValue" type="label"/></eidea:message> " ng-maxlength="2000"> </td>
+                <td class="control-label"><%--显示类型--%><eidea:label key="base.field.label.showType"/></td>
+                <td class="form-group"><select class="form-control" id="showType" ng-model="fieldPo.showType" ng-options="option.value as option.desc for option in showTypeList"></select> </td>
             </tr>
         </table>
         <div class="form-group">
@@ -140,7 +158,7 @@ Date: 2017-05-04 13:22:23
                     <eidea:label key="common.button.create"/></button>
                 <button type="submit" class="btn btn-default btn-sm" ng-show="canSave"><%--保存--%><eidea:label
                         key="common.button.save"/></button>
-                <button type="button" class="btn btn-default btn-sm" ng-click="backFieldList()"><eidea:label
+                <button type="button" class="btn btn-default btn-sm" ng-click="back()"><eidea:label
                         key="common.button.back"/></button>
             </p>
         </div>

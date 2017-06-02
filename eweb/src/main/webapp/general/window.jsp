@@ -30,6 +30,7 @@
 <jsp:include page="/common/searchPage">
     <jsp:param name="uri" value="${uri}"/>
 </jsp:include>
+<jsp:include page="/general/window/help/${windowBo.windowId}"/>
 </body>
 <script type="text/javascript">
     var app = angular.module('myApp',['ngFileUpload','ngRoute','ui.router','ui.bootstrap','jcs-autoValidate'])

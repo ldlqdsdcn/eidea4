@@ -50,7 +50,4 @@ public class TableColumnPo implements java.io.Serializable {
 	private Integer digits;
 	@Column(name = "nullable", length = 1)
 	private String nullable;
-
-
-
 }

@@ -32,7 +32,7 @@
     <button type="button" class="btn  btn-primary btn-sm btn-hg" title="<eidea:label key="common.button.refresh"/>" ng-click="commonListHeader('refresh')">
         <i class="fa fa-refresh fa-1x" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.refresh"/>
     </button>
-    <button type="button" class="btn  btn-primary btn-sm btn-hg" title="<eidea:label key="common.button.help"/>">
+    <button data-toggle="modal" data-target="#helpModal" type="button" class="btn  btn-primary btn-sm btn-hg" title="<eidea:label key="common.button.help"/>">
         <i class="fa fa-question fa-1x" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.help"/>
     </button>
 </div>

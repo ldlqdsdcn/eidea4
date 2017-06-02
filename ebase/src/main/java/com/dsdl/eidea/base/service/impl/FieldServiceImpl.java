@@ -148,7 +148,7 @@ public class FieldServiceImpl implements FieldService {
             FieldTrlPo fieldTrlPo = fieldTrlDao.searchUnique(trlSearch);
             TableColumnPo tableColumnPo = tableColumnDao.find(fieldPo.getColumnId());
             JavaDataType dataType = JavaDataType.getJavaDataTypeByKey(tableColumnPo.getDataType());
-            FieldInputType fieldInputType = FieldInputType.getFieldInputTypeByKey(fieldPo.getInputType());
+            FieldInputType fieldInputType = FieldInputType.getFieldInputTypeByKey(fieldPo.getInputType().getKey());
             fieldInListPageBo.setDataType(dataType);
             fieldInListPageBo.setFieldInputType(fieldInputType);
             if (fieldTrlPo != null) {
@@ -189,7 +189,7 @@ public class FieldServiceImpl implements FieldService {
                 fieldTrlPo.setDescription(fieldPo.getDescription());
                 fieldTrlPo.setHelp("");
             }
-            FieldInputType fieldInputType = FieldInputType.getFieldInputTypeByKey(fieldPo.getInputType());
+            FieldInputType fieldInputType = FieldInputType.getFieldInputTypeByKey(fieldPo.getInputType().getKey());
             fieldStructureBo.setFieldInputType(fieldInputType);
             fieldStructureBo.setFieldPo(fieldPo);
             fieldStructureBo.setFieldTrlPo(fieldTrlPo);

@@ -1083,6 +1083,14 @@
                 bootbox.alert(response.message);
             }
         });
+        $http.get("<c:url value="/base/field/selectShowType"/> ").success(function (response) {
+            if(response.success){
+                var selectShowType=$.parseJSON(response.data);
+                $scope.showTypeList=selectShowType.fieldShowType;
+            }else{
+                bootbox.alert(response.message);
+            }
+        })
         var url = "<c:url value="/base/field/create"/>";
         if ($stateParams.field != null) {
             url = "<c:url value="/base/field/get"/>" + "?id=" + $stateParams.field;
@@ -1290,7 +1298,7 @@
             bootbox.alert(response);
         });
         $scope.save = function () {
-            var field=/^[0-9]+&/
+            var field=/^[0-9]+$/;
             if (!field.test($scope.fieldTrlPo.fieldId)){
                 $scope.message="<eidea:label key="base.field.id.type.error"/> ";
                 return false;

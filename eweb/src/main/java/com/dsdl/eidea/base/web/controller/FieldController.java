@@ -9,6 +9,7 @@ package com.dsdl.eidea.base.web.controller;
 import com.dsdl.eidea.base.entity.po.FieldPo;
 import com.dsdl.eidea.base.service.FieldService;
 import com.dsdl.eidea.core.def.FieldInputType;
+import com.dsdl.eidea.core.def.FieldShowType;
 import com.dsdl.eidea.core.web.controller.BaseController;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -139,11 +140,26 @@ public class FieldController extends BaseController {
         JsonArray jsonArray = new JsonArray();
         for (FieldInputType fieldInputType:FieldInputType.values()){
             JsonObject jsonObject = new JsonObject();
-            jsonObject.addProperty("key",fieldInputType.getKey());
+            jsonObject.addProperty("value",fieldInputType.name());
             jsonObject.addProperty("desc",fieldInputType.getDesc());
             jsonArray.add(jsonObject);
         }
         listObject.add("fieldInputType",jsonArray);
+        return JsonResult.success(listObject.toString());
+    }
+    @RequiresPermissions(value = "view")
+    @ResponseBody
+    @RequestMapping(value = "/selectShowType",method = RequestMethod.GET)
+    public JsonResult<String> getShowType(){
+        JsonObject listObject = new JsonObject();
+        JsonArray jsonArray= new JsonArray();
+        for (FieldShowType fieldShowType:FieldShowType.values()){
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("value",fieldShowType.name());
+            jsonObject.addProperty("desc",fieldShowType.getDesc());
+            jsonArray.add(jsonObject);
+        }
+        listObject.add("fieldShowType",jsonArray);
         return JsonResult.success(listObject.toString());
     }
 

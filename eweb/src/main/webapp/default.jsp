@@ -177,7 +177,7 @@ BODY {
 		<td class="a1" colspan="2" height="40" align="center"><b>系统信息</b></td>
   </tr>	
 	<tr class="a4">
-		<td class="mytd">本机IP：<span class="t4"><%=ip%></span></td>
+		<td class="mytd"><%--本机IP--%><eidea:label key="default.page.local.ip"/>：<span class="t4"><%=ip%></span></td>
 		<%
 		
 		Properties props=System.getProperties(); //获得系统属性集    
@@ -187,29 +187,29 @@ BODY {
 		DecimalFormat df = new DecimalFormat("0.00") ;
 		 %>
 		
-		<td class="mytd">操作系统：<span class="t4"><%=osName%>(<%=osVersion%>)</span></td>
+		<td class="mytd"><%--操作系统--%><eidea:label key="default.page.operating.system"/>：<span class="t4"><%=osName%>(<%=osVersion%>)</span></td>
 	</tr>
 	<tr class="a4">
-		<td class="mytd">浏览器内核：<span class="t4"><script>document.write(getBrowser("n"))</script></span></td>
-		<td class="mytd">浏览器版本：<span class="t4"><script>document.write(getBrowser("v"))</script></span></td>
+		<td class="mytd"><%--浏览器内核--%><eidea:label key="default.page.browser.kernel"/>：<span class="t4"><script>document.write(getBrowser("n"))</script></span></td>
+		<td class="mytd"><%--浏览器版本--%><eidea:label key="default.page.browser.version"/>：<span class="t4"><script>document.write(getBrowser("v"))</script></span></td>
 	</tr>
 	<tr class="a4">
-		<td class="mytd">系统语言：<span class="t4"><script>document.write(navigator.language)</script></span></td>
-		<td class="mytd">浏览器语言：<span class="t4"><script>document.write(navigator.language)</script></span></td>
+		<td class="mytd"><%--系统语言--%><eidea:label key="default.page.system.language"/>：<span class="t4"><script>document.write(navigator.language)</script></span></td>
+		<td class="mytd"><%--浏览器语言--%><eidea:label key="default.page.browser.language"/>：<span class="t4"><script>document.write(navigator.language)</script></span></td>
 	</tr>
 	<tr class="a4">
-		<td class="mytd">在线情况：<span class="t4"><script>document.write(navigator.onLine) </script></span></td>
-		<td class="mytd">屏幕分辨率：<span class="t4"><script>document.write(window.screen.width+"x"+window.screen.height)</script></span></td>
+		<td class="mytd"><%--在线情况--%><eidea:label key="default.page.online.situation"/>：<span class="t4"><script>document.write(navigator.onLine) </script></span></td>
+		<td class="mytd"><%--屏幕分辨率--%><eidea:label key="default.page.screen.resolution"/>：<span class="t4"><script>document.write(window.screen.width+"x"+window.screen.height)</script></span></td>
 	</tr>
 	<tr class="a4">
-		<td class="mytd">最大内存：<span class="t4"><%=df.format(Runtime.getRuntime().maxMemory()*1.0/1024.00f/1024.00f)%>MB</span></td>
-		<td class="mytd">总内存：<span class="t4"><%=df.format(Runtime.getRuntime().totalMemory()/1024f/1024f)%>MB</span></td>
+		<td class="mytd"><%--最大内存--%><eidea:label key="default.page.maximum.memory"/>：<span class="t4"><%=df.format(Runtime.getRuntime().maxMemory()*1.0/1024.00f/1024.00f)%>MB</span></td>
+		<td class="mytd"><%--总内存--%><eidea:label key="default.page.total.memory"/>：<span class="t4"><%=df.format(Runtime.getRuntime().totalMemory()/1024f/1024f)%>MB</span></td>
 	</tr>
 	<tr class="a4">
-		<td class="mytd">空闲内存：<span class="t4"><%=df.format(Runtime.getRuntime().freeMemory()/1024f/1024f)%>MB</span></td>
-		<td class="mytd">当前使用内存：<span class="t4"><%=df.format((Runtime.getRuntime().totalMemory()-Runtime.getRuntime().freeMemory())/1024f/1024f)%>MB</span></td>
+		<td class="mytd"><%--空闲内存--%><eidea:label key="default.page.idle.memory"/>：<span class="t4"><%=df.format(Runtime.getRuntime().freeMemory()/1024f/1024f)%>MB</span></td>
+		<td class="mytd"><%--当前使用内存--%><eidea:label key="default.page.current.memory.usage"/>：<span class="t4"><%=df.format((Runtime.getRuntime().totalMemory()-Runtime.getRuntime().freeMemory())/1024f/1024f)%>MB</span></td>
 	</tr>
-	<tr class="a4"><td class="mytd">可用处理器数：<span class="t4"><%=Runtime.getRuntime().availableProcessors()%></span></td>
+	<tr class="a4"><td class="mytd"><%--可用处理器数--%><eidea:label key="default.page.available.processor.count"/>：<span class="t4"><%=Runtime.getRuntime().availableProcessors()%></span></td>
         <td class="mytd"></td></tr>
 	
 </table>

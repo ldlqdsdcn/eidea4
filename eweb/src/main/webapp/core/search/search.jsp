@@ -9,7 +9,7 @@
 <%@include file="/inc/taglib.jsp" %>
 <html>
 <head>
-    <title>查询条件维护</title>
+    <title><%--查询条件维护--%><eidea:label key="search.title.query.condition.maintenance"/></title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <%@include file="/inc/inc_ang_js_css.jsp" %>
     <%@include file="/common/common_header.jsp" %>
@@ -140,6 +140,7 @@
                         $scope.relOper = selectList.relOper;
                         $scope.searchPageFieldInput = selectList.searchPageFieldInput;
                         $scope.searchDataType = selectList.searchDataType;
+                        $scope.canSave=true;
                     }
                     else {
                         bootbox.alert(response.message);

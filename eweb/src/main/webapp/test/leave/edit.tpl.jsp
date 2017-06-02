@@ -41,8 +41,8 @@ Date: 2017-05-12 13:36:48
 
                     </div>
                     <div class="form-group">
-                        <label for="leaveUserId" ><%--leaveUserId--%><eidea:label key="test.leave.label.leaveUserId"/></label>
-                                <input type="text" class="form-control" id="leaveUserId" placeholder="<eidea:message key="common.please.input"><eidea:param value="test.leave.label.leaveUserId" type="label"/></eidea:message>" ng-model="leavePo.leaveUserId" ng-disabled="true">
+                        <label for="leaveUserName" ><%--leaveUserId--%><eidea:label key="test.leave.label.leaveUserId"/></label>
+                                <input type="text" class="form-control" id="leaveUserName" placeholder="<eidea:message key="common.please.input"><eidea:param value="test.leave.label.leaveUserId" type="label"/></eidea:message>" ng-model="leavePo.userName" ng-disabled="true">
 
                     </div>
                     <div class="form-group">

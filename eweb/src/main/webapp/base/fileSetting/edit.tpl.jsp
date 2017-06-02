@@ -29,7 +29,7 @@ Date: 2017-05-02 13:07:50
                         <label for="created" ><%--创建时间--%><eidea:label key="base.fileSetting.label.created"/></label>
                                 <div class="input-group date bootstrap-datetime">
                                     <input type="text" required class="form-control" id="created" placeholder="<eidea:message key="common.please.input"><eidea:param value="base.fileSetting.label.created" type="label"/></eidea:message>" ng-model="fileSettingPo.created"
-                                    uib-datepicker-popup="yyyy-MM-dd HH:mm:ss">
+                                    uib-datepicker-popup="yyyy-MM-dd HH:mm:ss" ng-disabled="true">
                                     <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                                 </div>
 

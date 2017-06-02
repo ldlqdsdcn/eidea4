@@ -115,14 +115,6 @@
         buttonHeader.listInit($scope,$window);
     });
     app.controller('editCtrl', function ($routeParams,$scope, $http,$window,$timeout, Upload) {
-        $("#created").datetimepicker({
-            format: 'yyyy-mm-dd hh:ii:ss',
-            language: 'zh-CN',
-            autoclose: 1,
-            todayBtn:  1,
-            showMeridian: 1,
-            clearBtn:true
-        })
 
         $scope.message = '';
         $scope.fileSettingPo = {};

@@ -31,6 +31,7 @@
         $scope.isLoading = true;
         $scope.canDel=PrivilegeService.hasPrivilege('delete');
         $scope.canAdd=PrivilegeService.hasPrivilege('add');
+        $scope.canAdd=false;
         $scope.updateList = function (result) {
         $scope.modelList = result.data;
         $scope.queryParams.totalRecords = result.totalRecords;
@@ -112,42 +113,6 @@
         buttonHeader.listInit($scope,$window);
     });
     app.controller('editCtrl', function ($routeParams,$scope, $http,$window,$timeout, Upload) {
-        $("#fileCreated").datetimepicker({
-            format: 'yyyy-mm-dd hh:ii:ss',
-            language: 'zh-CN',
-            autoclose: 1,
-            todayBtn:  1,
-            showMeridian: 1,
-            clearBtn:true
-        }).on("click",function(){
-            if($scope.commonFilePo.fileUpdated == null){
-                $("#fileCreated").datetimepicker("setEndDate","2099-01-01 00:00:00");
-            }else{
-                $("#fileCreated").datetimepicker("setEndDate",formatLongDate($scope.commonFilePo.fileUpdated,'yyyy-MM-dd HH:mm:ss'));
-            }
-        });
-        $("#fileUpdated").datetimepicker({
-            format: 'yyyy-mm-dd hh:ii:ss',
-            language: 'zh-CN',
-            autoclose: 1,
-            todayBtn:  1,
-            showMeridian: 1,
-            clearBtn:true
-        }).on("click",function(){
-            if($scope.commonFilePo.fileCreated == null){
-                $("#fileUpdated").datetimepicker("setStartDate","1900-01-01 00:00:00");
-            }else{
-                $("#fileUpdated").datetimepicker("setStartDate",formatLongDate($scope.commonFilePo.fileCreated,'yyyy-MM-dd HH:mm:ss'));
-            }
-        });
-        $("#created").datetimepicker({
-            format: 'yyyy-mm-dd hh:ii:ss',
-            language: 'zh-CN',
-            autoclose: 1,
-            todayBtn:  1,
-            showMeridian: 1,
-            clearBtn:true
-        })
 
         $scope.message = '';
         $scope.commonFilePo = {};

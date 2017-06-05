@@ -15,15 +15,16 @@ import com.dsdl.eidea.base.entity.po.*;
 import com.dsdl.eidea.base.exception.ServiceException;
 import com.dsdl.eidea.base.service.FieldService;
 import com.dsdl.eidea.core.dao.CommonDao;
-import com.dsdl.eidea.core.def.EideaConst;
-import com.dsdl.eidea.core.def.FieldInputType;
-import com.dsdl.eidea.core.def.FieldShowType;
-import com.dsdl.eidea.core.def.JavaDataType;
+import com.dsdl.eidea.core.def.*;
 import com.dsdl.eidea.core.dto.PaginationResult;
+import com.dsdl.eidea.core.entity.bo.QueryExpression;
+import com.dsdl.eidea.core.entity.bo.SqlColumn;
+import com.dsdl.eidea.core.entity.bo.SqlCondition;
 import com.dsdl.eidea.core.entity.po.TableColumnPo;
 import com.dsdl.eidea.core.entity.po.TablePo;
 import com.dsdl.eidea.core.params.QueryParams;
 import com.dsdl.eidea.core.spring.annotation.DataAccess;
+import com.dsdl.eidea.core.util.SQLUtil;
 import com.dsdl.eidea.general.bo.FieldStructureBo;
 import com.dsdl.eidea.general.bo.TabFormStructureBo;
 import com.googlecode.genericdao.search.Search;
@@ -216,6 +217,42 @@ public class FieldServiceImpl implements FieldService {
             }
 
             fieldStructureBoList.add(fieldStructureBo);
+        }
+        for(FieldStructureBo fs:fieldStructureBoList)
+        {
+            if (FieldInputType.SELECT == fs.getFieldPo().getInputType()) {
+                Search selectSearch = new Search();
+                selectSearch.addFilterEqual("elementId", fs.getFieldPo().getElementId());
+                ElementSelectPo elementSelectPo = elementSelectDao.searchUnique(selectSearch);
+                String sql = elementSelectPo.getSql();
+                JavaDataType javaDataType = JavaDataType.getJavaDataTypeByKey(fs.getFieldPo().getTableColumnPo().getDataType());
+                SqlColumn keyColumn = new SqlColumn();
+                keyColumn.setIndex(0);
+                keyColumn.setColumnName("item_id");
+                keyColumn.setDataType(javaDataType);
+                SqlColumn labelColumn = new SqlColumn();
+                labelColumn.setIndex(1);
+                labelColumn.setColumnName("item_value");
+                labelColumn.setDataType(javaDataType);
+                List<SqlColumn> sqlColumnList = new ArrayList<>();
+                sqlColumnList.add(keyColumn);
+                sqlColumnList.add(labelColumn);
+                QueryExpression queryExpression = SQLUtil.buildQueryExpression(sql, sqlColumnList);
+                List<SqlCondition> sqlConditionList=queryExpression.getSqlConditionList();
+                for(SqlCondition sqlCondition:sqlConditionList)
+                {
+                    String columnName= sqlCondition.getColumnName();
+                    for(FieldStructureBo fpo:fieldStructureBoList)
+                    {
+                        if(columnName.equals(fpo.getFieldPo().getTableColumnPo().getColumnName()))
+                        {
+                            //FIXME 需要根据事件类型添加事件
+                            fpo.addEvent(EventType.ONCHANGE);
+                        }
+                    }
+                }
+
+            }
         }
         tabFormStructureBo.setFieldStructureBoList(fieldStructureBoList);
         return tabFormStructureBo;
@@ -520,9 +557,7 @@ public class FieldServiceImpl implements FieldService {
             }
 
             TableColumnPo tableColumnPo = fieldPo.getTableColumnPo();
-            //updateSqlBuilder.append("'");
             updateSqlBuilder.append(tableColumnPo.getColumnName())
-                    //.append("'")
                     .append(SQL_EQUAL_KEY);
             updateSqlBuilder.append("?");
             tableColumnPoMap.put(key, fieldPo);

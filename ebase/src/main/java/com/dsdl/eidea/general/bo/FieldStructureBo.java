@@ -41,4 +41,6 @@ public class FieldStructureBo {
      */
     private String falseValue;
 
+
+
 }

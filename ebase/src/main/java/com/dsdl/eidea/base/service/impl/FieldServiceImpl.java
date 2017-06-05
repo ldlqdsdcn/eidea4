@@ -59,6 +59,11 @@ public class FieldServiceImpl implements FieldService {
     private static String LEFT_BRACKETS_KEY = "(";
     private static String RIGHT_BRACKETS_KEY = ")";
     private static String VALUES_KEY = "values";
+    private static String ANGULARJS_DATE_FILTER = "|date:\"yyyy-MM-dd\"";
+    private static String ANGULARJS_DATETIME_FILTER = "|date:\"yyyy-MM-dd HH:mm:ss\"";
+    private static String FIELD_TAB_ID = "tabId";
+    private static String FIELD_SEQ_NO = "seqNo";
+    private static String FIELD_SEQNOGRID = "seqnogrid";
     @DataAccess(entity = FieldPo.class)
     private CommonDao<FieldPo, Integer> fieldDao;
     @DataAccess(entity = FieldTrlPo.class)
@@ -138,9 +143,9 @@ public class FieldServiceImpl implements FieldService {
     public List<FieldInListPageBo> getListPageFiledList(Integer tabId, String lang) {
         List<FieldInListPageBo> fieldInListPageBoList = new ArrayList<>();
         Search search = new Search();
-        search.addFilterEqual("tabId", tabId);
-        search.addSortAsc("seqnogrid");
-        search.addSortAsc("seqNo");
+        search.addFilterEqual(FIELD_TAB_ID, tabId);
+        search.addSortAsc(FIELD_SEQNOGRID);
+        search.addSortAsc(FIELD_SEQ_NO);
         List<FieldPo> fieldPoList = fieldDao.search(search);
         for (FieldPo fieldPo : fieldPoList) {
             FieldInListPageBo fieldInListPageBo = new FieldInListPageBo();
@@ -162,9 +167,9 @@ public class FieldServiceImpl implements FieldService {
             }
             if (dataType == JavaDataType.DATE) {
                 if (fieldInputType == FieldInputType.DATEPICKER) {
-                    fieldInListPageBo.setPattern("|date:\"yyyy-MM-dd\"");
+                    fieldInListPageBo.setPattern(ANGULARJS_DATE_FILTER);
                 } else if (fieldInputType == FieldInputType.DATETIMEPICKER) {
-                    fieldInListPageBo.setPattern("|date:\"yyyy-MM-dd HH:mm:ss\"");
+                    fieldInListPageBo.setPattern(ANGULARJS_DATETIME_FILTER);
                 }
             }
             fieldInListPageBoList.add(fieldInListPageBo);
@@ -177,9 +182,9 @@ public class FieldServiceImpl implements FieldService {
         TabFormStructureBo tabFormStructureBo = new TabFormStructureBo();
         List<FieldStructureBo> fieldStructureBoList = new ArrayList<>();
         Search search = new Search();
-        search.addSortAsc("seqnogrid");
-        search.addSortAsc("seqNo");
-        search.addFilterEqual("tabId", tabId);
+        search.addSortAsc(FIELD_SEQNOGRID);
+        search.addSortAsc(FIELD_SEQ_NO);
+        search.addFilterEqual(FIELD_TAB_ID, tabId);
         List<FieldPo> fieldPoList = fieldDao.search(search);
         for (FieldPo fieldPo : fieldPoList) {
             FieldStructureBo fieldStructureBo = new FieldStructureBo();

@@ -31,7 +31,14 @@
     <script type='text/javascript' src="<c:url value="/js/angular/ui-bootstrap-tpls-2.2.0.min.js"/>"></script>
     <script type='text/javascript' src="<c:url value="/js/angular/jcs-auto-validate.min.js"/>"></script>
     <script type='text/javascript' src="<c:url value="/js/md5.min.js"/>"></script>
-    <!--login-js-->
+    <!--jsencryptcipher-->
+    <script src="js/crypto-js.js"></script>
+    <script src="js/jsencrypt.js"></script>
+    <script src="js/security/AesAndRsaUtil.js"></script>
+
+    <!--jsencryptcipher-->
+
+
 </head>
 
 <body class="login" ng-app="loginApp">
@@ -70,6 +77,8 @@
     </div>
 </body>
 <script type="text/javascript">
+    var iv = CryptoJS.lib.WordArray.random(128/8).toString(CryptoJS.enc.Hex);//密钥偏移量，用于aes加密
+    var key = CryptoJS.lib.WordArray.random(128/8).toString(CryptoJS.enc.Hex);//用于生成初始key
     var app = angular.module('loginApp', ['ui.bootstrap', 'jcs-autoValidate']);
     app.controller('loginCtrl',function ($scope,$http) {
         <%
@@ -98,11 +107,23 @@
             window.location.href = "<c:url value="/common/changeLanguage"/>?language="+$scope.loginBo.code;
         }
         $scope.submit = function () {
+            <%
+                session.setAttribute("timestamp",System.currentTimeMillis());
+                session.setAttribute("firstloginstr",1);
+            %>
+            var usernameAndPassword = $scope.loginBo.username+"|"+$scope.loginBo.password;
+            var aesAndRsaUtil = new AesAndRsaUtil(iv,key);
+            var enkey = aesAndRsaUtil.encryptkey();
+            var cipherUsernameAndPassword = aesAndRsaUtil.aesencrypt(usernameAndPassword);
+            var allparam = cipherUsernameAndPassword + "|" + enkey + "|" + iv;
+
             $("#loginBtn").button('loading');
             if ($scope.loginForm.$valid) {
-                loginParam={username:$scope.loginBo.username,password:md5($scope.loginBo.password),"code":$scope.loginBo.code};
+                //合成一个字符串
+                //loginParam={username:$scope.loginBo.username,password:md5(cipherpassword.toString()),"code":$scope.loginBo.code,enkey:enkey,iv:iv};
+                loginParam={username:$scope.loginBo.username,password:$scope.loginBo.password,"code":$scope.loginBo.code};
                 $scope.serverReturnMessage = "";
-                $http.post("<c:url value="/login"/>", loginParam).success(function (data) {
+                $http.post("<c:url value="/login"/>",{"allparam":allparam}).success(function (data) {
                     if (data.success) {
                         window.location.href = "<c:url value="/index.jsp"/>";
                     }else {

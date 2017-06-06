@@ -17,6 +17,7 @@ public class WebConst {
     public static final String SESSION_RESOURCE = "userResource";
     public static final String SESSION_LANGUAGE="language";
     public static final String ORG_IDS = "orgIdList";
+    public static final String SESSION_TIMESTAMP = "timestamp";
     /**
      * token header 权限验证
      */

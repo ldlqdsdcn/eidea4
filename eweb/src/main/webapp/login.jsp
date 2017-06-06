@@ -77,8 +77,10 @@
     </div>
 </body>
 <script type="text/javascript">
-    var iv = CryptoJS.lib.WordArray.random(128/8).toString(CryptoJS.enc.Hex);//密钥偏移量，用于aes加密
-    var key = CryptoJS.lib.WordArray.random(128/8).toString(CryptoJS.enc.Hex);//用于生成初始key
+    //密钥偏移量，用于aes加密
+    var iv = CryptoJS.lib.WordArray.random(128/8).toString(CryptoJS.enc.Hex);
+    //用于生成初始key
+    var key = CryptoJS.lib.WordArray.random(128/8).toString(CryptoJS.enc.Hex);
     var app = angular.module('loginApp', ['ui.bootstrap', 'jcs-autoValidate']);
     app.controller('loginCtrl',function ($scope,$http) {
         <%
@@ -110,7 +112,7 @@
         }
         $scope.submit = function () {
             <%
-                session.setAttribute("timestamp",System.currentTimeMillis());
+                session.setAttribute(WebConst.SESSION_TIMESTAMP,System.currentTimeMillis());
             %>
             var usernameAndPassword = $scope.loginBo.username+"|"+$scope.loginBo.password;
             var aesAndRsaUtil = new AesAndRsaUtil(iv,key);

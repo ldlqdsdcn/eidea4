@@ -44,6 +44,7 @@ import java.util.*;
 public class UserLoginController {
     private Gson gson = new Gson();
     private static final Logger logger = Logger.getLogger(UserLoginController.class);
+    private static final String SPLIT_FOR_USERNAME_AND_PASSWORD = "\\|";
     @Autowired
     private UserService userService;
     @Autowired
@@ -58,23 +59,21 @@ public class UserLoginController {
     private LanguageService languageService;
     @Autowired
     private UserSessionService userSessionService;
-
-
+    /**
+     * 在session中存储的时间戳和是否第一次登录，如果是第一次登录输错密码后不用等待，直接弹出密码错误，请重新输入的信息。
+     * 如果不是第一次输错密码，之后输错密码会有5秒的睡眠时间，直到输入正确密码后将是否第一次登录进行重置。
+     * 时间戳用来和当前时间进行比较，在输错密码的情况下，时间戳与当前时间间隔小于10s时会有5秒的睡眠时间。
+     *
+     * 利用传来的用户名和密码混合加密后的密文，加密后的密钥enkey和iv进行解密还原出用户名和密码
+     */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-
     @ResponseBody
     public JsonResult<String> login(@RequestBody String allparam,HttpServletRequest request) {
-        /**
-         * 在session中存储的时间戳和是否第一次登录，如果是第一次登录输错密码后不用等待，直接弹出密码错误，请重新输入的信息。
-         * 如果不是第一次输错密码，之后输错密码会有5秒的睡眠时间，直到输入正确密码后将是否第一次登录进行重置。
-         * 时间戳用来和当前时间进行比较，在输错密码的情况下，时间戳与当前时间间隔小于10s时会有5秒的睡眠时间。
-         *
-         * 利用传来的用户名和密码混合加密后的密文，加密后的密钥enkey和iv进行解密还原出用户名和密码
-         */
+
         //去掉无用的前缀"{allparam:"和后缀"}"
         String param = allparam.substring(13,allparam.length()-1);
         //提取出cipherUsernameAndPassword、enkey和iv
-        String[] str = param.split("\\|");
+        String[] str = param.split(SPLIT_FOR_USERNAME_AND_PASSWORD);
         String cipherUsernameAndPassword = str[0];
         String enkey = str[1];
         String iv = str[2];
@@ -85,7 +84,7 @@ public class UserLoginController {
         String dec = rsaUtil.rsaDecode(enkey);
         String decodeContent = aesUtil.aesDecode(dec ,iv , cipherUsernameAndPassword);
         //对解密后的字符串进行拆解，还原出username和password
-        String[] cipherstr = decodeContent.split("\\|");
+        String[] cipherstr = decodeContent.split(SPLIT_FOR_USERNAME_AND_PASSWORD);
         String username = cipherstr[0];
         String password = cipherstr[1];
         UserResource resource = (UserResource) request.getSession().getAttribute(WebConst.SESSION_RESOURCE);
@@ -113,7 +112,7 @@ public class UserLoginController {
 
         //获得时间戳和是否第一次登录的信息
         HttpSession session = request.getSession();
-        String timestamp = String.valueOf(session.getAttribute("timestamp"));
+        String timestamp = String.valueOf(session.getAttribute(WebConst.SESSION_TIMESTAMP));
         Long logintime = Long.valueOf(timestamp);
         Long nowtime = System.currentTimeMillis();
 
@@ -135,7 +134,7 @@ public class UserLoginController {
                 }
             }
             //将时间戳重置
-            session.setAttribute("timestamp",System.currentTimeMillis());
+            session.setAttribute(WebConst.SESSION_TIMESTAMP,System.currentTimeMillis());
             return JsonResult.fail(ErrorCodes.NO_LOGIN.getCode(), resource.getMessage("user.msg.name.password.is.error"));
         } catch (LockedAccountException e) {
             return JsonResult.fail(ErrorCodes.NO_LOGIN.getCode(), resource.getMessage("user.msg.user.is.disable"));

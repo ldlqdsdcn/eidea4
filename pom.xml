@@ -212,6 +212,12 @@
             <version>1.2.4</version>
         </dependency>
         <!--shiro end-->
+        <!-- https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk15on -->
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk15on</artifactId>
+            <version>1.56</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

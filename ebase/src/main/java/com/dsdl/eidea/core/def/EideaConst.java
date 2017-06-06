@@ -29,6 +29,10 @@ public class EideaConst {
      */
     public static final String EXPRESS_CURRENT_DATE = "@CurrentDate@";
     /**
+     * 当前记录的column值
+     */
+    public static final String EXPRESS_RECORD="@Record.";
+    /**
      * 页面输入值占位符
      * 常用来替换查询界面输入的值
      */

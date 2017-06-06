@@ -9,58 +9,47 @@
 <%@include file="/inc/taglib.jsp" %>
 <html>
 <head>
-    <title>个人设置</title>
+    <title><%--个人设置--%><eidea:label key="index.profile"/></title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <%@include file="/inc/inc_ang_js_css.jsp" %>
 </head>
 <body>
 <div ng-app='myApp' ng-view class="content">
     <div class="container-fluid" ng-controller="editCtrl">
-        <div class="page-header">
-            <ol class="breadcrumb">
-                <li><a href="javascript:;"><i class="icon-fire"></i><eidea:label key="index.profile"/></a></li>
-            </ol>
-        </div>
-        <div class="row-fluid">
-            <div class="span12">
-                <br>
-                <form role="form" name="editForm" novalidate  ng-submit="save()">
-
-                    <div class="form-group">
-                        <label for="code"><%--no--%>登录名</label>
-                        <input type="text" class="form-control" id="code" name="code" ng-model="userContent.user.username"  required ng-minlength="2" ng-maxlength="10" disabled>
-                    </div>
-                    <div class="form-group">
-                        <label for="name">姓名</label>
-                        <input type="text" class="form-control" id="name" ng-model="userContent.user.name" required ng-minlength="2" ng-maxlength="30">
-                    </div>
-                    <div class="form-group">
-                        <label for="token"><%--remark--%>token</label>
-                        <textarea id="token" class="form-control" style="height: 150px;">
-                            {{userContent.userContent.token}}
-                        </textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <p class="text-right">
-
-                            <button type="submit" class="btn btn-default btn-sm"><%--保存--%><eidea:label key="common.button.save"/></button>
-
-                        </p>
-                    </div>
-                    <div class="form-group">
-                        <p class="text-center" style="color: red">
-                            {{message}}
-                        </p>
-                        <p>
-                        <span ng-repeat="error in errors track by $index">
-                            {{error.message}}
-                        </span>
-                        </p>
-                    </div>
-                </form>
+        <form role="form" name="editForm" novalidate  ng-submit="save()">
+            <div class="page-header button-css">
+                <button type="submit" class="btn btn-primary btn-sm"><%--保存--%><eidea:label key="common.button.save"/></button>
             </div>
-        </div>
+            <div class="row-fluid">
+                <div class="span12">
+                    <br>
+                        <div class="form-group">
+                            <label for="code"><%--登录名--%><eidea:label key="login.username.login"/></label>
+                            <input type="text" class="form-control" id="code" name="code" ng-model="userProfileVo.user.username"  required ng-minlength="2" ng-maxlength="10" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label for="name"><%--姓名--%><eidea:label key="user.username"/></label>
+                            <input type="text" class="form-control" id="name" ng-model="userProfileVo.user.name" required ng-minlength="2" ng-maxlength="30">
+                        </div>
+                        <div class="form-group">
+                            <label for="token"><%--token--%><eidea:label key="personal.settings.label.token"/></label>
+                            <textarea id="token" class="form-control" style="height: 150px;">
+                                {{userProfileVo.userContent.token}}
+                            </textarea>
+                        </div>
+                        <div class="form-group">
+                            <p class="text-center" style="color: red">
+                                {{message}}
+                            </p>
+                            <p>
+                            <span ng-repeat="error in errors track by $index">
+                                {{error.message}}
+                            </span>
+                            </p>
+                        </div>
+                </div>
+            </div>
+        </form>
     </div>
 </div>
 
@@ -73,7 +62,7 @@
         $http.get( '<c:url value="/common/userCenter/getProfile"/>')
                 .success(function (response) {
                     if (response.success) {
-                        $scope.userContent = response.data;
+                        $scope.userProfileVo = response.data;
                     }
                     else {
                         bootbox.alert(response.message);
@@ -84,7 +73,7 @@
         $scope.save = function () {
             if ($scope.editForm.$valid) {
                 var postUrl = '<c:url value="/common/userCenter/updateProfile"/>';
-                $http.post(postUrl, $scope.userContent.userBo).success(function (data) {
+                $http.post(postUrl, $scope.userProfileVo.user).success(function (data) {
                     if (data.success) {
                         $scope.message = "<eidea:label key="base.save.success"/>";
                         $scope.clientBo = data.data;
@@ -93,17 +82,12 @@
                         $scope.message = data.message;
                         $scope.errors=data.data;
                     }
-
-
                 }).error(function (data, status, headers, config) {
                     // never reached even for 400/500 status codes
                     alert(JSON.stringify(data));
                 });
             }
         }
-
-
-
     });
     app.run([
         'bootstrap3ElementModifier',

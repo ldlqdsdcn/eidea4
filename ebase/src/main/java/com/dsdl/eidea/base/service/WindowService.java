@@ -6,6 +6,7 @@
 */
 package com.dsdl.eidea.base.service;
 import com.dsdl.eidea.base.entity.bo.WindowBo;
+import com.dsdl.eidea.base.entity.bo.WindowHelpBo;
 import com.dsdl.eidea.base.entity.po.WindowPo;
 import com.dsdl.eidea.core.dto.PaginationResult;
 import com.dsdl.eidea.core.params.QueryParams;
@@ -29,4 +30,11 @@ public interface WindowService {
 	WindowBo getWindowBo(Integer id,String lang);
 	boolean findExistWindowByName(String name);
 	WindowPo getExistWindowByName(String name);
+
+	/**
+	 * 获取窗体帮助信息
+	 * @param windowId
+	 * @return
+	 */
+	WindowHelpBo getWindowHelpBo(Integer windowId,String lang);
 }

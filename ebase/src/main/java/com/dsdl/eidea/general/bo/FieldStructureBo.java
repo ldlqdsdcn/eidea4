@@ -3,11 +3,12 @@ package com.dsdl.eidea.general.bo;
 import com.dsdl.eidea.base.entity.po.FieldPo;
 import com.dsdl.eidea.base.entity.po.FieldTrlPo;
 import com.dsdl.eidea.base.entity.po.FieldValidatorPo;
+import com.dsdl.eidea.core.def.EventType;
 import com.dsdl.eidea.core.def.FieldInputType;
-import com.googlecode.genericdao.search.Field;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -40,5 +41,19 @@ public class FieldStructureBo {
      * 当输入类型为checkbox时该值有用
      */
     private String falseValue;
+    /**
+     * 事件
+     */
+    private List<EventType> eventList=new ArrayList<>();
+
+    /**
+     * 添加event
+     * @param event
+     */
+    public void addEvent(EventType event)
+    {
+        eventList.add(event);
+    }
+
 
 }

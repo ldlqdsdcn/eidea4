@@ -2,12 +2,11 @@ package com.dsdl.eidea.core.entity.po;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * CoreTable entity. @author MyEclipse Persistence Tools
@@ -16,6 +15,7 @@ import javax.persistence.*;
 @Table(name = "core_table", catalog = "e_idea")
 @Getter
 @Setter
+@org.hibernate.annotations.Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 public class TablePo implements java.io.Serializable {
 
     // Fields
@@ -45,6 +45,5 @@ public class TablePo implements java.io.Serializable {
     @Column(name = "entity_type")
     private int entityType;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tablePo")
-    private List<TableColumnPo> coreTableColumns = new ArrayList<TableColumnPo>(
-            0);
+    private List<TableColumnPo> coreTableColumns = new ArrayList<>(0);
 }

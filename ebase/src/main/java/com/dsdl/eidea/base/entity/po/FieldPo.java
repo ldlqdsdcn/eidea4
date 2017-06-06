@@ -11,9 +11,16 @@ import java.util.Date;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+import com.dsdl.eidea.base.def.BoolChar;
+import com.dsdl.eidea.base.init.BoolCharConverter;
+import com.dsdl.eidea.base.init.InputTypeConverter;
+import com.dsdl.eidea.core.def.FieldInputType;
 import com.dsdl.eidea.core.def.FieldShowType;
+import com.dsdl.eidea.core.entity.po.TableColumnPo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -25,6 +32,7 @@ import org.hibernate.validator.constraints.NotBlank;
 @Getter
 @Setter
 @Entity(name = "core_field")
+@org.hibernate.annotations.Cache(usage= CacheConcurrencyStrategy.READ_ONLY)
 public class FieldPo implements java.io.Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "[id]", length = 11, nullable = false, unique = true)
@@ -53,15 +61,14 @@ public class FieldPo implements java.io.Serializable {
     /**
      * 列id
      **/
-    @Column(name = "[column_id]", length = 11)
+    @Column(name = "column_id", length = 11)
     private Integer columnId;
     /**
      * 是否必填
      **/
     @Column(name = "[required]", length = 1)
-    @NotBlank(message = "error.required.not.null")
-    @Length(min = 1, max = 1, message = "error.required.length")
-    private String required;
+    @Convert(converter = BoolCharConverter.class)
+    private BoolChar required;
     /**
      * 是否有效
      **/
@@ -97,14 +104,14 @@ public class FieldPo implements java.io.Serializable {
      * 输入类型
      **/
     @Column(name = "[input_type]", nullable = false, length = 11)
-    private Integer inputType;
+    @Convert(converter = InputTypeConverter.class)
+    private FieldInputType inputType;
     /**
      * 是否显示
      **/
-    @Column(name = "[is_displayed]", length = 1, nullable = false)
-    @Length(min = 1, max = 1, message = "error.isdisplayed.length")
-    @NotBlank(message = "error.displayed.not.null")
-    private String isDisplayed;
+    @Column(name = "[is_displayed]", nullable = false)
+    @Convert(converter = BoolCharConverter.class)
+    private BoolChar isDisplayed;
     /**
      * 显示逻辑
      **/
@@ -120,20 +127,20 @@ public class FieldPo implements java.io.Serializable {
      * 是否只读
      **/
     @Column(name = "[isreadonly]", length = 1)
-    @Length(max = 1, message = "error.isreadonly.length")
-    private String isreadonly;
+    @Convert(converter = BoolCharConverter.class)
+    private BoolChar isreadonly;
     /**
      * 是否同行显示
      **/
     @Column(name = "[issameline]", length = 1)
-    @Length(max = 1, message = "error.issameline.length")
-    private String issameline;
+    @Convert(converter = BoolCharConverter.class)
+    private BoolChar issameline;
     /**
      * 是否加密
      **/
     @Column(name = "[isencrypted]", length = 1)
-    @Length(max = 1, message = "error.isencrypted.length")
-    private String isencrypted;
+    @Convert(converter = BoolCharConverter.class)
+    private BoolChar isencrypted;
     /**
      * 默认值
      **/
@@ -144,8 +151,8 @@ public class FieldPo implements java.io.Serializable {
      * 是否在列表中显示
      **/
     @Column(name = "[isdisplaygrid]", length = 1)
-    @Length(max = 1, message = "error.isdisplaygrid.length")
-    private String isdisplaygrid;
+    @Convert(converter = BoolCharConverter.class)
+    private BoolChar isdisplaygrid;
     /**
      * 表格排序 如果没有则用seq_no
      **/
@@ -155,22 +162,20 @@ public class FieldPo implements java.io.Serializable {
      * 是否允许打印
      */
     @Column(name = "[isprinted]", nullable = false, length = 255)
-    @Length(min = 1, max = 255, message = "error.isprinted.length")
-    @NotBlank(message = "error.isprinted.not.null")
-    private String isprinted;
+    @Convert(converter = BoolCharConverter.class)
+    private BoolChar isprinted;
     /**
      * 是否允许复制
      **/
     @Column(name = "[isallowcopy]", length = 1)
-    @Length(max = 1, message = "error.isallowcopy.length")
-    private String isallowcopy;
+    @Convert(converter = BoolCharConverter.class)
+    private BoolChar isallowcopy;
     /**
      * 是否导出报表
      */
     @Column(name = "[isreport]", length = 1, nullable = false)
-    @Length(min = 1, max = 1, message = "error.isreport.length")
-    @NotBlank(message = "error.isreport.not.null")
-    private String isreport;
+    @Convert(converter = BoolCharConverter.class)
+    private BoolChar isreport;
     /**
      * 对应的tab信息
      */
@@ -187,10 +192,19 @@ public class FieldPo implements java.io.Serializable {
      * 是否可添加
      */
     @Column(name = "isadded")
-    private String isadded;
+    @Convert(converter = BoolCharConverter.class)
+    private BoolChar isadded;
     /**
      * 是否可更新
      */
     @Column(name = "isupdated")
-    private String isupdated;
+    @Convert(converter = BoolCharConverter.class)
+    private BoolChar isupdated;
+
+    @Column(name = "autowired_value",length = 2000)
+    private String autowiredValue;
+    @JsonIgnore
+    @JoinColumn(name = "column_id", updatable = false, insertable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    private TableColumnPo tableColumnPo;
 }

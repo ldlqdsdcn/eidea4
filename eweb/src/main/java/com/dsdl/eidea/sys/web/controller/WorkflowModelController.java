@@ -1,7 +1,9 @@
 package com.dsdl.eidea.sys.web.controller;
 
+import com.dsdl.eidea.base.web.vo.UserResource;
 import com.dsdl.eidea.core.web.def.WebConst;
 import com.dsdl.eidea.core.web.result.JsonResult;
+import com.dsdl.eidea.core.web.result.def.ErrorCodes;
 import com.dsdl.eidea.core.web.vo.PagingSettingResult;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -43,7 +45,10 @@ import java.util.zip.ZipInputStream;
 @RequestMapping("/sys/model")
 public class WorkflowModelController {
     @Autowired
+    private HttpServletRequest request;
+    @Autowired
     private RepositoryService repositoryService;
+
     @RequestMapping("showList")
     @RequiresPermissions("view")
     public ModelAndView showList()
@@ -110,7 +115,9 @@ public class WorkflowModelController {
     @RequiresPermissions("add")
     @RequestMapping(value = "/deploy/{modelId}", method = RequestMethod.GET)
     @ResponseBody
-    public JsonResult<Void> deploy(@PathVariable("modelId") String modelId) {
+    public JsonResult<String> deploy(@PathVariable("modelId") String modelId) {
+        UserResource resource = (UserResource) request.getSession().getAttribute(WebConst.SESSION_RESOURCE);
+        String msg="";
         try {
             Model modelData = repositoryService.getModel(modelId);
             ObjectNode modelNode = (ObjectNode) new ObjectMapper().readTree(repositoryService.getModelEditorSource(modelData.getId()));
@@ -118,12 +125,15 @@ public class WorkflowModelController {
             BpmnModel model = new BpmnJsonConverter().convertToBpmnModel(modelNode);
             bpmnBytes = new BpmnXMLConverter().convertToXML(model);
             String processName = modelData.getName() + ".bpmn20.xml";
-            Deployment deployment = repositoryService.createDeployment().name(modelData.getName()).addString(processName, new String(bpmnBytes)).deploy();
+            Deployment deployment = repositoryService.createDeployment().name(modelData.getName()).addString(processName, new String(bpmnBytes, "utf-8")).deploy();
             log.warn("message", "部署成功，部署ID=" + deployment.getId());
+            msg=resource.getMessage("work.flow.msg.deploy.sucess.id") + deployment.getId();
         } catch (Exception e) {
             log.error("根据模型部署流程失败：modelId={}", modelId, e);
+            msg=resource.getMessage("work.flow.msg.deployment.failure");
+            return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(),msg);
         }
-        return JsonResult.success(null);
+        return JsonResult.success(msg);
     }
 
     /**

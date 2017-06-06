@@ -9,6 +9,7 @@ import com.dsdl.eidea.core.entity.bo.LanguageTrlBo;
 import com.dsdl.eidea.core.entity.po.LanguagePo;
 import com.dsdl.eidea.core.entity.po.LanguageTrlPo;
 import com.dsdl.eidea.core.service.LanguageService;
+import com.dsdl.eidea.util.StringUtil;
 import com.googlecode.genericdao.search.Search;
 import com.googlecode.genericdao.search.SearchResult;
 import org.apache.log4j.Logger;
@@ -129,6 +130,11 @@ public class LanguageServiceImpl implements LanguageService {
 
     @Override
     public boolean save(LanguageBo languageBo) {
+        if(StringUtil.isNotEmpty(languageBo.getCode())){
+            String[] codeArray=languageBo.getCode().split("_");
+            languageBo.setLanguageIso(codeArray[0]);
+            languageBo.setCountryCode(codeArray[1]);
+        }
         ModelMapper modelMapper = new ModelMapper();
         LanguagePo languagePo = modelMapper.map(languageBo, LanguagePo.class);
         List<LanguageTrlPo> languageTrlPoList = new ArrayList<>();

@@ -18,13 +18,26 @@
 </jsp:include>
 </body>
 <script type="text/javascript">
-    var app = angular.module('myApp', ['ngFileUpload','ngRoute', 'ui.bootstrap', 'jcs-autoValidate'])
-        .config(['$routeProvider', function ($routeProvider) {
-            $routeProvider
-                .when('/list', {templateUrl: '<c:url value="/base/datadictType/list.tpl.jsp"/>'})
-                .when('/edit', {templateUrl: '<c:url value="/base/datadictType/edit.tpl.jsp"/>'})
-                .when('/editDetail', {templateUrl: '<c:url value="/base/datadict/edit.tpl.jsp"/>'})
-                .otherwise({redirectTo: '/list'});
+    var app = angular.module('myApp', ['ngFileUpload','ui.router', 'ui.bootstrap', 'jcs-autoValidate'])
+        .config(['$stateProvider','$urlRouterProvider',function ($stateProvider,$urlRouterProvider) {
+            $urlRouterProvider.otherwise('/list');
+                $stateProvider
+                    .state('list',{
+                        url:'/list',
+                        templateUrl:'<c:url value="/base/datadictType/list.tpl.jsp"/>'
+                    })
+                    .state('edit',{
+                        url:'/edit?id&dataType',
+                        templateUrl:'<c:url value="/base/datadictType/edit.tpl.jsp"/>'
+                    })
+                    .state('edit.datadictList',{
+                        url:'/datadictList',
+                        templateUrl:'<c:url value="/base/datadict/list.tpl.jsp"/> '
+                    })
+                    .state('edit.datadictEdit',{
+                        url:'/datadictEdit?datadictId',
+                        templateUrl:'<c:url value="/base/datadict/edit.tpl.jsp"/>'
+                    })
         }]);
     app.controller('listCtrl', function ($scope, $http,$window) {
         $scope.modelList = [];
@@ -342,7 +355,7 @@
                 bootbox.alert(data.message);
             })
         };
-        $scope.backDetailList = function () {
+        $scope.back = function () {
             $state.go('edit.datadictList');
         }
 

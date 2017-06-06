@@ -2,14 +2,14 @@
 <%----%>
 <%@ include file="/inc/taglib.jsp" %>
 <div class="page-header button-css">
-    <a href="#/edit" class="btn  btn-primary btn-sm btn-hg" ng-show="canAdd" title="<eidea:label key="common.button.create"/>"><%--新建--%>
-        <i class="fa fa-file-o fa-1x" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.create"/></a>
+    <button ng-click="edit()" class="btn  btn-primary btn-sm btn-hg" title="<eidea:label key="common.button.create"/>"><%--新建--%>
+        <i class="fa fa-file-o fa-1x" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.create"/></button>
     <button type="button" class="btn  btn-primary btn-sm btn-hg" id="search_but" data-toggle="modal"
             data-target="#searchModal" title="<eidea:label key="common.button.search"/>"><%--查找--%>
         <i class="fa fa-search fa-1x" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.search"/>
     </button>
-    <button type="button" class="btn  btn-primary btn-sm btn-hg" ng-disabled="!canDelete()"
-            ng-click="deleteRecord()" ng-show="canDel" title="<eidea:label key="common.button.delete"/>"><%--删除--%>
+    <button type="button" class="btn  btn-primary btn-sm btn-hg" ng-click="deleteRecord()" title="<eidea:label key="common.button.delete"/>">
+        <%--删除--%>
         <i class="fa fa-trash-o fa-1x" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.delete"/>
     </button>
     <div class="btn-group">
@@ -32,7 +32,7 @@
     <button type="button" class="btn  btn-primary btn-sm btn-hg" title="<eidea:label key="common.button.refresh"/>" ng-click="commonListHeader('refresh')">
         <i class="fa fa-refresh fa-1x" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.refresh"/>
     </button>
-    <button type="button" class="btn  btn-primary btn-sm btn-hg" title="<eidea:label key="common.button.help"/>">
+    <button data-toggle="modal" data-target="#helpModal" type="button" class="btn  btn-primary btn-sm btn-hg" title="<eidea:label key="common.button.help"/>">
         <i class="fa fa-question fa-1x" aria-hidden="true"></i>&nbsp;<eidea:label key="common.button.help"/>
     </button>
 </div>

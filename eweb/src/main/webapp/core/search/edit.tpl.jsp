@@ -35,7 +35,7 @@
                     </div>
                     <div >
                         <p>
-                            <%--字段信息--%><eidea:label key="base.Field.information"/><button type="button"  class="btn btn-default btn-sm" ng-click="addOneColumn()">添加列</button> <button type="button"  class="btn btn-default btn-sm" ng-disabled="!canDelete()"  ng-click="deleteColumns()"><%--删除选择列--%><eidea:label key="base.delete.select.column"/></button>
+                            <%--字段信息--%><eidea:label key="base.Field.information"/><button type="button"  class="btn btn-default btn-sm" ng-click="addOneColumn()"><%--添加列--%><eidea:label key="search.btn.add.column"/></button> <button type="button"  class="btn btn-default btn-sm" ng-disabled="!canDelete()"  ng-click="deleteColumns()"><%--删除选择列--%><eidea:label key="base.delete.select.column"/></button>
                         </p>
                         <table id="international_list"  class="table table-hover table-striped table-myinvalidate">
                             <thead>

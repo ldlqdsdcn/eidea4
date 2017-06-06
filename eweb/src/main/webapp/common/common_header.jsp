@@ -9,6 +9,7 @@
             $('a').each(function(){
                 $(this).attr("ondragstart","return false");
             });
+            buttonHeader.checkTimeOut();
         },
         editInit:function ($scope,$http,$window,$timeout, Upload,directoryUrl) {
             $scope.commonEditHeader=function (type) {
@@ -75,7 +76,7 @@
                 }
             }
             $scope.upload = function (file) {
-                $scope.canUpload=true;
+                $scope.unableUpload=true;
                 file.upload =Upload.upload({
                     //服务端接收
                     url: "<c:url value="/common/attachmentUpload"/>",
@@ -89,7 +90,7 @@
                     $scope.attachmentList = data.data;
                     $scope.commonFileBo=null;
                     $scope.files=null;
-                    $scope.canUpload=false;
+                    $scope.unableUpload=false;
                 }).error(function (data, status, headers, config) {
                     //上传失败
                     console.log('error status: ' + status);
@@ -135,6 +136,22 @@
             $('a').each(function(){
                 $(this).attr("ondragstart","return false");
             });
+            buttonHeader.checkTimeOut();
+        },
+        checkTimeOut:function () {
+            $('body').click(function () {
+                $.ajax({
+                    url:"<c:url value="/checkTimeout"/>",
+                    data:"systemTimeStamp="+window.parent.document.getElementById("systemTimeStamp").value,
+                    type:"POST",
+                    dataType:"JSON",
+                    success:function(data){
+                        if(data.data){
+                            window.parent.location.href="<c:url value="/login.jsp"></c:url>";
+                        }
+                    }
+                })
+            })
         }
     }
 </script>

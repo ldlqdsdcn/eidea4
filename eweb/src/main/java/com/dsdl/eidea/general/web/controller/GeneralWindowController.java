@@ -2,6 +2,7 @@ package com.dsdl.eidea.general.web.controller;
 
 import com.dsdl.eidea.base.entity.bo.TabBo;
 import com.dsdl.eidea.base.entity.bo.WindowBo;
+import com.dsdl.eidea.base.entity.bo.WindowHelpBo;
 import com.dsdl.eidea.base.service.WindowService;
 import com.dsdl.eidea.core.web.def.WebConst;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,11 +26,20 @@ public class GeneralWindowController {
     @RequestMapping("/show/{windowId}")
     public ModelAndView getWindow(@PathVariable("windowId") Integer windowId, HttpSession session) {
         ModelAndView modelAndView = new ModelAndView("general/window");
-        String language=(String)session.getAttribute(WebConst.SESSION_LANGUAGE);
-        WindowBo windowBo =  windowService.getWindowBo(windowId, language);
-        TabBo tabBo=windowBo.getTabList().get(0);
+        String language = (String) session.getAttribute(WebConst.SESSION_LANGUAGE);
+        WindowBo windowBo = windowService.getWindowBo(windowId, language);
+        TabBo tabBo = windowBo.getTabList().get(0);
         modelAndView.addObject("windowBo", windowBo);
         modelAndView.addObject("tabBo", tabBo);
+        return modelAndView;
+    }
+
+    @RequestMapping("/help/{windowId}")
+    public ModelAndView showHelp(@PathVariable("windowId") Integer windowId, HttpSession session) {
+        String language = (String) session.getAttribute(WebConst.SESSION_LANGUAGE);
+        WindowHelpBo windowHelpBo = windowService.getWindowHelpBo(windowId, language);
+        ModelAndView modelAndView = new ModelAndView("/general/help");
+        modelAndView.addObject("windowHelpBo", windowHelpBo);
         return modelAndView;
     }
 

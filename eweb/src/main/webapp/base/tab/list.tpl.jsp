@@ -78,7 +78,7 @@
                         {{model.updatedby}}
                     </td>
                     <td>
-                        <button class="btn btn-primary btn-xs" ng-click="edit(model.id,model.tableColumnId)"><eidea:label key="common.button.edit"/></button>
+                        <button class="btn btn-primary btn-xs" ng-click="edit(model.id)"><eidea:label key="common.button.edit"/></button>
                     </td>
                 </tr>
                 </tbody>

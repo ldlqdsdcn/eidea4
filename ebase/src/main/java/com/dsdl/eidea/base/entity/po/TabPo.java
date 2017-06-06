@@ -9,6 +9,7 @@ package com.dsdl.eidea.base.entity.po;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -23,6 +24,7 @@ import java.util.Date;
 @Getter
 @Setter
 @Entity(name = "core_tab")
+@org.hibernate.annotations.Cache(usage= CacheConcurrencyStrategy.READ_ONLY)
 public class TabPo implements java.io.Serializable {
     @Id
     @Column(name = "id", nullable = false, unique = true, length = 11)

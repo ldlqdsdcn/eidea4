@@ -2,6 +2,7 @@ package com.dsdl.eidea.core.entity.po;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 
@@ -12,6 +13,7 @@ import javax.persistence.*;
 @Table(name = "core_table_column", catalog = "e_idea")
 @Getter
 @Setter
+@org.hibernate.annotations.Cache(usage= CacheConcurrencyStrategy.READ_WRITE)
 public class TableColumnPo implements java.io.Serializable {
 
 	// Fields
@@ -48,7 +50,4 @@ public class TableColumnPo implements java.io.Serializable {
 	private Integer digits;
 	@Column(name = "nullable", length = 1)
 	private String nullable;
-
-
-
 }

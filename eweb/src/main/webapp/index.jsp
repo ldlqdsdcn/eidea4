@@ -10,7 +10,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="/favicon.ico">
     <title><eidea:label key="index.title"/></title>
-
+    <input type="hidden" id="refreshTabs" value="<eidea:label key="bootstrap.addtab.refresh.this.tab"/>">
+    <input type="hidden" id="closeTabs" value="<eidea:label key="bootstrap.addtab.close.this.tab"/>">
+    <input type="hidden" id="otherTabs" value="<eidea:label key="bootstrap.addtab.close.other.tabs"/>">
+    <input type="hidden" id="leftTabs" value="<eidea:label key="bootstrap.addtab.close.left.tabs"/>">
+    <input type="hidden" id="rightTabs" value="<eidea:label key="bootstrap.addtab.close.right.tabs"/>">
     <!-- Bootstrap core CSS -->
 
     <link rel="stylesheet" href="<c:url value="/css/bootstrap/bootstrap.min.css"/>" type="text/css" media="all"/>
@@ -50,18 +54,14 @@
     <script src='<c:url value="/js/html5shiv.min.js"/>' type="text/javascript"></script>
     <script src='<c:url value="/js/respond.min.js"/>' type="text/javascript"></script>
     <![endif]-->
-    <script type="text/javascript">
-
-        function resizeIframe(obj) {
-            obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
-        }
-        function gotoUrl(url) {
-            document.getElementById('content').src=url;
-        }
-    </script>
 </head>
-<%UserBo user=(UserBo)session.getAttribute("loginUser"); %>
+<%
+    UserBo user=(UserBo)session.getAttribute("loginUser");
+    long systemTimeStamp=System.currentTimeMillis();
+    session.setAttribute("systemTimeStamp",systemTimeStamp);
+%>
 <body class="nav-md gun_dong">
+<input type="hidden" id="systemTimeStamp" value="<%=systemTimeStamp%>">
 <div class="container body">
     <div class="main_container">
         <div class="col-md-3 left_col menu_fixed">
@@ -93,23 +93,6 @@
                     </div>
                 </div>
                 <!-- sidebar menu -->
-
-                <!-- /menu footer buttons -->
-<%--                <div class="sidebar-footer hidden-small">
-                    <a data-toggle="tooltip" data-placement="top" title="" data-original-title="Settings">
-                        <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
-                    </a>
-                    <a data-toggle="tooltip" data-placement="top" title="" data-original-title="FullScreen">
-                        <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
-                    </a>
-                    <a data-toggle="tooltip" data-placement="top" title="" data-original-title="Lock">
-                        <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
-                    </a>
-                    <a data-toggle="tooltip" data-placement="top" title="" data-original-title="Logout">
-                        <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
-                    </a>
-                </div>--%>
-                <!-- /menu footer buttons -->
             </div>
         </div>
         <!--left menu end-->
@@ -129,7 +112,7 @@
                             </a>
                             <ul class="dropdown-menu dropdown-usermenu pull-right">
                                 <li><a href="javascript:void(0);" data-toggle="modal" data-target="#changePasswordModal"><eidea:label key="index.change_password"/></a></li>
-                                <li><a href="javascript:gotoUrl('<c:url value="/common/profile.jsp"/>');"><eidea:label key="index.profile"/></a></li>
+                                <li><a href="javascript:void(0);" onclick="gotoUrl()"><eidea:label key="index.profile"/></a></li>
                                 <li>
                                     <a href="javascript:;">
                                         <span class="badge bg-red pull-right"><eidea:label key="index.proportion"/></span>
@@ -192,7 +175,8 @@
                 <!-- Nav tabs -->
                 <ul class="nav nav-tabs" role="tablist">
                     <li role="presentation" class="active">
-                        <a href="#home" aria-controls="home" role="tab" data-toggle="tab"><eidea:label key="common.button.home.page"/></a></li>
+                        <a href="#home" aria-controls="home" role="tab" data-toggle="tab"><eidea:label key="common.button.home.page"/></a>
+                    </li>
                 </ul>
                 <!-- Tab panes -->
                 <div class="tab-content">
@@ -207,7 +191,6 @@
 </div>
 <script src='<c:url value="/js/custom.js"/>' type="text/javascript"></script>
 <script type="text/javascript">
-    //$("#content").load("<c:url value="/core/language/showList"/>");
     var app = angular.module('changeLanguageApp', ['ui.bootstrap', 'jcs-autoValidate']);
     app.controller('changeLanguageCtrl',function ($scope,$http) {
         //获取语言列表
@@ -234,6 +217,57 @@
             window.parent.location.href = "<c:url value="/common/changeLanguageCode"/>?language="+languageCode;
         }
     });
+</script>
+<script type="text/javascript">
+
+    function resizeIframe(obj) {
+        obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+    }
+    function gotoUrl() {
+        var flag=false;
+        $(".nav-tabs").find("li").each(function () {
+            if(this.id == "tab_tab_persionSettging"){
+                flag=true;
+                $(this).attr("class","active");
+            }else if(this.className == "active"){
+                $(this).attr("class","");
+            }
+        })
+        $(".tab-content").find("div").each(function () {
+            if(this.id == "tab_persionSettging"){
+                $(this).attr("class","tab-pane active");
+            }else {
+                $(this).attr("class","tab-pane");
+            }
+        })
+        if(flag){
+            return false;
+        }
+        var bufferLi=new StringBuffer();
+        var bufferDiv=new StringBuffer();
+        bufferLi.append('<li id="tab_tab_persionSettging" role="presentation" class="active">')
+                .append('<a href="#tab_persionSettging" aria-controls="tab_persionSettging" role="tab" data-toggle="tab"><eidea:label key="index.profile"/></a>')
+                .append('<i class="close-tab glyphicon glyphicon-remove"></i>')
+                .append('</li>');
+        bufferDiv.append('<div role="tabpanel" class="tab-pane active" id="tab_persionSettging">')
+                .append('<iframe src="<c:url value="/common/profile.jsp"/>" width="100%" height="100%"  frameborder="0"></iframe>')
+                .append('</div>');
+        $(".nav-tabs").append(bufferLi.toString());
+        $(".tab-content").append(bufferDiv.toString());
+    }
+    $('body').click(function () {
+        $.ajax({
+            url:"<c:url value="/checkTimeout"/>",
+            data:"systemTimeStamp="+$("#systemTimeStamp").val(),
+            type:"POST",
+            dataType:"JSON",
+            success:function(data){
+                if(data.data){
+                    window.location.href="<c:url value="/login.jsp"></c:url>";
+                }
+            }
+        })
+    })
 </script>
 </body>
 </html>

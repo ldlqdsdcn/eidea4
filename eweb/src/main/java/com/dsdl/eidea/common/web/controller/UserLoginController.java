@@ -39,8 +39,6 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.util.*;
 
-import static java.lang.Thread.sleep;
-
 @Slf4j
 @RestController
 public class UserLoginController {
@@ -94,10 +92,18 @@ public class UserLoginController {
 
         if (username == null && password  == null) {
             return JsonResult.fail(ResultCode.FAILURE.getCode(), resource.getMessage("user.msg.name.password.is.not.null"));
+    public JsonResult<String> login(@RequestBody UserBo loginBo) {
+        UserResource resource = (UserResource) request.getSession().getAttribute(WebConst.SESSION_RESOURCE);
+        if (loginBo == null) {
+            return JsonResult.fail(ResultCode.FAILURE.getCode(), resource.getMessage("user.msg.name.password.is.not.null"));
         } else {
+            if (StringUtil.isEmpty(loginBo.getUsername())) {
+                return JsonResult.fail(ResultCode.FAILURE.getCode(), resource.getMessage("user.msg.name.is.not.null"));
             if (StringUtil.isEmpty(username)) {
                 return JsonResult.fail(ResultCode.FAILURE.getCode(), resource.getMessage("user.msg.name.is.not.null"));
             }
+            if (StringUtil.isEmpty(loginBo.getPassword())) {
+                return JsonResult.fail(ResultCode.FAILURE.getCode(), resource.getMessage("user.msg.password.is.not.null"));
             if (StringUtil.isEmpty(password)) {
                 return JsonResult.fail(ResultCode.FAILURE.getCode(), resource.getMessage("user.msg.password.is.not.null"));
             }
@@ -125,10 +131,12 @@ public class UserLoginController {
             userInitCommon(loginBo);
             userBo.setCode(loginBo.getCode());
             userInit(userBo, false, request);
+            return JsonResult.success(resource.getMessage("user.msg.user.login.successful"));
             //成功登录后将是否第一次登录重置为1：是
             return JsonResult.success(resource.getMessage("user.msg.user.login.successful"));
 
         } catch (IncorrectCredentialsException | UnknownAccountException e) {
+            return JsonResult.fail(ErrorCodes.NO_LOGIN.getCode(), resource.getMessage("user.msg.name.password.is.error"));
             //在短时间内密码输错的情况下返回登录界面
             if(logintime + 10000 > nowtime){
                 String rd = request.getContextPath() + "/login.jsp";
@@ -142,9 +150,9 @@ public class UserLoginController {
             session.setAttribute("timestamp",System.currentTimeMillis());
             return JsonResult.fail(ErrorCodes.NO_LOGIN.getCode(), resource.getMessage("user.msg.name.password.is.error"));
         } catch (LockedAccountException e) {
-            return JsonResult.fail(ErrorCodes.NO_LOGIN.getCode(), "该用户已经被禁用");
-        } catch (AuthenticationException e) {
-            return JsonResult.fail(ErrorCodes.NO_LOGIN.getCode(), "用户名错误，请重新输入");
+            return JsonResult.fail(ErrorCodes.NO_LOGIN.getCode(), resource.getMessage("user.msg.user.is.disable"));
+        }catch (AuthenticationException e){
+            return JsonResult.fail(ErrorCodes.NO_LOGIN.getCode(), resource.getMessage("user.msg.name.password.is.error"));
         }
 
     }
@@ -224,7 +232,7 @@ public class UserLoginController {
      */
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public ModelAndView logout(HttpSession session) {
-
+        UserResource resource = (UserResource) request.getSession().getAttribute(WebConst.SESSION_RESOURCE);
         session.removeAttribute(WebConst.SESSION_LOGINUSER);
         session.removeAttribute(WebConst.SESSION_USERCONTENT);
         session.removeAttribute(WebConst.SESSION_RESOURCE);
@@ -233,7 +241,7 @@ public class UserLoginController {
         if (subject.isAuthenticated()) {
             subject.logout(); // session 会销毁，在SessionListener监听session销毁，清理权限缓存
             if (log.isDebugEnabled()) {
-                log.debug("用户" + subject.getPrincipal() + "退出登录");
+                log.debug(resource.getMessage("user.msg.user") + subject.getPrincipal() + resource.getMessage("user.msg.user.log.out"));
             }
         }
         ModelAndView modelAndView = new ModelAndView("redirect:/login.jsp");
@@ -249,5 +257,19 @@ public class UserLoginController {
     public JsonResult<List<LanguageBo>> getLanguage() {
         List<LanguageBo> languageList = languageService.getLanguageForActivated();
         return JsonResult.success(languageList);
+    }
+
+    /**
+     * checkTimeout:登录超时检查
+     * @return
+     */
+    @RequestMapping(value = "/checkTimeout", method = RequestMethod.POST)
+    public JsonResult<Boolean> checkTimeout(long systemTimeStamp){
+        HttpSession session=request.getSession();
+        long sessionSystemTimeStamp=(long)session.getAttribute("systemTimeStamp");
+        if(sessionSystemTimeStamp > systemTimeStamp){
+            return JsonResult.success(true);
+        }
+        return JsonResult.success(false);
     }
 }

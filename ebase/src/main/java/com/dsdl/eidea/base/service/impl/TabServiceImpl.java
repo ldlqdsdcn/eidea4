@@ -10,6 +10,7 @@ import com.dsdl.eidea.base.entity.bo.TabBo;
 import com.dsdl.eidea.base.entity.po.FieldPo;
 import com.dsdl.eidea.base.entity.po.TabPo;
 import com.dsdl.eidea.base.entity.po.TabTrlPo;
+import com.dsdl.eidea.base.exception.ServiceException;
 import com.dsdl.eidea.base.service.TabService;
 import com.dsdl.eidea.core.dao.CommonDao;
 import com.dsdl.eidea.core.dto.PaginationResult;
@@ -83,6 +84,10 @@ public class TabServiceImpl implements TabService {
             pkFieldSearch.addFilterEqual("tabId", tabPo.getId());
             pkFieldSearch.addFilterEqual("columnId", tabPo.getTableColumnId());
             FieldPo pk = fieldDao.searchUnique(pkFieldSearch);
+            if(pk==null)
+            {
+                throw new ServiceException("tabId="+ tabPo.getId()+" columnId="+tabPo.getTableColumnId()+"找不到对应的主键Field");
+            }
             tabBo.setPkFieldId(pk.getId());
             tabBo.setId(tabPo.getId());
             if (tabTrlPo != null) {

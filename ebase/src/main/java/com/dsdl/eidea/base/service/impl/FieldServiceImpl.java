@@ -239,18 +239,22 @@ public class FieldServiceImpl implements FieldService {
                 sqlColumnList.add(labelColumn);
                 QueryExpression queryExpression = SQLUtil.buildQueryExpression(sql, sqlColumnList);
                 List<SqlCondition> sqlConditionList=queryExpression.getSqlConditionList();
-                for(SqlCondition sqlCondition:sqlConditionList)
+                if(sqlConditionList!=null)
                 {
-                    String columnName= sqlCondition.getColumnName();
-                    for(FieldStructureBo fpo:fieldStructureBoList)
+                    for(SqlCondition sqlCondition:sqlConditionList)
                     {
-                        if(columnName.equals(fpo.getFieldPo().getTableColumnPo().getColumnName()))
+                        String columnName= sqlCondition.getColumnName();
+                        for(FieldStructureBo fpo:fieldStructureBoList)
                         {
-                            //FIXME 需要根据事件类型添加事件
-                            fpo.addEvent(EventType.ONCHANGE);
+                            if(columnName.equals(fpo.getFieldPo().getTableColumnPo().getColumnName()))
+                            {
+                                //FIXME 需要根据事件类型添加事件
+                                fpo.addEvent(EventType.ONCHANGE);
+                            }
                         }
                     }
                 }
+
 
             }
         }

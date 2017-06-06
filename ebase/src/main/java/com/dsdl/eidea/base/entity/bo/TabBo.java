@@ -37,4 +37,8 @@ public class TabBo {
      * 字段列表
      */
     private List<FieldPo> fieldList;
+    /**
+     * select管理自定义函数
+     */
+    private List<String> functions;
 }

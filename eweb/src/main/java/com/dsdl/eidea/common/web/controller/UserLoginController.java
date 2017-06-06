@@ -89,21 +89,15 @@ public class UserLoginController {
         String username = cipherstr[0];
         String password = cipherstr[1];
         UserResource resource = (UserResource) request.getSession().getAttribute(WebConst.SESSION_RESOURCE);
-
+        UserBo loginBo = new UserBo();
+        loginBo.setUsername(username);
+        loginBo.setPassword(password);
         if (username == null && password  == null) {
             return JsonResult.fail(ResultCode.FAILURE.getCode(), resource.getMessage("user.msg.name.password.is.not.null"));
-    public JsonResult<String> login(@RequestBody UserBo loginBo) {
-        UserResource resource = (UserResource) request.getSession().getAttribute(WebConst.SESSION_RESOURCE);
-        if (loginBo == null) {
-            return JsonResult.fail(ResultCode.FAILURE.getCode(), resource.getMessage("user.msg.name.password.is.not.null"));
         } else {
-            if (StringUtil.isEmpty(loginBo.getUsername())) {
-                return JsonResult.fail(ResultCode.FAILURE.getCode(), resource.getMessage("user.msg.name.is.not.null"));
             if (StringUtil.isEmpty(username)) {
                 return JsonResult.fail(ResultCode.FAILURE.getCode(), resource.getMessage("user.msg.name.is.not.null"));
             }
-            if (StringUtil.isEmpty(loginBo.getPassword())) {
-                return JsonResult.fail(ResultCode.FAILURE.getCode(), resource.getMessage("user.msg.password.is.not.null"));
             if (StringUtil.isEmpty(password)) {
                 return JsonResult.fail(ResultCode.FAILURE.getCode(), resource.getMessage("user.msg.password.is.not.null"));
             }
@@ -116,8 +110,6 @@ public class UserLoginController {
 
         // 用字符串进行生成Token
         UsernamePasswordToken token = new UsernamePasswordToken(username, md5Password);
-        UserBo loginBo = new UserBo();
-        loginBo.setUsername(username);
 
         //获得时间戳和是否第一次登录的信息
         HttpSession session = request.getSession();
@@ -132,11 +124,7 @@ public class UserLoginController {
             userBo.setCode(loginBo.getCode());
             userInit(userBo, false, request);
             return JsonResult.success(resource.getMessage("user.msg.user.login.successful"));
-            //成功登录后将是否第一次登录重置为1：是
-            return JsonResult.success(resource.getMessage("user.msg.user.login.successful"));
-
         } catch (IncorrectCredentialsException | UnknownAccountException e) {
-            return JsonResult.fail(ErrorCodes.NO_LOGIN.getCode(), resource.getMessage("user.msg.name.password.is.error"));
             //在短时间内密码输错的情况下返回登录界面
             if(logintime + 10000 > nowtime){
                 String rd = request.getContextPath() + "/login.jsp";

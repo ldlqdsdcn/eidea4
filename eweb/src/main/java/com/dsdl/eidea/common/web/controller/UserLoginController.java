@@ -126,7 +126,6 @@ public class UserLoginController {
             userBo.setCode(loginBo.getCode());
             userInit(userBo, false, request);
             //成功登录后将是否第一次登录重置为1：是
-            session.setAttribute("firstloginstr",1);
             return JsonResult.success(resource.getMessage("user.msg.user.login.successful"));
 
         } catch (IncorrectCredentialsException | UnknownAccountException e) {

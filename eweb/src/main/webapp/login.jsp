@@ -104,12 +104,13 @@
             }
         });
         $scope.changeLang=function () {
-            window.location.href = "<c:url value="/common/changeLanguage"/>?language="+$scope.loginBo.code;
+            $http.post("<c:url value="/common/addCookie"/>",{"username":$scope.loginBo.username}).success(function (data) {
+                window.location.href = "<c:url value="/common/changeLanguage"/>?language="+$scope.loginBo.code;
+            });
         }
         $scope.submit = function () {
             <%
                 session.setAttribute("timestamp",System.currentTimeMillis());
-                session.setAttribute("firstloginstr",1);
             %>
             var usernameAndPassword = $scope.loginBo.username+"|"+$scope.loginBo.password;
             var aesAndRsaUtil = new AesAndRsaUtil(iv,key);

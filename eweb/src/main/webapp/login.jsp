@@ -32,9 +32,9 @@
     <script type='text/javascript' src="<c:url value="/js/angular/jcs-auto-validate.min.js"/>"></script>
     <script type='text/javascript' src="<c:url value="/js/md5.min.js"/>"></script>
     <!--jsencryptcipher-->
-    <script src="js/crypto-js.js"></script>
-    <script src="js/jsencrypt.js"></script>
-    <script src="js/security/AesAndRsaUtil.js"></script>
+    <script src="<c:url value="/js/crypto-js.js"/>"></script>
+    <script src="<c:url value="/js/jsencrypt.js"/>"></script>
+    <script src="<c:url value="/js/security/AesAndRsaUtil.js"/>"></script>
 
     <!--jsencryptcipher-->
 
@@ -123,7 +123,6 @@
             $("#loginBtn").button('loading');
             if ($scope.loginForm.$valid) {
                 //合成一个字符串
-                //loginParam={username:$scope.loginBo.username,password:md5(cipherpassword.toString()),"code":$scope.loginBo.code,enkey:enkey,iv:iv};
                 loginParam={username:$scope.loginBo.username,password:$scope.loginBo.password,"code":$scope.loginBo.code};
                 $scope.serverReturnMessage = "";
                 $http.post("<c:url value="/login"/>",{"allparam":allparam}).success(function (data) {

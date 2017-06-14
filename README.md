@@ -7,5 +7,7 @@
 Dao数据操作仅仅增删改查，没有特殊需求，不需要写Dao接口和Dao实现类，用下面这种引入方式：
     @DataAccess(entity = RolePo.class)
     private CommonDao<RolePo,Integer> roleDao;
+    数据库sql文件<br>
+    https://github.com/ldlqdsdcn/eidea4db
     
     

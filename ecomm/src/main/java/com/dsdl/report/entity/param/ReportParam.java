@@ -29,6 +29,10 @@ public class ReportParam implements java.io.Serializable {
      */
     private List<Param> paramList = new ArrayList<>();
 
+    /**
+     * 添加参数
+     * @param param 报表传递参数类
+     */
     public void addParam(Param param) {
         paramList.add(param);
     }

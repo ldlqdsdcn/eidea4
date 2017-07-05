@@ -77,11 +77,11 @@
             <version>5.1.40</version>
         </dependency>
 
-        <dependency>
+<!--        <dependency>
             <groupId>com.dsdl</groupId>
             <artifactId>dsdl-font</artifactId>
             <version>1.0</version>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>org.mybatis</groupId>
             <artifactId>mybatis</artifactId>
@@ -105,11 +105,11 @@
             <version>1.16.8</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
+<!--        <dependency>
             <groupId>com.dsdl</groupId>
             <artifactId>eidea.jasperreport.fonts</artifactId>
             <version>1.0</version>
-        </dependency>
+        </dependency>-->
         <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>

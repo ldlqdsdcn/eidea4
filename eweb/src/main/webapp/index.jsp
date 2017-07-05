@@ -181,7 +181,7 @@
                 <!-- Tab panes -->
                 <div class="tab-content">
                     <div role="tabpanel" class="tab-pane active" id="home">
-                        <iframe src="<c:url value="/default.jsp"/>" width="100%" height="100%"  frameborder="0"></iframe>
+                        <iframe src="<c:url value="/common/dashboard.jsp"/>" width="100%" height="100%"  frameborder="0"></iframe>
                     </div>
                 </div>
             </div>

@@ -38,7 +38,7 @@ public class AesUtils {
     public static void main(String[] args) {
 //        System.out.println(decrypt("+KosuD0pd9U6/P8kiHT+Xw==", "yfe4TvE8qHwB0zns"));
 //        System.out.println(decrypt("+KosuD0pd9U6/P8kiHT+Xw==", "yfe4TvE8qHwB0zns"));
-
+//git test
         String a="zhangsan";
         String b="yfe4TvE8qHwB0zns";
         System.out.println("原始内容==="+a);

@@ -14,4 +14,5 @@ Dao数据操作仅仅增删改查，没有特殊需求，不需要写Dao接口�
     
     1.安装lombok插件
     https://projectlombok.org/ 
-    
+    2.把ereport 字体库注释掉
+3. spring rmi

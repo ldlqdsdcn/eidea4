@@ -1,5 +1,6 @@
 致力开发 开发效率最高，运行效率最高的java web框架
 
+jdk要求 1.8
 基于 spring mvc+spring +Hibernate.
 
 该框架适用于ERP CRM SCM 等系统开发。

@@ -19,3 +19,5 @@ Dao数据操作仅仅增删改查，没有特殊需求，不需要写Dao接口�
     2.把ereport 字体库注释掉
 3. spring rmi 作为分布式框架
 4.测试框架使用 mockit
+
+4.  storm 用于高并发处理

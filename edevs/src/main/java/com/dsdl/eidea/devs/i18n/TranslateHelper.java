@@ -65,8 +65,8 @@ public class TranslateHelper {
     }
 
     public static void main(String[] args) {
-        System.out.println(translate("窗体信息", "zh", "en"));
-        System.out.println(translate("窗体信息", "zh", "tr"));
+        System.out.println(translate("你好", "zh", "en"));
+        System.out.println(translate("你好", "zh", "fr"));
     }
     @Getter
     @Setter

@@ -1,7 +1,9 @@
 package com.dsdl.eidea.core.web.result;
 
 
+import com.dsdl.eidea.base.entity.bo.UserBo;
 import com.dsdl.eidea.core.web.result.def.ResultCode;
+import com.google.gson.Gson;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -34,6 +36,8 @@ public class JsonResult<T> implements Serializable {
         jsonResult.code = ResultCode.SUCCESS.getCode();
         jsonResult.message = ResultCode.SUCCESS.getMessage();
         jsonResult.data = data;
+        Gson gson=new Gson();
+        gson.fromJson("22", UserBo.class);
         return jsonResult;
     }
 

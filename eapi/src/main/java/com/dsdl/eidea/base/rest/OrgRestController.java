@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
@@ -37,7 +38,7 @@ public class OrgRestController {
         return org;
     }
     @ApiOperation(value = "保存组织信息", httpMethod = "POST", response = String.class, notes = "保存组织信息",produces = MediaType.APPLICATION_JSON_VALUE)
-    @RequestMapping("/org/save")
+    @RequestMapping(value = "/org/save",method = RequestMethod.POST)
     public String saveOrg(@ApiParam(value = "要更新的组织", required = true)Org org)
     {
         return "更新组织信息成功";

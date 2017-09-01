@@ -46,4 +46,8 @@ public class ClientApiTest {
 
         return headers;
     }
+    public static void main(String[] args)
+    {
+        System.out.println("GSON");
+    }
 }

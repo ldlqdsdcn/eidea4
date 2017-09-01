@@ -36,8 +36,6 @@ public class JsonResult<T> implements Serializable {
         jsonResult.code = ResultCode.SUCCESS.getCode();
         jsonResult.message = ResultCode.SUCCESS.getMessage();
         jsonResult.data = data;
-        Gson gson=new Gson();
-        gson.fromJson("22", UserBo.class);
         return jsonResult;
     }
 

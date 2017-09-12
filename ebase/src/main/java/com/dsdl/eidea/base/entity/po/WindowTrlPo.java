@@ -16,6 +16,8 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
+import java.awt.*;
+
 /**
 * table name core_window_trl
 *            窗体信息
@@ -61,4 +63,7 @@ public class WindowTrlPo implements java.io.Serializable {
     @Column(name = "[help]", length = 500)
     @Length(max = 500,message="tabtrl.error.help.length")
     private String help;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "[window_id]",insertable = false,updatable = false)
+    private WindowPo windowPo;
 }

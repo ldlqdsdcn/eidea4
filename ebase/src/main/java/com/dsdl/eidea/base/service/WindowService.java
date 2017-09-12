@@ -37,4 +37,11 @@ public interface WindowService {
 	 * @return
 	 */
 	WindowHelpBo getWindowHelpBo(Integer windowId,String lang);
+
+	/**
+	 * 获取窗体列表
+	 * @param lang
+	 * @return
+	 */
+	List<WindowBo> getWindows(String lang);
 }

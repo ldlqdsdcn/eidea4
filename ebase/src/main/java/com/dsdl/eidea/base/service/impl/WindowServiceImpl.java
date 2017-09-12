@@ -22,6 +22,10 @@ import com.dsdl.eidea.core.dao.CommonDao;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import static com.googlecode.genericdao.search.ISearch.RESULT_LIST;
+import static com.googlecode.genericdao.search.ISearch.RESULT_MAP;
 
 /**
  * @author 刘大磊 2017-05-02 15:41:30
@@ -68,6 +72,23 @@ public class WindowServiceImpl implements WindowService {
 
     public void deletes(Integer[] ids) {
         windowDao.removeByIdsForLog(ids);
+    }
+
+    public List<WindowBo> getWindows(String lang) {
+        List<WindowBo> windowBoList = new ArrayList<>();
+        Search search = new Search();
+        search.addFilterEqual("lang", lang);
+        search.addFilterEqual("windowPo.isactive", "Y");
+        search.addField("windowId").addField("name");
+        search.setResultMode(RESULT_MAP);
+        List<Map> windowTrlPoList = windowTrlDao.search(search);
+        windowTrlPoList.forEach(e -> {
+            WindowBo windowBo = new WindowBo();
+            windowBo.setWindowId((Integer) e.get("windowId"));
+            windowBo.setWindowName((String) e.get("name"));
+            windowBoList.add(windowBo);
+        });
+        return windowBoList;
     }
 
     @Override

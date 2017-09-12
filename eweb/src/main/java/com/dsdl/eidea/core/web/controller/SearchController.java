@@ -1,5 +1,7 @@
 package com.dsdl.eidea.core.web.controller;
 
+import com.dsdl.eidea.base.entity.po.WindowPo;
+import com.dsdl.eidea.base.service.WindowService;
 import com.dsdl.eidea.base.web.vo.UserResource;
 import com.dsdl.eidea.core.def.RelOperDef;
 import com.dsdl.eidea.core.def.SearchDataTypeDef;
@@ -43,7 +45,8 @@ public class SearchController {
     private static final String URI = "core_search";
     @Autowired
     private SearchService searchService;
-
+    @Autowired
+    private WindowService windowService;
     @RequestMapping(value = "/showList", method = RequestMethod.GET)
     @RequiresPermissions(value = "view")
     public ModelAndView showList() {
@@ -109,7 +112,10 @@ public class SearchController {
         }
         searchColumnBo.setRelOperList(keyValueList);
     }
-
+    public JsonResult<WindowPo> getWindows()
+    {
+        return null;
+    }
     /**
      * @param searchBo
      * @return

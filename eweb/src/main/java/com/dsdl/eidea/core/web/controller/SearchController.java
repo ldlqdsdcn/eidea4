@@ -1,5 +1,6 @@
 package com.dsdl.eidea.core.web.controller;
 
+import com.dsdl.eidea.base.entity.bo.WindowBo;
 import com.dsdl.eidea.base.entity.po.WindowPo;
 import com.dsdl.eidea.base.service.WindowService;
 import com.dsdl.eidea.base.web.vo.UserResource;
@@ -18,6 +19,7 @@ import com.dsdl.eidea.core.web.def.WebConst;
 import com.dsdl.eidea.core.web.result.JsonResult;
 import com.dsdl.eidea.core.web.result.def.ErrorCodes;
 import com.dsdl.eidea.core.web.util.SearchHelper;
+import com.dsdl.eidea.core.web.util.WebUtil;
 import com.dsdl.eidea.core.web.vo.PagingSettingResult;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -32,6 +34,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
@@ -112,9 +115,20 @@ public class SearchController {
         }
         searchColumnBo.setRelOperList(keyValueList);
     }
-    public JsonResult<WindowPo> getWindows()
+    @RequestMapping(value = "/windows", method = RequestMethod.GET)
+    @ResponseBody
+    @RequiresPermissions(value = "view")
+    public JsonResult<List<WindowBo>> getWindows(HttpServletRequest request)
     {
-        return null;
+        String lang=WebUtil.getLanguageCode(request);
+        List<WindowBo>windowBoList=windowService.getWindows(lang);
+        List<WindowBo> windowList=new ArrayList<>();
+        WindowBo first=new WindowBo();
+        first.setWindowId(null);
+        first.setWindowName("");
+        windowList.add(first);
+        windowList.addAll(windowBoList);
+        return JsonResult.success(windowList);
     }
     /**
      * @param searchBo

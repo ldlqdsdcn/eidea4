@@ -26,6 +26,12 @@
                         <select ng-model="searchBo.showType" id="showType"
                                 ng-options="option.key as option.desc for option in showTypeList"></select>
                     </div>
+                    <div class="form-group">
+                        <label for="windowId"><%--窗体--%> <eidea:label key="base.search.windowId"/></label>
+                        <select ng-model="searchBo.windowId" id="windowId"
+                                ng-options="window.windowId as window.windowName for window in windowList"></select>
+
+                    </div>
                       <div class="form-group">
                         <label for="isactive"><%--是否有效--%><eidea:label key="base.whetherEffective"/><input type="checkbox" id="isactive"   ng-true-value="'Y'" ng-false-value="'N'" ng-model="searchBo.isactive"  ></label>
                     </div>

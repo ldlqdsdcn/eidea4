@@ -27,6 +27,8 @@ public class SearchBo {
     private String isactive;
     @Length(max = 200,message = "module.name.check")
     private String remark;
+
+    private Integer windowId;
     /**
      * 查询页显示方式
      */

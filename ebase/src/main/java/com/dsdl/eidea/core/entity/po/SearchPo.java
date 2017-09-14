@@ -29,6 +29,8 @@ public class SearchPo implements java.io.Serializable {
 	private String uri;
 	@Column(name = "show_type")
 	private Integer showType;
+	@Column(name = "window_id")
+	private Integer windowId;
 	@Column(name = "isactive", length = 1)
 	private String isactive;
 	@Column(name = "remark", length = 500)

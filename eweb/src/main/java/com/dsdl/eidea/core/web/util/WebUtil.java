@@ -17,4 +17,13 @@ public class WebUtil {
     public static UserBo getUserBoInSession(HttpServletRequest request) {
         return getUserBoInSession(request.getSession());
     }
+
+    public static String getLanguageCode(HttpServletRequest request) {
+        return getLanguageCode(request.getSession());
+    }
+
+    public static String getLanguageCode(HttpSession session) {
+        return (String) session.getAttribute(WebConst.SESSION_LANGUAGE);
+    }
+
 }

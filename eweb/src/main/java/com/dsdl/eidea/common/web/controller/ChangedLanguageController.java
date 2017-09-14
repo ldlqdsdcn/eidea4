@@ -45,7 +45,7 @@ public class ChangedLanguageController {
         DbResourceBundle dbResourceBundle = messageService.getResourceBundle(language);
         Locale locale = LocaleHelper.parseLocale(language);
         request.getSession().setAttribute(WebConst.SESSION_RESOURCE, new UserResource(locale, dbResourceBundle));
-        request.getSession().setAttribute("language",language);
+        request.getSession().setAttribute(WebConst.SESSION_LANGUAGE,language);
         return modelAndView;
     }
 
@@ -63,7 +63,7 @@ public class ChangedLanguageController {
         DbResourceBundle dbResourceBundle = messageService.getResourceBundle(language);
         Locale locale = LocaleHelper.parseLocale(language);
         request.getSession().setAttribute(WebConst.SESSION_RESOURCE, new UserResource(locale, dbResourceBundle));
-        request.getSession().setAttribute("language",language);
+        request.getSession().setAttribute(WebConst.SESSION_LANGUAGE,language);
         UserBo loginUser=(UserBo) session.getAttribute(WebConst.SESSION_LOGINUSER);
         String contextPath = request.getServletContext().getContextPath();
         String leftMenuStr = pageMenuService.getLeftMenuListByUserId(loginUser.getId(), contextPath,language);

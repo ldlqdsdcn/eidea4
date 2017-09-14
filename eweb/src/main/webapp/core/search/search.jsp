@@ -126,9 +126,11 @@
     app.controller('editCtrl', function ($routeParams,$scope, $http,$window,$timeout, Upload) {
         $scope.showTypeList = [];
         $scope.relOper = [];
+        $scope.windowList=[];
         $scope.searchPageFieldInput = [];
         $scope.searchDataType = [];
         $scope.searchBo = {};
+
         $scope.delF = false;
         $scope.canAdd=PrivilegeService.hasPrivilege('add');
         $scope.canSave=false;
@@ -146,6 +148,15 @@
                         bootbox.alert(response.message);
                     }
                 });
+        $http.get("<c:url value="/core/search/windows"/> ")
+            .success(function (response) {
+                if (response.success) {
+                    $scope.windowList =response.data;
+                }
+                else {
+                    bootbox.alert(response.message);
+                }
+            });
 
         if ($routeParams.id != null) {
             var url = "<c:url value="/core/search/get"/>" + "?id=" + $routeParams.id;

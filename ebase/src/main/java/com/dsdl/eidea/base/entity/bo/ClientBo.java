@@ -16,7 +16,7 @@ public class ClientBo {
     @Length(min=2,max=10,message="client.error.no.length_error")
     private String no;
     @NotBlank(message="client.error.name.not_null")
-    @Length(min=2,max=30,message="client.error.name.length_error")
+    @Length(min=20,max=30,message="client.error.name.length_error")
     private String name;
     @NotBlank(message="client.error.isactive.not_null")
     @Length(min = 1,max = 1,message="client.error.isactive.length_error")

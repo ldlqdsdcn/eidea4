@@ -8,6 +8,7 @@ import com.dsdl.eidea.base.web.vo.UserResource;
 import com.dsdl.eidea.core.dto.PaginationResult;
 import com.dsdl.eidea.core.params.DeleteParams;
 import com.dsdl.eidea.core.params.QueryParams;
+import com.dsdl.eidea.core.web.annotation.ParamValid;
 import com.dsdl.eidea.core.web.controller.BaseController;
 import com.dsdl.eidea.core.web.def.WebConst;
 import com.dsdl.eidea.core.web.result.JsonResult;
@@ -85,7 +86,7 @@ public class ClientController extends BaseController {
     @RequiresPermissions("add")
     @RequestMapping(value = "/saveForCreated", method = RequestMethod.POST)
     @ResponseBody
-    public JsonResult<ClientBo> saveForCreate(@Validated @RequestBody ClientBo clientBo) {
+    public JsonResult<ClientBo> saveForCreate(@ParamValid @RequestBody ClientBo clientBo) {
         if (clientService.findExistClient(clientBo.getNo())) {
             return JsonResult.fail(ErrorCodes.BUSINESS_EXCEPTION.getCode(), getMessage("client.msg.client_code_exists"));
         }

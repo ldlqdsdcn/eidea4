@@ -53,7 +53,6 @@ public class AesUtil {
             byte [] byte_decode=cipher.doFinal(byte_content);
             String AES_decode=new String(byte_decode,"Utf8");
             return AES_decode;
-
         } catch (InvalidKeyException
                 |InvalidAlgorithmParameterException
                 |BadPaddingException

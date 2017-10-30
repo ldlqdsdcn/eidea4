@@ -42,7 +42,7 @@ public class SwaggerConfig {
                 .build());
         responseMessageList.add( new ResponseMessageBuilder()
                 .code(403)
-                .message("进制访问!")
+                .message("禁止访问!")
                 .responseModel(new ModelRef("com.dsdl.eidea.api.model.ErrorResponse"))
                 .build());
         responseMessageList.add( new ResponseMessageBuilder()

@@ -12,8 +12,8 @@
     <artifactId>eapi</artifactId>
     <description>第三方应用api</description>
     <properties>
-        <springfox-version>2.5.0</springfox-version>
-        <swagger-core-version>1.5.10</swagger-core-version>
+        <springfox-version>2.6.1</springfox-version>
+        <swagger-core-version>1.5.16</swagger-core-version>
     </properties>
     <dependencies>
         <dependency>

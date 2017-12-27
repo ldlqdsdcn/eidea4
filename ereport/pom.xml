@@ -26,11 +26,13 @@
             <artifactId>jasperreports</artifactId>
             <version>6.3.1</version>
         </dependency>
-
+        <!-- https://mvnrepository.com/artifact/net.sf.jasperreports/jasperreports-fonts -->
         <dependency>
             <groupId>net.sf.jasperreports</groupId>
-            <artifactId>jasperreports-functions</artifactId>
+            <artifactId>jasperreports-fonts</artifactId>
             <version>6.3.1</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/jasperreports-functions-6.3.1.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>joda-time</groupId>

@@ -8,6 +8,8 @@
 package com.dsdl.eidea.util;
 
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 
 /**
  * @author 刘大磊 2014年12月22日 上午9:03:20
@@ -187,6 +189,7 @@ public class MD5
         MD5 md5 = new MD5();
        System.out.println(md5.getMD5ofStr(md5.getMD5ofStr(System.currentTimeMillis()+"")));
        System.out.println(md5.getMD5ofStr("ABC"));
+        System.out.println(md5.getMD5ofStr("ABC").length());
         /* if(Array.getLength(args) == 0)
         {
             System.out.println("MD5 Test suite:");
@@ -200,6 +203,13 @@ public class MD5
         {
             System.out.println("MD5(" + args[0] + ")=" + md5.getMD5ofStr(args[0]));
         }*/
+        //8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92
+        int x=0x100;
+        System.out.println(x);
+       // BigDecimal bigDecimal=new BigDecimal("0x902fbdd2b1df0c4f70b4a5d23525e932");
+        BigInteger integer=new BigInteger("16");
+        BigInteger rsult=integer.subtract(new BigInteger("1"));
+        System.out.println(rsult);
     }
 
     private void md5Final()

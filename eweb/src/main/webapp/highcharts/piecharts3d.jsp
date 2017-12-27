@@ -39,8 +39,8 @@
             },
             credits: {
                 enabled: true,
-                text: '鼎商动力软件股份有限公司 ',
-                href: 'http://www.dsdl.com ',
+                text: 'XXXX软件股份有限公司 ',
+                href: '# ',
                 style: {
                     color: '#c6c6cc',
                     fontSize: '15px'

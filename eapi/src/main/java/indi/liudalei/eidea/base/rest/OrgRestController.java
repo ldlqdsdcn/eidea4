@@ -27,7 +27,7 @@ public class OrgRestController {
     public Org getOrg(@PathVariable("id") Integer id) {
         Org org = new Org();
         org.setId(1);
-        org.setName("鼎商动力");
+        org.setName("XXXX");
         Client client = new Client();
         client.setCity("青岛");
         client.setAddress("青岛市南");

@@ -16,7 +16,7 @@ public class ClientWsImpl implements ClientWs {
     @Override
     public List<Client> getUserList() {
         Client client = new Client();
-        client.setName("鼎商动力");
+        client.setName("XXXX");
         client.setAddress("市南区");
         List<Client> clientList = new ArrayList<>();
         return clientList;

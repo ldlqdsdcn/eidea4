@@ -7,7 +7,7 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
 
 
-    <context:component-scan base-package="com.dsdl.eidea.api.config"/>
+    <context:component-scan base-package="indi.liudalei.eidea.api.config"/>
     <context:annotation-config />
     <!-- 开启Shiro注解 -->
     <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" depends-on="lifecycleBeanPostProcessor"/>
@@ -16,7 +16,7 @@
     </bean>
 
     <!-- 开启controller注解支持，spring mvc的配置文件应该仅扫描@controller注解的类 -->
-    <context:component-scan base-package="com.dsdl.**.rest"
+    <context:component-scan base-package="indi.liudalei.**.rest"
                             use-default-filters="false">
         <context:include-filter type="annotation"
                                 expression="org.springframework.stereotype.Controller" />

@@ -1,4 +1,4 @@
-import com.dsdl.eidea.util.RestHelper;
+import indi.liudalei.eidea.util.RestHelper;
 
 /**
  * @author liudalei

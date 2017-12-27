@@ -17,11 +17,11 @@
     <context:annotation-config/>
     <task:annotation-driven/>
     <!-- 配置要扫描的包 -->
-    <context:component-scan base-package="com.dsdl.eidea.core.spring.processor"/>
-    <context:component-scan base-package="com.dsdl.eidea.**.dao"/>
-    <context:component-scan base-package="com.dsdl.eidea.core.init"/>
-    <context:component-scan base-package="com.dsdl.eidea.**.service"/>
-    <context:component-scan base-package="com.dsdl.eidea.core.web.converter"/>
+    <context:component-scan base-package="indi.liudalei.eidea.core.spring.processor"/>
+    <context:component-scan base-package="indi.liudalei.eidea.**.dao"/>
+    <context:component-scan base-package="indi.liudalei.eidea.core.init"/>
+    <context:component-scan base-package="indi.liudalei.eidea.**.service"/>
+    <context:component-scan base-package="indi.liudalei.eidea.core.web.converter"/>
     <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">
             <list>

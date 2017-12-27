@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.delmar.core.mybatis.sql.MessageAndLabelUnionMapper" >
+    <resultMap id="msgResult" type="indi.liudalei.eidea.core.entity.union.MsgUnion">
+        <result column="_key" property="key" jdbcType="VARCHAR" />
+        <result column="default_value" property="defaultValue" jdbcType="VARCHAR" />
+        <result column="msgtext" property="value" jdbcType="VARCHAR" />
+    </resultMap>
+    <select id="selectLabelTrl" parameterType="java.lang.String" resultMap="msgResult">
+        select core_label.`_key`,core_label.msgtext as default_value,trl.msgtext
+        from core_label left JOIN
+        (select _key,msgtext,lang from core_label_trl where lang=#{value,jdbcType=VARCHAR}) trl
+        ON core_label.`_key` = trl.`_key` where isactive='Y'  ORDER BY  core_label._key
+    </select>
+    <select id="selectMessageTrl" parameterType="java.lang.String" resultMap="msgResult">
+        select core_message.`_key`,core_message.msgtext as default_value,trl.msgtext
+      from core_message left JOIN
+      (select _key,msgtext,lang from core_message_trl where lang=#{value,jdbcType=VARCHAR}) trl
+        ON core_message.`_key` = trl.`_key` where isactive='Y'  ORDER BY  core_message._key
+    </select>
+</mapper>

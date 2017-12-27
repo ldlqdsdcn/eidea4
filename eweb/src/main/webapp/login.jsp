@@ -1,5 +1,5 @@
-<%@ page import="com.dsdl.eidea.base.web.vo.UserResource" %>
-<%@ page import="com.dsdl.eidea.core.web.def.WebConst" %>
+<%@ page import="indi.liudalei.eidea.base.web.vo.UserResource" %>
+<%@ page import="indi.liudalei.eidea.core.web.def.WebConst" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="eidea" uri="http://eidea.cn" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>

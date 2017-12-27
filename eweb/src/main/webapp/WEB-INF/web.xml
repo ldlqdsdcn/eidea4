@@ -18,7 +18,7 @@
         </listener-class>
     </listener>
     <listener>
-        <listener-class>com.dsdl.eidea.base.web.listener.OnLineUserListener</listener-class>
+        <listener-class>indi.liudalei.eidea.base.web.listener.OnLineUserListener</listener-class>
     </listener>
     <!-- shiro过滤器定义 -->
     <filter>

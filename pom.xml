@@ -15,7 +15,7 @@
         <module>eapi</module>
         <module>ecomm</module>
     </modules>
-    <groupId>com.dsdl</groupId>
+    <groupId>indi.liudalei</groupId>
     <artifactId>eidea</artifactId>
     <version>1.0</version>
     <properties>
@@ -45,19 +45,7 @@
             <url>http://maven.aliyun.com/nexus/content/groups/public</url>
         </repository>
     </repositories>
-    <distributionManagement>
-        <repository>
-            <id>nexus-releases</id>
-            <name>Nexus Release Repository</name>
-            <url>http://dsdl.f3322.net:8181/nexus/content/repositories/releases/</url>
-        </repository>
-        <snapshotRepository>
-            <id>nexus-snapshots</id>
-            <name>Nexus Snapshot Repository</name>
-            <url>http://dsdl.f3322.net:8181/nexus/content/repositories/snapshots/</url>
-        </snapshotRepository>
-    </distributionManagement>
-    <dependencies>
+   <dependencies>
         <!-- https://mvnrepository.com/artifact/junit/junit -->
         <dependency>
             <groupId>junit</groupId>
@@ -210,12 +198,6 @@
             <version>1.2.4</version>
         </dependency>
         <!--shiro end-->
-        <!-- https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk15on -->
-        <dependency>
-            <groupId>org.bouncycastle</groupId>
-            <artifactId>bcprov-jdk15on</artifactId>
-            <version>1.56</version>
-        </dependency>
         <!--集成mock测试-->
         <!-- https://mvnrepository.com/artifact/org.mockito/mockito-all -->
         <dependency>

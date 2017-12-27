@@ -7,10 +7,10 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.List" %>
-<%@ page import="com.dsdl.eidea.common.web.vo.SearchFormRow" %>
-<%@ page import="com.dsdl.eidea.common.web.vo.SearchColumnVo" %>
-<%@ page import="com.dsdl.eidea.core.def.FieldInputType" %>
-<%@ page import="com.dsdl.eidea.core.entity.bo.CommonSearchResult" %>
+<%@ page import="indi.liudalei.eidea.common.web.vo.SearchFormRow" %>
+<%@ page import="indi.liudalei.eidea.common.web.vo.SearchColumnVo" %>
+<%@ page import="indi.liudalei.eidea.core.def.FieldInputType" %>
+<%@ page import="indi.liudalei.eidea.core.entity.bo.CommonSearchResult" %>
 <%@ include file="/inc/taglib.jsp"%>
 <!-- 模态框（Modal） -->
 <div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

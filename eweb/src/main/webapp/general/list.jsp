@@ -1,5 +1,5 @@
-<%@ page import="com.dsdl.eidea.core.def.FieldShowType" %>
-<%@ page import="com.dsdl.eidea.base.def.BoolChar" %>
+<%@ page import="indi.liudalei.eidea.core.def.FieldShowType" %>
+<%@ page import="indi.liudalei.eidea.base.def.BoolChar" %>
 <%--
   Created by IntelliJ IDEA.
   User: 刘大磊

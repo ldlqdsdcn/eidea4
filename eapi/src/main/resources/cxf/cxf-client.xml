@@ -6,8 +6,8 @@
 <bean id="cxfConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 	<property name="location" value="classpath:users.properties"></property>
 </bean>
- <bean id="loggingInInterceptor" class="com.dsdl.eidea.soap.cxf2.interceptor.LoggingInInterceptor"></bean>
- <bean id="loggingOutInterceptor" class="com.dsdl.eidea.soap.cxf2.interceptor.LoggingOutInterceptor"></bean>
+ <bean id="loggingInInterceptor" class="indi.liudalei.eidea.soap.cxf2.interceptor.LoggingInInterceptor"></bean>
+ <bean id="loggingOutInterceptor" class="indi.liudalei.eidea.soap.cxf2.interceptor.LoggingOutInterceptor"></bean>
    
  <!--<bean id="abstractJaxWsBean" abstract="true">-->
 

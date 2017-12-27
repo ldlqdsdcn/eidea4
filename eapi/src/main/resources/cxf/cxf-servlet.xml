@@ -30,12 +30,12 @@
 <http-conf:client ConnectionTimeout="5000" ReceiveTimeout="300000"  />
 </http-conf:conduit>
 	<!--测试接口-->
-	<jaxws:server id="clientWs" serviceClass="com.dsdl.eidea.soap.ws.ClientWs" address="/clientWs">
+	<jaxws:server id="clientWs" serviceClass="indi.liudalei.eidea.soap.ws.ClientWs" address="/clientWs">
 	  <jaxws:serviceBean >
-		  <bean class="com.dsdl.eidea.soap.ws.impl.ClientWsImpl"></bean>
+		  <bean class="indi.liudalei.eidea.soap.ws.impl.ClientWsImpl"></bean>
 	  </jaxws:serviceBean>
 	  <jaxws:features>  
-        <bean class="com.dsdl.eidea.soap.cxf2.feature.DBLoggingFeature"/>
+        <bean class="indi.liudalei.eidea.soap.cxf2.feature.DBLoggingFeature"/>
     </jaxws:features>    		
   	</jaxws:server>
   	

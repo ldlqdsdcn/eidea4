@@ -4,7 +4,7 @@
 
 package org.mybatis.pagination;
 
-import com.dsdl.eidea.util.StringUtil;
+import indi.liudalei.eidea.util.StringUtil;
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.logging.Log;
 import org.apache.ibatis.logging.LogFactory;

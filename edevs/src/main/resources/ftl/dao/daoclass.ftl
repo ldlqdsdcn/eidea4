@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import ${interfacefullname};
 import ${modelpackage}.${modelname}Po;
 <#if needImportBaseDao>
-import com.dsdl.eidea.core.dao.hibernate.BaseDaoHibernate;
+import BaseDaoHibernate;
 </#if>
 /**
  * @author 刘大磊 ${datetime}

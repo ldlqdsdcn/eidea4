@@ -18,6 +18,6 @@
     <import resource="classpath:cxf/cxf-servlet.xml" />
     <import resource="classpath:cxf/cxf-client.xml" />
     <!-- 配置要扫描的包 -->
-    <context:component-scan base-package="com.dsdl.**.service"/>
+    <context:component-scan base-package="indi.liudalei.**.service"/>
     <import resource="classpath:spring-shiro.xml"/>
 </beans>

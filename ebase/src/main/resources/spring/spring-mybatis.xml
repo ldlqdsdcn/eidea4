@@ -18,7 +18,7 @@
         <property name="dataSource" ref="dataSourceCore"/>
         <!-- mybatis配置文件 -->
         <property name="configLocation" value="classpath:mybatis-config.xml"/>
-        <property name="mapperLocations" value="classpath*:com/dsdl/**/*Mapper.xml"/>
+        <property name="mapperLocations" value="classpath*:indi/liudalei/**/*Mapper.xml"/>
     </bean>
 
     <!-- 配置SqlSessionTemplate -->

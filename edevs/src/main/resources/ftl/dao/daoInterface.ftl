@@ -4,7 +4,7 @@ package ${packagename};
 
 import ${modelpackage}.${modelname}Po;
 <#if needImportBaseDao>
-import com.dsdl.eidea.core.dao.BaseDao;
+import BaseDao;
 </#if>
 /**
 * @author 刘大磊 ${datetime}

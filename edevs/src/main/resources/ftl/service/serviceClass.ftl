@@ -2,20 +2,20 @@
 
 package ${packagename};
 
-import com.dsdl.eidea.core.spring.annotation.DataAccess;
+import DataAccess;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ${modelpackage}.${modelname}Po;
 import ${interfacefullservicename};
 <#if paingByDb>
-import com.dsdl.eidea.core.dto.PaginationResult;
-import com.dsdl.eidea.core.params.QueryParams;
+import PaginationResult;
+import QueryParams;
 import com.googlecode.genericdao.search.SearchResult;
 import com.googlecode.genericdao.search.Search;
 <#else>
 import com.googlecode.genericdao.search.ISearch;
 </#if>
-import com.dsdl.eidea.core.dao.CommonDao;
+import CommonDao;
 import java.util.List;
 <#if lineList??>
 <#list lineList as item>

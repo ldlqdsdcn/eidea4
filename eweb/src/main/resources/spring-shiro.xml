@@ -3,7 +3,7 @@
 	   xmlns="http://www.springframework.org/schema/beans"
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 	<!-- 自定义Realm -->
-	<bean id="eideaRealm" class="com.dsdl.eidea.security.EideaRealm"/>
+	<bean id="eideaRealm" class="indi.liudalei.eidea.security.EideaRealm"/>
 	<!-- 安全管理器 -->
 	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
   	  <property name="realm" ref="eideaRealm"/>

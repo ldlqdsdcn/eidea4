@@ -5,7 +5,7 @@
   Time: 11:16
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page import="com.dsdl.eidea.core.def.FieldInputType" %>
+<%@ page import="indi.liudalei.eidea.core.def.FieldInputType" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/inc/taglib.jsp" %>
 <html>

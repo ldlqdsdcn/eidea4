@@ -8,7 +8,7 @@
     <uri>http://eidea.cn</uri>
     <tag>
         <name>message</name>
-        <tag-class>com.dsdl.eidea.core.web.tld.MessageTag</tag-class>
+        <tag-class>indi.liudalei.eidea.core.web.tld.MessageTag</tag-class>
         <body-content>JSP</body-content>
         <attribute>
             <name>key</name>
@@ -19,7 +19,7 @@
     </tag>
     <tag>
         <name>label</name>
-        <tag-class>com.dsdl.eidea.core.web.tld.LabelTag</tag-class>
+        <tag-class>indi.liudalei.eidea.core.web.tld.LabelTag</tag-class>
         <body-content>JSP</body-content>
         <attribute>
             <name>key</name>
@@ -34,7 +34,7 @@
             &lt;message&gt; tag
         </description>
         <name>param</name>
-        <tag-class>com.dsdl.eidea.core.web.tld.ParamTag</tag-class>
+        <tag-class>indi.liudalei.eidea.core.web.tld.ParamTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
             <description>

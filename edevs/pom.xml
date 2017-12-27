@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>eidea</artifactId>
-        <groupId>com.dsdl</groupId>
+        <groupId>indi.liudalei</groupId>
         <version>1.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -12,7 +12,7 @@
     <artifactId>edevs</artifactId>
     <dependencies>
         <dependency>
-            <groupId>com.dsdl</groupId>
+            <groupId>indi.liudalei</groupId>
             <artifactId>ebase</artifactId>
             <version>1.0</version>
         </dependency>
@@ -37,7 +37,7 @@
             <version>3.8</version>
         </dependency>
         <dependency>
-            <groupId>com.dsdl</groupId>
+            <groupId>indi.liudalei</groupId>
             <artifactId>eutil</artifactId>
             <version>1.0</version>
         </dependency>

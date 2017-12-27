@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="eidea" uri="http://eidea.cn" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="com.dsdl.eidea.base.entity.bo.UserBo" %>
+<%@ page import="indi.liudalei.eidea.base.entity.bo.UserBo" %>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

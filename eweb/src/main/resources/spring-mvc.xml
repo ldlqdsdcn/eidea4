@@ -16,7 +16,7 @@
 <!--    <context:component-scan base-package="org.activiti.rest.diagram"/>
     <context:component-scan base-package="org.activiti.rest.editor"/>-->
     <!-- 开启controller注解支持，spring mvc的配置文件应该仅扫描@controller注解的类 -->
-    <context:component-scan base-package="com.**.controller"
+    <context:component-scan base-package="indi.**.controller"
                             use-default-filters="false">
         <context:include-filter type="annotation"
                                 expression="org.springframework.stereotype.Controller" />

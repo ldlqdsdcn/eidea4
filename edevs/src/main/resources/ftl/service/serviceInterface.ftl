@@ -3,8 +3,8 @@
 package ${packagename};
 import ${modelpackage}.${modelname}Po;
 <#if paingByDb>
-import com.dsdl.eidea.core.dto.PaginationResult;
-import com.dsdl.eidea.core.params.QueryParams;
+import PaginationResult;
+import QueryParams;
 import com.googlecode.genericdao.search.Search;
 <#else>
 import com.googlecode.genericdao.search.ISearch;

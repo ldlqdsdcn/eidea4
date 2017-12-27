@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>eidea</artifactId>
-        <groupId>com.dsdl</groupId>
+        <groupId>indi.liudalei</groupId>
         <version>1.0</version>
     </parent>
     <properties>
@@ -16,17 +16,17 @@
     <artifactId>eweb</artifactId>
     <dependencies>
         <dependency>
-            <groupId>com.dsdl</groupId>
+            <groupId>indi.liudalei</groupId>
             <artifactId>ebase</artifactId>
             <version>1.0</version>
         </dependency>
         <dependency>
-            <groupId>com.dsdl</groupId>
+            <groupId>indi.liudalei</groupId>
             <artifactId>emanager</artifactId>
             <version>1.0</version>
         </dependency>
         <dependency>
-            <groupId>com.dsdl</groupId>
+            <groupId>indi.liudalei</groupId>
             <artifactId>ecomm</artifactId>
             <version>1.0</version>
         </dependency>
@@ -42,7 +42,7 @@
             <version>1.2</version>
         </dependency>
         <dependency>
-            <groupId>com.dsdl</groupId>
+            <groupId>indi.liudalei</groupId>
             <artifactId>eutil</artifactId>
             <version>1.0</version>
         </dependency>
@@ -150,6 +150,11 @@
             <groupId>org.apache.xmlgraphics</groupId>
             <artifactId>batik-svggen</artifactId>
             <version>1.7</version>
+        </dependency>
+        <dependency>
+            <groupId>bouncycastle</groupId>
+            <artifactId>bcprov-jdk14</artifactId>
+            <version>RELEASE</version>
         </dependency>
 
     </dependencies>

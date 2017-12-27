@@ -1,6 +1,6 @@
 <%@ page import="com.google.gson.Gson" %>
-<%@ page import="com.dsdl.eidea.core.web.result.JsonResult" %>
-<%@ page import="com.dsdl.eidea.core.web.result.def.ErrorCodes" %>
+<%@ page import="indi.liudalei.eidea.core.web.result.JsonResult" %>
+<%@ page import="indi.liudalei.eidea.core.web.result.def.ErrorCodes" %>
 <% String headerKey = "x-requested-with";
     String headerContent = "XMLHttpRequest";
     String angularKey = "accept";

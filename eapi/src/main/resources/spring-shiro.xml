@@ -3,7 +3,7 @@
        xmlns="http://www.springframework.org/schema/beans"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
     <!-- 自定义Realm -->
-    <bean id="apiRealm" class="com.dsdl.eidea.api.shiro.StaticRealm"/>
+    <bean id="apiRealm" class="indi.liudalei.eidea.api.shiro.StaticRealm"/>
     <!-- 安全管理器 -->
     <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
         <property name="realm" ref="apiRealm"/>
